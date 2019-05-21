@@ -1,8 +1,4 @@
 import py.test
-
-from gamera.core import *
-init_gamera()
-
 #
 # Tests for nearest neighbor finding with kd-trees
 #
