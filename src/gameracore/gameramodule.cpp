@@ -41,29 +41,39 @@ void init_ImageInfoType(PyObject* module_dict);
 void init_ListUtilities(PyObject* module_dict);
 void init_IteratorType(PyObject* module_dict);
 
-extern "C" {
-  DL_EXPORT(void) initgameracore(void);
-}
-
 PyMethodDef gamera_module_methods[] = {
   {NULL, NULL },
 };
 
-DL_EXPORT(void)
-initgameracore(void) {
-  PyObject* m = Py_InitModule(CHAR_PTR_CAST "gameracore", gamera_module_methods);
-  PyObject* d = PyModule_GetDict(m);
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gamera.gameracore",
+        nullptr,
+        0,
+        gamera_module_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+};
 
-  init_SizeType(d);
-  init_PointType(d);
-  init_FloatPointType(d);
-  init_DimType(d);
-  init_RectType(d);
-  init_RegionType(d);
-  init_RegionMapType(d);
-  init_RGBPixelType(d);
-  init_ImageDataType(d);
-  init_ImageType(d);
-  init_ImageInfoType(d);
-  init_IteratorType(d);
+PyMODINIT_FUNC PyInit_gameracore(void) {
+    PyObject *m = PyModule_Create(&moduledef);
+    //PyObject* m = Py_InitModule(CHAR_PTR_CAST "gameracore", gamera_module_methods);
+    PyObject *d = PyModule_GetDict(m);
+
+    init_SizeType(d);
+    init_PointType(d);
+    init_FloatPointType(d);
+    init_DimType(d);
+    init_RectType(d);
+    init_RegionType(d);
+    init_RegionMapType(d);
+    init_RGBPixelType(d);
+    init_ImageDataType(d);
+    init_ImageType(d);
+    init_ImageInfoType(d);
+    init_IteratorType(d);
+
+    return m;
 }

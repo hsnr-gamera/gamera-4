@@ -105,12 +105,12 @@ static void point_dealloc(PyObject* self) {
 
 #define CREATE_GET_FUNC(name) static PyObject* point_get_##name(PyObject* self) {\
   Point* x = ((PointObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_SET_FUNC(name) static int point_set_##name(PyObject* self, PyObject* value) {\
   Point* x = ((PointObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -182,7 +182,7 @@ static PyObject* point_richcompare(PyObject* a, PyObject* b, int op) {
 
 static PyObject* point_repr(PyObject* self) {
   Point* x = ((PointObject*)self)->m_x;
-  return PyString_FromFormat("Point(%i, %i)",
+  return PyUnicode_FromFormat("Point(%i, %i)",
 			     (int)x->x(), (int)x->y());
 }
 
@@ -206,7 +206,7 @@ static PyObject* point_add(PyObject* self, PyObject* args) {
 void init_PointType(PyObject* module_dict) {
   point_number_methods.nb_add = point_add;
 
-  PointType.ob_type = &PyType_Type;
+  Py_TYPE(&PointType) = &PyType_Type;
   PointType.tp_name = CHAR_PTR_CAST "gameracore.Point";
   PointType.tp_basicsize = sizeof(PointObject);
   PointType.tp_dealloc = point_dealloc;

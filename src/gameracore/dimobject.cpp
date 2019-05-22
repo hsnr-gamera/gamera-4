@@ -70,12 +70,12 @@ static void dim_dealloc(PyObject* self) {
 
 #define CREATE_GET_FUNC(name) static PyObject* dim_get_##name(PyObject* self) {\
   Dim* x = ((DimObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_SET_FUNC(name) static int dim_set_##name(PyObject* self, PyObject* value) {\
   Dim* x = ((DimObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -130,12 +130,12 @@ static PyObject* dim_richcompare(PyObject* a, PyObject* b, int op) {
 
 static PyObject* dim_repr(PyObject* self) {
   Dim* x = ((DimObject*)self)->m_x;
-  return PyString_FromFormat("Dim(%i, %i)",
+  return PyUnicode_FromFormat("Dim(%i, %i)",
 			     (int)x->ncols(), (int)x->nrows());
 }
 
 void init_DimType(PyObject* module_dict) {
-  DimType.ob_type = &PyType_Type;
+  Py_TYPE(&DimType) = &PyType_Type;
   DimType.tp_name = CHAR_PTR_CAST "gameracore.Dim";
   DimType.tp_basicsize = sizeof(DimObject);
   DimType.tp_dealloc = dim_dealloc;

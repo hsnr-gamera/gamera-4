@@ -177,12 +177,12 @@ static PyObject* floatpoint_richcompare(PyObject* a, PyObject* b, int op) {
 }
 
 static PyObject* floatpoint_repr(PyObject* self) {
-  // Why do they make this so hard?  PyString_FromFormat does
+  // Why do they make this so hard?  PyUnicode_FromFormat does
   // not support doubles
   FloatPoint* x = ((FloatPointObject*)self)->m_x;
   std::ostringstream ostr;
   ostr << *x;
-  PyObject* result = PyString_FromStringAndSize(ostr.str().data(), ostr.str().size());
+  PyObject* result = PyUnicode_FromStringAndSize(ostr.str().data(), ostr.str().size());
   return result;
 }
 
@@ -222,12 +222,12 @@ void init_FloatPointType(PyObject* module_dict) {
   floatpoint_number_methods.nb_add = floatpoint_add;
   floatpoint_number_methods.nb_subtract = floatpoint_sub;
   floatpoint_number_methods.nb_multiply = floatpoint_mul;
-  floatpoint_number_methods.nb_divide = floatpoint_div;
+  floatpoint_number_methods.nb_true_divide = floatpoint_div;
   floatpoint_number_methods.nb_negative = floatpoint_negative;
   floatpoint_number_methods.nb_positive = floatpoint_positive;
   floatpoint_number_methods.nb_absolute = floatpoint_absolute;
 
-  FloatPointType.ob_type = &PyType_Type;
+  Py_TYPE(&FloatPointType) = &PyType_Type;
   FloatPointType.tp_name = CHAR_PTR_CAST "gameracore.FloatPoint";
   FloatPointType.tp_basicsize = sizeof(FloatPointObject);
   FloatPointType.tp_dealloc = floatpoint_dealloc;

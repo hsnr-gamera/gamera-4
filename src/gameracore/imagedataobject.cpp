@@ -129,12 +129,12 @@ static void imagedata_dealloc(PyObject* self) {
 
 #define CREATE_GET_FUNC(name) static PyObject* imagedata_get_##name(PyObject* self) {\
   ImageDataBase* x = ((ImageDataObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_SET_FUNC(name) static int imagedata_set_##name(PyObject* self, PyObject* value) {\
   ImageDataBase* x = ((ImageDataObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -184,7 +184,7 @@ static PyObject* imagedata_dimensions(PyObject* self, PyObject* args) {
 }
 
 void init_ImageDataType(PyObject* module_dict) {
-  ImageDataType.ob_type = &PyType_Type;
+  Py_TYPE(&ImageDataType) = &PyType_Type;
   ImageDataType.tp_name = CHAR_PTR_CAST "gameracore.ImageData";
   ImageDataType.tp_basicsize = sizeof(ImageDataObject);
   ImageDataType.tp_dealloc = imagedata_dealloc;

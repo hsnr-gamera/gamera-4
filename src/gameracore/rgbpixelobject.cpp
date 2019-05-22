@@ -121,7 +121,7 @@ static void rgbpixel_dealloc(PyObject* self) {
 
 #define CREATE_GET_FUNC(name) static PyObject* rgbpixel_get_##name(PyObject* self) {\
   RGBPixel* x = ((RGBPixelObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_FLOAT_GET_FUNC(name) static PyObject* rgbpixel_get_##name(PyObject* self) {\
@@ -131,7 +131,7 @@ static void rgbpixel_dealloc(PyObject* self) {
 
 #define CREATE_SET_FUNC(name) static int rgbpixel_set_##name(PyObject* self, PyObject* value) {\
   RGBPixel* x = ((RGBPixelObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -200,13 +200,13 @@ static PyObject* rgbpixel_richcompare(PyObject* a, PyObject* b, int op) {
 
 static PyObject* rgbpixel_repr(PyObject* self) {
   RGBPixel* x = ((RGBPixelObject*)self)->m_x;
-  return PyString_FromFormat("RGBPixel(%i, %i, %i)",
+  return PyUnicode_FromFormat("RGBPixel(%i, %i, %i)",
 			     x->red(), x->green(), x->blue());
 }
 
 static PyObject* rgbpixel_str(PyObject* self) {
   RGBPixel* x = ((RGBPixelObject*)self)->m_x;
-  return PyString_FromFormat("(%i, %i, %i)",
+  return PyUnicode_FromFormat("(%i, %i, %i)",
 			     x->red(), x->green(), x->blue());
 }
 
@@ -217,7 +217,7 @@ static long rgbpixel_hash(PyObject* self) {
 }
 
 void init_RGBPixelType(PyObject* module_dict) {
-  RGBPixelType.ob_type = &PyType_Type;
+  Py_TYPE(&RGBPixelType) = &PyType_Type;
   RGBPixelType.tp_name = CHAR_PTR_CAST "gameracore.RGBPixel";
   RGBPixelType.tp_basicsize = sizeof(RGBPixelObject);
   RGBPixelType.tp_dealloc = rgbpixel_dealloc;

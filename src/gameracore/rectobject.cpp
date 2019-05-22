@@ -262,7 +262,7 @@ static void rect_dealloc(PyObject* self) {
 */
 #define CREATE_GET_FUNC(name) static PyObject* rect_get_##name(PyObject* self) {\
   Rect* x = ((RectObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_GET_POINT_FUNC(name) static PyObject* rect_get_##name(PyObject* self) {\
@@ -272,13 +272,13 @@ static void rect_dealloc(PyObject* self) {
 
 
 #define CREATE_SET_FUNC(name) static int rect_set_##name(PyObject* self, PyObject* value) {\
-  if (!PyInt_Check(value)) { \
+  if (!PyLong_Check(value)) { \
     PyErr_SetString(PyExc_TypeError, "Must be an integer value"); \
     return -1; \
   } \
   Rect* x = ((RectObject*)self)->m_x; \
   try { \
-    x->name((size_t)PyInt_AS_LONG(value)); \
+    x->name((size_t)PyLong_AS_LONG(value)); \
   } catch(std::exception& e) { \
     PyErr_SetString(PyExc_TypeError, e.what()); \
     return -1; \
@@ -620,7 +620,7 @@ static PyObject* rect_distance_cx(PyObject* self, PyObject* args) {
     PyErr_SetString(PyExc_TypeError, "Argument must be a Rect object.");
     return 0;
   }
-  return PyInt_FromLong((long)x->distance_cx(*((RectObject*)rect)->m_x));
+  return PyLong_FromLong((long)x->distance_cx(*((RectObject*)rect)->m_x));
 }
 
 static PyObject* rect_distance_cy(PyObject* self, PyObject* args) {
@@ -632,7 +632,7 @@ static PyObject* rect_distance_cy(PyObject* self, PyObject* args) {
     PyErr_SetString(PyExc_TypeError, "Argument must be a Rect object.");
     return 0;
   }
-  return PyInt_FromLong((long)x->distance_cy(*((RectObject*)rect)->m_x));
+  return PyLong_FromLong((long)x->distance_cy(*((RectObject*)rect)->m_x));
 }
 
 static PyObject* rect_richcompare(PyObject* a, PyObject* b, int op) {
@@ -675,7 +675,7 @@ static PyObject* rect_richcompare(PyObject* a, PyObject* b, int op) {
 
 static PyObject* rect_repr(PyObject* self) {
   Rect* x = ((RectObject*)self)->m_x;
-  return PyString_FromFormat("Rect(Point(%i, %i), Dim(%i, %i))",
+  return PyUnicode_FromFormat("Rect(Point(%i, %i), Dim(%i, %i))",
 			     (int)x->offset_x(), (int)x->offset_y(),
 			     (int)x->ncols(), (int)x->nrows());
 }
@@ -686,7 +686,7 @@ static long rect_hash(PyObject* self) {
 }
 
 void init_RectType(PyObject* module_dict) {
-  RectType.ob_type = &PyType_Type;
+  Py_TYPE(&RectType) = &PyType_Type;
   RectType.tp_name = CHAR_PTR_CAST "gameracore.Rect";
   RectType.tp_basicsize = sizeof(RectObject);
   RectType.tp_dealloc = rect_dealloc;

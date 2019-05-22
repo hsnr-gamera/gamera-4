@@ -53,7 +53,7 @@ PyObject* iterator_next(PyObject* self) {
 }
 
 void init_IteratorType(PyObject* module_dict) {
-  IteratorType.ob_type = &PyType_Type;
+  Py_TYPE(&IteratorType) = &PyType_Type;
   IteratorType.tp_name = CHAR_PTR_CAST "gamera.Iterator";
   IteratorType.tp_basicsize = sizeof(IteratorObject);
   IteratorType.tp_dealloc = iterator_dealloc;

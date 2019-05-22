@@ -112,7 +112,7 @@ static PyObject* region_add(PyObject* self, PyObject* args) {
 }
 
 void init_RegionType(PyObject* module_dict) {
-  RegionType.ob_type = &PyType_Type;
+  Py_TYPE(&RegionType) = &PyType_Type;
   RegionType.tp_name = CHAR_PTR_CAST "gameracore.Region";
   RegionType.tp_basicsize = sizeof(RegionObject);
   RegionType.tp_dealloc = region_dealloc;

@@ -12,14 +12,14 @@ def make_test(inner):
                yield RGBPixel(r,g,b)
 
    def test():
-      for type, value in [(ONEBIT, xrange((2 ** 16) - 1)),
-                          (GREYSCALE, xrange((2 ** 8) - 1)),
-                          (FLOAT, [float(x) for x in xrange(-5, 5)]),
-                          (COMPLEX, [complex(x) for x in xrange(-5, 5)]),
+      for type, value in [(ONEBIT, range((2 ** 16) - 1)),
+                          (GREYSCALE, range((2 ** 8) - 1)),
+                          (FLOAT, [float(x) for x in range(-5, 5)]),
+                          (COMPLEX, [complex(x) for x in range(-5, 5)]),
                           (RGB, _generate_rgb()),
-                          (GREY16, xrange((2 ** 16) - 1))]:
+                          (GREY16, range((2 ** 16) - 1))]:
          inner(type, value, DENSE)
-      inner(ONEBIT, xrange(0, 2 ** 16 - 1), RLE)
+      inner(ONEBIT, range(0, 2 ** 16 - 1), RLE)
    return test
 
 def _test_image_constructors(type, value, storage):

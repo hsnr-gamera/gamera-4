@@ -13,3 +13,4 @@ set(GAMERA_SOURCE ${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(src/geostructs)
 add_subdirectory(src/knncore)
+add_subdirectory(src/gameracore)

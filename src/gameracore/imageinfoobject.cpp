@@ -85,12 +85,12 @@ static void imageinfo_dealloc(PyObject* self) {
 
 #define CREATE_GET_FUNC(name) static PyObject* imageinfo_get_##name(PyObject* self) {\
   ImageInfo* x = ((ImageInfoObject*)self)->m_x; \
-  return PyInt_FromLong((int)x->name()); \
+  return PyLong_FromLong((int)x->name()); \
 }
 
 #define CREATE_SET_FUNC(name) static int imageinfo_set_##name(PyObject* self, PyObject* value) {\
   ImageInfo* x = ((ImageInfoObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -119,7 +119,7 @@ CREATE_GET_FUNC(ncolors)
 CREATE_SET_FUNC(ncolors)
 
 void init_ImageInfoType(PyObject* module_dict) {
-  ImageInfoType.ob_type = &PyType_Type;
+  Py_TYPE(&ImageInfoType) = &PyType_Type;
   ImageInfoType.tp_name = CHAR_PTR_CAST "gameracore.ImageInfo";
   ImageInfoType.tp_basicsize = sizeof(ImageInfoObject);
   ImageInfoType.tp_dealloc = imageinfo_dealloc;

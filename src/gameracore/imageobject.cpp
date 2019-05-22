@@ -747,7 +747,7 @@ static int image_clear(PyObject* self) {
 
 static PyObject* image_repr(PyObject* self) {
   Rect* x = ((RectObject*)self)->m_x;
-  return PyString_FromFormat("<gameracore.Image: offset_x = %i, offset_y = %i, ncols = %i, nrows = %i>",
+  return PyUnicode_FromFormat("<gameracore.Image: offset_x = %i, offset_y = %i, ncols = %i, nrows = %i>",
                              (int)x->offset_x(), (int)x->offset_y(),
                              (int)x->ncols(), (int)x->nrows());
 }
@@ -762,13 +762,13 @@ static PyObject* image_get(PyObject* self, const Point& point) {
   }
   if (is_CCObject(self)) {
     if (od->m_storage_format == RLE)
-      return PyInt_FromLong(((RleCc*)o->m_x)->get(point));
+      return PyLong_FromLong(((RleCc*)o->m_x)->get(point));
     else
-      return PyInt_FromLong(((Cc*)o->m_x)->get(point));
+      return PyLong_FromLong(((Cc*)o->m_x)->get(point));
   } else if (is_MLCCObject(self)) {
-    return PyInt_FromLong(((MlCc*)o->m_x)->get(point));
+    return PyLong_FromLong(((MlCc*)o->m_x)->get(point));
   } else if (od->m_storage_format == RLE) {
-    return PyInt_FromLong(((OneBitRleImageView*)o->m_x)->get(point));
+    return PyLong_FromLong(((OneBitRleImageView*)o->m_x)->get(point));
   } else {
     switch (od->m_pixel_type) {
     case Gamera::FLOAT:
@@ -778,13 +778,13 @@ static PyObject* image_get(PyObject* self, const Point& point) {
       return create_RGBPixelObject(((RGBImageView*)o->m_x)->get(point));
       break;
     case Gamera::GREYSCALE:
-      return PyInt_FromLong(((GreyScaleImageView*)o->m_x)->get(point));
+      return PyLong_FromLong(((GreyScaleImageView*)o->m_x)->get(point));
       break;
     case Gamera::GREY16:
-      return PyInt_FromLong(((Grey16ImageView*)o->m_x)->get(point));
+      return PyLong_FromLong(((Grey16ImageView*)o->m_x)->get(point));
       break;
     case Gamera::ONEBIT:
-      return PyInt_FromLong(((OneBitImageView*)o->m_x)->get(point));
+      return PyLong_FromLong(((OneBitImageView*)o->m_x)->get(point));
       break;
     case Gamera::COMPLEX: {
       ComplexPixel temp = ((ComplexImageView*)o->m_x)->get(point);
@@ -809,17 +809,17 @@ static PyObject* image_set(PyObject* self, const Point& point, PyObject* value) 
     return 0;
   }
   if (is_CCObject(self)) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for CC objects must be an int.");
       return 0;
     }
-    ((Cc*)o->m_x)->set(point, (OneBitPixel)PyInt_AS_LONG(value));
+    ((Cc*)o->m_x)->set(point, (OneBitPixel)PyLong_AS_LONG(value));
   } else if (is_MLCCObject(self)) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for MlCc objects must be an int.");
       return 0;
     }
-    ((MlCc*)o->m_x)->set(point, (OneBitPixel)PyInt_AS_LONG(value));
+    ((MlCc*)o->m_x)->set(point, (OneBitPixel)PyLong_AS_LONG(value));
   } else if (od->m_pixel_type == Gamera::FLOAT) {
     if (!PyFloat_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for Float objects must be a float.");
@@ -827,12 +827,12 @@ static PyObject* image_set(PyObject* self, const Point& point, PyObject* value) 
     }
     ((FloatImageView*)o->m_x)->set(point, PyFloat_AS_DOUBLE(value));
   } else if (od->m_storage_format == RLE) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for OneBit objects must be an int.");
       return 0;
     }
     ((OneBitRleImageView*)o->m_x)->set(point,
-                                       (OneBitPixel)PyInt_AS_LONG(value));
+                                       (OneBitPixel)PyLong_AS_LONG(value));
   } else if (od->m_pixel_type == RGB) {
     if (!is_RGBPixelObject((PyObject*)value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for RGB objects must be an RGBPixel");
@@ -841,26 +841,26 @@ static PyObject* image_set(PyObject* self, const Point& point, PyObject* value) 
     RGBPixelObject* v = (RGBPixelObject*)value;
     ((RGBImageView*)o->m_x)->set(point, *v->m_x);
   } else if (od->m_pixel_type == GREYSCALE) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for GreyScale objects must be an int.");
       return 0;
     }
     ((GreyScaleImageView*)o->m_x)->set(point,
-                                       (GreyScalePixel)PyInt_AS_LONG(value));
+                                       (GreyScalePixel)PyLong_AS_LONG(value));
   } else if (od->m_pixel_type == GREY16) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for Grey16 objects must be an int.");
       return 0;
     }
     ((Grey16ImageView*)o->m_x)->set(point,
-                                    (Grey16Pixel)PyInt_AS_LONG(value));
+                                    (Grey16Pixel)PyLong_AS_LONG(value));
   } else if (od->m_pixel_type == ONEBIT) {
-    if (!PyInt_Check(value)) {
+    if (!PyLong_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for OneBit objects must be an int.");
       return 0;
     }
     ((OneBitImageView*)o->m_x)->set(point,
-                                    (OneBitPixel)PyInt_AS_LONG(value));
+                                    (OneBitPixel)PyLong_AS_LONG(value));
   } else if (od->m_pixel_type == Gamera::COMPLEX) {
     if (!PyComplex_Check(value)) {
       PyErr_SetString(PyExc_TypeError, "Pixel value for Complex objects must be a complex number.");
@@ -965,13 +965,13 @@ static PyObject* image_white(PyObject* self, PyObject* args) {
     return create_RGBPixelObject(pixel_traits<RGBPixel>::white());
     break;
   case Gamera::GREYSCALE:
-    return PyInt_FromLong(pixel_traits<GreyScalePixel>::white());
+    return PyLong_FromLong(pixel_traits<GreyScalePixel>::white());
     break;
   case Gamera::GREY16:
-    return PyInt_FromLong(pixel_traits<Grey16Pixel>::white());
+    return PyLong_FromLong(pixel_traits<Grey16Pixel>::white());
     break;
   case Gamera::ONEBIT:
-    return PyInt_FromLong(pixel_traits<OneBitPixel>::white());
+    return PyLong_FromLong(pixel_traits<OneBitPixel>::white());
     break;
   case Gamera::COMPLEX: {
     ComplexPixel temp = pixel_traits<ComplexPixel>::white();
@@ -993,13 +993,13 @@ static PyObject* image_black(PyObject* self, PyObject* args) {
     return create_RGBPixelObject(pixel_traits<RGBPixel>::black());
     break;
   case Gamera::GREYSCALE:
-    return PyInt_FromLong(pixel_traits<GreyScalePixel>::black());
+    return PyLong_FromLong(pixel_traits<GreyScalePixel>::black());
     break;
   case Gamera::GREY16:
-    return PyInt_FromLong(pixel_traits<Grey16Pixel>::black());
+    return PyLong_FromLong(pixel_traits<Grey16Pixel>::black());
     break;
   case Gamera::ONEBIT:
-    return PyInt_FromLong(pixel_traits<OneBitPixel>::black());
+    return PyLong_FromLong(pixel_traits<OneBitPixel>::black());
     break;
   case Gamera::COMPLEX: {
     ComplexPixel temp = pixel_traits<ComplexPixel>::black();
@@ -1034,9 +1034,9 @@ static inline int get_rowcol(Image* image, long index, size_t* row, size_t* col)
 static PyObject* image_getitem(PyObject* self, PyObject* args) {
   PyObject* arg = PyTuple_GET_ITEM(args, 0);
   Point point;
-  if (PyInt_Check(arg)) {
+  if (PyLong_Check(arg)) {
     size_t i;
-    i = PyInt_AsLong(arg);
+    i = PyLong_AsLong(arg);
     Rect* image = ((RectObject*)self)->m_x;
     return image_get(self, Point(i % image->ncols(), i / image->ncols()));
   }
@@ -1057,9 +1057,9 @@ static PyObject* image_setitem(PyObject* self, PyObject* args) {
   Point point;
   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO", &arg, &value) <= 0)
     return 0;
-  if (PyInt_Check(arg)) {
+  if (PyLong_Check(arg)) {
     size_t i;
-    i = PyInt_AsLong(arg);
+    i = PyLong_AsLong(arg);
     Rect* image = ((RectObject*)self)->m_x;
     return image_set(self, Point(i % image->ncols(), i / image->ncols()), value);
   }
@@ -1143,11 +1143,11 @@ static PyObject* cc_get_label(PyObject* self) {
 
 static int cc_set_label(PyObject* self, PyObject* v) {
   RectObject* o = (RectObject*)self;
-  if (!PyInt_Check(v)) {
+  if (!PyLong_Check(v)) {
     PyErr_SetString(PyExc_TypeError, "label must be an int value.");
     return -1;
   }
-  ((Cc*)o->m_x)->label(PyInt_AS_LONG(v));
+  ((Cc*)o->m_x)->label(PyLong_AS_LONG(v));
   return 0;
 }
 
@@ -1345,13 +1345,13 @@ static PyObject* mlcc_add_neighbors(PyObject* self, PyObject* args){
 
 static PyObject* mlcc_remove_label(PyObject* self, PyObject* args){
 
-  if (!PyInt_Check(args)) {
+  if (!PyLong_Check(args)) {
     PyErr_SetString(PyExc_TypeError, "Label must be an int value.");
     return 0;
   }
   
   RectObject* o = (RectObject*)self;
-  ((MlCc*)o->m_x)->remove_label(PyInt_AS_LONG(args));
+  ((MlCc*)o->m_x)->remove_label(PyLong_AS_LONG(args));
   
   Py_INCREF(Py_None);
   return Py_None;
@@ -1387,7 +1387,7 @@ static PyObject* mlcc_get_labels(PyObject* self){
   ((MlCc*)o->m_x)->get_labels(labels);
   pylist = PyList_New(labels.size());
   for (size_t i=0; i<labels.size(); i++) {
-    PyList_SetItem(pylist, i, PyInt_FromLong(labels[i]));
+    PyList_SetItem(pylist, i, PyLong_FromLong(labels[i]));
   }
   return pylist;
 }
@@ -1458,8 +1458,8 @@ static PyObject* mlcc_get_neighbors(PyObject* self){
 
   for (size_t i=0; i<neighbors.size(); i+=2) {
     tuple=PyTuple_New(2);
-    PyTuple_SetItem(tuple, 0, PyInt_FromLong(neighbors[i]));
-    PyTuple_SetItem(tuple, 1, PyInt_FromLong(neighbors[i+1]));
+    PyTuple_SetItem(tuple, 0, PyLong_FromLong(neighbors[i]));
+    PyTuple_SetItem(tuple, 1, PyLong_FromLong(neighbors[i+1]));
 
     PyList_SetItem(pylist, i/2, tuple);
   }
@@ -1469,12 +1469,12 @@ static PyObject* mlcc_get_neighbors(PyObject* self){
 
 static PyObject* mlcc_has_label(PyObject* self, PyObject* v){
   RectObject* o = (RectObject*)self;
-  if (!PyInt_Check(v)) {
+  if (!PyLong_Check(v)) {
     PyErr_SetString(PyExc_TypeError, "Label must be an int value.");
     return 0;
   }
   
-  if(((MlCc*)o->m_x)->has_label(PyInt_AS_LONG(v))){
+  if(((MlCc*)o->m_x)->has_label(PyLong_AS_LONG(v))){
     Py_INCREF(Py_True);
     return Py_True;
   } else {
@@ -1516,8 +1516,8 @@ static PyObject* mlcc_relabel(PyObject* self, PyObject* args){
     labelVector.push_back(labels);
     for (int i=0; i<outer_size; i++){
       PyObject* label=PyList_GetItem(pyList,i);
-      if(PyInt_Check(label)){
-        labels->push_back(PyInt_AS_LONG(label));
+      if(PyLong_Check(label)){
+        labels->push_back(PyLong_AS_LONG(label));
       } else {
         PyErr_SetString(PyExc_TypeError, "label values have to be int values.");
         error=true;
@@ -1534,8 +1534,8 @@ static PyObject* mlcc_relabel(PyObject* self, PyObject* args){
         labelVector.push_back(labels);
         for (int j=0;  j<inner_size; j++){
           PyObject* label=PyList_GetItem(pyList_inner,j);
-          if(PyInt_Check(label)){
-            labels->push_back(PyInt_AS_LONG(label));
+          if(PyLong_Check(label)){
+            labels->push_back(PyLong_AS_LONG(label));
           } else {
             PyErr_SetString(PyExc_TypeError, "label values have to be int values.");
             error=true;
@@ -1863,12 +1863,12 @@ static PyObject* mlcc_richcompare(PyObject* a, PyObject* b, int op) {
 }
 
 void init_ImageType(PyObject* module_dict) {
-  ImageType.ob_type = &PyType_Type;
+  Py_TYPE(&ImageType) = &PyType_Type;
   ImageType.tp_name = CHAR_PTR_CAST "gameracore.Image";
-  ImageType.tp_basicsize = sizeof(ImageObject) + PyGC_HEAD_SIZE;
+  ImageType.tp_basicsize = sizeof(ImageObject);
   ImageType.tp_dealloc = image_dealloc;
   ImageType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_HAVE_WEAKREFS | Py_TPFLAGS_HAVE_GC;
+     Py_TPFLAGS_HAVE_GC;
   ImageType.tp_base = get_RectType();
   ImageType.tp_getset = image_getset;
   ImageType.tp_methods = image_methods;
@@ -1907,12 +1907,12 @@ void init_ImageType(PyObject* module_dict) {
   PyType_Ready(&ImageType);
   PyDict_SetItemString(module_dict, "Image", (PyObject*)&ImageType);
 
-  SubImageType.ob_type = &PyType_Type;
+  Py_TYPE(&SubImageType) = &PyType_Type;
   SubImageType.tp_name = CHAR_PTR_CAST "gameracore.SubImage";
-  SubImageType.tp_basicsize = sizeof(SubImageObject) + PyGC_HEAD_SIZE;
+  SubImageType.tp_basicsize = sizeof(SubImageObject);
   SubImageType.tp_dealloc = image_dealloc;
   SubImageType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_HAVE_WEAKREFS | Py_TPFLAGS_HAVE_GC;
+     Py_TPFLAGS_HAVE_GC;
   SubImageType.tp_base = &ImageType;
   SubImageType.tp_new = sub_image_new;
   SubImageType.tp_init = (initproc)sub_image_init;
@@ -1936,12 +1936,12 @@ void init_ImageType(PyObject* module_dict) {
   PyType_Ready(&SubImageType);
   PyDict_SetItemString(module_dict, "SubImage", (PyObject*)&SubImageType);
 
-  CCType.ob_type = &PyType_Type;
+  Py_TYPE(&CCType) = &PyType_Type;
   CCType.tp_name = CHAR_PTR_CAST "gameracore.Cc";
-  CCType.tp_basicsize = sizeof(CCObject) + PyGC_HEAD_SIZE;
+  CCType.tp_basicsize = sizeof(CCObject);
   CCType.tp_dealloc = image_dealloc;
   CCType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_HAVE_WEAKREFS | Py_TPFLAGS_HAVE_GC;
+     Py_TPFLAGS_HAVE_GC;
   CCType.tp_base = &ImageType;
   CCType.tp_new = cc_new;
   CCType.tp_init = (initproc)cc_init;
@@ -1967,12 +1967,12 @@ void init_ImageType(PyObject* module_dict) {
   PyType_Ready(&CCType);
   PyDict_SetItemString(module_dict, "Cc", (PyObject*)&CCType);
 
-  MLCCType.ob_type = &PyType_Type;
+  Py_TYPE(&MLCCType) = &PyType_Type;
   MLCCType.tp_name = CHAR_PTR_CAST "gameracore.MlCc";
-  MLCCType.tp_basicsize = sizeof(MLCCObject) + PyGC_HEAD_SIZE;
+  MLCCType.tp_basicsize = sizeof(MLCCObject);
   MLCCType.tp_dealloc = image_dealloc;
   MLCCType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_HAVE_WEAKREFS | Py_TPFLAGS_HAVE_GC;
+     Py_TPFLAGS_HAVE_GC;
   MLCCType.tp_base = &ImageType;
   MLCCType.tp_new = mlcc_new;
   MLCCType.tp_init = (initproc)mlcc_init;

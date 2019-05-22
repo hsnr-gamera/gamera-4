@@ -15,5 +15,5 @@ def test_floatpoint():
    assert repr(FP(2, 3)) == "FloatPoint(2, 3)"
 
 def test_floatpoint_leak():
-   for i in xrange(1000):
+   for i in range(1000):
       p = FP(i, i)

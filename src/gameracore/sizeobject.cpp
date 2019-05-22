@@ -75,7 +75,7 @@ static void size_dealloc(PyObject* self) {
 
 #define CREATE_SET_FUNC(name) static int size_set_##name(PyObject* self, PyObject* value) {\
   Size* x = ((SizeObject*)self)->m_x; \
-  x->name((size_t)PyInt_AS_LONG(value)); \
+  x->name((size_t)PyLong_AS_LONG(value)); \
   return 0; \
 }
 
@@ -130,12 +130,12 @@ static PyObject* size_richcompare(PyObject* a, PyObject* b, int op) {
 
 static PyObject* size_repr(PyObject* self) {
   Size* x = ((SizeObject*)self)->m_x;
-  return PyString_FromFormat("Size(%i, %i)",
+  return PyUnicode_FromFormat("Size(%i, %i)",
 			     (int)x->width(), (int)x->height());
 }
 
 void init_SizeType(PyObject* module_dict) {
-  SizeType.ob_type = &PyType_Type;
+  Py_TYPE(&SizeType) = &PyType_Type;
   SizeType.tp_name = CHAR_PTR_CAST "gameracore.Size";
   SizeType.tp_basicsize = sizeof(SizeObject);
   SizeType.tp_dealloc = size_dealloc;
