@@ -242,7 +242,7 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       ++i;
    }
 
-   RETURN_VOID();
+   RETURN_VOID()
 }
 
 

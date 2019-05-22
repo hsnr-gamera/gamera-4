@@ -24,8 +24,8 @@
 
 namespace Gamera { namespace GraphApi {
 
-   
-   
+
+
 // -----------------------------------------------------------------------------
 Graph::Graph(bool directed, bool check_on_insert) {
    _flags = FLAG_FREE; //flag free as default flags
@@ -40,7 +40,7 @@ Graph::Graph(bool directed, bool check_on_insert) {
       GRAPH_UNSET_FLAG(this, FLAG_CHECK_ON_INSERT);
    _colorhistogram = NULL;
    _colors = NULL;
-   
+
 }
 
 
@@ -110,14 +110,14 @@ Graph::Graph(Graph &g) {
    while((n=nit->next()) != NULL)
       add_node(n->_value);
 
-   delete nit; 
+   delete nit;
    EdgePtrIterator *eit = g.get_edges();
    Edge *e;
    while((e=eit->next()) != NULL) {
-      add_edge(e->from_node->_value, e->to_node->_value, e->weight, 
+      add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             e->is_directed, e->label);
    }
-   delete eit;   
+   delete eit;
 }
 
 
@@ -133,22 +133,22 @@ Graph::Graph(Graph* g, flag_t flags) {
    while((n=nit->next()) != NULL)
       add_node(n->_value->copy());
 
-   delete nit; 
+   delete nit;
    EdgePtrIterator *eit = g->get_edges();
    Edge *e;
    if(!directed) {
       while((e=eit->next()) != NULL) {
-         add_edge(e->from_node->_value, e->to_node->_value, e->weight, 
+         add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             e->is_directed, e->label);
       }
    }
    else {
       while((e=eit->next()) != NULL) {
-         add_edge(e->from_node->_value, e->to_node->_value, e->weight, 
+         add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             false, e->label);
       }
    }
-   delete eit;   
+   delete eit;
 }
 
 
@@ -161,11 +161,10 @@ Graph::Graph(Graph* g, flag_t flags) {
 /**
  * returns true when graph has a node with same value as the given Node.
  */
+
 bool Graph::has_node(Node* node) {
-   return has_node(node->_value);
+    return has_node(node->_value);
 }
-
-
 
 // -----------------------------------------------------------------------------
 bool Graph::has_node(GraphData * value) {
@@ -180,11 +179,13 @@ bool Graph::has_node(GraphData * value) {
   */
 bool Graph::add_node(GraphData * value) {
    Node* toadd = new Node(value);
-   if(add_node(toadd) == false) {
+   if(!add_node(toadd)) {
       delete toadd;
       return false;
    }
-   else return true;
+   else {
+       return true;
+   }
 }
 
 
@@ -323,13 +324,13 @@ void Graph::remove_node_and_edges(Node* node) {
 void Graph::remove_node_and_edges(GraphData * value) {
    Node* node = get_node(value);
    if (node != NULL)
-     remove_node_and_edges(node); 
+     remove_node_and_edges(node);
 }
 
 
 
 // -----------------------------------------------------------------------------
-int Graph::add_edge(GraphData * from_value, GraphData * to_value, cost_t cost, 
+int Graph::add_edge(GraphData * from_value, GraphData * to_value, cost_t cost,
       bool directed, void* label) {
    Node *from_node, *to_node;
 
@@ -342,7 +343,7 @@ int Graph::add_edge(GraphData * from_value, GraphData * to_value, cost_t cost,
 
 
 // -----------------------------------------------------------------------------
-int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost, 
+int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
       bool directed, void* label) {
    Edge *e = NULL, *f = NULL;
    unsigned long count = 0;
@@ -352,12 +353,12 @@ int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
    if(!GRAPH_HAS_FLAG(this, FLAG_DIRECTED) && directed)
       throw std::invalid_argument("Cannot insert directed edge into "
                                     "undirected graph.");
-   
+
    if(GRAPH_HAS_FLAG(this, FLAG_DIRECTED) && !directed) {
       directed = true;
       f = new Edge(to_node, from_node, cost, true, label);
       _edges.push_back(f);
-      if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) && 
+      if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) &&
             !conforms_restrictions()) {
          remove_edge(f);
          f = NULL;
@@ -369,7 +370,7 @@ int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
    e = new Edge(from_node, to_node, cost, directed, label);
    _edges.push_back(e);
 
-   if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) && 
+   if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) &&
          !conforms_restrictions()) {
         remove_edge(e);
         e = NULL;
@@ -429,7 +430,7 @@ void Graph::remove_edge(Node* from_node, Node* to_node) {
       if(e->to_node == to_node && e->from_node == from_node) {
          to_remove.push_back(e);
       }
-      else if(is_undirected() && e->from_node == to_node && 
+      else if(is_undirected() && e->from_node == to_node &&
             e->to_node == from_node) {
 
          to_remove.push_back(e);

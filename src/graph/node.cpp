@@ -36,7 +36,7 @@ Node::Node(GraphData * value, Graph* graph) {
 // -----------------------------------------------------------------------------
 Node::~Node() {
 #ifdef __DEBUG_GAPI__
-//   std::cout << "~Node\n";  
+   std::cerr << "~Node\n";  
 #endif
 }
 

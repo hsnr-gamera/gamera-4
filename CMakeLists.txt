@@ -13,6 +13,7 @@ set(GAMERA_SOURCE ${PROJECT_SOURCE_DIR}/include)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${GAMERA_SOURCE})
+include_directories(${PROJECT_SOURCE_DIR}/src/)
 
 add_subdirectory(src/geostructs)
 add_subdirectory(src/knncore)

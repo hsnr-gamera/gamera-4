@@ -55,36 +55,34 @@ struct GraphData {
     * */
    virtual int compare(const GraphData& b) const = 0;
    
-   virtual ~GraphData() {
-
-   }
+   virtual ~GraphData() = default;
 
    virtual GraphData* copy() = 0;
 
 
 
    // mappings from comparison operators to int compare(const GraphData&)
-   bool operator<(const GraphData& b) const {
+   virtual bool operator<(const GraphData& b) const {
       return compare(b) < 0;
    }
 
-   bool operator==(const GraphData& b) const {
+	virtual bool operator==(const GraphData& b) const {
       return compare(b) == 0;
    }
 
-   bool operator>(const GraphData& b) const {
+	virtual bool operator>(const GraphData& b) const {
       return compare(b) > 0;
    }
 
-   bool operator!=(const GraphData& b) const {
+	virtual  bool operator!=(const GraphData& b) const {
       return compare(b) != 0;
    }
 
-   bool operator<=(const GraphData& b) const {
+	virtual bool operator<=(const GraphData& b) const {
       return compare(b) <= 0;
    }
 
-   bool operator>=(const GraphData& b) const {
+	virtual bool operator>=(const GraphData& b) const {
       return compare(b) >= 0;
    }
 };

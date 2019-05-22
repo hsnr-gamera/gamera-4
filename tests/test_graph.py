@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-import sys, gc, os
-from gamera.core import *
-init_gamera()
+import gc, os
+
 import gamera.graph
-import gamera.graph_util
 
 #gc.set_debug(gc.DEBUG_LEAK)  
 flags = [
@@ -49,7 +47,7 @@ def _test_flags(flag = gamera.graph.FREE):
    else:
       assert g.is_undirected()
 
-   if correct_flags.has_key(flag):# and f not in ignore_flags:
+   if flag in correct_flags:# and f not in ignore_flags:
       for f in correct_flags[flag] :
          assert g.has_flag(f)
 
@@ -74,6 +72,7 @@ def _test_remove_difference(flag = gamera.graph.FREE):
    g = gamera.graph.Graph()
    g.add_edge(1,2)
    g.add_edge(2,3)
+   print(g.nedges)
    assert g.nedges == result[flag][0]
    assert g.nnodes == result[flag][1]
    g.remove_node(2)
@@ -199,7 +198,7 @@ def _test_dfs(flag = gamera.graph.FREE):
    for n in g.DFS(1001):
       #print n
       result_dfs.append(n())
-   if correct_dfs.has_key(flag):
+   if flag in correct_dfs:
       assert correct_dfs[flag] == result_dfs
 
    del g
@@ -223,8 +222,8 @@ def _test_dijkstra(flag = gamera.graph.FREE):
 
    assert g.nedges == 10
    p = g.dijkstra_shortest_path(2)
-   print {flag: p}
-   if correct_paths.has_key(flag):
+   print({flag: p})
+   if flag in correct_paths:
       assert p == correct_paths[flag][2]
    del p
    del g
@@ -247,7 +246,7 @@ def _test_dijkstra_all_pairs(flag = gamera.graph.FREE):
 
    assert g.nedges == 10
    p = g.all_pairs_shortest_path()
-   if correct_paths.has_key(flag):
+   if flag in correct_paths:
       assert p == correct_paths[flag]
    del p
 
@@ -325,6 +324,7 @@ def _test_fully_connected(flag = gamera.graph.FREE):
    g.add_node(10)
    g.add_node(11)
    g.add_node(12)
+
    assert g.is_fully_connected() == False
 
    g.add_edge(9,10)
@@ -333,8 +333,8 @@ def _test_fully_connected(flag = gamera.graph.FREE):
    assert g.is_fully_connected() == False
 
    g.add_edge(10,11)
-   print list(g.get_edges())
-   print list(g.get_nodes())
+   print(list(g.get_edges()))
+   print(list(g.get_nodes()))
    assert g.is_fully_connected() == True
 
    del g
@@ -409,10 +409,10 @@ def _test_make_singly_connected(flag = gamera.graph.FREE):
 
 
 # ------------------------------------------------------------------------------
-def _test_make_not_self_connected(flag = gamera.graph.FREE):
+def _test_make_not_self_connected(flag=gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
-   g.add_nodes([1,2,3,4,5,6,7,8])
-   g.add_edges([(1,1),(1,2),(2,3),(2,2),(3,4),(4,5),(5,5)])
+   g.add_nodes([1, 2, 3, 4, 5, 6, 7, 8])
+   g.add_edges([(1, 1), (1, 2), (2, 3), (2, 2), (3, 4), (4, 5), (5, 5)])
    assert g.is_self_connected()
    g.make_not_self_connected()
    assert not g.is_self_connected()
@@ -465,7 +465,7 @@ def _test_make_tree(flag = gamera.graph.FREE):
 
    g.make_tree()
 
-   if correct.has_key(flag):
+   if flag in correct:
       assert correct[flag]  == "%s" % list(g.get_edges())
 
    del g
@@ -492,12 +492,12 @@ def _test_check_insert_restrictions(flag = None):
    
    #tests acyclic restriction
    g.add_edge(1,2)
-   print g.nedges
+   print(g.nedges)
    g.add_edge(2,3)
-   print g.nedges
+   print(g.nedges)
    g.add_edge(3,1)
-   print g.nedges
-   if results.has_key(flag) and results[flag][1] != None:
+   print(g.nedges)
+   if flag in results and results[flag][1] != None:
 #      assert g.nedges == results[flag][0]
       result = [(e.from_node(), e.to_node()) for e in list(g.get_edges())]
       result.sort()
@@ -512,7 +512,7 @@ def _test_check_insert_restrictions(flag = None):
    g = gamera.graph.Graph(flag | gamera.graph.CHECK_ON_INSERT)
    g.add_nodes([1,2,3,4,5,6,7,8,9])
    g.add_edge(3,3)
-   if results.has_key(flag) and results[flag][2] != None:
+   if flag in results and results[flag][2] != None:
       result = [(e.from_node(), e.to_node()) for e in g.get_edges()]
       result.sort()
       correct = results[flag][2]
@@ -528,12 +528,12 @@ def _test_check_insert_restrictions(flag = None):
 # ------------------------------------------------------------------------------
 def _test_minimum_spanning_tree(flag = gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
-   print g.add_edges([
+   print(g.add_edges([
       (9,10,4), (9,16,8), (10,16,11), (10,11,8), 
       (11,17,2), (11,14,4), (11,12,7), (12,13,9), 
       (12,14,14), (13,14,10), (14,15,2), (15,17,6), 
       (15,16,1), (16,17,7)]
-   )
+   ))
    assert g.nedges == 14
 
    try:
@@ -557,12 +557,12 @@ def _test_minimum_spanning_tree(flag = gamera.graph.FREE):
 # ------------------------------------------------------------------------------
 def _test_spanning_tree(flag = gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
-   print g.add_edges([
+   print(g.add_edges([
       (9,10,4), (9,16,8), (10,16,11), (10,11,8), 
       (11,17,2), (11,14,4), (11,12,7), (12,13,9), 
       (12,14,14), (13,14,10), (14,15,2), (15,17,6), 
       (15,16,1), (16,17,7)]
-   )
+   ))
    assert g.nedges == 14
 
    bfsnodes = [n() for n in g.BFS(11)]
@@ -602,7 +602,7 @@ def _test_add_nodes(flag = gamera.graph.FREE, count = 2000):
    assert g.get_node(1000+count/2)() == 1000+count/2
 
    for i in range(1000,1000+count):
-      print i
+      print(i)
       assert g.has_node(i) == True
       assert g.get_node(i)() == i
 
@@ -637,7 +637,7 @@ def _test_graph_copy(flag = gamera.graph.FREE, count = 1000):
 # ------------------------------------------------------------------------------
 def _test_remove_nodes(flag = gamera.graph.FREE, count = 250):
    g = gamera.graph.Graph(flag)
-   g.add_nodes(range(0,count))
+   g.add_nodes(list(range(0,count)))
    assert g.nnodes == count
    for i in range(0, count):
       g.remove_node(i)
@@ -687,7 +687,7 @@ def _test_remove_node_and_edges(flag = gamera.graph.FREE, count = 250):
       assert g.nedges == count-i
 
    assert g.nnodes == 2
-   print list(g.get_edges()) 
+   print(list(g.get_edges())) 
    assert g.nedges == 1
    g.remove_node(0)
    assert g.nedges == 0
@@ -816,7 +816,7 @@ def _test_remove_edge(flag = gamera.graph.FREE, count = 250):
 
    assert g.nedges == 0
    assert g.nnodes == count+1
-   assert [x() for x in g.get_nodes()] == range(0,count+1)
+   assert [x() for x in g.get_nodes()] == list(range(0,count+1))
    
    try:
       g.remove_edge(5*count, 6*count)
@@ -838,11 +838,11 @@ def _test_remove_edge(flag = gamera.graph.FREE, count = 250):
    for i in range(0,count):
       assert not g.has_edge(i,i+1)
 
-   print g.nedges
-   print list(g.get_edges())
+   print(g.nedges)
+   print(list(g.get_edges()))
    assert g.nedges == 0
    assert g.nnodes == count+1
-   assert [x() for x in g.get_nodes()] == range(0,count+1)
+   assert [x() for x in g.get_nodes()] == list(range(0,count+1))
 
    del g
 
@@ -893,7 +893,7 @@ def _test_userdefined_class(flag = gamera.graph.FREE, count = 4096):
 
    for e in g.get_edges():
       assert e.from_node().a == e.to_node().a-1
-      print "Edge %s %s \n" % (e.from_node(), e.to_node())
+      print("Edge %s %s \n" % (e.from_node(), e.to_node()))
 
    allocs = {"in_graph": 0, "add_edge_1": 0, "add_edge_2": 0, "check": 0}
    deallocs = {"in_graph": 0, "add_edge_1": 0, "add_edge_2": 0, "check": 0}
@@ -906,7 +906,7 @@ def _test_userdefined_class(flag = gamera.graph.FREE, count = 4096):
 # ------------------------------------------------------------------------------
 def _test_large_graph(flag = gamera.graph.FREE, count = 20000):
    gc.collect()
-   print "memlarge: %s" % memory_usage()
+   print("memlarge: %s" % memory_usage())
    g = gamera.graph.Graph(flag)
    g.add_node(0)
    for i in range(0, count):
@@ -922,7 +922,7 @@ def _test_large_graph(flag = gamera.graph.FREE, count = 20000):
    g.remove_edge(count/2, count/2+1)
    del g
    gc.collect()
-   print "memlarge_after: %s" % memory_usage()
+   print("memlarge_after: %s" % memory_usage())
 
 
 
@@ -943,7 +943,7 @@ def memory_usage():
 # ------------------------------------------------------------------------------
 def refcount():
       count = 0
-      print len(gc.get_objects())
+      print(len(gc.get_objects()))
       for obj in gc.get_objects():
          count += sys.getrefcount(obj)
    
@@ -962,10 +962,10 @@ def _test_memory(flag = gamera.graph.FREE, count = 100):
       _test_large_graph(flag)
       gc.collect()
       new_usage = (memory_usage(), refcount())
-      print old_usage, new_usage
+      print(old_usage, new_usage)
       assert old_usage == new_usage or old_usage == None or i < 2
 
-   print "memory: %s | refcount: %d" % (memory_usage(), refcount())
+   print("memory: %s | refcount: %d" % (memory_usage(), refcount()))
    new_usage = None
    for i in range(0,count):
       old_usage = new_usage
@@ -980,7 +980,7 @@ def _test_memory(flag = gamera.graph.FREE, count = 100):
       g = None
       gc.collect()
       new_usage = (memory_usage(), refcount())
-      print old_usage,new_usage
+      print(old_usage,new_usage)
       assert old_usage == new_usage or old_usage == None or i < 2
 
 
@@ -1032,7 +1032,7 @@ def _test_memory_all():
    for test in tests:#lag in flags:
       for flag in flags:#test in tests:
 #      try:
-         print >>sys.stderr, flag, test
+         print(flag, test, file=sys.stderr)
          new_usage = None
          for i in range(0,10):
             old_usage = new_usage
@@ -1044,7 +1044,7 @@ def _test_memory_all():
                if not ( (old_usage[1] == new_usage[1] \
                          and (int(new_usage[0])-int(old_usage[0]) < 2  )) \
                        or i < 4):
-                  print >>sys.stderr, (old_usage, new_usage)
+                  print((old_usage, new_usage), file=sys.stderr)
 
 '''      except AssertionError:
          print >>sys.stderr, "%s failed !!!" %test
@@ -1104,9 +1104,9 @@ if __name__ == "__main__":
    t = TestGraph()
    for m in dir(t):
       if m.startswith("test_"):
-         print m
+         print(m)
          test = getattr(t, m)
-         print test
+         print(test)
          try:
             test()
          except AssertionError:
@@ -1126,7 +1126,7 @@ def test_textline_reading_order():
                      "data/reading_order.png": [(51, 56, 1471, 130), (51, 174, 691, 248), (51, 292, 691, 366), (51, 434, 691, 508), (51, 576, 691, 649), (830, 174, 1471, 508), (830, 576, 1471, 649), (51, 717, 1471, 791), (51, 859, 691, 933), (51, 1001, 691, 1075), (830, 859, 1471, 933), (830, 1001, 1471, 1075)]
                     }
 
-   for file, correct in correct_orders.items():
+   for file, correct in list(correct_orders.items()):
       img = load_image(file)
       ccs = img.cc_analysis()
       ro = textline_reading_order(ccs)

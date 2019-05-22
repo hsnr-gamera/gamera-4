@@ -43,8 +43,7 @@ extern "C" {
 /* Python Type Definition                                                    */
 // -----------------------------------------------------------------------------
 static PyTypeObject EdgeType = {
-   PyObject_HEAD_INIT(NULL)
-   0,
+   PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -191,7 +190,7 @@ static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
       return edge_get_cost(self);
 
    edge_set_cost(self, data);
-   RETURN_VOID();
+   RETURN_VOID()
 }
  
 
@@ -265,7 +264,7 @@ static PyObject* edge_get_label(PyObject* self) {
       return (PyObject*)so->_edge->label;
    }
    else {
-      RETURN_VOID();
+      RETURN_VOID()
    }
 }
  

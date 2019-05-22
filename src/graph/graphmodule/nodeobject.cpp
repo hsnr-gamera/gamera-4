@@ -25,25 +25,11 @@
 #include <iostream>
 #endif
 
-
-extern "C" {
-   static void node_dealloc(PyObject* self);
-   static PyObject* node___call__(PyObject* self, PyObject* args, PyObject* kwds);
-   static PyObject* node___repr__(PyObject* self);
-   static PyObject* node_get_edges(PyObject* self);
-   static PyObject* node_get_nodes(PyObject* self);
-   static PyObject* node_get_nedges(PyObject* self);
-   static PyObject* node_get_data(PyObject* self);
-}
-
-
-
 // -----------------------------------------------------------------------------
 /* Python Type Definition                                                     */
 // -----------------------------------------------------------------------------
 static PyTypeObject NodeType = {
-   PyObject_HEAD_INIT(NULL)
-   0,
+   PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -56,42 +42,6 @@ PyMethodDef node_methods[] = {
 
 
 // -----------------------------------------------------------------------------
-PyGetSetDef node_getset[] = {
-   { CHAR_PTR_CAST "data", (getter)node_get_data, 0,
-     CHAR_PTR_CAST "The value the identified with this node. (get/set)", 0 },
-   { CHAR_PTR_CAST "edges", (getter)node_get_edges, 0,
-     CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", 0 },
-   { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, 0,
-     CHAR_PTR_CAST "An iterator over nodes that can be reached directly "
-        "(through a single edge) from this node (get)", 0 },
-   { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, 0,
-     CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", 0 },
-   { NULL }
-};
-
-
-
-// -----------------------------------------------------------------------------
-void init_NodeType() {
-   Py_TYPE(&NodeType) = &PyType_Type;
-   NodeType.tp_name = CHAR_PTR_CAST "gamera.graph.Node";
-   NodeType.tp_basicsize = sizeof(NodeObject);
-   NodeType.tp_dealloc = node_dealloc;
-   NodeType.tp_repr = node___repr__;
-   NodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
-   NodeType.tp_getattro = PyObject_GenericGetAttr;
-   NodeType.tp_alloc = NULL; // PyType_GenericAlloc;
-   NodeType.tp_free = NULL; // _PyObject_Del;
-   NodeType.tp_methods = node_methods;
-   NodeType.tp_getset = node_getset;
-   NodeType.tp_call = node___call__;
-   NodeType.tp_weaklistoffset = 0;
-   PyType_Ready(&NodeType);
-}
-
-
-
-// -----------------------------------------------------------------------------
 /// node_new creates a new Python NodeObject by copying the given note.
 PyObject* node_new(Node* n) {
 #ifdef __DEBUG_GAPI__
@@ -99,7 +49,7 @@ PyObject* node_new(Node* n) {
 #endif
 
    if (n == NULL) {
-      RETURN_VOID(); 
+      RETURN_VOID()
    }
 
    NodeObject* so;
@@ -233,3 +183,37 @@ static PyObject* node___repr__(PyObject* self) {
    return ret;
 }
 
+
+// -----------------------------------------------------------------------------
+PyGetSetDef node_getset[] = {
+        { CHAR_PTR_CAST "data", (getter)node_get_data, 0,
+                CHAR_PTR_CAST "The value the identified with this node. (get/set)", 0 },
+        { CHAR_PTR_CAST "edges", (getter)node_get_edges, 0,
+                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", 0 },
+        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, 0,
+                CHAR_PTR_CAST "An iterator over nodes that can be reached directly "
+                              "(through a single edge) from this node (get)", 0 },
+        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, 0,
+                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", 0 },
+        { NULL }
+};
+
+
+
+// -----------------------------------------------------------------------------
+void init_NodeType() {
+    Py_TYPE(&NodeType) = &PyType_Type;
+    NodeType.tp_name = CHAR_PTR_CAST "gamera.graph.Node";
+    NodeType.tp_basicsize = sizeof(NodeObject);
+    NodeType.tp_dealloc = node_dealloc;
+    NodeType.tp_repr = node___repr__;
+    NodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
+    NodeType.tp_getattro = PyObject_GenericGetAttr;
+    NodeType.tp_alloc = NULL; // PyType_GenericAlloc;
+    NodeType.tp_free = NULL; // _PyObject_Del;
+    NodeType.tp_methods = node_methods;
+    NodeType.tp_getset = node_getset;
+    NodeType.tp_call = node___call__;
+    NodeType.tp_weaklistoffset = 0;
+    PyType_Ready(&NodeType);
+}
