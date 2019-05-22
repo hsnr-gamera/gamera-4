@@ -40,17 +40,8 @@ struct KdNodeObject {
   PyObject* data;
 };
 
-extern "C" {
-  static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args,
-			     PyObject* kwds);
-  static void kdnode_dealloc(PyObject* self);
-  static PyObject* kdnode_get_point(PyObject* self);
-  static PyObject* kdnode_get_data(PyObject* self);
-}
-
 static PyTypeObject KdNodeType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -76,7 +67,7 @@ static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   point = PySequence_List(sequence);
   for(i=0;i<n;++i) {
     entry = PyList_GetItem(point,i);
-    if (!PyFloat_Check(entry) && !PyInt_Check(entry)) {
+    if (!PyFloat_Check(entry) && !PyLong_Check(entry)) {
       PyErr_SetString(PyExc_RuntimeError, "KdNode: given point must be list of numbers");
       Py_DECREF(point);
       return 0;
@@ -130,24 +121,24 @@ PyGetSetDef kdnode_getset[] = {
 };
 
 void init_KdNodeType(PyObject* d) {
-  KdNodeType.ob_type = &PyType_Type;
-  KdNodeType.tp_name = CHAR_PTR_CAST "gamera.kdtree.KdNode";
-  KdNodeType.tp_basicsize = sizeof(KdNodeObject);
-  KdNodeType.tp_dealloc = kdnode_dealloc;
-  KdNodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
-  KdNodeType.tp_new = kdnode_new;
-  KdNodeType.tp_getattro = PyObject_GenericGetAttr;
-  KdNodeType.tp_alloc = NULL; // PyType_GenericAlloc;
-  KdNodeType.tp_free = NULL; // _PyObject_Del;
-  KdNodeType.tp_methods = kdnode_methods;
-  KdNodeType.tp_getset = kdnode_getset;
-  KdNodeType.tp_weaklistoffset = 0;
-  KdNodeType.tp_doc = CHAR_PTR_CAST
-    "**KdNode** (*point*, *data* = ``None``)\n\n"        \
+    Py_TYPE(&KdNodeType) = &PyType_Type;
+    KdNodeType.tp_name = CHAR_PTR_CAST "gamera.kdtree.KdNode";
+    KdNodeType.tp_basicsize = sizeof(KdNodeObject);
+    KdNodeType.tp_dealloc = kdnode_dealloc;
+    KdNodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
+    KdNodeType.tp_new = kdnode_new;
+    KdNodeType.tp_getattro = PyObject_GenericGetAttr;
+    KdNodeType.tp_alloc = NULL; // PyType_GenericAlloc;
+    KdNodeType.tp_free = NULL; // _PyObject_Del;
+    KdNodeType.tp_methods = kdnode_methods;
+    KdNodeType.tp_getset = kdnode_getset;
+    KdNodeType.tp_weaklistoffset = 0;
+    KdNodeType.tp_doc = CHAR_PTR_CAST
+            "**KdNode** (*point*, *data* = ``None``)\n\n"        \
     "The ``KdNode`` constructor creates a new node for use in a kd-tree.\n\n" \
     "*point* must not be of the Gamera data type ``Point``, but a sequence of numerical values. The optional parameter *data* can be used to store arbitrary additional information connected to the location *point*.";
-  PyType_Ready(&KdNodeType);
-  PyDict_SetItemString(d, "KdNode", (PyObject*)&KdNodeType);
+    PyType_Ready(&KdNodeType);
+    PyDict_SetItemString(d, "KdNode", (PyObject *) &KdNodeType);
 }
 
 
@@ -171,8 +162,7 @@ extern "C" {
 }
 
 static PyTypeObject KdTreeType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -246,7 +236,7 @@ static void kdtree_dealloc(PyObject* self) {
 
 static PyObject* kdtree_get_dimension(PyObject* self) {
   KdTreeObject* so = (KdTreeObject*)self;
-  return PyInt_FromLong((long)(so->dimension));
+  return PyLong_FromLong((long)(so->dimension));
 }
 
 static PyObject* kdtree_set_distance(PyObject* self, PyObject* args) {
@@ -274,8 +264,8 @@ static PyObject* kdtree_set_distance(PyObject* self, PyObject* args) {
       entry = PySequence_GetItem(weights,i);
       if (PyFloat_Check(entry)) {
         wvector[i] = PyFloat_AsDouble(entry);
-      } else if  (PyInt_Check(entry)) {
-        wvector[i] = (double)PyInt_AsLong(entry);
+      } else if  (PyLong_Check(entry)) {
+        wvector[i] = (double)PyLong_AsLong(entry);
       } else {
         PyErr_SetString(PyExc_RuntimeError, "KdTree.set_distance: weights must be numeric");
         Py_DECREF(entry);
@@ -343,8 +333,8 @@ static PyObject* kdtree_k_nearest_neighbors(PyObject* self, PyObject* args) {
     entry = PySequence_GetItem(list,i);
     if (PyFloat_Check(entry)) {
       point[i] = PyFloat_AsDouble(entry);
-    } else if  (PyInt_Check(entry)) {
-      point[i] = (double)PyInt_AsLong(entry);
+    } else if  (PyLong_Check(entry)) {
+      point[i] = (double)PyLong_AsLong(entry);
     } else {
       PyErr_SetString(PyExc_RuntimeError, "KdTree.k_nearest_neighbor: point coordinates must be numbers");
       Py_DECREF(entry);
@@ -385,7 +375,7 @@ PyGetSetDef kdtree_getset[] = {
 };
 
 void init_KdTreeType(PyObject* d) {
-  KdTreeType.ob_type = &PyType_Type;
+  Py_TYPE(&KdTreeType) = &PyType_Type;
   KdTreeType.tp_name = CHAR_PTR_CAST "gamera.kdtree.KdTree";
   KdTreeType.tp_basicsize = sizeof(KdTreeObject);
   KdTreeType.tp_dealloc = kdtree_dealloc;
@@ -412,18 +402,29 @@ void init_KdTreeType(PyObject* d) {
 // interface for python module
 //======================================================================
 
-extern "C" {
-  DL_EXPORT(void) initkdtree(void);
-}
-
 PyMethodDef kdtree_module_methods[] = {
   {NULL}
 };
 
-DL_EXPORT(void) initkdtree(void) {
-  PyObject* m = Py_InitModule(CHAR_PTR_CAST "gamera.kdtree", kdtree_module_methods);
-  PyObject* d = PyModule_GetDict(m);
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gamera.kdtree",
+        nullptr,
+        0,
+        kdtree_module_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+};
 
-  init_KdNodeType(d);
-  init_KdTreeType(d);
+PyMODINIT_FUNC PyInit_kdtree(void) {
+    PyObject *m = PyModule_Create(&moduledef);
+    //PyObject *m = Py_InitModule(CHAR_PTR_CAST "gamera.kdtree", kdtree_module_methods);
+    PyObject *d = PyModule_GetDict(m);
+
+    init_KdNodeType(d);
+    init_KdTreeType(d);
+
+    return m;
 }

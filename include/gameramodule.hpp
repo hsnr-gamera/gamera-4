@@ -343,10 +343,10 @@ inline Point coerce_Point(PyObject* obj) {
         PyErr_SetString(PyExc_TypeError, "First list entry in Point is not a number");
         throw std::invalid_argument("First list entry in Point is not a number");
       }
-      py_x1 = PyNumber_Int(py_x0);
+      py_x1 = PyNumber_Long(py_x0);
       Py_DECREF(py_x0);
       if (py_x1 != NULL) {
-        long x = PyInt_AsLong(py_x1);
+        long x = PyLong_AsLong(py_x1);
         Py_DECREF(py_x1);
         py_y0 = PySequence_GetItem(obj, 1);
         if (!PyNumber_Check(py_y0)) {
@@ -355,10 +355,10 @@ inline Point coerce_Point(PyObject* obj) {
           PyErr_SetString(PyExc_TypeError, "Second list entry in Point is not a number");
           throw std::invalid_argument("Second list entry in Point is not a number");
         }
-        py_y1 = PyNumber_Int(py_y0);
+        py_y1 = PyNumber_Long(py_y0);
         Py_DECREF(py_y0);
         if (py_y1 != NULL) {
-          long y = PyInt_AsLong(py_y1);
+          long y = PyLong_AsLong(py_y1);
           Py_DECREF(py_y1);
           return Point((size_t)x, (size_t)y);
         }
@@ -948,7 +948,7 @@ inline PyObject* init_image_members(ImageObject* o) {
     return 0;
   // Classification state
   // o->m_classification_state = Py_BuildValue("i", UNCLASSIFIED);
-  o->m_classification_state = PyInt_FromLong(UNCLASSIFIED);
+  o->m_classification_state = PyLong_FromLong(UNCLASSIFIED);
   if (o->m_classification_state == 0)
     return 0;
   // confidence
@@ -1126,14 +1126,16 @@ inline PyObject* ImageList_to_python(std::list<Image*>* image_list) {
 }
 
 inline PyObject* FloatVector_to_python(FloatVector* cpp) {
-  PyObject* array_init = get_ArrayInit();
-  if (array_init == 0)
-    return 0;
-  PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
-        cpp->size() * sizeof(double));
-  PyObject* py = PyObject_CallFunction(array_init, (char *)"sO", (char *)"d", str);
-  Py_DECREF(str);
-  return py;
+    PyObject *array_init = get_ArrayInit();
+    if (array_init == 0)
+        return 0;
+    /*PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
+          cpp->size() * sizeof(double));*/
+
+    PyObject *str = Py_BuildValue("s0:d", cpp->front());
+    PyObject *py = PyObject_CallFunction(array_init, "", str);
+    Py_DECREF(str);
+    return py;
 }
 
 inline PyObject* ComplexVector_to_python(ComplexVector* cpp) {
@@ -1147,14 +1149,16 @@ inline PyObject* ComplexVector_to_python(ComplexVector* cpp) {
 }
 
 inline PyObject* IntVector_to_python(IntVector* cpp) {
-  PyObject* array_init = get_ArrayInit();
-  if (array_init == 0)
-    return 0;
-  PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
-        cpp->size() * sizeof(int));
-  PyObject* py = PyObject_CallFunction(array_init, (char *)"sO", (char *)"i", str);
-  Py_DECREF(str);
-  return py;
+    PyObject *array_init = get_ArrayInit();
+    if (array_init == 0)
+        return 0;
+    /*PyObject *str = PyString_FromStringAndSize((char *) (&((*cpp)[0])),
+                                               cpp->size() * sizeof(int));*/
+    PyObject *str = Py_BuildValue("s0:i", cpp->front());
+    //TODO check if working
+    PyObject *py = PyObject_CallFunction(array_init,"", str);
+    Py_DECREF(str);
+    return py;
 }
 
 inline PyObject* PointVector_to_python(PointVector* cpp) {
@@ -1232,14 +1236,14 @@ inline IntVector* IntVector_from_python(PyObject* py) {
   try {
     for (int i = 0; i < size; ++i) {
       PyObject* number = PySequence_Fast_GET_ITEM(seq, i);
-      if (!PyInt_Check(number)) {
+      if (!PyLong_Check(number)) {
         PyErr_SetString(PyExc_TypeError,
                         "Argument must be a sequence of ints.");
         delete cpp;
         Py_DECREF(seq);
         return 0;
       }
-      (*cpp)[i] = (int)PyInt_AsLong(number);
+      (*cpp)[i] = (int)PyLong_AsLong(number);
     }
   } catch (std::exception e) {
     delete cpp;
@@ -1368,15 +1372,15 @@ protected:
 // Converting pixel types to/from Python
 
 inline PyObject* pixel_to_python(OneBitPixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(GreyScalePixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(Grey16Pixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(RGBPixel px) {
@@ -1399,7 +1403,7 @@ struct pixel_from_python {
 template<class T>
 inline T pixel_from_python<T>::convert(PyObject* obj) {
   if (!PyFloat_Check(obj)) {
-    if (!PyInt_Check(obj)) {
+    if (!PyLong_Check(obj)) {
       if (!is_RGBPixelObject(obj)) {
         if (!PyComplex_Check(obj)) {
           throw std::runtime_error("Pixel value is not valid");
@@ -1409,7 +1413,7 @@ inline T pixel_from_python<T>::convert(PyObject* obj) {
       }
       return T((*(((RGBPixelObject*)obj)->m_x)).luminance());
     }
-    return (T)PyInt_AsLong(obj);
+    return (T)PyLong_AsLong(obj);
   }
   return (T)PyFloat_AsDouble(obj);
 }
@@ -1418,14 +1422,14 @@ template<>
 inline RGBPixel pixel_from_python<RGBPixel>::convert(PyObject* obj) {
   if (!is_RGBPixelObject(obj)) {
     if (!PyFloat_Check(obj)) {
-      if (!PyInt_Check(obj)) {
+      if (!PyLong_Check(obj)) {
         if (!PyComplex_Check(obj)) {
           throw std::runtime_error("Pixel value is not convertible to an RGBPixel");
         }
         Py_complex temp = PyComplex_AsCComplex(obj);
         return RGBPixel(ComplexPixel(temp.real, temp.imag));
       }
-      return RGBPixel((GreyScalePixel)PyInt_AsLong(obj));
+      return RGBPixel((GreyScalePixel)PyLong_AsLong(obj));
     }
     return RGBPixel(PyFloat_AsDouble(obj));
   }
@@ -1437,10 +1441,10 @@ inline ComplexPixel pixel_from_python<ComplexPixel>::convert(PyObject* obj) {
   if (!PyComplex_Check(obj)) {
     if (!is_RGBPixelObject(obj)) {
       if (!PyFloat_Check(obj)) {
-        if (!PyInt_Check(obj)) {
+        if (!PyLong_Check(obj)) {
           throw std::runtime_error("Pixel value is not convertible to a ComplexPixel");
         }
-        return ComplexPixel((double)PyInt_AsLong(obj), 0.0);
+        return ComplexPixel((double)PyLong_AsLong(obj), 0.0);
       }
       return ComplexPixel(PyFloat_AsDouble(obj), 0.0);
     }

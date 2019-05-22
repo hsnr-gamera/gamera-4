@@ -1,9 +1,14 @@
-cmake_minimum_required(VERSION 3.1.4)
+cmake_minimum_required(VERSION 3.5)
 
-find_package(PythonInterp 2.7 REQUIRED)
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_CXX_FLAGS "-O -Wall -Wno-deprecated-declarations -static-libgcc")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+
+find_package(PythonInterp 3 REQUIRED)
 
 # This goes after, since it uses PythonInterp as hint
-find_package(PythonLibs 2.7 REQUIRED)
+find_package(PythonLibs 3 REQUIRED)
 set(GAMERA_SOURCE ${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(src/geostructs)
