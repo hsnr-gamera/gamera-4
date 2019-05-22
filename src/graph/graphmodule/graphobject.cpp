@@ -338,7 +338,7 @@ PyGetSetDef graph_getset[] = {
 
 // -----------------------------------------------------------------------------  
 void init_GraphType(PyObject* d) {
-  GraphType.ob_type = &PyType_Type;
+  Py_TYPE(&GraphType) = &PyType_Type;
   GraphType.tp_name = CHAR_PTR_CAST "gamera.graph.Graph";
   GraphType.tp_basicsize = sizeof(GraphObject);
   GraphType.tp_dealloc = graph_dealloc;
@@ -497,14 +497,14 @@ PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
 #ifdef __DEBUG_GAPI__
       std::cerr << "Node added" << std::endl;
 #endif
-      RETURN_INT(1);
+      RETURN_INT(1)
    }
 
 #ifdef __DEBUG_GAPI__
    std::cerr << "Node not added" << std::endl;
 #endif
    delete data;
-   RETURN_INT(0);
+   RETURN_INT(0)
  
 }
 
@@ -522,7 +522,7 @@ PyObject* graph_add_nodes(PyObject* self, PyObject* pyobject) {
          result++;
    Py_DECREF(seq);
 
-   RETURN_INT(result);
+   RETURN_INT(result)
 }
 
 
@@ -637,7 +637,7 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
          delete to;
    }
    
-   RETURN_INT(res);
+   RETURN_INT(res)
 }
 
 
@@ -650,11 +650,11 @@ PyObject* graph_add_edges(PyObject* self, PyObject* args) {
    size_t list_size = PySequence_Fast_GET_SIZE(seq);
    size_t result = 0;
    for (size_t i = 0; i < list_size; ++i)
-      result += PyInt_AsUnsignedLongMask(graph_add_edge(self, PySequence_Fast_GET_ITEM(seq, i)));
+      result += PyLong_AsUnsignedLongMask(graph_add_edge(self, PySequence_Fast_GET_ITEM(seq, i)));
    
    Py_DECREF(seq);
 
-   RETURN_INT(result);
+   RETURN_INT(result)
 
 }
 
@@ -921,7 +921,7 @@ PyObject* graph_has_node(PyObject* self, PyObject* a) {
 PyObject* graph_get_nnodes(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
    if(so->_graph)
-      RETURN_INT(so->_graph->get_nnodes());
+      RETURN_INT(so->_graph->get_nnodes())
    
    PyErr_SetString(PyExc_RuntimeError, "internal error in graph");
    return NULL;
@@ -972,7 +972,7 @@ PyObject* graph_has_edge(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_get_nedges(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
-   RETURN_INT(so->_graph->get_nedges());
+   RETURN_INT(so->_graph->get_nedges())
 }
 
 
@@ -1008,7 +1008,7 @@ PyObject* graph_is_fully_connected(PyObject* self, PyObject* _) {
 // -----------------------------------------------------------------------------
 PyObject* graph_get_nsubgraphs(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
-   RETURN_INT(so->_graph->get_nsubgraphs());
+   RETURN_INT(so->_graph->get_nsubgraphs())
 }
 
 
@@ -1023,7 +1023,7 @@ PyObject* graph_size_of_subgraph(PyObject* self, PyObject* node) {
       GraphDataPyObject a(node);
       size = so->_graph->size_of_subgraph(&a);
    }
-   RETURN_INT(size);
+   RETURN_INT(size)
 }
 
 
@@ -1032,7 +1032,7 @@ PyObject* graph_size_of_subgraph(PyObject* self, PyObject* node) {
 
 static PyObject* graph_has_flag(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
-   flag_t flag = (flag_t)PyInt_AsUnsignedLongMask(pyobject);
+   flag_t flag = (flag_t)PyLong_AsUnsignedLongMask(pyobject);
    RETURN_BOOL(so->_graph->has_flag(flag)); 
 }
 

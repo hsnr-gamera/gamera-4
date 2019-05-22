@@ -328,11 +328,11 @@ PyObject* graph_DFS(PyObject* self, PyObject* root) {
 PyObject* graph_get_color(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
    if(is_NodeObject(pyobject)) {
-      RETURN_INT(so->_graph->get_color(((NodeObject*)pyobject)->_node));
+      RETURN_INT(so->_graph->get_color(((NodeObject*)pyobject)->_node))
    }
    else {
       GraphDataPyObject a(pyobject);
-      RETURN_INT(so->_graph->get_color(&a));
+      RETURN_INT(so->_graph->get_color(&a))
    }
 
 }
@@ -340,10 +340,10 @@ PyObject* graph_get_color(PyObject* self, PyObject* pyobject) {
 
 PyObject* graph_colorize(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
-   unsigned int ncolors = PyInt_AsUnsignedLongMask(pyobject);
+   unsigned int ncolors = (unsigned int)PyLong_AsUnsignedLongMask(pyobject);
    try {
       so->_graph->colorize(ncolors);
-      RETURN_VOID();
+      RETURN_VOID()
    }
    catch (std::runtime_error e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());

@@ -67,8 +67,8 @@ struct GraphDataPyObject: public GraphData {
    }
 
    int compare(const GraphData& b) const {
-      return PyObject_Compare(data, 
-            dynamic_cast<const GraphDataPyObject&>(b).data);
+      return PyObject_RichCompareBool(data,
+            dynamic_cast<const GraphDataPyObject&>(b).data, Py_LE);
    }
 
 

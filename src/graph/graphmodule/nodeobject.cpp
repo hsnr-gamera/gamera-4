@@ -73,7 +73,7 @@ PyGetSetDef node_getset[] = {
 
 // -----------------------------------------------------------------------------
 void init_NodeType() {
-   NodeType.ob_type = &PyType_Type;
+   Py_TYPE(&NodeType) = &PyType_Type;
    NodeType.tp_name = CHAR_PTR_CAST "gamera.graph.Node";
    NodeType.tp_basicsize = sizeof(NodeObject);
    NodeType.tp_dealloc = node_dealloc;
@@ -200,7 +200,7 @@ static PyObject* node_get_nodes(PyObject* self) {
 static PyObject* node_get_nedges(PyObject* self) {
    INIT_SELF_NODE();
    size_t nedges = so->_node->get_nedges();
-   RETURN_INT(nedges); 
+   RETURN_INT(nedges)
 }
 
 
@@ -227,7 +227,7 @@ static PyObject* node___repr__(PyObject* self) {
    PyObject* data = node_get_data(self);
    PyObject* repr = PyObject_Repr(data);
    Py_INCREF(repr);
-   PyObject* ret = PyString_FromFormat("<Node of %s>", PyString_AsString(repr));
+   PyObject* ret = PyUnicode_FromFormat("<Node of %s>", PyUnicode_AsUTF8(repr));
    Py_DECREF(repr);
    Py_DECREF(data);
    return ret;

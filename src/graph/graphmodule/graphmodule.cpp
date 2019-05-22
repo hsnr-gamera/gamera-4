@@ -22,14 +22,6 @@
 #include "graphobject.hpp"
 #include "edgeobject.hpp"
 
-
-
-extern "C" {
-  DL_EXPORT(void) initgraph(void);
-}
-
-
-
 // Factory wrapper for creating graph easier
 template<flag_t F>
 static PyObject* Factory(PyObject* self, PyObject* args) {
@@ -61,26 +53,39 @@ PyMethodDef graph_module_methods[] = {
   {NULL}
 };
 
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gamera.graph",
+        nullptr,
+        0,
+        graph_module_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+};
 
 
-DL_EXPORT(void) initgraph(void) {
-  PyObject* m = Py_InitModule(CHAR_PTR_CAST "gamera.graph", graph_module_methods);
-  PyObject* d = PyModule_GetDict(m);
+PyMODINIT_FUNC PyInit_graph(void) {
+    PyObject *m = PyModule_Create(&moduledef);
+    PyObject *d = PyModule_GetDict(m);
 
-  init_NodeType();
-  init_EdgeType();
-  init_GraphType(d);
+    init_NodeType();
+    init_EdgeType();
+    init_GraphType(d);
 
-  PyDict_SetItemString(d, "DEFAULT", PyInt_FromLong(FLAG_DEFAULT));
-  PyDict_SetItemString(d, "DIRECTED", PyInt_FromLong(FLAG_DIRECTED));
-  PyDict_SetItemString(d, "CYCLIC", PyInt_FromLong(FLAG_CYCLIC));
-  PyDict_SetItemString(d, "BLOB", PyInt_FromLong(FLAG_BLOB));
-  PyDict_SetItemString(d, "MULTI_CONNECTED", PyInt_FromLong(FLAG_MULTI_CONNECTED));
-  PyDict_SetItemString(d, "SELF_CONNECTED", PyInt_FromLong(FLAG_SELF_CONNECTED));
-  PyDict_SetItemString(d, "UNDIRECTED", PyInt_FromLong(FLAG_UNDIRECTED));
-  PyDict_SetItemString(d, "TREE", PyInt_FromLong(FLAG_TREE));
-  PyDict_SetItemString(d, "FREE", PyInt_FromLong(FLAG_FREE));
-  PyDict_SetItemString(d, "FLAG_DAG", PyInt_FromLong(FLAG_DAG));
-  PyDict_SetItemString(d, "CHECK_ON_INSERT", PyInt_FromLong(FLAG_CHECK_ON_INSERT));
+    PyDict_SetItemString(d, "DEFAULT", PyLong_FromLong(FLAG_DEFAULT));
+    PyDict_SetItemString(d, "DIRECTED", PyLong_FromLong(FLAG_DIRECTED));
+    PyDict_SetItemString(d, "CYCLIC", PyLong_FromLong(FLAG_CYCLIC));
+    PyDict_SetItemString(d, "BLOB", PyLong_FromLong(FLAG_BLOB));
+    PyDict_SetItemString(d, "MULTI_CONNECTED", PyLong_FromLong(FLAG_MULTI_CONNECTED));
+    PyDict_SetItemString(d, "SELF_CONNECTED", PyLong_FromLong(FLAG_SELF_CONNECTED));
+    PyDict_SetItemString(d, "UNDIRECTED", PyLong_FromLong(FLAG_UNDIRECTED));
+    PyDict_SetItemString(d, "TREE", PyLong_FromLong(FLAG_TREE));
+    PyDict_SetItemString(d, "FREE", PyLong_FromLong(FLAG_FREE));
+    PyDict_SetItemString(d, "FLAG_DAG", PyLong_FromLong(FLAG_DAG));
+    PyDict_SetItemString(d, "CHECK_ON_INSERT", PyLong_FromLong(FLAG_CHECK_ON_INSERT));
+
+    return m;
 }
 

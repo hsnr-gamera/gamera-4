@@ -76,7 +76,7 @@ PyGetSetDef edge_getset[] = {
 
 // -----------------------------------------------------------------------------
 void init_EdgeType() {
-   EdgeType.ob_type = &PyType_Type;
+   Py_TYPE(&EdgeType) = &PyType_Type;
    EdgeType.tp_name = CHAR_PTR_CAST "gamera.graph.Edge";
    EdgeType.tp_basicsize = sizeof(EdgeObject);
    EdgeType.tp_dealloc = edge_dealloc;
@@ -209,11 +209,11 @@ static PyObject* edge___repr__(PyObject* self) {
    Py_INCREF(from_data);
    Py_INCREF(to_data);
    Py_INCREF(weight);
-   char* a = PyString_AsString(PyObject_Repr(from_data));
-   char* b = PyString_AsString(PyObject_Repr(to_data));
-   char* c = PyString_AsString(PyObject_Repr(weight));
+   char* a = PyUnicode_AsUTF8(PyObject_Repr(from_data));
+   char* b = PyUnicode_AsUTF8(PyObject_Repr(to_data));
+   char* c = PyUnicode_AsUTF8(PyObject_Repr(weight));
 
-   PyObject* ret = PyString_FromFormat("<Edge from %s to %s (%s)>", a,b,c);
+   PyObject* ret = PyUnicode_FromFormat("<Edge from %s to %s (%s)>", a,b,c);
    return ret;
 }
  
