@@ -54,89 +54,6 @@ namespace Gamera {
 	}
 }
 
-extern "C" {
-  DL_EXPORT(void) initknncore(void);
-  // Construction/destruction
-  static PyObject* knn_new(PyTypeObject* pytype, PyObject* args,
-                           PyObject* kwds);
-  static void knn_dealloc(PyObject* self);
-  static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args);
-  // classification
-  static PyObject* knn_classify(PyObject* self, PyObject* args);
-  static PyObject* knn_classify_with_images(PyObject* self, PyObject* args);
-  static PyObject* knn_leave_one_out(PyObject* self, PyObject* args);
-  // distance
-  static PyObject* knn_knndistance_statistics(PyObject* self, PyObject* args);
-  static PyObject* knn_distance_from_images(PyObject* self, PyObject* args);
-  static PyObject* knn_distance_between_images(PyObject* self, PyObject* args);
-  static PyObject* knn_distance_matrix(PyObject* self, PyObject* args);
-  static PyObject* knn_unique_distances(PyObject* self, PyObject* args);
-  // settings
-  static PyObject* knn_get_num_k(PyObject* self);
-  static int knn_set_num_k(PyObject* self, PyObject* v);
-  static PyObject* knn_get_distance_type(PyObject* self);
-  static int knn_set_distance_type(PyObject* self, PyObject* v);
-  static PyObject* knn_get_confidence_types(PyObject* self);
-  static int knn_set_confidence_types(PyObject* self, PyObject* v);
-  static PyObject* knn_get_selections(PyObject* self, PyObject* args);
-  static PyObject* knn_set_selections(PyObject* self, PyObject* args);
-  static PyObject* knn_get_weights(PyObject* self, PyObject* args);
-  static PyObject* knn_set_weights(PyObject* self, PyObject* args);
-  static PyObject* knn_get_num_features(PyObject* self);
-  static int knn_set_num_features(PyObject* self, PyObject* v);
-  // saving/loading
-  static PyObject* knn_serialize(PyObject* self, PyObject* args);
-  static PyObject* knn_unserialize(PyObject* self, PyObject* args);
-}
-
-PyMethodDef knn_methods[] = {
-  { (char *)"classify_with_images", knn_classify_with_images, METH_VARARGS,
-    (char *) "(id_name, confidencemap) **classify_with_images** (ImageList *glyphs*, Image *glyph*, bool cross_validation_mode=False, bool do_confidence=True )\n"
-    "\nClassifies an unknown image using the given list of images as training data.\n"
-    "The *glyph* is classified without setting its classification.  The\n"
-    "return value is a tuple of the form ``(id_name,confidencemap)``, where\n"
-    "*idname* is a list of the form `idname`_, and *confidencemap* is a\n"
-    "map of the form `confidence`_ listing the confidences of the main id.\n"
-    "\n"
-    ".. _idname: #id-name\n\n"
-    ".. _confidence: #confidence"
-  },
-  { (char *)"instantiate_from_images", knn_instantiate_from_images, METH_VARARGS,
-    (char *)"Use the list of images for non-interactive classification." },
-  { (char *)"_distance_from_images", knn_distance_from_images, METH_VARARGS, (char *)"" },
-  { (char *)"_distance_between_images", knn_distance_between_images, METH_VARARGS, (char *)"" },
-  { (char *)"_distance_matrix", knn_distance_matrix, METH_VARARGS, (char *)"" },
-  { (char *)"_unique_distances", knn_unique_distances, METH_VARARGS, (char *)"" },
-  { (char *)"set_selections", knn_set_selections, METH_VARARGS,
-    (char *)"Set the feature selection used for classification."},
-  { (char *)"get_selections", knn_get_selections, METH_VARARGS,
-    (char *)"Get the feature selection used for classification."},
-  { (char *)"set_weights", knn_set_weights, METH_VARARGS,
-    (char *)"Set the weights used for classification." },
-  { (char *)"get_weights", knn_get_weights, METH_VARARGS,
-    (char *)"Get the weights used for classification." },
-  { (char *)"classify", knn_classify, METH_VARARGS,
-    (char *)"" },
-  { (char *)"leave_one_out", knn_leave_one_out, METH_VARARGS, (char *)"" },
-  { (char *)"_knndistance_statistics", knn_knndistance_statistics, METH_VARARGS,
-    (char *)"" },
-  { (char *)"serialize", knn_serialize, METH_VARARGS, (char *)"" },
-  { (char *)"unserialize", knn_unserialize, METH_VARARGS, (char *)"" },
-  { NULL }
-};
-
-PyGetSetDef knn_getset[] = {
-  { (char *)"num_k", (getter)knn_get_num_k, (setter)knn_set_num_k,
-    (char *)"The value of k used for classification.", 0 },
-  { (char *)"distance_type", (getter)knn_get_distance_type, (setter)knn_set_distance_type,
-    (char *)"The type of distance calculation used.", 0 },
-  { (char *)"confidence_types", (getter)knn_get_confidence_types, (setter)knn_set_confidence_types,
-    (char *)"The types of confidences computed during classification.", 0 },
-  { (char *)"num_features", (getter)knn_get_num_features, (setter)knn_set_num_features,
-    (char *)"The current number of features.", 0 },
-  { NULL }
-};
-
 static PyObject* array_init;
 
 /*
@@ -457,12 +374,12 @@ static PyObject* knn_classify(PyObject* self, PyObject* args) {
     // like it leaks. KWM
     PyObject* ans = PyTuple_New(2);
     PyTuple_SET_ITEM(ans, 0, PyFloat_FromDouble(knn.answer[i].second));
-    PyTuple_SET_ITEM(ans, 1, PyString_FromString(knn.answer[i].first));
+    PyTuple_SET_ITEM(ans, 1, PyUnicode_FromString(knn.answer[i].first));
     PyList_SET_ITEM(ans_list, i, ans);
   }
   PyObject* conf_dict = PyDict_New();
   for (size_t i = 0; i < knn.confidence_types.size(); ++i) {
-    PyObject* o1 = PyInt_FromLong(knn.confidence_types[i]);
+    PyObject* o1 = PyLong_FromLong(knn.confidence_types[i]);
     PyObject* o2 = PyFloat_FromDouble(knn.confidence[i]);
     PyDict_SetItem(conf_dict, o1, o2);
     Py_DECREF(o1);
@@ -547,13 +464,13 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
     // like it leaks. KWM
     PyObject* ans = PyTuple_New(2);
     PyTuple_SET_ITEM(ans, 0, PyFloat_FromDouble(knn.answer[i].second));
-    PyTuple_SET_ITEM(ans, 1, PyString_FromString(knn.answer[i].first));
+    PyTuple_SET_ITEM(ans, 1, PyUnicode_FromString(knn.answer[i].first));
     PyList_SET_ITEM(ans_list, i, ans);
   }
   PyObject* conf_dict = PyDict_New();
   if (do_confidence) {
     for (size_t i = 0; i < knn.confidence_types.size(); ++i) {
-      PyObject* o1 = PyInt_FromLong(knn.confidence_types[i]);
+      PyObject* o1 = PyLong_FromLong(knn.confidence_types[i]);
       PyObject* o2 = PyFloat_FromDouble(knn.confidence[i]);
       PyDict_SetItem(conf_dict, o1, o2);
       Py_DECREF(o1);
@@ -886,11 +803,11 @@ static PyObject* knn_get_num_k(PyObject* self) {
 }
 
 static int knn_set_num_k(PyObject* self, PyObject* v) {
-  if (!PyInt_Check(v)) {
+  if (!PyLong_Check(v)) {
     PyErr_SetString(PyExc_TypeError, "knn: expected an int.");
     return -1;
   }
-  ((KnnObject*)self)->num_k = PyInt_AS_LONG(v);
+  ((KnnObject*)self)->num_k = PyLong_AsLong(v);
   return 0;
 }
 
@@ -899,11 +816,11 @@ static PyObject* knn_get_distance_type(PyObject* self) {
 }
 
 static int knn_set_distance_type(PyObject* self, PyObject* v) {
-  if (!PyInt_Check(v)) {
+  if (!PyLong_Check(v)) {
     PyErr_SetString(PyExc_TypeError, "knn: expected an int.");
     return -1;
   }
-  ((KnnObject*)self)->distance_type = (DistanceType)PyInt_AS_LONG(v);
+  ((KnnObject*)self)->distance_type = (DistanceType)PyLong_AsLong(v);
   return 0;
 }
 
@@ -914,7 +831,7 @@ static PyObject* knn_get_confidence_types(PyObject* self) {
   n = o->confidence_types->size();
   PyObject* result = PyList_New(n);
   for (i=0; i<n; i++) {
-    entry = PyInt_FromLong(o->confidence_types->at(i));
+    entry = PyLong_FromLong(o->confidence_types->at(i));
     PyList_SetItem(result, i, entry);
   }
   return result;
@@ -933,11 +850,11 @@ static int knn_set_confidence_types(PyObject* self, PyObject* list) {
   n = PyList_Size(list);
   for (i=0; i<n; i++) {
     entry = PyList_GetItem(list, i);
-    if (!PyInt_Check(entry)) {
+    if (!PyLong_Check(entry)) {
       PyErr_SetString(PyExc_TypeError, "knn: each confidence_type must be int.");
       return -1;
     }
-    ct = (ConfidenceTypes)PyInt_AsLong(entry);
+    ct = (ConfidenceTypes)PyLong_AsLong(entry);
     o->confidence_types->push_back(ct);
   }
   return 0;
@@ -982,12 +899,12 @@ static PyObject* knn_leave_one_out(PyObject* self, PyObject* args) {
     std::vector<long> idx(indexes_size);
     for (int i = 0; i < indexes_size; ++i) {
       PyObject* tmp = PySequence_Fast_GET_ITEM(indexes_seq, i);
-      if (!PyInt_Check(tmp)) {
+      if (!PyLong_Check(tmp)) {
         PyErr_SetString(PyExc_TypeError, "knn: expected indexes to be ints");
         Py_DECREF(indexes_seq);
         return 0;
       }
-      idx[i] = PyInt_AS_LONG(tmp);
+      idx[i] = PyLong_AsLong(tmp);
     }
     // make certain that none of the indexes are out of range
     for (size_t i = 0; i < idx.size(); ++i) {
@@ -1056,7 +973,7 @@ static PyObject* knn_knndistance_statistics(PyObject* self, PyObject* args) {
     distance = distance / k;
     entry = PyTuple_New(2);
     PyTuple_SET_ITEM(entry, 0, PyFloat_FromDouble(distance));
-    PyTuple_SET_ITEM(entry, 1, PyString_FromString(o->id_names[i]));
+    PyTuple_SET_ITEM(entry, 1, PyUnicode_FromString(o->id_names[i]));
     PyList_SetItem(result, i, entry);
     if (progress)
       PyObject_CallObject(progress, NULL);
@@ -1178,13 +1095,13 @@ static PyObject* knn_serialize(PyObject* self, PyObject* args) {
 
   for (size_t i = 0; i < feature_size; ++i) {
     PyObject* cur_string = PyList_GET_ITEM(features, i);
-    unsigned long string_size = PyString_GET_SIZE(cur_string) + 1;
+    unsigned long string_size = PyUnicode_GetSize(cur_string) + 1;
     if (fwrite((const void*)&string_size, sizeof(unsigned long), 1, file) != 1) {
       PyErr_SetString(PyExc_IOError, "knn: problem writing to a file.");
       fclose(file);
       return 0;
     }
-    if (fwrite((const void*)PyString_AS_STRING(cur_string),
+    if (fwrite((const void*)PyUnicode_AsUTF8String(cur_string),
                sizeof(char), string_size, file) != string_size) {
       PyErr_SetString(PyExc_IOError, "knn: problem writing to a file.");
       fclose(file);
@@ -1317,7 +1234,7 @@ static PyObject* knn_unserialize(PyObject* self, PyObject* args) {
       return 0;
     }
     PyList_SET_ITEM(feature_names, i,
-                    PyString_FromStringAndSize((const char*)&tmp_string, string_size - 1));
+                    PyUnicode_FromStringAndSize((const char*)&tmp_string, string_size - 1));
   }
 
   knn_delete_feature_data(o);
@@ -1518,49 +1435,113 @@ static PyObject* knn_get_num_features(PyObject* self) {
 
 static int knn_set_num_features(PyObject* self, PyObject* v) {
   KnnObject* o = (KnnObject*)self;
-  if (!PyInt_Check(v)) {
+  if (!PyLong_Check(v)) {
     PyErr_SetString(PyExc_TypeError, "knn: must be an integer.");
     return -1;
   }
-  set_num_features(o, PyInt_AS_LONG(v));
+  set_num_features(o, PyLong_AS_LONG(v));
   return 0;
 }
 
-PyMethodDef knn_module_methods[] = {
-  { NULL }
+
+
+PyMethodDef knn_methods[] = {
+        { (char *)"classify_with_images", knn_classify_with_images, METH_VARARGS,
+                                                                                         (char *) "(id_name, confidencemap) **classify_with_images** (ImageList *glyphs*, Image *glyph*, bool cross_validation_mode=False, bool do_confidence=True )\n"
+                                                                                                  "\nClassifies an unknown image using the given list of images as training data.\n"
+                                                                                                  "The *glyph* is classified without setting its classification.  The\n"
+                                                                                                  "return value is a tuple of the form ``(id_name,confidencemap)``, where\n"
+                                                                                                  "*idname* is a list of the form `idname`_, and *confidencemap* is a\n"
+                                                                                                  "map of the form `confidence`_ listing the confidences of the main id.\n"
+                                                                                                  "\n"
+                                                                                                  ".. _idname: #id-name\n\n"
+                                                                                                  ".. _confidence: #confidence"
+        },
+        { (char *)"instantiate_from_images", knn_instantiate_from_images, METH_VARARGS,
+                                                                                         (char *)"Use the list of images for non-interactive classification." },
+        { (char *)"_distance_from_images", knn_distance_from_images, METH_VARARGS, (char *)"" },
+        { (char *)"_distance_between_images", knn_distance_between_images, METH_VARARGS, (char *)"" },
+        { (char *)"_distance_matrix", knn_distance_matrix, METH_VARARGS, (char *)"" },
+        { (char *)"_unique_distances", knn_unique_distances, METH_VARARGS, (char *)"" },
+        { (char *)"set_selections", knn_set_selections, METH_VARARGS,
+                                                                                         (char *)"Set the feature selection used for classification."},
+        { (char *)"get_selections", knn_get_selections, METH_VARARGS,
+                                                                                         (char *)"Get the feature selection used for classification."},
+        { (char *)"set_weights", knn_set_weights, METH_VARARGS,
+                                                                                         (char *)"Set the weights used for classification." },
+        { (char *)"get_weights", knn_get_weights, METH_VARARGS,
+                                                                                         (char *)"Get the weights used for classification." },
+        { (char *)"classify", knn_classify, METH_VARARGS,
+                                                                                         (char *)"" },
+        { (char *)"leave_one_out", knn_leave_one_out, METH_VARARGS, (char *)"" },
+        { (char *)"_knndistance_statistics", knn_knndistance_statistics, METH_VARARGS,
+                                                                                         (char *)"" },
+        { (char *)"serialize", knn_serialize, METH_VARARGS, (char *)"" },
+        { (char *)"unserialize", knn_unserialize, METH_VARARGS, (char *)"" },
+        { NULL }
 };
 
-DL_EXPORT(void) initknncore(void) {
-  PyObject* m = Py_InitModule(CHAR_PTR_CAST "gamera.knncore", knn_module_methods);
-  PyObject* d = PyModule_GetDict(m);
+PyGetSetDef knn_getset[] = {
+        { (char *)"num_k", (getter)knn_get_num_k, (setter)knn_set_num_k,
+                (char *)"The value of k used for classification.", 0 },
+        { (char *)"distance_type", (getter)knn_get_distance_type, (setter)knn_set_distance_type,
+                (char *)"The type of distance calculation used.", 0 },
+        { (char *)"confidence_types", (getter)knn_get_confidence_types, (setter)knn_set_confidence_types,
+                (char *)"The types of confidences computed during classification.", 0 },
+        { (char *)"num_features", (getter)knn_get_num_features, (setter)knn_set_num_features,
+                (char *)"The current number of features.", 0 },
+        { NULL }
+};
 
-  KnnType.ob_type = &PyType_Type;
-  KnnType.tp_name = CHAR_PTR_CAST "gamera.knncore.kNN";
-  KnnType.tp_basicsize = sizeof(KnnObject);
-  KnnType.tp_dealloc = knn_dealloc;
-  KnnType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
-  KnnType.tp_new = knn_new;
-  KnnType.tp_getattro = PyObject_GenericGetAttr;
-  KnnType.tp_alloc = NULL; // PyType_GenericAlloc;
-  KnnType.tp_free = NULL; // _PyObject_Del;
-  KnnType.tp_methods = knn_methods;
-  KnnType.tp_getset = knn_getset;
-  PyType_Ready(&KnnType);
-  PyDict_SetItemString(d, "kNN", (PyObject*)&KnnType);
-  PyDict_SetItemString(d, "CITY_BLOCK",
-                       Py_BuildValue(CHAR_PTR_CAST "i", CITY_BLOCK));
-  PyDict_SetItemString(d, "EUCLIDEAN",
-                       Py_BuildValue(CHAR_PTR_CAST "i", EUCLIDEAN));
-  PyDict_SetItemString(d, "FAST_EUCLIDEAN",
-                       Py_BuildValue(CHAR_PTR_CAST "i", FAST_EUCLIDEAN));
 
-  PyObject* array_dict = get_module_dict("array");
-  if (array_dict == 0) {
-    return;
-  }
-  array_init = PyDict_GetItemString(array_dict, "array");
-  if (array_init == 0) {
-    PyErr_SetString(PyExc_RuntimeError, "Unable to get array init method\n");
-    return;
-  }
+PyMethodDef knn_module_methods[] = {
+        { NULL }
+};
+
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gamera.knncore",
+        nullptr,
+        0,
+        knn_module_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+};
+
+PyMODINIT_FUNC PyInit_knncore(void) {
+    PyObject *m = PyModule_Create(&moduledef);
+    PyObject* d = PyModule_GetDict(m);
+
+    Py_TYPE(&KnnType) = &PyType_Type;
+    KnnType.tp_name = CHAR_PTR_CAST "gamera.knncore.kNN";
+    KnnType.tp_basicsize = sizeof(KnnObject);
+    KnnType.tp_dealloc = knn_dealloc;
+    KnnType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
+    KnnType.tp_new = knn_new;
+    KnnType.tp_getattro = PyObject_GenericGetAttr;
+    KnnType.tp_alloc = nullptr; // PyType_GenericAlloc;
+    KnnType.tp_free = nullptr; // _PyObject_Del;
+    KnnType.tp_methods = knn_methods;
+    KnnType.tp_getset = knn_getset;
+    PyType_Ready(&KnnType);
+    PyDict_SetItemString(d, "kNN", (PyObject*)&KnnType);
+    PyDict_SetItemString(d, "CITY_BLOCK",
+                         Py_BuildValue(CHAR_PTR_CAST "i", CITY_BLOCK));
+    PyDict_SetItemString(d, "EUCLIDEAN",
+                         Py_BuildValue(CHAR_PTR_CAST "i", EUCLIDEAN));
+    PyDict_SetItemString(d, "FAST_EUCLIDEAN",
+                         Py_BuildValue(CHAR_PTR_CAST "i", FAST_EUCLIDEAN));
+
+    PyObject* array_dict = get_module_dict("array");
+    if (array_dict == nullptr) {
+        return m;
+    }
+    array_init = PyDict_GetItemString(array_dict, "array");
+    if (array_init == nullptr) {
+        PyErr_SetString(PyExc_RuntimeError, "Unable to get array init method\n");
+        return m;
+    }
+    return m;
 }
