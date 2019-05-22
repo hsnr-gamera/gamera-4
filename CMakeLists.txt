@@ -11,6 +11,10 @@ find_package(PythonInterp 3 REQUIRED)
 find_package(PythonLibs 3 REQUIRED)
 set(GAMERA_SOURCE ${PROJECT_SOURCE_DIR}/include)
 
+include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(${GAMERA_SOURCE})
+
 add_subdirectory(src/geostructs)
 add_subdirectory(src/knncore)
 add_subdirectory(src/gameracore)
+add_subdirectory(src/knnga)

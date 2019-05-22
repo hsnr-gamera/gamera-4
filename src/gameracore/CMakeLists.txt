@@ -12,8 +12,6 @@ set(KDTREE_SOURCE dimobject.cpp
         rgbpixelobject.cpp
         sizeobject.cpp)
 
-include_directories(${PYTHON_INCLUDE_DIRS})
-include_directories(${GAMERA_SOURCE})
 
 add_library(gameracore SHARED ${KDTREE_SOURCE})
 

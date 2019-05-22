@@ -17,7 +17,6 @@
  */
  
 #include <Python.h>
-#include "gameramodule.hpp"
 #include "knnga.hpp"
 
 using namespace Gamera;
@@ -27,48 +26,13 @@ using namespace Gamera::GA;
 // interface for GABaseSetting class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GABaseSetting_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GABaseSetting_dealloc(PyObject *object);
-    // Getter
-    static PyObject* getOpMode(PyObject* object);
-    static PyObject* getPopSize(PyObject* object);
-    static PyObject* getCrossRate(PyObject* object);
-    static PyObject* getMutRate(PyObject* object);
-    // Setter
-    static int setOpMode(PyObject* object, PyObject* arg);
-    static int setPopSize(PyObject* object, PyObject* arg);
-    static int setCrossRate(PyObject* object, PyObject* arg);
-    static int setMutRate(PyObject* object, PyObject* arg);
-}
-
 struct GABaseSettingObject {
     PyObject_HEAD
     GABaseSetting *baseSetting;
 };
 
 static PyTypeObject GABaseSettingType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GABaseSetting_methods[] = {
-    { NULL }
-};
-
-PyGetSetDef GABaseSetting_getset[] = {
-    { (char *) "opMode", (getter)getOpMode, (setter)setOpMode,
-      (char *) "flag which determines the mode of operation (can be set to the "
-               "defined constants ``GA_SELECTION`` (0) or ``GA_WEIGHTING`` (1))", NULL },
-    { (char *) "popSize", (getter)getPopSize, (setter)setPopSize,
-      (char *) "the population size", NULL },
-    { (char *) "crossRate", (getter)getCrossRate, (setter)setCrossRate,
-      (char *) "the crossover probability "
-               "(should be between 0.0 and 1.0)", NULL },
-    { (char *) "mutRate", (getter)getMutRate, (setter)setMutRate,
-      (char *) "the mutation probability "
-               "(should be between 0.0 and 1.0)", NULL },
-    { NULL }
+    PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyObject *GABaseSetting_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -111,7 +75,7 @@ static void GABaseSetting_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject*)self)->ob_type->tp_free(self);
 }
 
 static PyObject* getOpMode(PyObject* object) {
@@ -161,12 +125,12 @@ static PyObject* getMutRate(PyObject* object) {
 static int setOpMode(PyObject* object, PyObject* arg) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
-    if(!PyInt_Check(arg)) {
+    if(!PyLong_Check(arg)) {
         PyErr_SetString(PyExc_TypeError, "GABaseSetting.setOpMode: mode have to be an int");
         return -1;
     }
 
-    int opMode = (int) PyInt_AsLong(arg);
+    int opMode = (int) PyLong_AsLong(arg);
 
     if (opMode != GA_SELECTION && opMode != GA_WEIGHTING) {
         PyErr_SetString(PyExc_RuntimeError, "GABaseSetting: unknown mode of operation");
@@ -174,7 +138,7 @@ static int setOpMode(PyObject* object, PyObject* arg) {
     }
 
     try {
-        self->baseSetting->setOpMode((int) PyInt_AsLong(arg));
+        self->baseSetting->setOpMode((int) PyLong_AsLong(arg));
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return -1;
@@ -186,13 +150,13 @@ static int setOpMode(PyObject* object, PyObject* arg) {
 static int setPopSize(PyObject* object, PyObject* arg) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
-    if(!PyInt_Check(arg)) {
+    if(!PyLong_Check(arg)) {
         PyErr_SetString(PyExc_TypeError, "GABaseSetting.setPopSize: popSize have to be an int");
         return -1;
     }
 
     try {
-        self->baseSetting->setPopSize((unsigned int) PyInt_AsLong(arg));
+        self->baseSetting->setPopSize((unsigned int) PyLong_AsLong(arg));
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return -1;
@@ -237,8 +201,28 @@ static int setMutRate(PyObject* object, PyObject* arg) {
     return 0;
 }
 
+
+PyMethodDef GABaseSetting_methods[] = {
+        { NULL }
+};
+
+PyGetSetDef GABaseSetting_getset[] = {
+        { (char *) "opMode", (getter)getOpMode, (setter)setOpMode,
+                (char *) "flag which determines the mode of operation (can be set to the "
+                         "defined constants ``GA_SELECTION`` (0) or ``GA_WEIGHTING`` (1))", NULL },
+        { (char *) "popSize", (getter)getPopSize, (setter)setPopSize,
+                (char *) "the population size", NULL },
+        { (char *) "crossRate", (getter)getCrossRate, (setter)setCrossRate,
+                (char *) "the crossover probability "
+                         "(should be between 0.0 and 1.0)", NULL },
+        { (char *) "mutRate", (getter)getMutRate, (setter)setMutRate,
+                (char *) "the mutation probability "
+                         "(should be between 0.0 and 1.0)", NULL },
+        { NULL }
+};
+
 void init_GABaseSettingType(PyObject *d) {
-    GABaseSettingType.ob_type = &PyType_Type;
+    Py_TYPE(&GABaseSettingType) = &PyType_Type;
     GABaseSettingType.tp_name = CHAR_PTR_CAST "gamera.knnga.GABaseSetting";
     GABaseSettingType.tp_basicsize = sizeof(GABaseSettingObject);
     GABaseSettingType.tp_dealloc = GABaseSetting_dealloc;
@@ -274,78 +258,15 @@ void init_GABaseSettingType(PyObject *d) {
 // interface for GASelection class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GASelection_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GASelection_dealloc(PyObject *object);
-    // Setter
-    static PyObject* setRoulettWheel(PyObject* object, PyObject* args);
-    static PyObject* setRoulettWheelScaled(PyObject* object, PyObject* args);
-    static PyObject* setStochUniSampling(PyObject* object, PyObject* args);
-    static PyObject* setRankSelection(PyObject* object, PyObject* args);
-    static PyObject* setTournamentSelection(PyObject* object, PyObject* args);
-    static PyObject* setRandomSelection(PyObject* object, PyObject* args);
-}
+
+static PyTypeObject GASelectionType = {
+        PyVarObject_HEAD_INIT(NULL, 0)
+};
 
 struct GASelectionObject {
     PyObject_HEAD
     GASelection<SelectionIndi> *bitSelection;
     GASelection<WeightingIndi> *realSelection;
-};
-
-static PyTypeObject GASelectionType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GASelection_methods[] = {
-    { (char *) "setRoulettWheel", setRoulettWheel, METH_NOARGS,
-      (char *) "**setRoulettWheel** ()\n\n"
-               "Set the roulette wheel selection method for the GA-progress. "
-               "This method picks up an individual proportional to the "
-               "stored fitness value."
-    },
-    { (char *) "setRoulettWheelScaled", setRoulettWheelScaled, METH_VARARGS,
-      (char *) "**setRoulettWheelScaled** (double *preasure* = ``2.0``)\n\n"
-               "Set the roulette wheel selection with linear scaled fitness "
-               "values as selection method for the GA-progress.\n\n"
-               "double *preasure* (optional)\n"
-               "    the selective pressure, should be in [1,2]"
-    },
-    { (char *) "setStochUniSampling", setStochUniSampling, METH_NOARGS,
-      (char *) "**setStochUniSampling** ()\n\n"
-               "Set the stochastic universal sampling method as selection "
-               "method for the GA-progress.\n\nThis method selects an individual "
-               "proportional to the stores fitness value. Compared with the "
-               "roulette wheel selection method all individuals are selected "
-               "in only one step."
-    },
-    { (char *) "setRankSelection", setRankSelection, METH_VARARGS,
-      (char *) "**setRankSelection** (double *preasure* = ``2.0``, double *exponent* = ``1.0``)\n\n"
-               "Set the rank selection method as selection method for the "
-               "GA-progress.\n\n"
-               "This method picks up an individual by roulette wheel based on his "
-               "rank in the current population.\n\n"
-               "double *preasure* (optional)\n"
-               "    the selective pressure, should be in [1,2]\n"
-               "double *exponent* (optional)\n"
-               "    exponent (1 == linear)\n"
-    },
-    { (char *) "setTournamentSelection", setTournamentSelection, METH_VARARGS,
-      (char *) "**setTournamentSelection** (int *tSize* = ``3``)\n\n"
-               "Set a deterministic tournament selection method for selecting "
-               "the individuals in the genetic algorithm.\n\n"
-               "int *tSize* (optional)\n"
-               "    the number of individuals in the tournament"
-    },
-    { (char *) "setRandomSelection", setRandomSelection, METH_NOARGS,
-      (char *) "**setRandomSelection** ()\n\n"
-               "Select all individuals in the genetic progress randomly."
-    },
-    { NULL }
-};
-
-PyGetSetDef GASelection_getset[] = {
-    { NULL }
 };
 
 static PyObject *GASelection_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -374,7 +295,7 @@ static void GASelection_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* setRoulettWheel(PyObject* object, PyObject* args) {
@@ -480,8 +401,60 @@ static PyObject* setRandomSelection(PyObject* object, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+
+PyMethodDef GASelection_methods[] = {
+        { (char *) "setRoulettWheel", setRoulettWheel, METH_NOARGS,
+                (char *) "**setRoulettWheel** ()\n\n"
+                         "Set the roulette wheel selection method for the GA-progress. "
+                         "This method picks up an individual proportional to the "
+                         "stored fitness value."
+        },
+        { (char *) "setRoulettWheelScaled", setRoulettWheelScaled, METH_VARARGS,
+                (char *) "**setRoulettWheelScaled** (double *preasure* = ``2.0``)\n\n"
+                         "Set the roulette wheel selection with linear scaled fitness "
+                         "values as selection method for the GA-progress.\n\n"
+                         "double *preasure* (optional)\n"
+                         "    the selective pressure, should be in [1,2]"
+        },
+        { (char *) "setStochUniSampling", setStochUniSampling, METH_NOARGS,
+                (char *) "**setStochUniSampling** ()\n\n"
+                         "Set the stochastic universal sampling method as selection "
+                         "method for the GA-progress.\n\nThis method selects an individual "
+                         "proportional to the stores fitness value. Compared with the "
+                         "roulette wheel selection method all individuals are selected "
+                         "in only one step."
+        },
+        { (char *) "setRankSelection", setRankSelection, METH_VARARGS,
+                (char *) "**setRankSelection** (double *preasure* = ``2.0``, double *exponent* = ``1.0``)\n\n"
+                         "Set the rank selection method as selection method for the "
+                         "GA-progress.\n\n"
+                         "This method picks up an individual by roulette wheel based on his "
+                         "rank in the current population.\n\n"
+                         "double *preasure* (optional)\n"
+                         "    the selective pressure, should be in [1,2]\n"
+                         "double *exponent* (optional)\n"
+                         "    exponent (1 == linear)\n"
+        },
+        { (char *) "setTournamentSelection", setTournamentSelection, METH_VARARGS,
+                (char *) "**setTournamentSelection** (int *tSize* = ``3``)\n\n"
+                         "Set a deterministic tournament selection method for selecting "
+                         "the individuals in the genetic algorithm.\n\n"
+                         "int *tSize* (optional)\n"
+                         "    the number of individuals in the tournament"
+        },
+        { (char *) "setRandomSelection", setRandomSelection, METH_NOARGS,
+                (char *) "**setRandomSelection** ()\n\n"
+                         "Select all individuals in the genetic progress randomly."
+        },
+        { NULL }
+};
+
+PyGetSetDef GASelection_getset[] = {
+        { NULL }
+};
+
 void init_GASelectionType(PyObject *d) {
-    GASelectionType.ob_type = &PyType_Type;
+    Py_TYPE(&GASelectionType) = &PyType_Type;
     GASelectionType.tp_name = CHAR_PTR_CAST "gamera.knnga.GASelection";
     GASelectionType.tp_basicsize = sizeof(GASelectionObject);
     GASelectionType.tp_dealloc = GASelection_dealloc;
@@ -507,16 +480,6 @@ void init_GASelectionType(PyObject *d) {
 // interface for GACrossover class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GACrossover_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GACrossover_dealloc(PyObject *object);
-    // Setter
-    static PyObject* setNPointCrossover(PyObject* object, PyObject* args);
-    static PyObject* setUniformCrossover(PyObject* object, PyObject* args);
-    static PyObject* setSBXcrossover(PyObject* object, PyObject* args);
-    static PyObject* setSegmentCrossover(PyObject* object, PyObject* args);
-    static PyObject* setHypercubeCrossover(PyObject* object, PyObject* args);
-}
 
 struct GACrossoverObject {
     PyObject_HEAD
@@ -525,82 +488,7 @@ struct GACrossoverObject {
 };
 
 static PyTypeObject GACrossoverType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GACrossover_methods[] = {
-    { (char *) "setNPointCrossover", setNPointCrossover, METH_VARARGS,
-      (char *) "**setNPointCrossover** (int *n* = ``1``)\n\n"
-               "Enables the classic n-Point crossover as recombination "
-               "operator in the GA-optimization.\n\n"
-               "int *n* (optional)\n"
-               "    the number of crossover points"
-    },
-    { (char *) "setUniformCrossover", setUniformCrossover, METH_VARARGS,
-      (char *) "**setUniformCrossover** (double *preference* = ``0.5``)\n\n"
-               "Enables the classic uniform crossover operator in the "
-               "recombination of the GA.\n\n"
-               "double *preference* (optional)\n"
-               "    crossover-probability for each allele (should be in [0,1])"
-    },
-    { (char *) "setSBXcrossover", setSBXcrossover, METH_VARARGS,
-      (char *) "**setSBXcrossover** (int *numFeatures*, double *min*, double *max*, double *eta* = ``1.0``)\n\n"
-               "Enables the simulated binary crossover operator for the real "
-               "value encoded individuals used in feature weighting.\n"
-               "For more details on this operator see:\n"
-               "Deb, K. & Agrawal, R. B. (1995) "
-               "Simulated Binary Crossover for Continuous Search Space. "
-               "Complex Systems, 9, pp. 115-148.\n\n"
-               "int *numFeatures*\n"
-               "    the number of used features. Usually this value is set to "
-               "``classifier.num_features``.\n"
-               "double *min* (optional)\n"
-               "    the minimum value which is allowed in an allele (usually 0.0)\n"
-               "double *max* (optional)\n"
-               "    the maximum value which is allowed in an allele (usually 1.0)\n"
-               "double *eta* (optional)\n"
-               "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
-    },
-    { (char *) "setSegmentCrossover", setSegmentCrossover, METH_VARARGS,
-      (char *) "**setSegmentCrossover** (int *numFeatures*, double *min*, double *max*, double *alpha* = ``0.0``)\n\n"
-               "Enables the segment crossover operator for the real value "
-               "encoded individuals used in feature weighting.\n"
-               "This operator is a variation from the classical arithmetic "
-               "recombination which performs a uniform choice in segment "
-               "(arithmetical with same value along all coordinates).\n\n"
-               "int *numFeatures*\n"
-               "    the number of used features. Usually this value is set to "
-               "``classifier.num_features``.\n"
-               "double *min* (optional)\n"
-               "    the minimum value which is allowed in an allele (usually 0.0)\n"
-               "double *max* (optional)\n"
-               "    the maximum value which is allowed in an allele (usually 1.0)\n"
-               "double *alpha* (optional)\n"
-               "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
-    },
-    { (char *) "setHypercubeCrossover", setHypercubeCrossover, METH_VARARGS,
-      (char *) "**setHypercubeCrossover** (int *numFeatures*, double *min*, double *max*, double *alpha* = ``0.0``)\n\n"
-               "Enables the hypercube crossover operator for the real value "
-               "encoded individuals used in feature weighting.\n"
-               "This operator is a variation from the classicial arithmetic "
-               "recombination which performs a uniform choice in hypercube "
-               "(arithmetical with different values for each coordinate).\n\n"
-               "int *numFeatures*\n"
-               "    the number of used features. Usually this value is set to "
-               "``classifier.num_features``.\n"
-               "double *min* (optional)\n"
-               "    the minimum value which is allowed in an allele (usually 0.0)\n"
-               "double *max* (optional)\n"
-               "    the maximum value which is allowed in an allele (usually 1.0)\n"
-               "double *alpha* (optional)\n"
-               "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
-    },
-    { NULL }
-};
-
-PyGetSetDef GACrossover_getset[] = {
-    { NULL }
+        PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 static PyObject *GACrossover_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -629,7 +517,7 @@ static void GACrossover_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* setNPointCrossover(PyObject* object, PyObject* args) {
@@ -735,8 +623,84 @@ static PyObject* setHypercubeCrossover(PyObject* object, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+
+
+PyMethodDef GACrossover_methods[] = {
+        { (char *) "setNPointCrossover", setNPointCrossover, METH_VARARGS,
+                (char *) "**setNPointCrossover** (int *n* = ``1``)\n\n"
+                         "Enables the classic n-Point crossover as recombination "
+                         "operator in the GA-optimization.\n\n"
+                         "int *n* (optional)\n"
+                         "    the number of crossover points"
+        },
+        { (char *) "setUniformCrossover", setUniformCrossover, METH_VARARGS,
+                (char *) "**setUniformCrossover** (double *preference* = ``0.5``)\n\n"
+                         "Enables the classic uniform crossover operator in the "
+                         "recombination of the GA.\n\n"
+                         "double *preference* (optional)\n"
+                         "    crossover-probability for each allele (should be in [0,1])"
+        },
+        { (char *) "setSBXcrossover", setSBXcrossover, METH_VARARGS,
+                (char *) "**setSBXcrossover** (int *numFeatures*, double *min*, double *max*, double *eta* = ``1.0``)\n\n"
+                         "Enables the simulated binary crossover operator for the real "
+                         "value encoded individuals used in feature weighting.\n"
+                         "For more details on this operator see:\n"
+                         "Deb, K. & Agrawal, R. B. (1995) "
+                         "Simulated Binary Crossover for Continuous Search Space. "
+                         "Complex Systems, 9, pp. 115-148.\n\n"
+                         "int *numFeatures*\n"
+                         "    the number of used features. Usually this value is set to "
+                         "``classifier.num_features``.\n"
+                         "double *min* (optional)\n"
+                         "    the minimum value which is allowed in an allele (usually 0.0)\n"
+                         "double *max* (optional)\n"
+                         "    the maximum value which is allowed in an allele (usually 1.0)\n"
+                         "double *eta* (optional)\n"
+                         "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
+        },
+        { (char *) "setSegmentCrossover", setSegmentCrossover, METH_VARARGS,
+                (char *) "**setSegmentCrossover** (int *numFeatures*, double *min*, double *max*, double *alpha* = ``0.0``)\n\n"
+                         "Enables the segment crossover operator for the real value "
+                         "encoded individuals used in feature weighting.\n"
+                         "This operator is a variation from the classical arithmetic "
+                         "recombination which performs a uniform choice in segment "
+                         "(arithmetical with same value along all coordinates).\n\n"
+                         "int *numFeatures*\n"
+                         "    the number of used features. Usually this value is set to "
+                         "``classifier.num_features``.\n"
+                         "double *min* (optional)\n"
+                         "    the minimum value which is allowed in an allele (usually 0.0)\n"
+                         "double *max* (optional)\n"
+                         "    the maximum value which is allowed in an allele (usually 1.0)\n"
+                         "double *alpha* (optional)\n"
+                         "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
+        },
+        { (char *) "setHypercubeCrossover", setHypercubeCrossover, METH_VARARGS,
+                (char *) "**setHypercubeCrossover** (int *numFeatures*, double *min*, double *max*, double *alpha* = ``0.0``)\n\n"
+                         "Enables the hypercube crossover operator for the real value "
+                         "encoded individuals used in feature weighting.\n"
+                         "This operator is a variation from the classicial arithmetic "
+                         "recombination which performs a uniform choice in hypercube "
+                         "(arithmetical with different values for each coordinate).\n\n"
+                         "int *numFeatures*\n"
+                         "    the number of used features. Usually this value is set to "
+                         "``classifier.num_features``.\n"
+                         "double *min* (optional)\n"
+                         "    the minimum value which is allowed in an allele (usually 0.0)\n"
+                         "double *max* (optional)\n"
+                         "    the maximum value which is allowed in an allele (usually 1.0)\n"
+                         "double *alpha* (optional)\n"
+                         "    the amount of exploration OUTSIDE the parents as in BLX-alpha notation"
+        },
+        { NULL }
+};
+
+PyGetSetDef GACrossover_getset[] = {
+        { NULL }
+};
+
 void init_GACrossoverType(PyObject *d) {
-    GACrossoverType.ob_type = &PyType_Type;
+    Py_TYPE(&GACrossoverType) = &PyType_Type;
     GACrossoverType.tp_name = CHAR_PTR_CAST "gamera.knnga.GACrossover";
     GACrossoverType.tp_basicsize = sizeof(GACrossoverObject);
     GACrossoverType.tp_dealloc = GACrossover_dealloc;
@@ -763,18 +727,6 @@ void init_GACrossoverType(PyObject *d) {
 //******************************************************************************
 // interface for GAMutation class
 //******************************************************************************
-
-extern "C" {
-    static PyObject *GAMutation_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GAMutation_dealloc(PyObject *object);
-    // Setter
-    static PyObject* setShiftMutation(PyObject* object, PyObject* args);
-    static PyObject* setSwapMutation(PyObject* object, PyObject* args);
-    static PyObject* setInversionMutation(PyObject* object, PyObject* args);
-    static PyObject* setBinaryMutation(PyObject* object, PyObject* args);
-    static PyObject* setGaussMutation(PyObject* object, PyObject* args);
-}
-
 struct GAMutationObject {
     PyObject_HEAD
     GAMutation<SelectionIndi> *bitMutation;
@@ -782,65 +734,8 @@ struct GAMutationObject {
 };
 
 static PyTypeObject GAMutationType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
-
-PyMethodDef GAMutation_methods[] = {
-    { (char *) "setShiftMutation", setShiftMutation, METH_NOARGS,
-      (char *) "**setShiftMutation** () \n\n"
-               "Enables the shift mutation on the chromosome as mutation "
-               "operator in the genetic algorithm. This means the allele "
-               "between two points are right shifted."
-    },
-    { (char *) "setSwapMutation", setSwapMutation, METH_NOARGS,
-      (char *) "**setSwapMutation** () \n\n"
-               "Enables the swap mutation on the chromosome as muation operator "
-               "in the genetic algorithm. This means two allele within the "
-               "chromosome are exchanged."
-    },
-    { (char *) "setInversionMutation", setInversionMutation, METH_NOARGS,
-      (char *) "**setInversionMutation** ()\n\n"
-               "Enables the inversion mutation on the chromosome as mutation "
-               "operator in the genetic algorithm. This means the ordering "
-               "from the allels between two points will be reversed."
-    },
-    { (char *) "setBinaryMutation", setBinaryMutation, METH_VARARGS,
-      (char *) "**setBinaryMutation** (double *rate* = ``0.05``, bool *normalize* = ``False``) \n\n"
-               "Enables the classic bit-flip mutation for bitstring "
-               "individuals. This means that this operator only effects "
-               "feature selection.\n\n"
-               "double *rate* (optional)\n"
-               "    the probability for mutation of an allele (should be in [0,1])\n"
-               "bool *normalize* (optional)\n"
-               "    if true ``rate/chromosomeSize`` is used"
-    },
-    { (char *) "setGaussMutation", setGaussMutation, METH_VARARGS,
-      (char *) "**setGaussMutation** (int *numFeatures*, double *min*, double *max*, double *sigma*, double *rate*)\n\n"
-               "Enables the mutation based on a Gaussian distribution for real "
-               "value individuals. This means that his operator only effects "
-               "feature weighting. A random number is "
-               "added to the mutated allele.\n\n"
-               "int *numFeatures*\n"
-               "    the number of used features. Usually this value is set to "
-               "``classifier.num_features``.\n"
-               "double *min*\n"
-               "    the minimum value which is allowed in an allele (usually 0.0)\n"
-               "double *max*\n"
-               "    the maximum value which is allowed in an allele (usually 1.0)\n"
-               "double *sigma*\n"
-               "    the standard deviation of the gaussian distribution. This "
-               "parameter determines the strength of the mutation.\n"
-               "double *rate*\n"
-               "    the probability for mutating an allele (should be in [0,1])\n"
-    },
-    { NULL }
-};
-
-PyGetSetDef GAMutation_getset[] = {
-    { NULL }
-};
-
 static PyObject *GAMutation_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
     GAMutationObject *self;
     self = (GAMutationObject*)(GAMutationType.tp_alloc(&GAMutationType, 0));
@@ -867,7 +762,7 @@ static void GAMutation_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* setShiftMutation(PyObject* object, PyObject* args) {
@@ -960,11 +855,66 @@ static PyObject* setGaussMutation(PyObject* object, PyObject* args) {
         return NULL;
     }
 
-    Py_RETURN_NONE;;
+    Py_RETURN_NONE;
 }
 
+PyMethodDef GAMutation_methods[] = {
+        { (char *) "setShiftMutation", setShiftMutation, METH_NOARGS,
+                (char *) "**setShiftMutation** () \n\n"
+                         "Enables the shift mutation on the chromosome as mutation "
+                         "operator in the genetic algorithm. This means the allele "
+                         "between two points are right shifted."
+        },
+        { (char *) "setSwapMutation", setSwapMutation, METH_NOARGS,
+                (char *) "**setSwapMutation** () \n\n"
+                         "Enables the swap mutation on the chromosome as muation operator "
+                         "in the genetic algorithm. This means two allele within the "
+                         "chromosome are exchanged."
+        },
+        { (char *) "setInversionMutation", setInversionMutation, METH_NOARGS,
+                (char *) "**setInversionMutation** ()\n\n"
+                         "Enables the inversion mutation on the chromosome as mutation "
+                         "operator in the genetic algorithm. This means the ordering "
+                         "from the allels between two points will be reversed."
+        },
+        { (char *) "setBinaryMutation", setBinaryMutation, METH_VARARGS,
+                (char *) "**setBinaryMutation** (double *rate* = ``0.05``, bool *normalize* = ``False``) \n\n"
+                         "Enables the classic bit-flip mutation for bitstring "
+                         "individuals. This means that this operator only effects "
+                         "feature selection.\n\n"
+                         "double *rate* (optional)\n"
+                         "    the probability for mutation of an allele (should be in [0,1])\n"
+                         "bool *normalize* (optional)\n"
+                         "    if true ``rate/chromosomeSize`` is used"
+        },
+        { (char *) "setGaussMutation", setGaussMutation, METH_VARARGS,
+                (char *) "**setGaussMutation** (int *numFeatures*, double *min*, double *max*, double *sigma*, double *rate*)\n\n"
+                         "Enables the mutation based on a Gaussian distribution for real "
+                         "value individuals. This means that his operator only effects "
+                         "feature weighting. A random number is "
+                         "added to the mutated allele.\n\n"
+                         "int *numFeatures*\n"
+                         "    the number of used features. Usually this value is set to "
+                         "``classifier.num_features``.\n"
+                         "double *min*\n"
+                         "    the minimum value which is allowed in an allele (usually 0.0)\n"
+                         "double *max*\n"
+                         "    the maximum value which is allowed in an allele (usually 1.0)\n"
+                         "double *sigma*\n"
+                         "    the standard deviation of the gaussian distribution. This "
+                         "parameter determines the strength of the mutation.\n"
+                         "double *rate*\n"
+                         "    the probability for mutating an allele (should be in [0,1])\n"
+        },
+        { NULL }
+};
+
+PyGetSetDef GAMutation_getset[] = {
+        { NULL }
+};
+
 void init_GAMutationType(PyObject *d) {
-    GAMutationType.ob_type = &PyType_Type;
+    Py_TYPE(&GAMutationType) = &PyType_Type;
     GAMutationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAMutation";
     GAMutationType.tp_basicsize = sizeof(GAMutationObject);
     GAMutationType.tp_dealloc = GAMutation_dealloc;
@@ -995,15 +945,6 @@ void init_GAMutationType(PyObject *d) {
 // interface for GAReplacement class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GAReplacement_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GAReplacement_dealloc(PyObject *object);
-    // Setter
-    static PyObject* setGenerationalReplacement(PyObject* object, PyObject* args);
-    static PyObject* setSSGAworse(PyObject* object, PyObject* args);
-    static PyObject* setSSGAdetTournament(PyObject* object, PyObject* args);
-}
-
 struct GAReplacementObject {
     PyObject_HEAD
     GAReplacement<SelectionIndi> *bitReplacement;
@@ -1011,36 +952,7 @@ struct GAReplacementObject {
 };
 
 static PyTypeObject GAReplacementType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GAReplacement_methods[] = {
-    { (char *) "setGenerationalReplacement", setGenerationalReplacement, METH_NOARGS,
-      (char *) "**setGenerationalReplacement** ()\n\n"
-               "Sets the generational replacement as replacement method for "
-               "the GA-progress. This means that the new individuals in the "
-               "intermediate population will replace the whole population."
-    },
-    { (char *) "setSSGAworse", setSSGAworse, METH_NOARGS,
-      (char *) "**setSSGAworse** ()\n\n"
-               "Sets the steady state worse replacement as replacement method in "
-               "the GA-progress. This means that the worst individuals are "
-               "continuous replaced by better ones."
-    },
-    { (char *) "setSSGAdetTournament", setSSGAdetTournament, METH_VARARGS,
-      (char *) "**setSSGAdetTournament** (int *tSize* = ``3``)\n\n"
-               "Sets an steady state deterministic tournament as replacement "
-               "method in the GA-progress. This means that the loosers of this "
-               "tournament will be replaced in the following population.\n\n"
-               "int *tSize* (optional)\n"
-               "    the number of individuals in the tournament"
-    },
-    { NULL }
-};
-
-PyGetSetDef GAReplacement_getset[] = {
-    { NULL }
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 static PyObject *GAReplacement_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -1069,7 +981,7 @@ static void GAReplacement_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* setGenerationalReplacement(PyObject* object, PyObject* args) {
@@ -1120,8 +1032,37 @@ static PyObject* setSSGAdetTournament(PyObject* object, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+
+PyMethodDef GAReplacement_methods[] = {
+        { (char *) "setGenerationalReplacement", setGenerationalReplacement, METH_NOARGS,
+                (char *) "**setGenerationalReplacement** ()\n\n"
+                         "Sets the generational replacement as replacement method for "
+                         "the GA-progress. This means that the new individuals in the "
+                         "intermediate population will replace the whole population."
+        },
+        { (char *) "setSSGAworse", setSSGAworse, METH_NOARGS,
+                (char *) "**setSSGAworse** ()\n\n"
+                         "Sets the steady state worse replacement as replacement method in "
+                         "the GA-progress. This means that the worst individuals are "
+                         "continuous replaced by better ones."
+        },
+        { (char *) "setSSGAdetTournament", setSSGAdetTournament, METH_VARARGS,
+                (char *) "**setSSGAdetTournament** (int *tSize* = ``3``)\n\n"
+                         "Sets an steady state deterministic tournament as replacement "
+                         "method in the GA-progress. This means that the loosers of this "
+                         "tournament will be replaced in the following population.\n\n"
+                         "int *tSize* (optional)\n"
+                         "    the number of individuals in the tournament"
+        },
+        { NULL }
+};
+
+PyGetSetDef GAReplacement_getset[] = {
+        { NULL }
+};
+
 void init_GAReplacementType(PyObject *d) {
-    GAReplacementType.ob_type = &PyType_Type;
+    Py_TYPE(&GAReplacementType) = &PyType_Type;
     GAReplacementType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAReplacement";
     GAReplacementType.tp_basicsize = sizeof(GAReplacementObject);
     GAReplacementType.tp_dealloc = GAReplacement_dealloc;
@@ -1147,16 +1088,6 @@ void init_GAReplacementType(PyObject *d) {
 // interface for GAStopCriteria class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GAStopCriteria_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GAStopCriteria_dealloc(PyObject *object);
-    // Setter
-    static PyObject* setBestFitnessStop(PyObject* object, PyObject* args);
-    static PyObject* setMaxGenerations(PyObject* object, PyObject* args);
-    static PyObject* setMaxFitnessEvals(PyObject* object, PyObject* args);
-    static PyObject* setSteadyStateStop(PyObject* object, PyObject* args);
-}
-
 struct GAStopCriteriaObject {
     PyObject_HEAD
     GAStopCriteria<SelectionIndi> *bitStopCriteria;
@@ -1164,50 +1095,8 @@ struct GAStopCriteriaObject {
 };
 
 static PyTypeObject GAStopCriteriaType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
-
-PyMethodDef GAStopCriteria_methods[] = {
-    { (char *) "setBestFitnessStop", setBestFitnessStop, METH_VARARGS,
-      (char *) "**setBestFitnessStop** (double *optimum* = ``1.0``)\n\n"
-               "Enables the termination by attainment of the specified "
-               "fitness rating measured by one individual.\n\n"
-               "double *optimum* (optional)\n"
-               "    fitness rating"
-    },
-    { (char *) "setMaxGenerations", setMaxGenerations, METH_VARARGS,
-      (char *) "**setMaxGenerations** (int *n* = 100)\n\n"
-               "Enables the termination by attainment of the specified "
-               "number of maximal generations within the optimization process.\n\n"
-               "int *n* (optional)\n"
-               "    the number of maximal generations"
-    },
-    { (char *) "setMaxFitnessEvals", setMaxFitnessEvals, METH_VARARGS,
-      (char *) "**setMaxFitnessEvals** (int *n* = 5000)\n\n"
-               "Enables the termination by attainment of the specified "
-               "amount of fitness evaulations within the optimization "
-               "process\n\n"
-               "int *n* (optional)\n"
-               "    the number of fitness evaluations"
-    },
-    { (char *) "setSteadyStateStop", setSteadyStateStop, METH_VARARGS,
-      (char *) "**setSteadyStateStop** (int *minGens* = 40, int *noChangeGens* = 10)\n\n"
-               "Enables the termination after *noChangeGens* generations without "
-               "improvements within the optimization after at least *minGens* "
-               "generations.\n\n"
-               "int *minGens* (optional)\n"
-               "    the minimum number of generations to be computed\n"
-               "int *noChangeGens* (optional)\n"
-               "    the number of generations without improvements"
-    },
-    { NULL }
-};
-
-PyGetSetDef GAStopCriteria_getset[] = {
-    { NULL }
-};
-
 static PyObject *GAStopCriteria_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
     GAStopCriteriaObject *self;
     self = (GAStopCriteriaObject*)(GAStopCriteriaType.tp_alloc(&GAStopCriteriaType, 0));
@@ -1234,7 +1123,7 @@ static void GAStopCriteria_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* setBestFitnessStop(PyObject* object, PyObject* args) {
@@ -1318,8 +1207,49 @@ static PyObject* setSteadyStateStop(PyObject* object, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+
+PyMethodDef GAStopCriteria_methods[] = {
+        { (char *) "setBestFitnessStop", setBestFitnessStop, METH_VARARGS,
+                (char *) "**setBestFitnessStop** (double *optimum* = ``1.0``)\n\n"
+                         "Enables the termination by attainment of the specified "
+                         "fitness rating measured by one individual.\n\n"
+                         "double *optimum* (optional)\n"
+                         "    fitness rating"
+        },
+        { (char *) "setMaxGenerations", setMaxGenerations, METH_VARARGS,
+                (char *) "**setMaxGenerations** (int *n* = 100)\n\n"
+                         "Enables the termination by attainment of the specified "
+                         "number of maximal generations within the optimization process.\n\n"
+                         "int *n* (optional)\n"
+                         "    the number of maximal generations"
+        },
+        { (char *) "setMaxFitnessEvals", setMaxFitnessEvals, METH_VARARGS,
+                (char *) "**setMaxFitnessEvals** (int *n* = 5000)\n\n"
+                         "Enables the termination by attainment of the specified "
+                         "amount of fitness evaulations within the optimization "
+                         "process\n\n"
+                         "int *n* (optional)\n"
+                         "    the number of fitness evaluations"
+        },
+        { (char *) "setSteadyStateStop", setSteadyStateStop, METH_VARARGS,
+                (char *) "**setSteadyStateStop** (int *minGens* = 40, int *noChangeGens* = 10)\n\n"
+                         "Enables the termination after *noChangeGens* generations without "
+                         "improvements within the optimization after at least *minGens* "
+                         "generations.\n\n"
+                         "int *minGens* (optional)\n"
+                         "    the minimum number of generations to be computed\n"
+                         "int *noChangeGens* (optional)\n"
+                         "    the number of generations without improvements"
+        },
+        { NULL }
+};
+
+PyGetSetDef GAStopCriteria_getset[] = {
+        { NULL }
+};
+
 void init_GAStopCriteriaType(PyObject *d) {
-    GAStopCriteriaType.ob_type = &PyType_Type;
+    Py_TYPE(&GAStopCriteriaType) = &PyType_Type;
     GAStopCriteriaType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAStopCriteria";
     GAStopCriteriaType.tp_basicsize = sizeof(GAStopCriteriaObject);
     GAStopCriteriaType.tp_dealloc = GAStopCriteria_dealloc;
@@ -1346,39 +1276,13 @@ void init_GAStopCriteriaType(PyObject *d) {
 // interface for GAParallelization class
 //******************************************************************************
 
-extern "C" {
-    static PyObject *GAParallelization_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GAParallelization_dealloc(PyObject *object);
-    // Getter
-    static PyObject* getMode(PyObject* object);
-    static PyObject* getThreadNum(PyObject* object);
-    // Setter
-    static int setMode(PyObject* object, PyObject* arg);
-    static int setThreadNum(PyObject* object, PyObject* arg);
-}
-
 struct GAParallelizationObject {
     PyObject_HEAD
     GAParallelization *parallel;
 };
 
 static PyTypeObject GAParallelizationType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GAParallelization_methods[] = {
-    { NULL }
-};
-
-PyGetSetDef GAParallelization_getset[] = {
-    { (char *) "mode", (getter)getMode, (setter)setMode,
-      (char *) "flag which indicates whether parallelization is "
-               "used (``True``) or not (``False``)", NULL },
-    { (char *) "thredNum", (getter)getThreadNum, (setter)setThreadNum,
-      (char *) "the number of threads which are used by enabled "
-               "parallelization", NULL },
-    { NULL }
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 static PyObject *GAParallelization_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -1423,7 +1327,7 @@ static void GAParallelization_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* getMode(PyObject* object) {
@@ -1476,13 +1380,13 @@ static int setMode(PyObject* object, PyObject* arg) {
 static int setThreadNum(PyObject* object, PyObject* arg) {
     GAParallelizationObject *self = (GAParallelizationObject*) object;
 
-    if(!PyInt_Check(arg)) {
+    if(!PyLong_Check(arg)) {
         PyErr_SetString(PyExc_TypeError, "GAParallelization.setThreadNum: thredNum have to be an int");
         return -1;
     }
 
     try {
-        self->parallel->setThreadNum((unsigned int) PyInt_AsLong(arg));
+        self->parallel->setThreadNum((unsigned int) PyLong_AsLong(arg));
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return -1;
@@ -1491,8 +1395,22 @@ static int setThreadNum(PyObject* object, PyObject* arg) {
     return 0;
 }
 
+PyMethodDef GAParallelization_methods[] = {
+        { NULL }
+};
+
+PyGetSetDef GAParallelization_getset[] = {
+        { (char *) "mode", (getter)getMode, (setter)setMode,
+                (char *) "flag which indicates whether parallelization is "
+                         "used (``True``) or not (``False``)", NULL },
+        { (char *) "thredNum", (getter)getThreadNum, (setter)setThreadNum,
+                (char *) "the number of threads which are used by enabled "
+                         "parallelization", NULL },
+        { NULL }
+};
+
 void init_GAParallelizationType(PyObject *d) {
-    GAParallelizationType.ob_type = &PyType_Type;
+    Py_TYPE(&GAParallelizationType) = &PyType_Type;
     GAParallelizationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAParallelization";
     GAParallelizationType.tp_basicsize = sizeof(GAParallelizationObject);
     GAParallelizationType.tp_dealloc = GAParallelization_dealloc;
@@ -1520,22 +1438,6 @@ void init_GAParallelizationType(PyObject *d) {
 //******************************************************************************
 // interface for GAOptimization class
 //******************************************************************************
-
-extern "C" {
-    static PyObject *GAOptimization_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds);
-    static void GAOptimization_dealloc(PyObject *object);
-
-    static PyObject* startCalculation(PyObject* object, PyObject* args);
-    static PyObject* stopCalculation(PyObject* object, PyObject* args);
-
-    // getter
-    static PyObject* getRunStatus(PyObject* object);
-    static PyObject* getGenerationCount(PyObject* object);
-    static PyObject* getBestFitnessValue(PyObject* object);
-    static PyObject* getMonitorString(PyObject* object);
-    static PyObject* getBestIndiString(PyObject* object);
-}
-
 struct GAOptimizationObject {
     PyObject_HEAD
     GAOptimization<SelectionIndi> *selection;
@@ -1543,46 +1445,7 @@ struct GAOptimizationObject {
 };
 
 static PyTypeObject GAOptimizationType = {
-    PyObject_HEAD_INIT(NULL)
-    0,
-};
-
-PyMethodDef GAOptimization_methods[] = {
-    { (char *) "startCalculation", startCalculation, METH_NOARGS,
-      (char *) "**startCalculation** ()\n\n"
-               "Starts the evolutionary optimization progress\n\n"
-               ".. note:: After starting the optimization no changes in the "
-               "used classifier object are allowed until the optimization "
-               "is finished!"
-    },
-    { (char *) "stopCalculation", stopCalculation, METH_NOARGS,
-      (char *) "**stopCalculation** ()\n\n"
-               "Manual stops the evolutionary optimization progress without "
-               "respect to the stoping-criterias.\n\n"
-               ".. note:: This function blocks until the current generation of "
-               "the optimization is finished. As a result it could take a "
-               "long time until this functions returns!"
-    },
-    { NULL }
-};
-
-PyGetSetDef GAOptimization_getset[] = {
-    { (char *) "status", (getter)getRunStatus, NULL,
-      (char *) "flag which indicates whether the optimization is in "
-               "progress (``True``) or not (``False``)", NULL },
-    { (char *) "generation", (getter)getGenerationCount, NULL,
-      (char *) "the number of the latest computed generation", NULL },
-    { (char *) "bestFitness", (getter)getBestFitnessValue, NULL,
-      (char *) "the best fitness value which has occurred in the "
-               "optimization progress so far", NULL },
-    { (char *) "monitorString", (getter)getMonitorString, NULL,
-      (char *) "string which contains some statistical information about "
-               "the optimization process, like number of fitness evaluations, "
-               "average and stdev of fitness values within each generation.", NULL },
-    { (char *) "bestIndiString", (getter)getBestIndiString, NULL,
-      (char *) "string coded version from the best individual of each "
-               "generation", NULL },
-    { NULL }
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 static PyObject *GAOptimization_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -1752,7 +1615,7 @@ static void GAOptimization_dealloc(PyObject *object) {
         return;
     }
 
-    self->ob_type->tp_free(self);
+    ((PyObject *)self)->ob_type->tp_free(self);
 }
 
 static PyObject* startCalculation(PyObject* object, PyObject* args) {
@@ -1898,8 +1761,46 @@ static PyObject* getBestIndiString(PyObject* object) {
     }
 }
 
+PyMethodDef GAOptimization_methods[] = {
+        { (char *) "startCalculation", startCalculation, METH_NOARGS,
+                (char *) "**startCalculation** ()\n\n"
+                         "Starts the evolutionary optimization progress\n\n"
+                         ".. note:: After starting the optimization no changes in the "
+                         "used classifier object are allowed until the optimization "
+                         "is finished!"
+        },
+        { (char *) "stopCalculation", stopCalculation, METH_NOARGS,
+                (char *) "**stopCalculation** ()\n\n"
+                         "Manual stops the evolutionary optimization progress without "
+                         "respect to the stoping-criterias.\n\n"
+                         ".. note:: This function blocks until the current generation of "
+                         "the optimization is finished. As a result it could take a "
+                         "long time until this functions returns!"
+        },
+        { NULL }
+};
+
+PyGetSetDef GAOptimization_getset[] = {
+        { (char *) "status", (getter)getRunStatus, NULL,
+                (char *) "flag which indicates whether the optimization is in "
+                         "progress (``True``) or not (``False``)", NULL },
+        { (char *) "generation", (getter)getGenerationCount, NULL,
+                (char *) "the number of the latest computed generation", NULL },
+        { (char *) "bestFitness", (getter)getBestFitnessValue, NULL,
+                (char *) "the best fitness value which has occurred in the "
+                         "optimization progress so far", NULL },
+        { (char *) "monitorString", (getter)getMonitorString, NULL,
+                (char *) "string which contains some statistical information about "
+                         "the optimization process, like number of fitness evaluations, "
+                         "average and stdev of fitness values within each generation.", NULL },
+        { (char *) "bestIndiString", (getter)getBestIndiString, NULL,
+                (char *) "string coded version from the best individual of each "
+                         "generation", NULL },
+        { NULL }
+};
+
 void init_GAOptimizationType(PyObject *d) {
-    GAOptimizationType.ob_type = &PyType_Type;
+    Py_TYPE(&GAOptimizationType) = &PyType_Type;
     GAOptimizationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAOptimization";
     GAOptimizationType.tp_basicsize = sizeof(GAOptimizationObject);
     GAOptimizationType.tp_dealloc = GAOptimization_dealloc;
@@ -1949,16 +1850,26 @@ void init_GAOptimizationType(PyObject *d) {
 // interface for python module
 //******************************************************************************
 
-extern "C" {
-    DL_EXPORT(void) initknnga(void);
-}
 
 PyMethodDef knnga_module_methods[] = {
     { NULL }
 };
 
-DL_EXPORT(void) initknnga(void) {
-    PyObject *m = Py_InitModule(CHAR_PTR_CAST "gamera.knnga", knnga_module_methods);
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "gamera.knnga",
+        nullptr,
+        0,
+        knnga_module_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+};
+
+
+PyMODINIT_FUNC PyInit_knnga(void) {
+    PyObject *m = PyModule_Create(&moduledef);
     PyObject *d = PyModule_GetDict(m);
 
     init_GASelectionType(d);
@@ -1975,4 +1886,6 @@ DL_EXPORT(void) initknnga(void) {
         Py_BuildValue(CHAR_PTR_CAST "i", GA_SELECTION));
     PyDict_SetItemString(d, "GA_WEIGHTING",
         Py_BuildValue(CHAR_PTR_CAST "i", GA_WEIGHTING));
+
+    return m;
 }
