@@ -88,18 +88,18 @@ void graph_dealloc(PyObject* self) {
             if(n->_value == nullptr)
                continue;
 			try {
-				auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
-				if (d == nullptr)
-					throw std::runtime_error("something went wrong in dealloc");
+				if(typeid(n->_value).hash_code() == typeid(GraphDataPyObject*).hash_code()) {
+					auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
+					if (d == nullptr)
+						throw std::runtime_error("something went wrong in dealloc");
 
-				if (d->_node != nullptr) {
-					((NodeObject *) d->_node)->_graph = nullptr;
-					((NodeObject *) d->_node)->_node = nullptr;
-					d->_node = nullptr;
+					if (d->_node != nullptr) {
+						((NodeObject *) d->_node)->_graph = nullptr;
+						((NodeObject *) d->_node)->_node = nullptr;
+						d->_node = nullptr;
+					}
+					delete n->_value;
 				}
-
-
-				delete d;
 			}catch (std::bad_cast& ex){
 				throw std::runtime_error("something went wrong in dealloc");
 			}
