@@ -1,6 +1,24 @@
 dist: trusty
 sudo: false
 language: cpp
+
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          packages:
+            - build-essential
+            - gcc-multilib
+            - autoconf
+            - automake
+            - libtool
+            - pkg-config
+      env:
+        - MATRIX_EVAL="NPROC=$(nproc)"
+
 python:
 - "3.5"
 install:
@@ -8,5 +26,5 @@ install:
 script:
   - mkdir build && cd build
   - cmake -DCMAKE_CXX_FLAGS_RELEASE="-O0 -Wall -Wno-deprecated-declarations -static-libgcc" -DCMAKE_BUILD_TYPE=Debug ..
-  - time make build -j $NPROC
+  - time make -j $NPROC
 #- python setup.py build --nowx
