@@ -134,6 +134,7 @@ PyObject* graph_copy(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
+   //Wenn array oder list entpacken?
    auto data = new GraphDataPyObject(pyobject);
    if(so->_graph->add_node(data)) {
 #ifdef __DEBUG_GAPI__
@@ -242,11 +243,12 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
    int res = 0;
    PyObject* from_pyobject, *to_pyobject;
    cost_t cost = 1.0;
-   PyObject* label = NULL;
+   PyObject* label = nullptr;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "OO|dO:add_edge", 
-            &from_pyobject, &to_pyobject, &cost, &label) <= 0 )
-      return NULL;
-
+            &from_pyobject, &to_pyobject, &cost, &label) <= 0 ) {
+   	std::cerr << "Fehler ist aufgetreten" << std::endl;
+   	    return nullptr;
+   }
    if(is_NodeObject(from_pyobject) && is_NodeObject(to_pyobject)) {
       Node* from_node = ((NodeObject*)from_pyobject)->_node;
       Node* to_node = ((NodeObject*)to_pyobject)->_node;
@@ -268,17 +270,17 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
 #ifdef __DEBUG_GAPI__ 
       std::cerr << from << to << std::endl;
 #endif
-      if(label != NULL)
+      if(label != nullptr)
          Py_INCREF(label);
 
       res = so->_graph->add_edge(from, to, cost, so->_graph->is_directed(), label);
-
-      if(del_from)
-         delete from;
-      if(del_to)
-         delete to;
+      if(del_from) {
+	      delete from;
+      }
+      if(del_to) {
+	      delete to;
+      }
    }
-   
    RETURN_INT(res)
 }
 
@@ -484,7 +486,7 @@ PyObject* graph_make_singly_connected(PyObject* self, PyObject* _) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_is_self_connected(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
-   RETURN_BOOL(so->_graph->is_self_connected());
+   RETURN_BOOL(so->_graph->is_self_connected())
 }
 
 

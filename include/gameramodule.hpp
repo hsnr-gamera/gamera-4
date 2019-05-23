@@ -1115,6 +1115,10 @@ inline PyObject* create_ImageInfoObject(ImageInfo* x) {
 }
 
 inline int PyObject_Compare(PyObject* o1,PyObject* o2) {
+	if(!PyObject_TypeCheck(o1, o2->ob_type)){
+		return -1;
+	}
+
 	if (PyObject_RichCompareBool(o1, o2, Py_EQ) == 1) {
 		return 0;
 	} else if (PyObject_RichCompareBool(o1, o2, Py_GT)) {

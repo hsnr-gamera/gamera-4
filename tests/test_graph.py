@@ -386,7 +386,7 @@ def _test_is_multi_connected(flag = gamera.graph.FREE):
 # ------------------------------------------------------------------------------
 def _test_is_self_connected(flag = gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
-   g.add_node([1,2,3])
+   g.add_nodes([1,2,3])
    g.add_edge(1,2)
    assert not g.is_self_connected()
    g.add_edge(1,1)
