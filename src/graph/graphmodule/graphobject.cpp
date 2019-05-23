@@ -29,7 +29,7 @@
 // Python Type Definition
 // -----------------------------------------------------------------------------
 static PyTypeObject GraphType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -134,7 +134,6 @@ PyObject* graph_copy(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
-   //Wenn array oder list entpacken?
    auto data = new GraphDataPyObject(pyobject);
    if(so->_graph->add_node(data)) {
 #ifdef __DEBUG_GAPI__
@@ -958,7 +957,7 @@ PyGetSetDef graph_getset[] = {
 };
 
 // -----------------------------------------------------------------------------
-void init_GraphType(PyObject* d) {
+bool init_GraphType(PyObject* d) {
     Py_TYPE(&GraphType) = &PyType_Type;
     GraphType.tp_name = CHAR_PTR_CAST "gamera.graph.Graph";
     GraphType.tp_basicsize = sizeof(GraphObject);
@@ -966,8 +965,8 @@ void init_GraphType(PyObject* d) {
     GraphType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
     GraphType.tp_new = graph_new;
     GraphType.tp_getattro = PyObject_GenericGetAttr;
-    GraphType.tp_alloc = NULL; // PyType_GenericAlloc;
-    GraphType.tp_free = NULL; // _PyObject_Del;
+    GraphType.tp_alloc = nullptr; // PyType_GenericAlloc;
+    GraphType.tp_free = nullptr; // _PyObject_Del;
     GraphType.tp_methods = graph_methods;
     GraphType.tp_getset = graph_getset;
     GraphType.tp_weaklistoffset = 0;
@@ -1007,6 +1006,10 @@ void init_GraphType(PyObject* d) {
     "  - ``FLAG_DAG``: Directed, acyclic graph.\n\n" \
     "  - ``UNDIRECTED``: Undirected, cyclic graph.\n\n";
 
-    PyType_Ready(&GraphType);
+    if(PyType_Ready(&GraphType) < 0){
+    	return false;
+    }
     PyDict_SetItemString(d, "Graph", (PyObject*)&GraphType);
+
+    return true;
 }

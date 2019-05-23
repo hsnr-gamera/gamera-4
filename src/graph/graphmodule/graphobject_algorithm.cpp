@@ -127,17 +127,18 @@ PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _) {
 
 // -----------------------------------------------------------------------------
 PyObject* graph_create_spanning_tree(PyObject* self, PyObject* pyobject) {
-   INIT_SELF_GRAPH();
+	INIT_SELF_GRAPH();
    Graph* g;
-   if(is_NodeObject(pyobject))
-      g = so->_graph->create_spanning_tree(((NodeObject*)pyobject)->_node);
+   if(is_NodeObject(pyobject)) {
+	   g = so->_graph->create_spanning_tree(((NodeObject *) pyobject)->_node);
+   }
    else {
       GraphDataPyObject a(pyobject);
       g = so->_graph->create_spanning_tree(&a);
    }
-   if(g == NULL) {
+   if(g == nullptr) {
       PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
-      return NULL;
+      return nullptr;
    }
 
    return (PyObject*)graph_new(g);

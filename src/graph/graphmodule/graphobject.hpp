@@ -31,7 +31,7 @@ struct GraphObject {
    EdgeObjectMap *assigned_edgeobjects;
 }; 
 
-void init_GraphType(PyObject* dict);
+bool init_GraphType(PyObject* dict);
 bool is_GraphObject(PyObject* self);
 GraphObject* graph_new(flag_t flags = FLAG_DEFAULT);
 GraphObject* graph_new(Graph* g);

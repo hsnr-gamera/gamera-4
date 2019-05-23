@@ -25,17 +25,17 @@
 #include "wrapper.hpp"
 #include "partitions.hpp"
 
-extern "C" {
-  PyObject* graph_dijkstra_shortest_path(PyObject* self, PyObject* root);
-  PyObject* graph_dijkstra_all_pairs_shortest_path(PyObject* self, PyObject* _);
-  PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _);
-  PyObject* graph_create_spanning_tree(PyObject* self, PyObject* pyobject);
-  PyObject* graph_create_minimum_spanning_tree(PyObject* so, PyObject* args);
-  PyObject* graph_BFS(PyObject* self, PyObject* args);
-  PyObject* graph_DFS(PyObject* self, PyObject* args);
-  PyObject* graph_get_color(PyObject* self, PyObject* pyobject);
-  PyObject* graph_colorize(PyObject* self, PyObject* pyobject);
-}
+
+PyObject* graph_dijkstra_shortest_path(PyObject* self, PyObject* root);
+PyObject* graph_dijkstra_all_pairs_shortest_path(PyObject* self, PyObject* _);
+PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _);
+PyObject* graph_create_spanning_tree(PyObject* self, PyObject* pyobject);
+PyObject* graph_create_minimum_spanning_tree(PyObject* so, PyObject* args);
+PyObject* graph_BFS(PyObject* self, PyObject* args);
+PyObject* graph_DFS(PyObject* self, PyObject* args);
+PyObject* graph_get_color(PyObject* self, PyObject* pyobject);
+PyObject* graph_colorize(PyObject* self, PyObject* pyobject);
+
 
 
 // -----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ extern "C" {
   }, \
   { CHAR_PTR_CAST "all_pairs_shortest_path", graph_all_pairs_shortest_path, METH_NOARGS, \
     CHAR_PTR_CAST "**all_pairs_shortest_path** ()\n\n" \
-     "An alias for dijkstra_all_pairs_shortest_path_.\n\n" }, 
+     "An alias for dijkstra_all_pairs_shortest_path_.\n\n" },
 
 #define SPANNING_TREE_METHODS \
   { CHAR_PTR_CAST "create_spanning_tree", graph_create_spanning_tree, METH_O, \

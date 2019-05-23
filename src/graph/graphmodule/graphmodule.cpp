@@ -72,7 +72,9 @@ PyMODINIT_FUNC PyInit_graph(void) {
 
     init_NodeType();
     init_EdgeType();
-    init_GraphType(d);
+    if(!init_GraphType(d)){
+    	return nullptr;
+    }
 
     PyDict_SetItemString(d, "DEFAULT", PyLong_FromLong(FLAG_DEFAULT));
     PyDict_SetItemString(d, "DIRECTED", PyLong_FromLong(FLAG_DIRECTED));

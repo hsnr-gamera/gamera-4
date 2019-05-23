@@ -203,8 +203,8 @@ std::map<Node*, ShortestPathMap*> Graph::all_pairs_shortest_path() {
 // -----------------------------------------------------------------------------
 Graph *Graph::create_spanning_tree(GraphData * value) {
    Node* n = get_node(value);
-   if(n == NULL)
-      return NULL;
+   if(n == nullptr)
+      return nullptr;
 
    return create_spanning_tree(n);
 }

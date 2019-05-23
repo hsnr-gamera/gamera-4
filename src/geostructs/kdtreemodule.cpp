@@ -41,7 +41,7 @@ struct KdNodeObject {
 };
 
 static PyTypeObject KdNodeType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -154,15 +154,8 @@ struct KdTreeObject {
   // of the nodes in tree->allnodes
 };
 
-extern "C" {
-  static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args,
-			     PyObject* kwds);
-  static void kdtree_dealloc(PyObject* self);
-  static PyObject* kdtree_get_dimension(PyObject* self);
-}
-
 static PyTypeObject KdTreeType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -403,7 +396,7 @@ void init_KdTreeType(PyObject* d) {
 //======================================================================
 
 PyMethodDef kdtree_module_methods[] = {
-  {NULL}
+  {nullptr}
 };
 
 static struct PyModuleDef moduledef = {
