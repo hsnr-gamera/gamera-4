@@ -919,7 +919,7 @@ def _test_large_graph(flag = gamera.graph.FREE, count = 20000):
       assert g.get_node(i)() == i
 
    assert g.nnodes == count + 1
-   g.remove_edge(count/2, count/2+1)
+   g.remove_edge(int(count/2), int(count/2+1))
    del g
    gc.collect()
    print("memlarge_after: %s" % memory_usage())
