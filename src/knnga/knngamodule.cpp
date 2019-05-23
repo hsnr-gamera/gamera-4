@@ -1859,7 +1859,7 @@ static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.knnga",
         nullptr,
-        0,
+        -1,
         knnga_module_methods,
         nullptr,
         nullptr,

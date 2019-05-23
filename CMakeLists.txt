@@ -10,6 +10,7 @@ find_package(PythonInterp 3 REQUIRED)
 # This goes after, since it uses PythonInterp as hint
 find_package(PythonLibs 3 REQUIRED)
 set(GAMERA_SOURCE ${PROJECT_SOURCE_DIR}/include)
+add_definitions(-D__DEBUG_GAPI__)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${GAMERA_SOURCE})

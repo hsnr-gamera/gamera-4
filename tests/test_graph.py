@@ -558,9 +558,9 @@ def _test_minimum_spanning_tree(flag = gamera.graph.FREE):
 def _test_spanning_tree(flag = gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
    print(g.add_edges([
-      (9,10,4), (9,16,8), (10,16,11), (10,11,8), 
-      (11,17,2), (11,14,4), (11,12,7), (12,13,9), 
-      (12,14,14), (13,14,10), (14,15,2), (15,17,6), 
+      (9,10,4), (9,16,8), (10,16,11), (10,11,8),
+      (11,17,2), (11,14,4), (11,12,7), (12,13,9),
+      (12,14,14), (13,14,10), (14,15,2), (15,17,6),
       (15,16,1), (16,17,7)]
    ))
    assert g.nedges == 14
@@ -568,9 +568,7 @@ def _test_spanning_tree(flag = gamera.graph.FREE):
    bfsnodes = [n() for n in g.BFS(11)]
    bfsnodes.sort()
 
-   assert g.has_node(11)
    t = g.create_spanning_tree(11)
-   assert t != None
    treenodes = [n() for n in t.get_nodes()]
    treenodes.sort()
 

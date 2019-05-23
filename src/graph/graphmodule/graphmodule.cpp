@@ -57,7 +57,7 @@ static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.graph",
         nullptr,
-        0,
+        -1,
         graph_module_methods,
         nullptr,
         nullptr,

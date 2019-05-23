@@ -403,7 +403,7 @@ static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.kdtree",
         nullptr,
-        0,
+        -1,
         kdtree_module_methods,
         nullptr,
         nullptr,

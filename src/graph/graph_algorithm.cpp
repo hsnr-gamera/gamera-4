@@ -66,7 +66,7 @@ bool Graph::is_fully_connected() {
    Node* start = _nodes.front();
    size_t count = 0;
    DfsIterator *it = DFS(start);
-   while(it->next() != 0)
+   while(it->next() != nullptr)
       count++;
 
    delete it;

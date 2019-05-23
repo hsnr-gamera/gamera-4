@@ -81,33 +81,32 @@ void graph_dealloc(PyObject* self) {
    if(is_GraphObject(self)) {
       INIT_SELF_GRAPH();
       if(so->_graph) {
-      //invalidate nodeeobjects
-         NodePtrIterator* it = so->_graph->get_nodes();
-         Node *n;
-         while((n = it->next()) != nullptr) {
-            if(n->_value == nullptr)
-               continue;
-			try {
-				if(typeid(n->_value).hash_code() == typeid(GraphDataPyObject*).hash_code()) {
-					auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
-					if (d == nullptr)
-						throw std::runtime_error("something went wrong in dealloc");
+	      //invalidate nodeeobjects
+	      NodePtrIterator *it = so->_graph->get_nodes();
+	      Node *n;
+	      while ((n = it->next()) != nullptr) {
+		      if (n->_value == nullptr)
+			      continue;
+		      try {
+			      auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
+			      if (d == nullptr)
+				      throw std::runtime_error("something went wrong in dealloc");
 
-					if (d->_node != nullptr) {
-						((NodeObject *) d->_node)->_graph = nullptr;
-						((NodeObject *) d->_node)->_node = nullptr;
-						d->_node = nullptr;
-					}
-					delete n->_value;
-				}
-			}catch (std::bad_cast& ex){
-				throw std::runtime_error("something went wrong in dealloc");
-			}
-         }
-         delete it;
-      
-         delete so->_graph;
-         so->_graph = nullptr;
+			      if (d->_node != nullptr) {
+				      ((NodeObject *) d->_node)->_graph = nullptr;
+				      ((NodeObject *) d->_node)->_node = nullptr;
+				      d->_node = nullptr;
+			      }
+			      delete d;
+
+		      } catch (std::bad_cast &ex) {
+			      throw std::runtime_error("something went wrong in dealloc");
+		      }
+	      }
+	      delete it;
+
+	      delete so->_graph;
+	      so->_graph = nullptr;
       }
 #ifdef __DEBUG_GAPI__
       std::cerr << "assigned edgeobjects" << so->assigned_edgeobjects->size() << std::endl;
@@ -248,7 +247,6 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
    PyObject* label = nullptr;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "OO|dO:add_edge", 
             &from_pyobject, &to_pyobject, &cost, &label) <= 0 ) {
-   	std::cerr << "Fehler ist aufgetreten" << std::endl;
    	    return nullptr;
    }
    if(is_NodeObject(from_pyobject) && is_NodeObject(to_pyobject)) {
@@ -646,8 +644,6 @@ PyObject* graph_get_subgraph_roots(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_is_fully_connected(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
-    std::cerr << so->_graph->_nodes.size() << std::endl;
-    std::cerr << so->_graph->_edges.size() << std::endl;
    RETURN_BOOL(so->_graph->is_fully_connected())
 }
 
@@ -950,12 +946,12 @@ PyMethodDef graph_methods[] = {
 
 // -----------------------------------------------------------------------------
 PyGetSetDef graph_getset[] = {
-        { CHAR_PTR_CAST "nnodes", (getter)graph_get_nnodes, 0,
-                CHAR_PTR_CAST "Number of nodes in the graph", 0 },
-        { CHAR_PTR_CAST "nedges", (getter)graph_get_nedges, 0,
-                CHAR_PTR_CAST "Number of edges in the graph", 0 },
-        { CHAR_PTR_CAST "nsubgraphs", (getter)graph_get_nsubgraphs, 0,
-                CHAR_PTR_CAST "Number of edges in the graph", 0 },
+        { CHAR_PTR_CAST "nnodes", (getter)graph_get_nnodes, nullptr,
+                CHAR_PTR_CAST "Number of nodes in the graph", nullptr },
+        { CHAR_PTR_CAST "nedges", (getter)graph_get_nedges, nullptr,
+                CHAR_PTR_CAST "Number of edges in the graph", nullptr },
+        { CHAR_PTR_CAST "nsubgraphs", (getter)graph_get_nsubgraphs, nullptr,
+                CHAR_PTR_CAST "Number of edges in the graph", nullptr },
         { nullptr }
 };
 

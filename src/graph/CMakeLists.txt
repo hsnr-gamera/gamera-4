@@ -15,7 +15,6 @@ set(KDTREE_SOURCE graphmodule/graphmodule.cpp
         spanning_tree.cpp
         subgraph_root.cpp)
 
-#add_definitions(-D__DEBUG_GAPI__)
 add_library(graph SHARED ${KDTREE_SOURCE})
 target_include_directories(graph PUBLIC .)
 target_include_directories(graph PUBLIC ${GAMERA_SOURCE}/graph)

@@ -49,7 +49,7 @@ static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.gameracore",
         nullptr,
-        0,
+        -1,
         gamera_module_methods,
         nullptr,
         nullptr,

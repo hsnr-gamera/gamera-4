@@ -36,7 +36,6 @@ static PyTypeObject NodeType = {
 
 // -----------------------------------------------------------------------------
 PyMethodDef node_methods[] = {
-   { nullptr }
 };
 
 
@@ -186,15 +185,15 @@ static PyObject* node___repr__(PyObject* self) {
 
 // -----------------------------------------------------------------------------
 PyGetSetDef node_getset[] = {
-        { CHAR_PTR_CAST "data", (getter)node_get_data, 0,
-                CHAR_PTR_CAST "The value the identified with this node. (get/set)", 0 },
-        { CHAR_PTR_CAST "edges", (getter)node_get_edges, 0,
-                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", 0 },
-        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, 0,
+        { CHAR_PTR_CAST "data", (getter)node_get_data, nullptr,
+                CHAR_PTR_CAST "The value the identified with this node. (get/set)", nullptr },
+        { CHAR_PTR_CAST "edges", (getter)node_get_edges, nullptr,
+                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", nullptr },
+        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, nullptr,
                 CHAR_PTR_CAST "An iterator over nodes that can be reached directly "
-                              "(through a single edge) from this node (get)", 0 },
-        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, 0,
-                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", 0 },
+                              "(through a single edge) from this node (get)", nullptr },
+        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, nullptr,
+                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", nullptr },
         { nullptr }
 };
 
