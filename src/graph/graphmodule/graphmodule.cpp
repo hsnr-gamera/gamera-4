@@ -25,10 +25,10 @@
 // Factory wrapper for creating graph easier
 template<flag_t F>
 static PyObject* Factory(PyObject* self, PyObject* args) {
-  PyObject *a = NULL;
+  PyObject *a = nullptr;
   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|O", &a) <= 0)
     return 0;
-  if (a == NULL)
+  if (a == nullptr)
     return (PyObject*)graph_new(F);
   if (is_GraphObject(a))
     return (PyObject*)graph_copy((GraphObject*)a, F);
@@ -50,7 +50,7 @@ PyMethodDef graph_module_methods[] = {
     CHAR_PTR_CAST "Create a new directed acyclic graph" },
   { CHAR_PTR_CAST "Undirected", Factory<FLAG_UNDIRECTED>, METH_VARARGS,
     CHAR_PTR_CAST "Create a new undirected (cyclic) graph" },
-  {NULL}
+  {nullptr}
 };
 
 static struct PyModuleDef moduledef = {

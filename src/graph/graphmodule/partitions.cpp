@@ -171,7 +171,7 @@ protected:
          EdgePtrIterator* ei = node->get_edges();
          Edge* e;
 
-         while((e = ei->next()) != NULL) {
+         while((e = ei->next()) != nullptr) {
             Node* to_node = e->traverse(node);
             if (!visited1(to_node)) {
                node_queue.push(to_node);
@@ -202,7 +202,7 @@ protected:
          set_number(node, count++);
          EdgePtrIterator* ei = node->get_edges();
          Edge* e;
-         while((e=ei->next()) != NULL) {
+         while((e=ei->next()) != nullptr) {
             Node* to_node = e->traverse(node);
             if (!visited2(to_node)) {
                node_queue.push(to_node);
@@ -241,7 +241,7 @@ protected:
       Py_DECREF(result);
 
       double eval;
-      if (evalobject == NULL)
+      if (evalobject == nullptr)
          eval = -1.0;
       else {
          if (PyFloat_Check(evalobject))
@@ -257,7 +257,7 @@ protected:
             (get_number(node) != subgraph_size - 1)) {
          EdgePtrIterator* ei = node->get_edges();
          Edge* e;
-         while((e = ei->next()) != NULL) {
+         while((e = ei->next()) != nullptr) {
             Node* to_node = e->traverse(node);
             if (get_number(to_node) > node_number)
                graph_optimize_partitions_evaluate_parts(
@@ -486,14 +486,14 @@ PyObject* graph_optimize_partitions(PyObject* self, PyObject* args) {
       GraphDataPyObject obj(a);
       root = so->_graph->get_node(&obj);
    }
-   if (root == NULL)
+   if (root == nullptr)
       return 0;
 
    Partitions p;
    PyObject* result = p.optimize_partitions(so, root, eval_func, 
          max_parts_per_group, max_graph_size, criterion);
 
-   assert(result != NULL);
+   assert(result != nullptr);
    return result;
 }
 

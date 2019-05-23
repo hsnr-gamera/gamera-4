@@ -24,14 +24,14 @@ namespace Gamera { namespace GraphApi {
    
 
 void SubgraphRoots::process(SubgraphNode* v) {
-   SubgraphNode *w = NULL;
+   SubgraphNode *w = nullptr;
 
    v->root = true;
    v->visited = true;
 
    DfsIterator* it = g->DFS(v->n);
    Node* w_node = it->next();
-   while((w_node = it->next()) != NULL) {
+   while((w_node = it->next()) != nullptr) {
       w = nodeMap[w_node];
       w->root = false;
       w->visited = true;
@@ -45,8 +45,8 @@ void SubgraphRoots::process(SubgraphNode* v) {
 NodeVector* SubgraphRoots::subgraph_roots(Graph* g) {
    this->g = g;
    NodePtrIterator *nit = g->get_nodes();
-   Node *n = NULL;
-   while((n = nit->next()) != NULL) {
+   Node *n = nullptr;
+   while((n = nit->next()) != nullptr) {
       SubgraphNode* t = new SubgraphNode(n);
       nodeMap[n] = t;
    }

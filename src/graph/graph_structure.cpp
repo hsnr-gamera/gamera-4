@@ -38,8 +38,8 @@ Graph::Graph(bool directed, bool check_on_insert) {
       GRAPH_SET_FLAG(this, FLAG_CHECK_ON_INSERT);
    else
       GRAPH_UNSET_FLAG(this, FLAG_CHECK_ON_INSERT);
-   _colorhistogram = NULL;
-   _colors = NULL;
+   _colorhistogram = nullptr;
+   _colors = nullptr;
 
 }
 
@@ -60,8 +60,8 @@ Graph::Graph(flag_t flags) {
    }
    _flags = flags;
 
-   _colorhistogram = NULL;
-   _colors = NULL;
+   _colorhistogram = nullptr;
+   _colors = nullptr;
 }
 
 
@@ -102,18 +102,18 @@ Graph::~Graph() {
   * copies the whole graph as a deep copy
   */
 Graph::Graph(Graph &g) {
-   _colors = NULL;
-   _colorhistogram = NULL;
+   _colors = nullptr;
+   _colorhistogram = nullptr;
    _flags = g._flags;
    NodePtrIterator *nit = g.get_nodes();
    Node *n;
-   while((n=nit->next()) != NULL)
+   while((n=nit->next()) != nullptr)
       add_node(n->_value);
 
    delete nit;
    EdgePtrIterator *eit = g.get_edges();
    Edge *e;
-   while((e=eit->next()) != NULL) {
+   while((e=eit->next()) != nullptr) {
       add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             e->is_directed, e->label);
    }
@@ -124,26 +124,26 @@ Graph::Graph(Graph &g) {
 
 // -----------------------------------------------------------------------------
 Graph::Graph(Graph* g, flag_t flags) {
-   _colors = NULL;
-   _colorhistogram = NULL;
+   _colors = nullptr;
+   _colorhistogram = nullptr;
    _flags = flags;
    bool directed = GRAPH_HAS_FLAG(g, FLAG_DIRECTED);
    NodePtrIterator *nit = g->get_nodes();
    Node *n;
-   while((n=nit->next()) != NULL)
+   while((n=nit->next()) != nullptr)
       add_node(n->_value->copy());
 
    delete nit;
    EdgePtrIterator *eit = g->get_edges();
    Edge *e;
    if(!directed) {
-      while((e=eit->next()) != NULL) {
+      while((e=eit->next()) != nullptr) {
          add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             e->is_directed, e->label);
       }
    }
    else {
-      while((e=eit->next()) != NULL) {
+      while((e=eit->next()) != nullptr) {
          add_edge(e->from_node->_value, e->to_node->_value, e->weight,
             false, e->label);
       }
@@ -216,11 +216,11 @@ bool Graph::add_node(Node* node) {
 // -----------------------------------------------------------------------------
 Node* Graph::add_node_ptr(GraphData * value) {
    Node* n = get_node(value);
-   if(n == NULL) {
+   if(n == nullptr) {
       n = new Node(value);
       if(add_node(n) == false) {
          delete n;
-         n = NULL;
+         n = nullptr;
       }
    }
    return n;
@@ -263,7 +263,7 @@ int Graph::add_nodes(ValueVector values) {
 Node* Graph::get_node(GraphData * value) {
    ValueNodeMap::iterator it = _valuemap.find(value);
    if(it == _valuemap.end())
-      return NULL;
+      return nullptr;
    else
       return it->second;
 }
@@ -281,7 +281,7 @@ NodePtrIterator* Graph::get_nodes() {
 // -----------------------------------------------------------------------------
 /** removes a node glueing all edges together */
 void Graph::remove_node(Node* node) {
-   if(node != NULL) {
+   if(node != nullptr) {
       node->remove_self(true);
       _nodes.remove(node);
       _valuemap.erase(node->_value);
@@ -297,7 +297,7 @@ void Graph::remove_node(Node* node) {
 // -----------------------------------------------------------------------------
 void Graph::remove_node(GraphData * value) {
    Node* node = get_node(value);
-   if (node != NULL)
+   if (node != nullptr)
       remove_node(node);
    else
       throw std::runtime_error("node not present");
@@ -310,7 +310,7 @@ void Graph::remove_node(GraphData * value) {
   * removes a node not glueing all edges together
   */
 void Graph::remove_node_and_edges(Node* node) {
-   if(node != NULL) {
+   if(node != nullptr) {
       node->remove_self(false);
       _nodes.remove(node);
       _valuemap.erase(node->_value);
@@ -323,7 +323,7 @@ void Graph::remove_node_and_edges(Node* node) {
 // -----------------------------------------------------------------------------
 void Graph::remove_node_and_edges(GraphData * value) {
    Node* node = get_node(value);
-   if (node != NULL)
+   if (node != nullptr)
      remove_node_and_edges(node);
 }
 
@@ -345,9 +345,9 @@ int Graph::add_edge(GraphData * from_value, GraphData * to_value, cost_t cost,
 // -----------------------------------------------------------------------------
 int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
       bool directed, void* label) {
-   Edge *e = NULL, *f = NULL;
+   Edge *e = nullptr, *f = nullptr;
    unsigned long count = 0;
-   if (from_node == NULL || to_node == NULL)
+   if (from_node == nullptr || to_node == nullptr)
       return 0;
 
    if(!GRAPH_HAS_FLAG(this, FLAG_DIRECTED) && directed)
@@ -361,7 +361,7 @@ int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
       if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) &&
             !conforms_restrictions()) {
          remove_edge(f);
-         f = NULL;
+         f = nullptr;
       }
       else
          count++;
@@ -373,7 +373,7 @@ int Graph::add_edge(Node* from_node, Node* to_node, cost_t cost,
    if(GRAPH_HAS_FLAG(this, FLAG_CHECK_ON_INSERT) &&
          !conforms_restrictions()) {
         remove_edge(e);
-        e = NULL;
+        e = nullptr;
    }
    else
       count++;
@@ -402,7 +402,7 @@ bool Graph::has_edge(GraphData * from_value, GraphData * to_value) {
 
 // -----------------------------------------------------------------------------
 bool Graph::has_edge(Node* from_node, Node* to_node) {
-   if(from_node == NULL || to_node == NULL)
+   if(from_node == nullptr || to_node == nullptr)
       return false;
    if(!is_directed())
       return from_node->has_edge_to(to_node) || to_node->has_edge_to(from_node);

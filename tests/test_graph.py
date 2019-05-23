@@ -568,8 +568,9 @@ def _test_spanning_tree(flag = gamera.graph.FREE):
    bfsnodes = [n() for n in g.BFS(11)]
    bfsnodes.sort()
 
-
+   assert g.has_node(11)
    t = g.create_spanning_tree(11)
+   assert t != None
    treenodes = [n() for n in t.get_nodes()]
    treenodes.sort()
 

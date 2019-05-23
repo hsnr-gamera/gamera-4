@@ -29,7 +29,7 @@
 // Python Type Definition
 // -----------------------------------------------------------------------------
 static PyTypeObject GraphType = {
-  PyVarObject_HEAD_INIT(nullptr, 0)
+	PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -62,7 +62,7 @@ PyObject* graph_new(PyTypeObject* pytype, PyObject* args,
 		    PyObject* kwds) {
    unsigned long flags = FLAG_FREE;
    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|k:Graph.__init__", &flags) <= 0)
-      return NULL;
+      return nullptr;
 
    return (PyObject*)graph_new(flags);
 }
@@ -84,33 +84,36 @@ void graph_dealloc(PyObject* self) {
       //invalidate nodeeobjects
          NodePtrIterator* it = so->_graph->get_nodes();
          Node *n;
-         while((n = it->next()) != NULL) {
-            if(n->_value == NULL)
+         while((n = it->next()) != nullptr) {
+            if(n->_value == nullptr)
                continue;
+			try {
+				auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
+				if (d == nullptr)
+					throw std::runtime_error("somehting went wrong in dealloc");
 
-            GraphDataPyObject* d = dynamic_cast<GraphDataPyObject*>(n->_value);
-            if(d == NULL)
-               throw std::runtime_error("somehting went wrong in dealloc");
-
-            if(d->_node != NULL) {
-               ((NodeObject*)d->_node)->_graph = NULL;
-               ((NodeObject*)d->_node)->_node = NULL;
-               d->_node = NULL;
-            }
+				if (d->_node != nullptr) {
+					((NodeObject *) d->_node)->_graph = nullptr;
+					((NodeObject *) d->_node)->_node = nullptr;
+					d->_node = nullptr;
+				}
 
 
-            delete d;
+				delete d;
+			}catch (std::bad_cast& ex){
+				throw std::runtime_error("somehting went wrong in dealloc");
+			}
          }
          delete it;
       
          delete so->_graph;
-         so->_graph = NULL;
+         so->_graph = nullptr;
       }
 #ifdef __DEBUG_GAPI__
       std::cerr << "assigned edgeobjects" << so->assigned_edgeobjects->size() << std::endl;
 #endif
       delete so->assigned_edgeobjects;
-      so->assigned_edgeobjects = NULL;
+      so->assigned_edgeobjects = nullptr;
       self->ob_type->tp_free(self);
    }
 }
@@ -122,7 +125,7 @@ PyObject* graph_copy(PyObject* self, PyObject* args) {
    INIT_SELF_GRAPH();
    unsigned long flags = FLAG_FREE;
    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|k:Graph.copy", &flags) <= 0)
-      return NULL;
+      return nullptr;
 
    return (PyObject*)graph_copy(so, flags);
 }
@@ -155,7 +158,7 @@ PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_nodes(PyObject* self, PyObject* pyobject) {
    PyObject* seq = PySequence_Fast(pyobject, "Argument must be an iterable of nodes");
-   if (seq == NULL)
+   if (seq == nullptr)
       return 0;
    size_t list_size = PySequence_Fast_GET_SIZE(seq);
    size_t result = 0;
@@ -175,20 +178,20 @@ PyObject* graph_remove_node_and_edges(PyObject* self, PyObject* a) {
    if(is_NodeObject(a)) {
       NodeObject* no = (NodeObject*)a;
       so->_graph->remove_node_and_edges(no->_node);
-      no->_node = NULL;
-      no->_graph = NULL;
+      no->_node = nullptr;
+      no->_graph = nullptr;
    }
    else {
       GraphDataPyObject data(a);
-      GraphDataPyObject* d = NULL;
+      GraphDataPyObject* d = nullptr;
       //invalidate delivered nodes
       Node* n = so->_graph->get_node(&data);
-      if(n != NULL) {
+      if(n != nullptr) {
          d = dynamic_cast<GraphDataPyObject*>(n->_value);
          NodeObject* no = (NodeObject*)d->_node;
-         if(no != NULL) {
-            no->_node = NULL;
-            no->_graph = NULL;
+         if(no != nullptr) {
+            no->_node = nullptr;
+            no->_graph = nullptr;
          }
       }
       so->_graph->remove_node_and_edges(&data);
@@ -206,22 +209,22 @@ PyObject* graph_remove_node(PyObject* self, PyObject* a) {
       if(is_NodeObject(a)) {
          NodeObject* no = (NodeObject*)a;
          so->_graph->remove_node(no->_node);
-         no->_node = NULL;
-         no->_graph = NULL;
+         no->_node = nullptr;
+         no->_graph = nullptr;
       }
       else {
          GraphDataPyObject data(a);
-         GraphDataPyObject* d = NULL;
+         GraphDataPyObject* d = nullptr;
          //invalidate delivered nodes
          Node* n = so->_graph->get_node(&data);
-         if(n == NULL)
+         if(n == nullptr)
             throw std::runtime_error("node not found");
 
          d = dynamic_cast<GraphDataPyObject*>(n->_value);
          NodeObject* no = (NodeObject*)d->_node;
-         if(no != NULL) {
-            no->_node = NULL;
-            no->_graph = NULL;
+         if(no != nullptr) {
+            no->_node = nullptr;
+            no->_graph = nullptr;
          }
          so->_graph->remove_node(n);
          delete d;
@@ -229,7 +232,7 @@ PyObject* graph_remove_node(PyObject* self, PyObject* a) {
    }
    catch (std::runtime_error e) {
       PyErr_SetString(PyExc_ValueError, e.what());
-      return NULL; 
+      return nullptr;
    }
    RETURN_VOID()
 }
@@ -288,7 +291,7 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_edges(PyObject* self, PyObject* args) {
    PyObject* seq = PySequence_Fast(args, "Argument must be an iterable of edges");
-   if (seq == NULL)
+   if (seq == nullptr)
       return 0;
    size_t list_size = PySequence_Fast_GET_SIZE(seq);
    size_t result = 0;
@@ -306,11 +309,11 @@ PyObject* graph_add_edges(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_remove_edge(PyObject* self, PyObject* args) {
    INIT_SELF_GRAPH();
-   PyObject* from_pyobject, *to_pyobject = NULL;
+   PyObject* from_pyobject, *to_pyobject = nullptr;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "O|O:remove_edge", &from_pyobject, &to_pyobject) <= 0)
-      return NULL;
+      return nullptr;
    try { 
-      if(to_pyobject == NULL && is_EdgeObject(from_pyobject)) {
+      if(to_pyobject == nullptr && is_EdgeObject(from_pyobject)) {
          so->_graph->remove_edge(((EdgeObject*)from_pyobject)->_edge);
       }
       else if(is_NodeObject(from_pyobject) && is_NodeObject(to_pyobject)) {
@@ -318,14 +321,14 @@ PyObject* graph_remove_edge(PyObject* self, PyObject* args) {
          Node* to_node = ((NodeObject*)to_pyobject)->_node;
          so->_graph->remove_edge(from_node->_value, to_node->_value);
       }
-      else if(from_pyobject != NULL && to_pyobject != NULL) {
+      else if(from_pyobject != nullptr && to_pyobject != nullptr) {
          GraphDataPyObject a(from_pyobject), b(to_pyobject);
          so->_graph->remove_edge(&a, &b);
       }
    }
    catch(std::runtime_error e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());
-      return NULL;
+      return nullptr;
    }
    RETURN_VOID()
 }
@@ -527,10 +530,10 @@ PyObject* graph_get_node(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
    GraphDataPyObject value(pyobject);
    Node *node = so->_graph->get_node(&value);
-   if(node == NULL) {
+   if(node == nullptr) {
 
       PyErr_SetString(PyExc_ValueError, "There is no node associated with the given value");
-      return NULL; 
+      return nullptr;
    }
    PyObject* ret = node_deliver(node, so);
 //   Py_DECREF(pyobject);
@@ -567,7 +570,7 @@ PyObject* graph_get_nnodes(PyObject* self, PyObject* _) {
       RETURN_INT(so->_graph->get_nnodes())
    
    PyErr_SetString(PyExc_RuntimeError, "internal error in graph");
-   return NULL;
+   return nullptr;
 }
 
 
@@ -589,11 +592,11 @@ PyObject* graph_get_edges(PyObject* self, PyObject* _) {
 PyObject* graph_has_edge(PyObject* self, PyObject* args) {
    INIT_SELF_GRAPH();
    bool res = false;
-   PyObject* from_pyobject, *to_pyobject = NULL;
+   PyObject* from_pyobject, *to_pyobject = nullptr;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "O|O:has_edge", &from_pyobject, &to_pyobject) <= 0)
-      return NULL;
+      return nullptr;
    
-   if(to_pyobject == NULL && is_EdgeObject(from_pyobject)) {
+   if(to_pyobject == nullptr && is_EdgeObject(from_pyobject)) {
       res = so->_graph->has_edge(((EdgeObject*)from_pyobject)->_edge);
    }
    else if(is_NodeObject(from_pyobject) && is_NodeObject(to_pyobject)) {
@@ -601,7 +604,7 @@ PyObject* graph_has_edge(PyObject* self, PyObject* args) {
       Node* to_node = ((NodeObject*)to_pyobject)->_node;
       res = so->_graph->has_edge(from_node->_value, to_node->_value);
    }
-   else if(from_pyobject != NULL && to_pyobject != NULL) {
+   else if(from_pyobject != nullptr && to_pyobject != nullptr) {
       GraphDataPyObject from(from_pyobject), to(to_pyobject);
       res = so->_graph->has_edge(&from, &to);
    }
@@ -634,7 +637,7 @@ PyObject* graph_get_subgraph_roots(PyObject* self, PyObject* args) {
    }
    catch(std::runtime_error e) {
       PyErr_SetString(PyExc_TypeError, e.what());
-      return NULL;
+      return nullptr;
    }
 }
 
@@ -687,16 +690,16 @@ static PyObject* graph_has_flag(PyObject* self, PyObject* pyobject) {
 static PyObject* graph_has_path(PyObject* self, PyObject* args) {
    INIT_SELF_GRAPH();
    bool res = false;
-   PyObject* from_pyobject, *to_pyobject = NULL;
+   PyObject* from_pyobject, *to_pyobject = nullptr;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "OO:has_path", &from_pyobject, &to_pyobject) <= 0)
-      return NULL;
+      return nullptr;
    
    if(is_NodeObject(from_pyobject) && is_NodeObject(to_pyobject)) {
       Node* from_node = ((NodeObject*)from_pyobject)->_node;
       Node* to_node = ((NodeObject*)to_pyobject)->_node;
       res = so->_graph->has_path(from_node, to_node);
    }
-   else if(from_pyobject != NULL && to_pyobject != NULL) {
+   else if(from_pyobject != nullptr && to_pyobject != nullptr) {
       GraphDataPyObject from(from_pyobject), to(to_pyobject);
       res = so->_graph->has_path(&from,&to);
    }
@@ -940,7 +943,7 @@ PyMethodDef graph_methods[] = {
         },
 
         ALGORITHM_METHODS
-        { NULL }
+        { nullptr }
 };
 
 
@@ -953,7 +956,7 @@ PyGetSetDef graph_getset[] = {
                 CHAR_PTR_CAST "Number of edges in the graph", 0 },
         { CHAR_PTR_CAST "nsubgraphs", (getter)graph_get_nsubgraphs, 0,
                 CHAR_PTR_CAST "Number of edges in the graph", 0 },
-        { NULL }
+        { nullptr }
 };
 
 // -----------------------------------------------------------------------------

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "-O2 -Wall -Wno-deprecated-declarations -static-libgcc") #TODO fix the deprected flag
+set(CMAKE_CXX_FLAGS "-O0 -Wall -Wno-deprecated-declarations -static-libgcc") #TODO fix the deprected flag
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 find_package(PythonInterp 3 REQUIRED)
