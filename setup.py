@@ -170,7 +170,7 @@ for entry in eodev_dir:
       eodev_includes.append(entry)
 
 graph_files = glob.glob("src/graph/*.cpp") + glob.glob("src/graph/graphmodule/*.cpp")
-kdtree_files = ["src/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
+kdtree_files = ["src/geostructs/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
 
 # libstdc++ does not exist with MS VC, but is linke dby default
 if ('--compiler=mingw32' not in sys.argv) and (sys.platform == 'win32'):
@@ -179,7 +179,7 @@ else:
 	galibraries = ["stdc++"]
 if has_openmp:
     ExtGA = Extension("gamera.knnga",
-                      ["src/knngamodule.cpp"] + eodev_files,
+                      ["src/knga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
                       extra_compile_args=["-Wall", "-fopenmp"],
@@ -187,7 +187,7 @@ if has_openmp:
                       )
 else:
     ExtGA = Extension("gamera.knnga",
-                      ["src/knngamodule.cpp"] + eodev_files,
+                      ["src/knga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
                       extra_compile_args=["-Wall"]
@@ -195,25 +195,25 @@ else:
 
 
 extensions = [Extension("gamera.gameracore",
-                        ["src/gameramodule.cpp",
-                         "src/sizeobject.cpp",
-                         "src/pointobject.cpp",
-                         "src/floatpointobject.cpp",
-                         "src/dimobject.cpp",
-                         "src/rectobject.cpp",
-                         "src/regionobject.cpp",
-                         "src/regionmapobject.cpp",
-                         "src/rgbpixelobject.cpp",
-                         "src/imagedataobject.cpp",
-                         "src/imageobject.cpp",
-                         "src/imageinfoobject.cpp",
-                         "src/iteratorobject.cpp"
+                        ["src/gameracore/gameramodule.cpp",
+                         "src/gameracore/sizeobject.cpp",
+                         "src/gameracore/pointobject.cpp",
+                         "src/gameracore/floatpointobject.cpp",
+                         "src/gameracore/dimobject.cpp",
+                         "src/gameracore/rectobject.cpp",
+                         "src/gameracore/regionobject.cpp",
+                         "src/gameracore/regionmapobject.cpp",
+                         "src/gameracore/rgbpixelobject.cpp",
+                         "src/gameracore/imagedataobject.cpp",
+                         "src/gameracore/imageobject.cpp",
+                         "src/gameracore/imageinfoobject.cpp",
+                         "src/gameracore/iteratorobject.cpp"
                          ],
                         include_dirs=["include"],
                         **gamera_setup.extras
                         ),
               Extension("gamera.knncore", 
-                        ["src/knncoremodule.cpp"],
+                        ["src/knncore/knncoremodule.cpp"],
                         include_dirs=["include", "src"],
                         **gamera_setup.extras
                         ),
