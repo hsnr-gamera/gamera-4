@@ -46,14 +46,14 @@ struct Edge {
     * @param label      label
     **/
    Edge(Node* from_node, Node* to_node, cost_t weight = 1.0, 
-         bool directed = false, void* label = NULL);
+         bool directed = false, void* label = nullptr);
 
    /** removes this from nodes this edge is pointing from/to 
     **/
    void remove_self();
 
    /** returns other end of edge if it is reachable from the 
-    * given node or NULL if not reachable
+    * given node or nullptr if not reachable
     **/
    Node* traverse(Node* node);
    Node* traverse(GraphData * value); 

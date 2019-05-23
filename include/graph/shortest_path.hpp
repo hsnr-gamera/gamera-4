@@ -44,7 +44,7 @@ struct DijkstraNode {
    DijkstraNode(Node *n) {
       node = n;
       distance = std::numeric_limits<cost_t>::max();
-      predecessor = NULL;
+      predecessor = nullptr;
       visited = false;
    }
 

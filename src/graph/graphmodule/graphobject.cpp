@@ -90,7 +90,7 @@ void graph_dealloc(PyObject* self) {
 			try {
 				auto d = dynamic_cast<GraphDataPyObject *>(n->_value);
 				if (d == nullptr)
-					throw std::runtime_error("somehting went wrong in dealloc");
+					throw std::runtime_error("something went wrong in dealloc");
 
 				if (d->_node != nullptr) {
 					((NodeObject *) d->_node)->_graph = nullptr;
@@ -101,7 +101,7 @@ void graph_dealloc(PyObject* self) {
 
 				delete d;
 			}catch (std::bad_cast& ex){
-				throw std::runtime_error("somehting went wrong in dealloc");
+				throw std::runtime_error("something went wrong in dealloc");
 			}
          }
          delete it;
