@@ -7,7 +7,7 @@ try:
    wxBitmapFromImage = compat_wx.create_bitmap_from_image
 except Exception:
    from wxPython.wx import wxImageFromStream, wxBitmapFromImage
-import cStringIO, zlib
+import io, zlib
 
 
 def getIconSelectInvertData():
@@ -32,7 +32,7 @@ def getIconSelectInvertBitmap():
     return wxBitmapFromImage(getIconSelectInvertImage())
 
 def getIconSelectInvertImage():
-    stream = cStringIO.StringIO(getIconSelectInvertData())
+    stream = io.StringIO(getIconSelectInvertData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -129,7 +129,7 @@ def getIconImageRgbBitmap():
     return wxBitmapFromImage(getIconImageRgbImage())
 
 def getIconImageRgbImage():
-    stream = cStringIO.StringIO(getIconImageRgbData())
+    stream = io.StringIO(getIconImageRgbData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -155,7 +155,7 @@ def getIconMarkHighlightsBitmap():
     return wxBitmapFromImage(getIconMarkHighlightsImage())
 
 def getIconMarkHighlightsImage():
-    stream = cStringIO.StringIO(getIconMarkHighlightsData())
+    stream = io.StringIO(getIconMarkHighlightsData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -206,7 +206,7 @@ def getIconImageBitmap():
     return wxBitmapFromImage(getIconImageImage())
 
 def getIconImageImage():
-    stream = cStringIO.StringIO(getIconImageData())
+    stream = io.StringIO(getIconImageData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -243,7 +243,7 @@ def getIconConfirmBitmap():
     return wxBitmapFromImage(getIconConfirmImage())
 
 def getIconConfirmImage():
-    stream = cStringIO.StringIO(getIconConfirmData())
+    stream = io.StringIO(getIconConfirmData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -273,7 +273,7 @@ def getComplexVectorBitmap():
     return wxBitmapFromImage(getComplexVectorImage())
 
 def getComplexVectorImage():
-    stream = cStringIO.StringIO(getComplexVectorData())
+    stream = io.StringIO(getComplexVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -291,7 +291,7 @@ def getIconSelectAllBitmap():
     return wxBitmapFromImage(getIconSelectAllImage())
 
 def getIconSelectAllImage():
-    stream = cStringIO.StringIO(getIconSelectAllData())
+    stream = io.StringIO(getIconSelectAllData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -378,7 +378,7 @@ def getIconBitmap():
     return wxBitmapFromImage(getIconImage())
 
 def getIconImage():
-    stream = cStringIO.StringIO(getIconData())
+    stream = io.StringIO(getIconData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -432,7 +432,7 @@ def getIconZoomViewBitmap():
     return wxBitmapFromImage(getIconZoomViewImage())
 
 def getIconZoomViewImage():
-    stream = cStringIO.StringIO(getIconZoomViewData())
+    stream = io.StringIO(getIconZoomViewData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -475,7 +475,7 @@ def getIconZoomInBitmap():
     return wxBitmapFromImage(getIconZoomInImage())
 
 def getIconZoomInImage():
-    stream = cStringIO.StringIO(getIconZoomInData())
+    stream = io.StringIO(getIconZoomInData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -529,7 +529,7 @@ def getIconCcBitmap():
     return wxBitmapFromImage(getIconCcImage())
 
 def getIconCcImage():
-    stream = cStringIO.StringIO(getIconCcData())
+    stream = io.StringIO(getIconCcData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -629,7 +629,7 @@ def getIconSubimageGreyBitmap():
     return wxBitmapFromImage(getIconSubimageGreyImage())
 
 def getIconSubimageGreyImage():
-    stream = cStringIO.StringIO(getIconSubimageGreyData())
+    stream = io.StringIO(getIconSubimageGreyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -671,7 +671,7 @@ def getIconDeleteBitmap():
     return wxBitmapFromImage(getIconDeleteImage())
 
 def getIconDeleteImage():
-    stream = cStringIO.StringIO(getIconDeleteData())
+    stream = io.StringIO(getIconDeleteData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -725,7 +725,7 @@ def getIconFileBitmap():
     return wxBitmapFromImage(getIconFileImage())
 
 def getIconFileImage():
-    stream = cStringIO.StringIO(getIconFileData())
+    stream = io.StringIO(getIconFileData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -800,7 +800,7 @@ def getIconBackBitmap():
     return wxBitmapFromImage(getIconBackImage())
 
 def getIconBackImage():
-    stream = cStringIO.StringIO(getIconBackData())
+    stream = io.StringIO(getIconBackData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -848,7 +848,7 @@ def getIconRefreshBitmap():
     return wxBitmapFromImage(getIconRefreshImage())
 
 def getIconRefreshImage():
-    stream = cStringIO.StringIO(getIconRefreshData())
+    stream = io.StringIO(getIconRefreshData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -868,7 +868,7 @@ def getIconSortAscBitmap():
     return wxBitmapFromImage(getIconSortAscImage())
 
 def getIconSortAscImage():
-    stream = cStringIO.StringIO(getIconSortAscData())
+    stream = io.StringIO(getIconSortAscData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -933,7 +933,7 @@ def getIconImageGrey16Bitmap():
     return wxBitmapFromImage(getIconImageGrey16Image())
 
 def getIconImageGrey16Image():
-    stream = cStringIO.StringIO(getIconImageGrey16Data())
+    stream = io.StringIO(getIconImageGrey16Data())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1031,7 +1031,7 @@ def getIconSubimageUnknownBitmap():
     return wxBitmapFromImage(getIconSubimageUnknownImage())
 
 def getIconSubimageUnknownImage():
-    stream = cStringIO.StringIO(getIconSubimageUnknownData())
+    stream = io.StringIO(getIconSubimageUnknownData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1051,7 +1051,7 @@ def getIconMoveBitmap():
     return wxBitmapFromImage(getIconMoveImage())
 
 def getIconMoveImage():
-    stream = cStringIO.StringIO(getIconMoveData())
+    stream = io.StringIO(getIconMoveData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1100,7 +1100,7 @@ def getIconUndoBitmap():
     return wxBitmapFromImage(getIconUndoImage())
 
 def getIconUndoImage():
-    stream = cStringIO.StringIO(getIconUndoData())
+    stream = io.StringIO(getIconUndoData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1199,7 +1199,7 @@ def getIconSubimageBinaryBitmap():
     return wxBitmapFromImage(getIconSubimageBinaryImage())
 
 def getIconSubimageBinaryImage():
-    stream = cStringIO.StringIO(getIconSubimageBinaryData())
+    stream = io.StringIO(getIconSubimageBinaryData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1222,7 +1222,7 @@ def getIconSelectBitmap():
     return wxBitmapFromImage(getIconSelectImage())
 
 def getIconSelectImage():
-    stream = cStringIO.StringIO(getIconSelectData())
+    stream = io.StringIO(getIconSelectData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1330,7 +1330,7 @@ def getIconSubimageRgbBitmap():
     return wxBitmapFromImage(getIconSubimageRgbImage())
 
 def getIconSubimageRgbImage():
-    stream = cStringIO.StringIO(getIconSubimageRgbData())
+    stream = io.StringIO(getIconSubimageRgbData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1347,7 +1347,7 @@ def getToolbarCloseBitmap():
     return wxBitmapFromImage(getToolbarCloseImage())
 
 def getToolbarCloseImage():
-    stream = cStringIO.StringIO(getToolbarCloseData())
+    stream = io.StringIO(getToolbarCloseData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1380,7 +1380,7 @@ def getIconSaveBitmap():
     return wxBitmapFromImage(getIconSaveImage())
 
 def getIconSaveImage():
-    stream = cStringIO.StringIO(getIconSaveData())
+    stream = io.StringIO(getIconSaveData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1423,7 +1423,7 @@ def getIconZoomOutBitmap():
     return wxBitmapFromImage(getIconZoomOutImage())
 
 def getIconZoomOutImage():
-    stream = cStringIO.StringIO(getIconZoomOutData())
+    stream = io.StringIO(getIconZoomOutData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1515,7 +1515,7 @@ def getIconImageUnknownBitmap():
     return wxBitmapFromImage(getIconImageUnknownImage())
 
 def getIconImageUnknownImage():
-    stream = cStringIO.StringIO(getIconImageUnknownData())
+    stream = io.StringIO(getIconImageUnknownData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1565,7 +1565,7 @@ def getIconMakeViewBitmap():
     return wxBitmapFromImage(getIconMakeViewImage())
 
 def getIconMakeViewImage():
-    stream = cStringIO.StringIO(getIconMakeViewData())
+    stream = io.StringIO(getIconMakeViewData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1581,7 +1581,7 @@ def getXBitmap():
     return wxBitmapFromImage(getXImage())
 
 def getXImage():
-    stream = cStringIO.StringIO(getXData())
+    stream = io.StringIO(getXData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1656,7 +1656,7 @@ def getIconForwardBitmap():
     return wxBitmapFromImage(getIconForwardImage())
 
 def getIconForwardImage():
-    stream = cStringIO.StringIO(getIconForwardData())
+    stream = io.StringIO(getIconForwardData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1714,7 +1714,7 @@ def getIconImageComplexBitmap():
     return wxBitmapFromImage(getIconImageComplexImage())
 
 def getIconImageComplexImage():
-    stream = cStringIO.StringIO(getIconImageComplexData())
+    stream = io.StringIO(getIconImageComplexData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1742,7 +1742,7 @@ def getIconNextManclassBitmap():
     return wxBitmapFromImage(getIconNextManclassImage())
 
 def getIconNextManclassImage():
-    stream = cStringIO.StringIO(getIconNextManclassData())
+    stream = io.StringIO(getIconNextManclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1777,7 +1777,7 @@ def getIconShowNameBitmap():
     return wxBitmapFromImage(getIconShowNameImage())
 
 def getIconShowNameImage():
-    stream = cStringIO.StringIO(getIconShowNameData())
+    stream = io.StringIO(getIconShowNameData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1808,7 +1808,7 @@ def getIntVectorBitmap():
     return wxBitmapFromImage(getIntVectorImage())
 
 def getIntVectorImage():
-    stream = cStringIO.StringIO(getIntVectorData())
+    stream = io.StringIO(getIntVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1882,7 +1882,7 @@ def getIconSubimageComplexBitmap():
     return wxBitmapFromImage(getIconSubimageComplexImage())
 
 def getIconSubimageComplexImage():
-    stream = cStringIO.StringIO(getIconSubimageComplexData())
+    stream = io.StringIO(getIconSubimageComplexData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -1901,7 +1901,7 @@ def getIconSelectRemovedBitmap():
     return wxBitmapFromImage(getIconSelectRemovedImage())
 
 def getIconSelectRemovedImage():
-    stream = cStringIO.StringIO(getIconSelectRemovedData())
+    stream = io.StringIO(getIconSelectRemovedData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -2003,7 +2003,7 @@ def getIconSubimageGrey16Bitmap():
     return wxBitmapFromImage(getIconSubimageGrey16Image())
 
 def getIconSubimageGrey16Image():
-    stream = cStringIO.StringIO(getIconSubimageGrey16Data())
+    stream = io.StringIO(getIconSubimageGrey16Data())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -2019,7 +2019,7 @@ def getPlusBitmap():
     return wxBitmapFromImage(getPlusImage())
 
 def getPlusImage():
-    stream = cStringIO.StringIO(getPlusData())
+    stream = io.StringIO(getPlusData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -2073,7 +2073,7 @@ def getIconHomeBitmap():
     return wxBitmapFromImage(getIconHomeImage())
 
 def getIconHomeImage():
-    stream = cStringIO.StringIO(getIconHomeData())
+    stream = io.StringIO(getIconHomeData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -2093,7 +2093,7 @@ def getIconZoomFitBitmap():
     return wxBitmapFromImage(getIconZoomFitImage())
 
 def getIconZoomFitImage():
-    stream = cStringIO.StringIO(getIconZoomFitData())
+    stream = io.StringIO(getIconZoomFitData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -6800,7 +6800,7 @@ def getGameraSplashBitmap():
     return wxBitmapFromImage(getGameraSplashImage())
 
 def getGameraSplashImage():
-    stream = cStringIO.StringIO(getGameraSplashData())
+    stream = io.StringIO(getGameraSplashData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -6884,7 +6884,7 @@ def getIconImageBinaryBitmap():
     return wxBitmapFromImage(getIconImageBinaryImage())
 
 def getIconImageBinaryImage():
-    stream = cStringIO.StringIO(getIconImageBinaryData())
+    stream = io.StringIO(getIconImageBinaryData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -6904,7 +6904,7 @@ def getIconSelectAddedBitmap():
     return wxBitmapFromImage(getIconSelectAddedImage())
 
 def getIconSelectAddedImage():
-    stream = cStringIO.StringIO(getIconSelectAddedData())
+    stream = io.StringIO(getIconSelectAddedData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -6941,7 +6941,7 @@ def getIconGuessBitmap():
     return wxBitmapFromImage(getIconGuessImage())
 
 def getIconGuessImage():
-    stream = cStringIO.StringIO(getIconGuessData())
+    stream = io.StringIO(getIconGuessData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -6968,7 +6968,7 @@ def getIconNextUnclassBitmap():
     return wxBitmapFromImage(getIconNextUnclassImage())
 
 def getIconNextUnclassImage():
-    stream = cStringIO.StringIO(getIconNextUnclassData())
+    stream = io.StringIO(getIconNextUnclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7002,7 +7002,7 @@ def getIconClassifyBitmap():
     return wxBitmapFromImage(getIconClassifyImage())
 
 def getIconClassifyImage():
-    stream = cStringIO.StringIO(getIconClassifyData())
+    stream = io.StringIO(getIconClassifyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7030,7 +7030,7 @@ def getFloatVectorBitmap():
     return wxBitmapFromImage(getFloatVectorImage())
 
 def getFloatVectorImage():
-    stream = cStringIO.StringIO(getFloatVectorData())
+    stream = io.StringIO(getFloatVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7093,7 +7093,7 @@ def getIconNoninterClassifyBitmap():
     return wxBitmapFromImage(getIconNoninterClassifyImage())
 
 def getIconNoninterClassifyImage():
-    stream = cStringIO.StringIO(getIconNoninterClassifyData())
+    stream = io.StringIO(getIconNoninterClassifyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7110,7 +7110,7 @@ def getIconDetailsBitmap():
     return wxBitmapFromImage(getIconDetailsImage())
 
 def getIconDetailsImage():
-    stream = cStringIO.StringIO(getIconDetailsData())
+    stream = io.StringIO(getIconDetailsData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7130,7 +7130,7 @@ def getIconSortDecBitmap():
     return wxBitmapFromImage(getIconSortDecImage())
 
 def getIconSortDecImage():
-    stream = cStringIO.StringIO(getIconSortDecData())
+    stream = io.StringIO(getIconSortDecData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7223,7 +7223,7 @@ def getIconImageFloatBitmap():
     return wxBitmapFromImage(getIconImageFloatImage())
 
 def getIconImageFloatImage():
-    stream = cStringIO.StringIO(getIconImageFloatData())
+    stream = io.StringIO(getIconImageFloatData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7288,7 +7288,7 @@ def getIconImageGreyBitmap():
     return wxBitmapFromImage(getIconImageGreyImage())
 
 def getIconImageGreyImage():
-    stream = cStringIO.StringIO(getIconImageGreyData())
+    stream = io.StringIO(getIconImageGreyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7304,7 +7304,7 @@ def getToolbarOpenBitmap():
     return wxBitmapFromImage(getToolbarOpenImage())
 
 def getToolbarOpenImage():
-    stream = cStringIO.StringIO(getToolbarOpenData())
+    stream = io.StringIO(getToolbarOpenData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7367,7 +7367,7 @@ def getIconImageListBitmap():
     return wxBitmapFromImage(getIconImageListImage())
 
 def getIconImageListImage():
-    stream = cStringIO.StringIO(getIconImageListData())
+    stream = io.StringIO(getIconImageListData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7457,7 +7457,7 @@ def getIconImageBrowserBitmap():
     return wxBitmapFromImage(getIconImageBrowserImage())
 
 def getIconImageBrowserImage():
-    stream = cStringIO.StringIO(getIconImageBrowserData())
+    stream = io.StringIO(getIconImageBrowserData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7560,7 +7560,7 @@ def getIconSubimageFloatBitmap():
     return wxBitmapFromImage(getIconSubimageFloatImage())
 
 def getIconSubimageFloatImage():
-    stream = cStringIO.StringIO(getIconSubimageFloatData())
+    stream = io.StringIO(getIconSubimageFloatData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7624,7 +7624,7 @@ def getIconPrinterBitmap():
     return wxBitmapFromImage(getIconPrinterImage())
 
 def getIconPrinterImage():
-    stream = cStringIO.StringIO(getIconPrinterData())
+    stream = io.StringIO(getIconPrinterData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7661,7 +7661,7 @@ def getIconHelpBitmap():
     return wxBitmapFromImage(getIconHelpImage())
 
 def getIconHelpImage():
-    stream = cStringIO.StringIO(getIconHelpData())
+    stream = io.StringIO(getIconHelpData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7703,7 +7703,7 @@ def getIconZoomNormBitmap():
     return wxBitmapFromImage(getIconZoomNormImage())
 
 def getIconZoomNormImage():
-    stream = cStringIO.StringIO(getIconZoomNormData())
+    stream = io.StringIO(getIconZoomNormData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7759,7 +7759,7 @@ def getIconChooseImageBitmap():
     return wxBitmapFromImage(getIconChooseImageImage())
 
 def getIconChooseImageImage():
-    stream = cStringIO.StringIO(getIconChooseImageData())
+    stream = io.StringIO(getIconChooseImageData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7787,7 +7787,7 @@ def getIconNextAutoclassBitmap():
     return wxBitmapFromImage(getIconNextAutoclassImage())
 
 def getIconNextAutoclassImage():
-    stream = cStringIO.StringIO(getIconNextAutoclassData())
+    stream = io.StringIO(getIconNextAutoclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -7814,7 +7814,7 @@ def getIconNextHeurclassBitmap():
     return wxBitmapFromImage(getIconNextHeurclassImage())
 
 def getIconNextHeurclassImage():
-    stream = cStringIO.StringIO(getIconNextHeurclassData())
+    stream = io.StringIO(getIconNextHeurclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -9585,7 +9585,7 @@ def getGameraWizardBitmap():
     return wxBitmapFromImage(getGameraWizardImage())
 
 def getGameraWizardImage():
-    stream = cStringIO.StringIO(getGameraWizardData())
+    stream = io.StringIO(getGameraWizardData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
@@ -9627,6 +9627,6 @@ def getIconImageCopyBitmap():
     return wxBitmapFromImage(getIconImageCopyImage())
 
 def getIconImageCopyImage():
-    stream = cStringIO.StringIO(getIconImageCopyData())
+    stream = io.StringIO(getIconImageCopyData())
     return wxImageFromStream(stream)
 

@@ -399,7 +399,7 @@ class draw_text(PluginFunction):
     bold = (bold and wx.BOLD) or wx.NORMAL
     if type(text) == str:
       encoding = wx.FONTENCODING_SYSTEM
-    elif type(text) == unicode:
+    elif type(text) == str:
       encoding = wx.FONTENCODING_UNICODE
     else:
       raise ValueError("text must be a string or unicode string.")

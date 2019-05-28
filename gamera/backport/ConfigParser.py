@@ -118,7 +118,7 @@ class NoSectionError(Error):
     """Raised when no section matches a requested option."""
 
     def __init__(self, section):
-        Error.__init__(self, 'No section: ' + `section`)
+        Error.__init__(self, 'No section: ' + repr(section))
         self.section = section
 
 class DuplicateSectionError(Error):
@@ -213,7 +213,7 @@ class RawConfigParser:
     def sections(self):
         """Return a list of section names, excluding [DEFAULT]"""
         # self._sections will never have [DEFAULT] in it
-        return self._sections.keys()
+        return list(self._sections.keys())
 
     def add_section(self, section):
         """Create a new section in the configuration.
@@ -241,7 +241,7 @@ class RawConfigParser:
         opts.update(self._defaults)
         if '__name__' in opts:
             del opts['__name__']
-        return opts.keys()
+        return list(opts.keys())
 
     def read(self, filenames):
         """Read and parse a filename or a list of filenames.
@@ -253,7 +253,7 @@ class RawConfigParser:
         configuration files in the list will be read.  A single
         filename may also be given.
         """
-        if type(filenames) in (type(""), type(u"")):
+        if type(filenames) in (type(""), type("")):
             filenames = [filenames]
         for filename in filenames:
             try:
@@ -306,7 +306,7 @@ class RawConfigParser:
         d.update(d2)
         if "__name__" in d:
             del d["__name__"]
-        return d.items()
+        return list(d.items())
 
     def _get(self, section, conv, option):
         return conv(self.get(section, option))
@@ -323,7 +323,7 @@ class RawConfigParser:
     def getboolean(self, section, option):
         v = self.get(section, option)
         if v.lower() not in self._boolean_states:
-            raise ValueError, 'Not a boolean: %s' % v
+            raise ValueError('Not a boolean: %s' % v)
         return self._boolean_states[v.lower()]
 
     def optionxform(self, optionstr):
@@ -356,12 +356,12 @@ class RawConfigParser:
         """Write an .ini-format representation of the configuration state."""
         if self._defaults:
             fp.write("[%s]\n" % DEFAULTSECT)
-            for (key, value) in self._defaults.items():
+            for (key, value) in list(self._defaults.items()):
                 fp.write("%s = %s\n" % (key, str(value).replace('\n', '\n\t')))
             fp.write("\n")
         for section in self._sections:
             fp.write("[%s]\n" % section)
-            for (key, value) in self._sections[section].items():
+            for (key, value) in list(self._sections[section].items()):
                 if key != "__name__":
                     fp.write("%s = %s\n" %
                              (key, str(value).replace('\n', '\n\t')))
@@ -453,7 +453,7 @@ class RawConfigParser:
                     optname = None
                 # no section header in the file?
                 elif cursect is None:
-                    raise MissingSectionHeaderError(fpname, lineno, `line`)
+                    raise MissingSectionHeaderError(fpname, lineno, repr(line))
                 # an option line?
                 else:
                     mo = self.OPTCRE.match(line)
@@ -478,7 +478,7 @@ class RawConfigParser:
                         # list of all bogus lines
                         if not e:
                             e = ParsingError(fpname)
-                        e.append(lineno, `line`)
+                        e.append(lineno, repr(line))
         # if any parsing errors occurred, raise an exception
         if e:
             raise e
@@ -538,7 +538,7 @@ class ConfigParser(RawConfigParser):
         # Update with the entry specific variables
         if vars:
             d.update(vars)
-        options = d.keys()
+        options = list(d.keys())
         if "__name__" in options:
             options.remove("__name__")
         if raw:
@@ -557,7 +557,7 @@ class ConfigParser(RawConfigParser):
             if value.find("%(") != -1:
                 try:
                     value = value % vars
-                except KeyError, e:
+                except KeyError as e:
                     raise InterpolationMissingOptionError(
                         option, section, rawval, e[0])
             else:
@@ -613,4 +613,4 @@ class SafeConfigParser(ConfigParser):
             else:
                 raise InterpolationSyntaxError(
                     option, section,
-                    "'%' must be followed by '%' or '(', found: " + `rest`)
+                    "'%' must be followed by '%' or '(', found: " + repr(rest))

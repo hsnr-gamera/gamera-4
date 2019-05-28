@@ -20,13 +20,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 
 import wx
 import wx.grid as gridlib
 
 from math import sqrt, ceil, log, floor # Python standard library
-from sys import maxint
+from sys import maxsize
 import sys, string, weakref
 import warnings
 
@@ -145,7 +145,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
             box = args[0]
          else:
             raise TypeError("Wrong number of arguments. See core.Rect for possible arguments.")
-      except Exception, e:
+      except Exception as e:
          errmsg = "("+e.__class__.__name__+") "+e.message
       if not isinstance(box, Rect):
          raise TypeError("Could not construct a core.Rect object from arguments."
@@ -1155,8 +1155,8 @@ class MultiImageDisplay(gridlib.Grid):
             self.DeleteRows(0, orig_rows - rows)
          elif rows > orig_rows:
             self.AppendRows(rows - orig_rows)
-            for row in xrange(rows - 1, -1, -1):
-               for col in xrange(cols):
+            for row in range(rows - 1, -1, -1):
+               for col in range(cols):
                   self.SetCellRenderer(row, col, self.get_renderer())
                   self.SetReadOnly(row, col, True)
          self.rows = rows
@@ -1341,11 +1341,11 @@ class MultiImageDisplay(gridlib.Grid):
             for image in self.glyphs:
                try:
                   image.sort_cache = eval("x." + sort_string, {'x': image})
-               except Exception, e:
+               except Exception as e:
                   error_messages[str(e)] = None
                   image.sort_cache = None
             if len(error_messages):
-               message = '\n\n'.join(error_messages.keys())
+               message = '\n\n'.join(list(error_messages.keys()))
                gui_util.message(message)
                for item in self.glyphs:
                   del item.sort_cache
@@ -1403,7 +1403,7 @@ class MultiImageDisplay(gridlib.Grid):
             if x != None:
                try:
                   result = function(x)
-               except Exception, err:
+               except Exception as err:
                   gui_util.message(str(err))
                   return
                if result:
@@ -1751,7 +1751,7 @@ class MultiImageWindow(wx.Panel):
       try:
          select_func = eval("lambda x: (" + select_string + ")", globals(),
                             image_menu.shell.locals)
-      except Exception, e:
+      except Exception as e:
          gui_util.message(str(e))
          return
       if select_string not in self.select_choices:
@@ -2133,7 +2133,7 @@ class GameraPrintout(wx.Printout):
       scale = min([float(vw) / float(self.image.width), float(vh) / float(self.image.height)])
 
       from sys import stderr
-      print >>stderr, "Printing at (%d, %d) resolution" % (ppw, pph)
+      print("Printing at (%d, %d) resolution" % (ppw, pph), file=stderr)
 
       if self.image.pixel_type_name == "OneBit":
          self.image = self.image.to_greyscale()

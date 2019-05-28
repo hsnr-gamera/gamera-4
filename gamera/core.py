@@ -53,7 +53,7 @@ except ImportError:
    raise ImportError("Couldn't import the core of Gamera.  Are you trying to start the GUI from the root of the Gamera source tree?  This confuses the Python module loading mechanism.")
 # import the pixel types
 from gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
-from enums import ALL, NONIMAGE
+from .enums import ALL, NONIMAGE
 # import the storage types
 from gameracore import DENSE, RLE
 # import some of the basic types
@@ -66,8 +66,8 @@ import gameracore
 from gamera.gui import has_gui
 
 # from gamera.classify import *
-import paths, util    # Gamera-specific
-from config import config
+from . import paths, util    # Gamera-specific
+from .config import config
 
 class SegmentationError(Exception):
    pass
@@ -453,7 +453,7 @@ For details about the confidence computation in Gamera, see
       if not confidence_type:
          return self.id_name[0][0]
       else:
-         if self.confidence.has_key(confidence_type):
+         if confidence_type in self.confidence:
             return self.confidence[confidence_type]
          else:
             raise ValueError("Given confidence %i not stored in confidence map of image" % confidence_type)
@@ -521,7 +521,7 @@ Changes to subimages will affect all other subimages viewing the same data.
             all_strings = False
             break
       if not all_strings:
-         import plugin
+         from . import plugin
          all_functions = False
          if (type(features) == tuple and
              len(features) == 2 and
@@ -561,7 +561,7 @@ Changes to subimages will affect all other subimages viewing the same data.
       Returns a string containing the Gamera XML representation of the image.
       (See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
       """
-      import gamera_xml
+      from . import gamera_xml
       return gamera_xml.WriteXML(glyphs=[self]).write_stream(stream)
 
    def to_xml_filename(self, filename):
@@ -569,7 +569,7 @@ Changes to subimages will affect all other subimages viewing the same data.
       Saves the Gamera XML representation of the image to the given *filename*.
       (See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
       """
-      import gamera_xml
+      from . import gamera_xml
       return gamera_xml.WriteXML(glyphs=[self]).write_filename(filename)
 
    def set_property(self, name, value):
@@ -719,16 +719,16 @@ if sys.platform == 'win32':
    def init_gamera():
       try:
          _init_gamera()
-      except Exception, e:
-         print type(e)
+      except Exception as e:
+         print(type(e))
          if not isinstance(e, SystemExit):
             import traceback
-            print "Gamera made a fatal error:"
-            print
+            print("Gamera made a fatal error:")
+            print()
             traceback.print_exc()
-            print
-            print "Press <ENTER> to exit."
-            x = raw_input()
+            print()
+            print("Press <ENTER> to exit.")
+            x = input()
             sys.exit(1)
 else:
    init_gamera = _init_gamera

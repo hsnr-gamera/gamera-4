@@ -22,8 +22,8 @@
 # Mixin classes to add wrapper-generation support for arguments list
 
 import re
-from enums import *
-import util
+from .enums import *
+from . import util
 
 class Arg:
    arg_format = 'O'

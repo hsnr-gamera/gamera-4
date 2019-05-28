@@ -57,7 +57,7 @@ def convert(file, maskClr, outputDir, outputName, outType, outExt):
 
 def main(args, outType, outExt, doc):
     if not args or ("-h" in args):
-        print doc
+        print(doc)
         return
 
     outputDir = ""
@@ -67,7 +67,7 @@ def main(args, outType, outExt, doc):
     try:
         opts, fileArgs = getopt.getopt(args, "m:n:o:")
     except getopt.GetoptError:
-        print __doc__
+        print(__doc__)
         return
 
     for opt, val in opts:
@@ -79,7 +79,7 @@ def main(args, outType, outExt, doc):
             outputDir = val
 
     if not fileArgs:
-        print doc
+        print(doc)
         return
 
     for arg in fileArgs:
@@ -88,5 +88,5 @@ def main(args, outType, outExt, doc):
                 continue
             ok, msg = convert(file, maskClr, outputDir, outputName,
                               outType, outExt)
-            print msg
+            print(msg)
 

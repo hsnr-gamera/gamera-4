@@ -36,7 +36,7 @@ def local_max_distance(glyphs, x, k):
 def get_graph_stats(glyphs, k):
    s = { }
    gc = knn.glyphs_by_category(glyphs)
-   for x in gc.itervalues():
+   for x in gc.values():
       if len(x) == 1:
          s[x[0].get_main_id()] = 1.0
          continue
@@ -53,7 +53,7 @@ def get_graph_stats(glyphs, k):
 def strip_small_categories(glyphs):
    gc = knn.glyphs_by_category(glyphs)
    new_glyphs = []
-   for v in gc.itervalues():
+   for v in gc.values():
       if len(v) > 3:
          new_glyphs.extend(v)
    return new_glyphs
@@ -65,15 +65,15 @@ def test():
    glyphs = strip_small_categories(glyphs)
    from gamera.plugins import features
    k = knn.kNN()
-   print k.features
+   print(k.features)
    features.generate_features_list(glyphs, k.feature_functions)
-   print "Getting gstats"
+   print("Getting gstats")
 
    graph_stats = get_graph_stats(glyphs, k)
    gstats = knn.get_glyphs_stats(glyphs)
 
    max_dist = max_distance(glyphs, k)
-   print max_dist
+   print(max_dist)
    file = open("results.txt", "w")
    global_max = [[],[]]
    local_max = [[],[]]
@@ -113,10 +113,10 @@ def test():
 
       file.write("\n")
 
-   print "num correct: %d num incorrect: %d" % (len(global_max[1]), len(global_max[0]))
-   print "confidence %f %f %f" % (((gr_ccorrect + gr_icorrect) / float(len(glyphs))),
+   print("num correct: %d num incorrect: %d" % (len(global_max[1]), len(global_max[0])))
+   print("confidence %f %f %f" % (((gr_ccorrect + gr_icorrect) / float(len(glyphs))),
                                   gr_ccorrect / float(len(glyphs) - len(global_max[0])),
-                                  gr_icorrect / float(len(glyphs) - len(global_max[1])))
+                                  gr_icorrect / float(len(glyphs) - len(global_max[1]))))
 
    cgm = -1
    igm = -1
@@ -162,10 +162,10 @@ def test():
       cgraphm = stats.mean(graph[1])
       cgraphs = stats.samplestdev(graph[1])
 
-   print "global correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cgm, cgs, igm, igs)
-   print "local correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (clm, cls, ilm, ils)
-   print "all correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cam, cas, iam, ias)
-   print "graph correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cgraphm, cgraphs, igraphm, igraphs)
+   print("global correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cgm, cgs, igm, igs))
+   print("local correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (clm, cls, ilm, ils))
+   print("all correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cam, cas, iam, ias))
+   print("graph correct avg: %f stdev: %f incorrect avg: %f stddev: %f" % (cgraphm, cgraphs, igraphm, igraphs))
 
    def otsu_threshold(p):
       l = len(p)
@@ -207,52 +207,52 @@ def test():
    graph_l.extend(graph[1])
    graph_l.sort()
    threshold = stats.mean(graph_l)
-   print "threshold: " + str(threshold)
+   print("threshold: " + str(threshold))
    num_wrong = 0
    for x in graph[0]:
       if x < threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[0])) * 100
+   print(num_wrong, num_wrong / float(len(graph[0])) * 100)
 
    num_wrong = 0
    for x in graph[1]:
       if x >= threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[1])) * 100
+   print(num_wrong, num_wrong / float(len(graph[1])) * 100)
 
    graph_l = all[0][:]
    graph_l.extend(all[1])
    graph_l.sort()
    threshold = stats.mean(graph_l)
-   print "threshold: " + str(threshold)
+   print("threshold: " + str(threshold))
    num_wrong = 0
    for x in graph[0]:
       if x < threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[0])) * 100
+   print(num_wrong, num_wrong / float(len(graph[0])) * 100)
 
    num_wrong = 0
    for x in graph[1]:
       if x >= threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[1])) * 100
+   print(num_wrong, num_wrong / float(len(graph[1])) * 100)
 
    graph_l = local_max[0][:]
    graph_l.extend(local_max[1])
    graph_l.sort()
    threshold = stats.mean(graph_l)
-   print "threshold: " + str(threshold)
+   print("threshold: " + str(threshold))
    num_wrong = 0
    for x in graph[0]:
       if x < threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[0])) * 100
+   print(num_wrong, num_wrong / float(len(graph[0])) * 100)
 
    num_wrong = 0
    for x in graph[1]:
       if x >= threshold:
          num_wrong += 1
-   print num_wrong, num_wrong / float(len(graph[1])) * 100
+   print(num_wrong, num_wrong / float(len(graph[1])) * 100)
 
 
 #test()

@@ -19,14 +19,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 import os, sys, dircache, glob, imp  # Python standard library
 
 if 1:
    def dummy():
       pass
 
-lib = os.path.dirname(os.path.realpath(dummy.func_code.co_filename))
+lib = os.path.dirname(os.path.realpath(dummy.__code__.co_filename))
 lib_gui = os.path.realpath(os.path.join(lib, "gui"))
 # Figure out if we are in the source directory or installed
 plugins = os.path.realpath(os.path.join(lib, "plugins"))
@@ -64,8 +64,8 @@ def get_directory_of_modules(dir, base=''):
       try:
          module = imp.load_module(base + name, file(m, 'r'), m, suffix)
          mods.append(module)
-      except Exception, e:
-         print e
+      except Exception as e:
+         print(e)
    return mods
 
 def import_directory(dir, gl, lo, verbose=0):
@@ -83,7 +83,7 @@ def import_directory(dir, gl, lo, verbose=0):
       try:
          module = __import__(m, gl, lo, [])
          failed = 0
-      except Exception, e:
+      except Exception as e:
          failed = e
       if failed:
          display = '[%s %s]' % (m, str(failed))

@@ -32,8 +32,8 @@ from distutils import sysconfig
 #sys.exit(0)
 
 if sys.hexversion < 0x02030000:
-   print "At least Python 2.3 is required to build Gamera.  You have"
-   print sys.version
+   print("At least Python 2.3 is required to build Gamera.  You have")
+   print(sys.version)
    sys.exit(1)
 
 cross_compiling = False
@@ -71,7 +71,7 @@ for argument in sys.argv:
       no_wx = True
       sys.argv.remove(argument)
 open("gamera/__version__.py", "w").write("ver = '%s'\n\n" % gamera_version)
-print "Gamera version:", gamera_version
+print("Gamera version:", gamera_version)
 
 # query OpenMP (parallelization) support and save it to compile time config file
 if has_openmp is None:
@@ -86,10 +86,10 @@ f = open("gamera/__compiletime_config__.py", "w")
 f.write("# automatically generated configuration at compile time\n")
 if has_openmp:
     f.write("has_openmp = True\n")
-    print "Compiling genetic algorithms with parallelization (OpenMP)"
+    print("Compiling genetic algorithms with parallelization (OpenMP)")
 else:
     f.write("has_openmp = False\n")
-    print "Compiling genetic algorithms without parallelization (OpenMP)"
+    print("Compiling genetic algorithms without parallelization (OpenMP)")
 f.close()
 
 from distutils.core import setup, Extension
@@ -148,7 +148,7 @@ for util in command_line_utils:
    fd = open(file, 'w')
    fd.write(content % info)
    fd.close()
-os.chmod(file, 0700)
+os.chmod(file, 0o700)
 
 scripts = [x[command_line_filename_at] for x in command_line_utils] + ['gamera_post_install.py']
 
@@ -248,11 +248,11 @@ else:
 includes = [(os.path.join(gamera_setup.include_path, path),
              glob.glob(os.path.join("include", os.path.join(path, ext))))
             for path, ext in
-            ("", "*.hpp"),
+            [("", "*.hpp"),
             ("plugins", "*.hpp"),
             ("vigra", "*.hxx"),
             ("geostructs", "*.hpp"),
-            ("graph", "*.hpp")]
+            ("graph", "*.hpp")]]
 
 srcfiles = [(os.path.join(gamera_setup.lib_path,path),
              glob.glob(os.path.join(path, ext)))

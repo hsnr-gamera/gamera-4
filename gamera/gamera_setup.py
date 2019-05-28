@@ -35,7 +35,7 @@ import distutils.command.bdist_rpm
 def rpm_run(self):
    try:
       original_rpm_run(self)
-   except AssertionError, e:
+   except AssertionError as e:
       if str(e).startswith("unexpected number of RPM files found"):
          rpms = glob.glob(os.path.join(os.path.join(self.rpm_base, 'RPMS'),
                                        "*/*.rpm"))
@@ -50,7 +50,7 @@ class smart_install_data(install_data.install_data):
    def run(self):
       install_cmd = self.get_finalized_command("install")
       install_dir = os.path.join(getattr(install_cmd, "install_lib"), "gamera")
-      print "INSTALL DIRECTORY", install_dir
+      print("INSTALL DIRECTORY", install_dir)
       output = []
       for path, files in self.data_files:
          if "$LIB" in path:
@@ -76,7 +76,7 @@ elif sys.platform == "win32":
 # finished. To get around this, the gamera directory is
 # added to the path and generate is imported directly
 sys.path.append("gamera")
-import generate
+from . import generate
 
 extras = {'extra_compile_args': ['-Wall']}
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
@@ -96,9 +96,9 @@ required_versions = {'linux2': 222, 'win32':  231, 'darwin': 230, 'cygwin': 222}
 version = float(''.join([str(x) for x in sys.version_info[0:3]]))
 required_version = required_versions.setdefault(sys.platform, default_required_version)
 if version < required_version:
-   print "Gamera requires Python version %s or later." % '.'.join(list(str(required_version)))
-   print "You are running the following Python version:"
-   print sys.version
+   print("Gamera requires Python version %s or later." % '.'.join(list(str(required_version))))
+   print("You are running the following Python version:")
+   print(sys.version)
    sys.exit(1)
 
 lib_path = os.path.join(get_python_lib()[len(PREFIX)+1:], "gamera")

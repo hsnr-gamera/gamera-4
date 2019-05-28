@@ -23,7 +23,7 @@ import traceback
 from sys import exc_info
 from inspect import isfunction
 from gamera import group, util
-from fudge import Fudge
+from .fudge import Fudge
 
 """This module provides tools for applying graph-rewriting rules to a
 set of glyphs.
@@ -149,26 +149,26 @@ class RuleEngine:
 
    def add_rule(self, rule):
       import id_name_matching
-      assert len(rule.func_defaults)
+      assert len(rule.__defaults__)
       self.rules[rule] = None
-      regex = rule.func_defaults[0]
-      if not self._rules_by_regex.has_key(regex):
+      regex = rule.__defaults__[0]
+      if regex not in self._rules_by_regex:
          self._rules_by_regex[regex] = []
       self._rules_by_regex[regex].append(rule)
-      for regex in rule.func_defaults:
-         if not self._regexs.has_key(regex):
+      for regex in rule.__defaults__:
+         if regex not in self._regexs:
             self._regexs[regex] = id_name_matching.build_id_regex(regex)
-         if not self._rules_by_regex.has_key(regex):
+         if regex not in self._rules_by_regex:
             self._rules_by_regex[regex] = []
 
    def get_rules(self):
-      return self.rules.keys()
+      return list(self.rules.keys())
 
    def _deal_with_result(self, rule, glyphs, added, removed):
       try:
          current_stack = traceback.extract_stack()
          result = rule(*glyphs)
-      except Exception, e:
+      except Exception as e:
          lines = traceback.format_exception(*exc_info())
          del lines[1]
          exception = ''.join(lines)
@@ -194,23 +194,23 @@ class RuleEngine:
       try:
          grid_index = group.GridIndexWithKeys(glyphs, grid_size, grid_size)
          found_regexs = {}
-         for regex_string, compiled in self._regexs.items():
+         for regex_string, compiled in list(self._regexs.items()):
             for glyph in glyphs:
                if glyph.match_id_name(compiled):
                   grid_index.add_glyph_by_key(glyph, regex_string)
                   found_regexs[regex_string] = None
 
          # This loop is only so the progress bar can do something useful.
-         for regex in found_regexs.iterkeys():
+         for regex in found_regexs.keys():
             progress.add_length(
               len(self._rules_by_regex[regex]) *
               len(grid_index.get_glyphs_by_key(regex)))
 
          added = {}
          removed = {}
-         for regex in found_regexs.iterkeys():
+         for regex in found_regexs.keys():
             for rule in self._rules_by_regex[regex]:
-               glyph_specs = rule.func_defaults
+               glyph_specs = rule.__defaults__
                for glyph in grid_index.get_glyphs_by_key(regex):
                   if len(glyph_specs) == 1:
                      self._deal_with_result(rule, (glyph,), added, removed)
@@ -234,7 +234,7 @@ class RuleEngine:
             progress.kill()
       if recurse and len(added):
          self._deal_with_result(
-           self.perform_rules(added.keys(), 1, progress, _recursion_level + 1))
+           self.perform_rules(list(added.keys()), 1, progress, _recursion_level + 1))
 
       if len(self._exceptions):
          s = ("One or more of the rule functions caused an exception.\n" +
@@ -242,4 +242,4 @@ class RuleEngine:
               "\n".join(self._exceptions))
          raise RuleEngineError(s)
 
-      return added.keys(), removed.keys()
+      return list(added.keys()), list(removed.keys())

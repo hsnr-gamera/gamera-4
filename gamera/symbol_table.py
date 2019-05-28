@@ -34,7 +34,7 @@ class SymbolTable(util.CallbackObject):
    def add_callback(self, alert, callback):
       util.CallbackObject.add_callback(self, alert, callback)
       if alert == "add":
-         for symbol in self.symbols.keys():
+         for symbol in list(self.symbols.keys()):
             callback(self.normalize_symbol(symbol)[1])
 
    ########################################
@@ -56,7 +56,7 @@ class SymbolTable(util.CallbackObject):
 
    def add(self, symbol, id = -1):
       symbol, tokens = self.normalize_symbol(symbol)
-      if self.symbols.has_key(symbol):
+      if symbol in self.symbols:
          return symbol
       self.symbols[symbol] = None
       self.trigger_callback('add', tokens)
@@ -64,14 +64,14 @@ class SymbolTable(util.CallbackObject):
 
    def remove(self, symbol):
       symbol, tokens = self.normalize_symbol(symbol)
-      if self.symbols.has_key(symbol):
+      if symbol in self.symbols:
          del self.symbols[symbol]
          self.trigger_callback('remove', tokens)
          return 1
       return 0
 
    def autocomplete(self, symbol):
-      targets = self.symbols.keys()
+      targets = list(self.symbols.keys())
       targets.sort()
       found_i = -1
       for i in range(len(targets)):
@@ -100,5 +100,5 @@ class SymbolTable(util.CallbackObject):
       return symbol
 
    def exists(self, symbol):
-      return self.symbols.has_key(symbol)
+      return symbol in self.symbols
 

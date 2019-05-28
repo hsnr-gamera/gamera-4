@@ -54,13 +54,13 @@ class RuleEngineRunnerTree(wx.TreeCtrl):
          engine = data
       elif ismodule(data):
          engine = ruleengine.RuleEngine(
-           [val for val in data.__dict__.values()
+           [val for val in list(data.__dict__.values())
             if isinstance(val, ruleengine.RuleEngine)])
       added = {}
       removed = {}
       try:
          added, removed = engine.perform_rules(multi_display.GetAllItems())
-      except ruleengine.RuleEngineError, e:
+      except ruleengine.RuleEngineError as e:
          gui_util.message(str(e))
          return
       if len(added) == 0 and len(removed) == 0:
@@ -106,7 +106,7 @@ class RuleEngineRunnerTree(wx.TreeCtrl):
       self.modules.append(module)
       module_node = self.AppendItem(self.root, path.split(module.__file__)[1])
       self.SetPyData(module_node, module)
-      for key, val in module.__dict__.items():
+      for key, val in list(module.__dict__.items()):
          self.SetItemHasChildren(module_node, True)
          if isinstance(val, ruleengine.RuleEngine):
             rule_engine_node = self.AppendItem(module_node, key)

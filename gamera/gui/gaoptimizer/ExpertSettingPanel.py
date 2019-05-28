@@ -43,7 +43,7 @@ class ExpertSettingPanel(wx.Panel):
     #---------------------------------------------------------------------------
     def AddChildToParent(self, parent, child):
     #---------------------------------------------------------------------------
-        if parent in self.childWidgets.keys():
+        if parent in list(self.childWidgets.keys()):
             self.childWidgets[parent].append(child)
         else:
             self.childWidgets[parent] = [child]
@@ -60,11 +60,11 @@ class ExpertSettingPanel(wx.Panel):
         activeWidget = event.GetEventObject()
 
         if activeWidget.GetValue():
-            if activeWidget in self.childWidgets.keys():
+            if activeWidget in list(self.childWidgets.keys()):
                 for widget in self.childWidgets[activeWidget]:
                     widget.Enable()
         else:
-            if activeWidget in self.childWidgets.keys():
+            if activeWidget in list(self.childWidgets.keys()):
                 for widget in self.childWidgets[activeWidget]:
                     widget.Disable()
                 
@@ -74,7 +74,7 @@ class ExpertSettingPanel(wx.Panel):
         activeRadioButton = event.GetEventObject()
         activeRadioLabel = activeRadioButton.GetLabel()
         
-        for widget in self.childWidgets.keys():
+        for widget in list(self.childWidgets.keys()):
             if widget.GetLabel() != activeRadioLabel:
                 for child in self.childWidgets[widget]:
                     child.Disable()

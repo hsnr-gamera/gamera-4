@@ -45,7 +45,7 @@ class FileList(wx.GenericDirCtrl):
       try:
          try:
             image = core.load_image(filename)
-         except Exception, e:
+         except Exception as e:
             gui_util.message("Loading image %s failed. \n\nThe error was:\n%s"
                              % (filename, str(e)))
             return

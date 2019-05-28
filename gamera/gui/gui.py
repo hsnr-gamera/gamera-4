@@ -26,7 +26,7 @@ except ImportError:
    aui = None
    
 import inspect
-import sys, StringIO
+import sys, io
 
 from gamera.core import *
 from gamera.config import config
@@ -162,8 +162,8 @@ class PyShellGameraShell(wx.py.shell.Shell):
       if source.strip().startswith("import "):
          new_modules = [x.strip() for x in source.strip()[7:].split(",")]
          for module in new_modules:
-            if self.interp.locals.has_key(module):
-               for obj in self.interp.locals[module].__dict__.values():
+            if module in self.interp.locals:
+               for obj in list(self.interp.locals[module].__dict__.values()):
                   if (inspect.isclass(obj)):
                      if hasattr(obj, "is_custom_menu"):
                         self.main_win.add_custom_menu(module, obj)
@@ -325,7 +325,7 @@ class ShellFrame(wx.Frame):
             self.shell.locals[name] = module
             self.shell.push(name)
             imported = True
-         except Exception, e:
+         except Exception as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             gui_util.message("Error importing file '%s':\n%s" %
                              (file, "".join(
@@ -336,7 +336,7 @@ class ShellFrame(wx.Frame):
          for file in execfiles:
             try:
                self.shell.run("execfile(%s)" % repr(file))
-            except Exception, e:
+            except Exception as e:
                exc_type, exc_value, exc_traceback = sys.exc_info()
                gui_util.message("Error importing file '%s':\n%s" %
                                 (file, "".join(traceback.format_exception(
@@ -481,7 +481,7 @@ class CustomMenu:
       if not main_win:
          return
       name = self.__class__.__module__.split('.')[-1]
-      if not main_win.custom_menus.has_key(name):
+      if name not in main_win.custom_menus:
          main_win.custom_menus[name] = None
          self.shell = main_win.shell
          self.locals = main_win.shell.locals

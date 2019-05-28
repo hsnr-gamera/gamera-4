@@ -53,8 +53,8 @@ PyPlate defines the following directives:
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import nested_scopes
-import sys, string, re, util, cStringIO, codecs
+
+import sys, string, re, util, io, codecs
 
 re_directive = re.compile("\[\[(.*?)\]\]")
 re_for_loop = re.compile("for (.*) in (.*)")
@@ -87,7 +87,7 @@ class Template:
       file.close()
 
    def parse_string(self, template):
-      file = cStringIO.StringIO(template)
+      file = io.StringIO(template)
       self.parse(file)
       file.close()
 
@@ -123,7 +123,7 @@ class Template:
    def execute_string(self, data={}):
       data_copy = {}
       data_copy.update(data)
-      s = cStringIO.StringIO()
+      s = io.StringIO()
       self.execute(s, data_copy)
       s.write("\n")
       return s.getvalue()
@@ -200,11 +200,11 @@ class ForTemplateNode(TemplateNode):
    def execute(self, stream, data):
       remember_vars = {}
       for var in self.vars:
-         if data.has_key(var):
+         if var in data:
             remember_vars[var] = data[var]
       try:
          x = eval(self.expression, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.expression, e)
       for list in x:
          if util.is_sequence(list):
@@ -219,7 +219,7 @@ class ForTemplateNode(TemplateNode):
          else:
             data[self.vars[0]] = list
          TemplateNode.execute(self, stream, data)
-      for key, value in remember_vars.items():
+      for key, value in list(remember_vars.items()):
          data[key] = value
 
 class IfTemplateNode(TemplateNode):
@@ -251,7 +251,7 @@ class IfTemplateNode(TemplateNode):
    def execute(self, stream, data):
       try:
          x = eval(self.expression, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.expression, e)
       if x:
          TemplateNode.execute(self, stream, data)
@@ -292,11 +292,11 @@ class FunctionTemplateNode(TemplateNode):
    def call(self, args, stream, data):
       remember_vars = {}
       for index, var in util.enumerate(self.vars):
-         if data.has_key(var):
+         if var in data:
             remember_vars[var] = data[var]
          data[var] = args[index]
       TemplateNode.execute(self, stream, data)
-      for key, value in remember_vars.items():
+      for key, value in list(remember_vars.items()):
          data[key] = value
 
 class LeafTemplateNode(TemplateNode):
@@ -317,8 +317,8 @@ class CommentTemplateNode(LeafTemplateNode):
 class ExpressionTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
-         stream.write(unicode(eval(self.s, globals(), data)).encode("utf-8"))
-      except Exception, e:
+         stream.write(str(eval(self.s, globals(), data)).encode("utf-8"))
+      except Exception as e:
          self.parent.parser_exception(self.s, e)
 
 class ExecTemplateNode(LeafTemplateNode):
@@ -333,7 +333,7 @@ class ExecTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
          exec(self.s, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.s, e)
 
 class CallTemplateNode(LeafTemplateNode):
@@ -349,7 +349,7 @@ class CallTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
          x = eval(self.vars, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.vars, e)
       self.parent.functions[self.function_name].call(
         x, stream, data)
@@ -365,7 +365,7 @@ template_factory_type_map = {
   'def'  : FunctionTemplateNode,
   'call' : CallTemplateNode,
   'exec' : ExecTemplateNode }
-template_factory_types = template_factory_type_map.keys()
+template_factory_types = list(template_factory_type_map.keys())
 
 def TemplateNodeFactory(parent):
    src = parent.parser_get()

@@ -35,7 +35,7 @@ CONVOLUTION_TYPES = [GREYSCALE, GREY16, FLOAT, RGB, COMPLEX]
 # Convolution methods
 
 class convolve(PluginFunction):
-    u"""
+    """
     Convolves an image with a given kernel.
 
     Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
@@ -99,7 +99,7 @@ class convolve(PluginFunction):
     __call__ = staticmethod(__call__)
 
 class convolve_xy(PluginFunction):
-    u"""
+    """
     Convolves an image in both X and Y directions with 1D kernels.
     This is equivalent to what the Vigra library calls "Separable
     Convolution".
@@ -148,7 +148,7 @@ class convolve_xy(PluginFunction):
     __call__ = staticmethod(__call__)
 
 class convolve_x(PluginFunction):
-    u"""
+    """
     Convolves an image in the X directions with a 1D kernel.  This is
     equivalent to what the Vigra library calls "Separable
     Convolution".
@@ -181,7 +181,7 @@ class convolve_x(PluginFunction):
     __call__ = staticmethod(__call__)
 
 class convolve_y(PluginFunction):
-    u"""
+    """
     Convolves an image in the X directions with a 1D kernel.  This is
     equivalent to what the Vigra library calls "Separable Convolution".
 
@@ -429,7 +429,7 @@ class ConvolutionModule(PluginModule):
                  gaussian_smoothing, simple_sharpen,
                  gaussian_gradient, laplacian_of_gaussian,
                  hessian_matrix_of_gaussian, sobel_edge_detection]
-    author = u"Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
+    author = "Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
     url = "http://gamera.sourceforge.net/"
 module = ConvolutionModule()
 

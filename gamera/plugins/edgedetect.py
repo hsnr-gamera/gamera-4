@@ -27,7 +27,7 @@ import _edgedetect
 # Edge detection methods
 
 class difference_of_exponential_edge_image(PluginFunction):
-      u"""
+      """
       EXPERIMENTAL
 
       Detect and mark edges in an edge image using the Shen/Castan
@@ -61,7 +61,7 @@ class difference_of_exponential_edge_image(PluginFunction):
       doc_examples = [(GREYSCALE,)]
 
 class difference_of_exponential_crack_edge_image(PluginFunction):
-      u"""EXPERIMENTAL
+      """EXPERIMENTAL
 
       Detect and mark edges in a crack edge image using the
       Shen/Castan zero-crossing detector.
@@ -104,7 +104,7 @@ class difference_of_exponential_crack_edge_image(PluginFunction):
       doc_examples = [(GREYSCALE,)]
 
 class canny_edge_image(PluginFunction):
-      u"""EXPERIMENTAL
+      """EXPERIMENTAL
 
       Detect and mark edges in an edge image using Canny's algorithm.
 
@@ -171,7 +171,7 @@ class EdgeDetect(PluginModule):
                    canny_edge_image,
                    labeled_region_edges,
                    outline]
-      author = u"Ullrich K\u00f6the (wrapped by Robert Ferguson)"
+      author = "Ullrich K\u00f6the (wrapped by Robert Ferguson)"
       url = "http://gamera.sourceforge.net/"
 module = EdgeDetect()
 

@@ -93,11 +93,11 @@ class ExtendedMultiImageDisplay(MultiImageDisplay):
          images = self.GetSelectedItems()
          for x in images:
             id = x.get_main_id()
-            if not ids.has_key(id):
+            if id not in ids:
                ids[id] = 1
             else:
                ids[id] += 1
-         ids = [(val, key) for (key, val) in ids.items()]
+         ids = [(val, key) for (key, val) in list(ids.items())]
          ids.sort()
          ids.reverse()
          ids = [x[1] for x in ids]
@@ -837,7 +837,7 @@ class ClassifierFrame(ImageFrameBase):
       if len(selection):
          try:
             added, removed = self._classifier.classify_list_manual(selection, id)
-         except ClassifierError, e:
+         except ClassifierError as e:
             cursorbusy = False
             if wx.IsBusy():
                cursorbusy = True
@@ -950,7 +950,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self.set_single_image(
                load_image(os.path.join(directory, "source_image.tiff")), False)
-         except Exception, e:
+         except Exception as e:
             gui_util.message("Loading image: " + str(e))
 
    def _OnSaveAll(self, event):
@@ -1001,7 +1001,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self._SaveClassifierSettings(
                os.path.join(directory, "classifier_settings.xml"))
-         except Exception, e:
+         except Exception as e:
             error_messages.add(str(e))
       if page:
          try:
@@ -1026,7 +1026,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self.single_iw.id.image.save_tiff(
                os.path.join(directory, "source_image.tiff"))
-         except Exception, e:
+         except Exception as e:
             gui_util.message("Saving image: " + str(e))
       if len(error_messages):
          gui_util.message("There were errors during the save.\n\n" +
@@ -1116,7 +1116,7 @@ class ClassifierFrame(ImageFrameBase):
                glyphs=glyphs,
                symbol_table=self._symbol_table,
                with_features=with_features).write_filename(filename)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Saving by criteria: " + str(e))
 
    def _OnOpenClassifierCollection(self, event):
@@ -1141,7 +1141,7 @@ class ClassifierFrame(ImageFrameBase):
          if len(filenames) > 1:
             for f in filenames[1:]:
                self._classifier.merge_from_xml_filename(f)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening classifier glyphs: " + str(e))
          return
       self.update_symbol_table()
@@ -1155,7 +1155,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             for f in filenames:
                self._classifier.merge_from_xml_filename(f)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Merging classifier glyphs: " + str(e))
             return
          self.update_symbol_table()
@@ -1188,7 +1188,7 @@ class ClassifierFrame(ImageFrameBase):
    def _SaveClassifierCollection(self, filename, with_features=True):
       try:
          self._classifier.to_xml_filename(filename, with_features=with_features)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving classifier glyphs: " + str(e))
 
    def _OnClearClassifierCollection(self, event):
@@ -1221,7 +1221,7 @@ class ClassifierFrame(ImageFrameBase):
          if len(filenames) > 1:
             for f in filenames[1:]:
                glyphs.extend(gamera_xml.LoadXML().parse_filename(f).glyphs)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening page glyphs: " + str(e))
          return
       self.set_multi_image(glyphs)
@@ -1235,7 +1235,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             for f in filenames:
                glyphs.extend(gamera_xml.LoadXML().parse_filename(f).glyphs)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Merging page glyphs: " + str(e))
             return
          self.multi_iw.id.append_glyphs(glyphs)
@@ -1277,7 +1277,7 @@ class ClassifierFrame(ImageFrameBase):
             glyphs=glyphs,
             symbol_table=self._symbol_table,
             with_features=with_features).write_filename(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving page glyphs: " + str(e))
 
    def _OnSaveSelectedGlyphs(self, event):
@@ -1296,7 +1296,7 @@ class ClassifierFrame(ImageFrameBase):
                   glyphs=glyphs,
                   symbol_table=self._symbol_table).write_filename(
                   filename)
-            except gamera_xml.XMLError, e:
+            except gamera_xml.XMLError as e:
                gui_util.message("Saving selected glyphs: " + str(e))
 
    def _OnImportSymbolTable(self, event):
@@ -1310,10 +1310,10 @@ class ClassifierFrame(ImageFrameBase):
          try:
             symbol_table = gamera_xml.LoadXML(
                parts=['symbol_table']).parse_filename(filename).symbol_table
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Importing symbol table: " + str(e))
             return
-         for symbol in symbol_table.symbols.keys():
+         for symbol in list(symbol_table.symbols.keys()):
             self._symbol_table.add(symbol)
       finally:
          wx.EndBusyCursor()
@@ -1329,7 +1329,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             gamera_xml.WriteXMLFile(
                symbol_table=self._symbol_table).write_filename(filename)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Exporting symbol table: " + str(e))
       finally:
          wx.EndBusyCursor()
@@ -1366,7 +1366,7 @@ class ClassifierFrame(ImageFrameBase):
          image = load_image(filename)
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return
@@ -1394,7 +1394,7 @@ class ClassifierFrame(ImageFrameBase):
       try:
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return
@@ -1486,7 +1486,7 @@ class ClassifierFrame(ImageFrameBase):
    def _OnGuess(self, list):
       try:
          added, removed = self._classifier.classify_list_automatic(list)
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
       else:
          self._AdjustAfterGuess(added, removed)
@@ -1536,7 +1536,7 @@ class ClassifierFrame(ImageFrameBase):
 
          finally:
             wx.EndBusyCursor()
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
       else:
          self._AdjustAfterGuess(added, removed)
@@ -1584,7 +1584,7 @@ class ClassifierFrame(ImageFrameBase):
                 x.classification_state == AUTOMATIC):
                try:
                   self._classifier.classify_glyph_manual(x, x.get_main_id())
-               except ClassifierError, e:
+               except ClassifierError as e:
                   gui_util.message(str(e))
                   return
       finally:
@@ -1625,7 +1625,7 @@ class ClassifierFrame(ImageFrameBase):
                result = dialog.get_args()
                dialog.window.Destroy()
                break
-         except Exception, e:
+         except Exception as e:
             gui_util.message(str(e))
          else:
             break
@@ -1665,7 +1665,7 @@ class ClassifierFrame(ImageFrameBase):
    def _OpenClassifierSettings(self, filename):
       try:
          self._classifier.load_settings(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening classifier settings: " + str(e))
 
    def _OnClassifierSettingsSave(self, event):
@@ -1676,7 +1676,7 @@ class ClassifierFrame(ImageFrameBase):
    def _SaveClassifierSettings(self, filename):
       try:
          self._classifier.save_settings(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving classifier settings: " + str(e))
 
    def _OnCreateNoninteractiveCopy(self, event):
@@ -1687,7 +1687,7 @@ class ClassifierFrame(ImageFrameBase):
          result = self._classifier.noninteractive_copy()
          image_menu.shell.locals[name] = result
          image_menu.shell.update()
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
 
    def _OnCreateEditedClassifier(self, event):
@@ -1727,7 +1727,7 @@ class ClassifierFrame(ImageFrameBase):
       wx.BeginBusyCursor()
       try:
          classifier_stats.make_stat_pages(self._classifier, result[-1], pages)
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(e)
       else:

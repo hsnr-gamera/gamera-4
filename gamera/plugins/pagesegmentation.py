@@ -290,7 +290,7 @@ class kise_block_extraction(PluginFunction):
             points += p
             labels += [cc.label] * len(p)
             labels2ccs[cc.label] = cc
-        neighbors = delaunay_from_points(points, range(len(points)))
+        neighbors = delaunay_from_points(points, list(range(len(points))))
 
         # compute edge properties
         class Edge(object):
@@ -311,17 +311,17 @@ class kise_block_extraction(PluginFunction):
             p2 = points[pair[1]]
             d2 = (p1.x-p2.x)**2 + (p1.y-p2.y)**2
             key = "%i;%i" % (label1,label2)
-            if not labelneighbors.has_key(key):
+            if key not in labelneighbors:
                 labelneighbors[key] = Edge(labels2ccs[label1], labels2ccs[label2], d2)
             else:
                 e = labelneighbors[key]
                 if e.d > d2:
                     e.d = d2
-        for e in labelneighbors.itervalues():
+        for e in labelneighbors.values():
             e.d = sqrt(e.d)
 
         # determine thresholds Td1 and Td2 from distance statistics
-        distances = [e.d for e in labelneighbors.itervalues()]
+        distances = [e.d for e in labelneighbors.values()]
         distances.sort()
         if len(distances) > 50:
             distances = distances[len(distances)/20:(len(distances)-len(distances)/20)]
@@ -356,7 +356,7 @@ class kise_block_extraction(PluginFunction):
         from gamera import graph
         g = graph.Graph(graph.UNDIRECTED)
         rgb = self.to_rgb()
-        for e in labelneighbors.itervalues():
+        for e in labelneighbors.values():
             if not g.has_node(e.cc1.label):
                 g.add_node(e.cc1.label)
             if not g.has_node(e.cc2.label):

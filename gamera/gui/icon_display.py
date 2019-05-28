@@ -118,7 +118,7 @@ class IconDisplay(wx.ListCtrl):
       compat_wx.set_list_string_item(self, index, 0, key, icon_num)
 
    def remove_icon(self, key):
-      if self.data.has_key(key):
+      if key in self.data:
          icon = self.data[key]
          del icon.data
          if 'extra_methods' in icon.__dict__:
@@ -126,7 +126,7 @@ class IconDisplay(wx.ListCtrl):
          index = icon.index
          self.DeleteItem(index)
          del self.data[key]
-         for i in self.data.values():
+         for i in list(self.data.values()):
             if i.index > index:
                i.index = i.index - 1
          if index < self.GetItemCount():
@@ -142,7 +142,7 @@ class IconDisplay(wx.ListCtrl):
       if locals != None:
          self.locals = locals
       okay = []
-      for key, val in self.locals.items():
+      for key, val in list(self.locals.items()):
          t = None
          for klass, icon in self.classes:
             try:
@@ -152,20 +152,20 @@ class IconDisplay(wx.ListCtrl):
             except Exception:
                pass
          if t != None:
-            if self.data.has_key(key):
+            if key in self.data:
                self.refresh_icon(key, t, val, icon)
             else:
                obj = t(key, val, 0)
                self.add_icon(key, obj, icon)
             okay.append(key)
-         elif self.data.has_key(key):
+         elif key in self.data:
             self.remove_icon(key)
-      for i in self.data.keys():
+      for i in list(self.data.keys()):
          if i not in okay:
             self.remove_icon(i)
 
    def find_icon(self, index):
-      for i in self.data.values():
+      for i in list(self.data.values()):
          if i.index == index:
             return i
       return None
@@ -185,7 +185,7 @@ class IconDisplay(wx.ListCtrl):
       if currentIcon:
          try:
             currentIcon.right_click(self, event, self.shell)
-         except Exception, e:
+         except Exception as e:
             gui_util.message(str(e))
       event.Skip()
 
@@ -193,7 +193,7 @@ class IconDisplay(wx.ListCtrl):
       if self.currentIcon:
          try:
             source = self.currentIcon.double_click()
-         except Exception, e:
+         except Exception as e:
             gui_util.message(str(e))
          else:
             if not source is None:
@@ -207,14 +207,14 @@ class IconDisplay(wx.ListCtrl):
          if keyID in (127, 8):
             try:
                source = self.currentIcon.delete_key()
-            except Exception, e:
+            except Exception as e:
                gui_util.message(str(e))
             else:
                self.currentIcon = None
          elif(keyID==19):
             try:
                source = self.currentIcon.control_s()
-            except Exception, e:
+            except Exception as e:
                gui_util.message(str(e))
          else:
             return
@@ -493,7 +493,7 @@ class _CIVector(CustomIcon):
          return True
       try:
          it = iter(data)
-      except Exception, e:
+      except Exception as e:
          return False
       else:
          if not len(data):
@@ -504,8 +504,8 @@ class _CIVector(CustomIcon):
                if not isinstance(x, cls.klass):
                   good = False
                   break
-         except Exception, e:
-            print e
+         except Exception as e:
+            print(e)
             return False
          else:
             return good

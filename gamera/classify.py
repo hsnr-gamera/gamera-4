@@ -18,9 +18,9 @@
 #
 
 import sys
-import core # grab all of the standard gamera modules
-import util, gamera_xml, config
-from fudge import Fudge
+from . import core # grab all of the standard gamera modules
+from . import util, gamera_xml, config
+from .fudge import Fudge
 from gamera.gui import has_gui
 from gamera.gameracore import CONFIDENCE_DEFAULT
 
@@ -277,7 +277,7 @@ page."""
                for child in glyph.children_images:
                   removed[child] = None
          for glyph in glyphs:
-            if not removed.has_key(glyph):
+            if glyph not in removed:
                self.generate_features(glyph)
                if (glyph.classification_state in
                    (core.UNCLASSIFIED, core.AUTOMATIC)):
@@ -297,7 +297,7 @@ page."""
       finally:
          if recursion_level == 0:
             progress.kill()
-      return added, removed.keys()
+      return added, list(removed.keys())
 
    def classify_list_automatic(self, glyphs, max_recursion=10, progress=None):
       """**classify_list_automatic** (ImageList *glyphs*, int *max_recursion* = 10)
@@ -717,7 +717,7 @@ end user definitively knows the identity of the glyph.
       glyph.classify_manual([(1.0, id)])
       self.generate_features(glyph)
       self.database.append(glyph)
-      return self._do_splits(self, glyph), removed.keys()
+      return self._do_splits(self, glyph), list(removed.keys())
 
    def classify_list_manual(self, glyphs, id):
       """**classify_list_manual** (ImageList *glyphs*, String *id*)

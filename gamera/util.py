@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 
 import string, sys, traceback, re, warnings   ## Python standard
 from types import *
@@ -145,16 +145,16 @@ class Set(list):
       self._dict = {}
       self.extend(list)
    def append(self, item):
-      if not self._dict.has_key(item):
+      if item not in self._dict:
          list.append(self, item)
          self._dict[item] = None
    def insert(self, i, item):
-      if not self._dict.has_key(item):
+      if item not in self._dict:
          list.insert(self, i, item)
          self._dict[item] = None
    def extend(self, other):
       for item in other:
-         if not self._dict.has_key(item):
+         if item not in self._dict:
             list.append(self, item)
             self._dict[item] = None
 
@@ -179,7 +179,7 @@ if float(sys.version[0:3]) < 2.3:
       i = 0
       it = iter(collection)
       while 1:
-         yield(i, it.next())
+         yield(i, next(it))
          i += 1
    __builtins__['enumerate'] = enumerate
    __builtins__['True'] = 1
@@ -616,7 +616,7 @@ def __warn_deprecated__(message, other_filename=None, other_lineno=None,
    if filename.endswith("code.py"):
       filename = "<shell>"
       lineno = 0
-   if not _warnings_history.has_key(key):
+   if key not in _warnings_history:
       _warnings_history[key] = None
       warnings.warn_explicit("\n" + message,
                              DeprecationWarning, filename, lineno)

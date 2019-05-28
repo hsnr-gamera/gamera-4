@@ -19,16 +19,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import gzip, os, os.path, cStringIO
+import gzip, os, os.path, io
 import warnings
 from weakref import proxy
 from xml.parsers import expat
 
-import core, util
-from util import word_wrap, ProgressFactory, is_image_list
+from . import core, util
+from .util import word_wrap, ProgressFactory, is_image_list
 from gamera.plugins import runlength
 from gamera.symbol_table import SymbolTable
-from config import config
+from .config import config
 
 config.add_option(
    "", "--xml-encoding", action="store", default="utf-8",
@@ -90,7 +90,7 @@ class WriteXML:
       self.write_stream(fd)
 
    def string(self):
-      stream = cStringIO.StringIO()
+      stream = io.StringIO()
       self.write_stream(stream)
       return stream.getvalue()
 
@@ -119,7 +119,7 @@ class WriteXML:
           util.is_string_or_unicode_list(symbol_table)):
          symbols = symbol_table
       else:
-         symbols = symbol_table.symbols.keys()
+         symbols = list(symbol_table.symbols.keys())
       if len(symbols):
          symbols.sort()
          word_wrap(stream, '<symbols>', indent)
@@ -180,7 +180,7 @@ class WriteXML:
                       indent)
          indent -= 1
          word_wrap(stream, '</features>', indent)
-      properties = glyph.properties.items()
+      properties = list(glyph.properties.items())
       properties.sort()
       for key, val in properties:
          if not val is None:
@@ -229,7 +229,7 @@ class LoadXML:
    def parse_filename(self, filename):
       try:
          self._stream_length = os.stat(filename).st_size
-      except OSError, e:
+      except OSError as e:
          raise XMLError(str(e))
       if filename.endswith('gz'):
          fd = gzip.open(filename, 'r')
@@ -237,12 +237,12 @@ class LoadXML:
          fd = open(filename, 'r')
       try:
          return self.parse_stream(fd)
-      except Exception, e:
+      except Exception as e:
          raise XMLError(str(e))
 
    def parse_string(self, s):
       self._stream_length = len(s)
-      stream = cStringIO.StringIO(s)
+      stream = io.StringIO(s)
       return self.parse_stream(stream)
 
    def parse_stream(self, stream):
@@ -255,7 +255,7 @@ class LoadXML:
       try:
          try:
             self._parser.ParseFile(stream)
-         except expat.ExpatError, e:
+         except expat.ExpatError as e:
             raise
       finally:
          self._progress.kill()
@@ -379,11 +379,11 @@ class LoadXML:
                          core.Dim(self._ncols, self._nrows),
                          core.ONEBIT, core.DENSE)
       if not self._data is None:
-         glyph.from_rle(str(u''.join(self._data)))
+         glyph.from_rle(str(''.join(self._data)))
       glyph.classification_state = self._classification_state
       self._id_name.sort()
       glyph.id_name = self._id_name
-      for key, val in self._properties.items():
+      for key, val in list(self._properties.items()):
          glyph.properties[key] = val
       glyph.scaling = self._scaling
       self._append_glyph(glyph)
@@ -398,7 +398,7 @@ class LoadXML:
       confidence = self.try_type_convert(
          a, 'confidence', float, 'id')
       name = self.try_type_convert(
-         a, 'name', unicode, 'id')
+         a, 'name', str, 'id')
       self._id_name.append((confidence, name.encode()))
 
    def _tag_start_features(self, a):
@@ -424,8 +424,8 @@ class LoadXML:
       self._parser.CharacterDataHandler = self.add_property_value
 
    def _tag_end_property(self):
-      data = u''.join(self._property_value)
-      if _saveable_types.has_key(self._property_type):
+      data = ''.join(self._property_value)
+      if self._property_type in _saveable_types:
          self._properties[self._property_name] = \
             _saveable_types[self._property_type](data)
       else:
@@ -490,7 +490,7 @@ class StripTag:
             self._input = gzip.open(self._input_filename, 'r')
          else:
             self._input = open(self._input_filename, 'r')
-      except Exception, e:
+      except Exception as e:
          raise XMLError("Couldn't open input file '%s': %s" %
                         (self._input_filename, str(e)))
 
@@ -500,7 +500,7 @@ class StripTag:
             self._output = gzip.open(self._output_filename, 'w')
          else:
             self._output = open(self._output_filename, 'w')
-      except Exception, e:
+      except Exception as e:
          raise XMLError("Couldn't open output file '%s': %s" %
                         (self._output_filename, str(e)))
 
@@ -515,7 +515,7 @@ class StripTag:
       try:
          try:
             self._parser.ParseFile(self._input)
-         except expat.ExpatError, e:
+         except expat.ExpatError as e:
             raise
       finally:
          self._parser.StartElementHandler = None

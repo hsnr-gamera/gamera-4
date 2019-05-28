@@ -22,8 +22,8 @@
 
 ######################################################################
 # Import Python stdlib
-from __future__ import generators
-import codecs, locale, sys, glob, cStringIO, inspect, getopt, os.path, shutil
+
+import codecs, locale, sys, glob, io, inspect, getopt, os.path, shutil
 from stat import ST_MTIME
 from time import strftime, localtime
 import locale
@@ -42,11 +42,11 @@ try:
    from docutils.core import publish_file
    import docutils.parsers.rst
    if StrictVersion(docutils.__version__) < StrictVersion('0.4'):
-      print "docutils version (" + docutils.__version__ + ") too old"
+      print("docutils version (" + docutils.__version__ + ") too old")
       raise ImportError()
-except ImportError, e:
-   print "'docutils' 0.4 or later must be installed to generate the documentation."
-   print "It can be downloaded at http://docutils.sf.net"
+except ImportError as e:
+   print("'docutils' 0.4 or later must be installed to generate the documentation.")
+   print("It can be downloaded at http://docutils.sf.net")
    sys.exit(1)
 
 ######################################################################
@@ -58,16 +58,16 @@ try:
    import pygments.formatters
    source_highlighter = 'pygments'
    if LooseVersion(pygments.__version__) < LooseVersion('0.6'):
-      print "pygments version (" + pygments.__version__ + ") too old"
+      print("pygments version (" + pygments.__version__ + ") too old")
       raise ImportError()
-except ImportError, e:
+except ImportError as e:
    try:
       import SilverCity
       source_highlighter = 'silvercity'
-   except ImportError, e:
-      print "Either 'pygments' 0.6 or later or 'SilverCity' 0.9 or later"
-      print "must be installed to colorize the sourcecode snippets in the"
-      print "documentation."
+   except ImportError as e:
+      print("Either 'pygments' 0.6 or later or 'SilverCity' 0.9 or later")
+      print("must be installed to colorize the sourcecode snippets in the")
+      print("documentation.")
       sys.exit(1)
 
 # Source code highlighting support
@@ -86,7 +86,7 @@ if source_highlighter == 'pygments':
             docutils.nodes.literal_block(block_text, block_text), line=lineno)
          return [error]
       parsed = pygments.highlight(
-         u'\n'.join(content), 
+         '\n'.join(content), 
          lexer, 
          html_formatter)
       return [docutils.nodes.raw('', parsed, format='html')]
@@ -102,9 +102,9 @@ elif source_highlighter == 'silvercity':
             "No SilverCity lexer found for language '%s'." % language, 
             docutils.nodes.literal_block(block_text, block_text), line=lineno)
          return [error]
-      io = cStringIO.StringIO()
+      io = io.StringIO()
       generator().generate_html( io, '\n'.join(content) )
-      html = u'<div class="code-block">\n%s\n</div>\n' % io.getvalue()
+      html = '<div class="code-block">\n%s\n</div>\n' % io.getvalue()
       raw = docutils.nodes.raw('',html, format = 'html')
       return [raw]
 code_block.arguments = (1,0,0)
@@ -120,9 +120,9 @@ try:
    from gamera.plugins import png_support, tiff_support, _png_support
    from gamera.plugins import _image_conversion
    from gamera.enums import *
-except ImportError, e:
-   print "Cannot load gameracore."
-   print "Gamera must be built before you can generate the documentation."
+except ImportError as e:
+   print("Cannot load gameracore.")
+   print("Gamera must be built before you can generate the documentation.")
    sys.exit(1)
 
 ######################################################################
@@ -149,7 +149,7 @@ class DocumentationGenerator:
    def set_paths(self, root):
       def check_path(path):
          if not os.path.exists(path):
-            raise RuntimeError(u"Documentation directory '%s' does not exist" % os.path.abspath(path))
+            raise RuntimeError("Documentation directory '%s' does not exist" % os.path.abspath(path))
          
       join = os.path.join
       self.root_path = root
@@ -175,10 +175,10 @@ class DocumentationGenerator:
                        self.output_images_path)
       if not self.test_mode:
          self.convert_to_html()
-      print
+      print()
 
    def generate_generic_pngs(self):
-      print "Copying over generic images"
+      print("Copying over generic images")
       for pixel_type in ALL:
          if pixel_type in (FLOAT, COMPLEX):
             pixel_type_name = "GreyScale"
@@ -187,14 +187,14 @@ class DocumentationGenerator:
          image = core.load_image(
             os.path.join(paths.test,
                          pixel_type_name + "_generic.tiff"))
-         print "  " + image.pixel_type_name
+         print("  " + image.pixel_type_name)
          _png_support.save_PNG(
             image,
             os.path.join(self.output_images_path,
                          "%s_generic.png" % (pixel_type_name)))
 
    def copy_css(self, input_path, output_path):
-      print "Copying CSS file"
+      print("Copying CSS file")
       for filename in ['default.css', 'html4css1.css']:
          shutil.copyfile(os.path.join(input_path, filename),
                          os.path.join(output_path, filename))
@@ -204,7 +204,7 @@ class DocumentationGenerator:
          fd.close()
 
    def copy_images(self, src_paths, output_path):
-      print "Copying images"
+      print("Copying images")
       for path in src_paths:
          if os.path.exists(path):
             for file in glob.glob(os.path.join(path, "*.*")):
@@ -221,25 +221,25 @@ class DocumentationGenerator:
                 strftime("%B %d, %Y", localtime(os.stat(file)[ST_MTIME])))
 
    def convert_to_html(self):
-      print "Converting to HTML"
+      print("Converting to HTML")
       for filename, rootname, fd, mtime in self.get_rest_docs():
          output_file = os.path.join(self.output_path, rootname + ".html")
          if (not os.path.exists(output_file) or
              os.stat(filename)[ST_MTIME] > os.stat(output_file)[ST_MTIME]):
-            print "  Generating " + rootname
+            print("  Generating " + rootname)
             lines = fd.readlines()
             if self.sourceforge_logo:
                footer = '.. footer:: :raw-html:`<a href="http://sourceforge.net/projects/gamera" style="float:left;"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=99328&type=13" width="120" height="30" border="0" alt="Get Gamera at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a> <div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
             else:
                footer = '.. footer:: :raw-html:`<div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
             lines = (lines[:3] + 
-                     ["\n", u"**Last modified**: %s\n\n" % mtime, 
+                     ["\n", "**Last modified**: %s\n\n" % mtime, 
                       ".. contents::\n\n", 
                       ".. role:: raw-html(raw)\n   :format: html\n",
                       footer
                       ] + 
                      lines[3:])
-            fd = cStringIO.StringIO((u''.join(lines)).encode("utf-8"))
+            fd = io.StringIO((''.join(lines)).encode("utf-8"))
             try:
                overrides = {'embed_stylesheet': False,
                             'stylesheet_path': None,
@@ -249,17 +249,17 @@ class DocumentationGenerator:
                                writer_name="html", settings_overrides=overrides)
                except TypeError:
                   publish_file(source=fd, destination_path=output_file)
-            except KeyboardInterrupt, e:
+            except KeyboardInterrupt as e:
                raise e
-            except Exception, e:
+            except Exception as e:
                traceback.print_exc()
-               print "Unable to convert '%s' to HTML: %s" % (filename, e)
+               print("Unable to convert '%s' to HTML: %s" % (filename, e))
                if os.path.exists(output_file):
                   os.remove(output_file)
 
 class PluginDocumentationGenerator:
    def __init__(self, docgen, plugins=None):
-      print "Generating plugin documentation"
+      print("Generating plugin documentation")
 
       self.docgen = docgen
 
@@ -294,11 +294,11 @@ class PluginDocumentationGenerator:
 
    def get_methods(plugins):
       def methods_flatten(dest, source, flat, all=False):
-         for key, val in source.items():
+         for key, val in list(source.items()):
           if type(val) == dict:
             if key != "Test":
                if plugins is None or key in plugins or all:
-                  if not dest.has_key(key):
+                  if key not in dest:
                      dest[key] = {}
                   methods_flatten(dest[key], val, flat, True)
           else:
@@ -309,7 +309,7 @@ class PluginDocumentationGenerator:
       flat_methods = {}
       flat_list = {}
       for pixel_type in ALL + [NONIMAGE]:
-         if methods.has_key(pixel_type): 
+         if pixel_type in methods: 
              methods_flatten(flat_methods, methods[pixel_type],
                              flat_list, False)
 
@@ -317,7 +317,7 @@ class PluginDocumentationGenerator:
    get_methods = staticmethod(get_methods)
 
    def recurse(self, methods, level, images, s=None):
-      methods_list = methods.items()
+      methods_list = list(methods.items())
       methods_list.sort()
       for key, val in methods_list:
          if type(val) == dict:
@@ -326,15 +326,15 @@ class PluginDocumentationGenerator:
                 s = codecs.open(
                    os.path.join(self.docgen.src_path, filename + ".txt"),
                    "w", "utf-8")
-            s.write(u"\n%s\n%s\n\n" % (key, underline(level, key)))
-            print "  " * (level + 1) + key
+            s.write("\n%s\n%s\n\n" % (key, underline(level, key)))
+            print("  " * (level + 1) + key)
             self.recurse(val, level + 1, images, s)
          else:
             self.method_doc(val, level, images, s)
 
    def table_of_contents(self, methods):
       def toc_recurse(s, methods, level, links, index, filename=None):
-          methods_list = methods.items()
+          methods_list = list(methods.items())
           methods_list.sort()
           for key, val in methods_list:
              if key.startswith("_"):
@@ -382,25 +382,25 @@ class PluginDocumentationGenerator:
       s.write("\n".join(links))
       
    def method_doc(self, func, level, images, s):
-      s.write(u"``%s``\n" % func.__name__)
+      s.write("``%s``\n" % func.__name__)
       s.write(underline(level, func.__name__, 4))
       s.write("\n\n")
       if func.return_type != None:
          s.write(func.return_type.rest_repr() + " ")
-      header = u"**%s** (%s)\n" % (func.__name__, ', '.join(
+      header = "**%s** (%s)\n" % (func.__name__, ', '.join(
           [x.rest_repr(True) for x in func.args.list]))
       s.write(header)
       s.write("\n\n")
       if func.self_type != None:
-         s.write(u":Operates on: %s\n" % func.self_type.rest_repr(False))
+         s.write(":Operates on: %s\n" % func.self_type.rest_repr(False))
       if func.return_type != None:
-         s.write(u":Returns: %s\n" % (func.return_type.rest_repr(False)))
+         s.write(":Returns: %s\n" % (func.return_type.rest_repr(False)))
       if func.category == None:
          category = func.module.category
       else:
          category = func.category
       if category != None:
-         s.write(u":Category: %s\n" % category)
+         s.write(":Category: %s\n" % category)
       file = os.path.split(inspect.getsourcefile(func))[1]
       if file == 'plugin.py':
           file = 'core.py'
@@ -411,9 +411,9 @@ class PluginDocumentationGenerator:
           author = func.author
       if author != None:
          if func.module.url != None and 0:
-            s.write(u":Author: `%s`__\n.. __: %s\n" % (author, func.module.url))
+            s.write(":Author: `%s`__\n.. __: %s\n" % (author, func.module.url))
          else:
-            s.write(u":Author: %s\n" % (author,))
+            s.write(":Author: %s\n" % (author,))
       if func.image_types_must_match:
          s.write("\n*All images passed in (including self) must have the same pixel type.*\n\n")
       doc = func.__doc__
@@ -421,7 +421,7 @@ class PluginDocumentationGenerator:
          s.write("\n.. warning:: No documentation written.\n\n")
       else:
          doc = util.dedent(doc)
-         s.write(u"\n\n%s\n" % doc)
+         s.write("\n\n%s\n" % doc)
       self.method_example(func, level, images, s)
 
    def run_example(self, func, images):
@@ -462,9 +462,9 @@ class PluginDocumentationGenerator:
       if len(results):
          s.write("\n----------\n\n")
       for i, (result, src_image, pixel_type, arguments) in enumerate(results):
-         s.write(u"**Example %d:** %s" % (i + 1, func.__name__))
+         s.write("**Example %d:** %s" % (i + 1, func.__name__))
          if not arguments is None:
-            s.write(u"(%s)" % ", ".join([str(x) for x in arguments]))
+            s.write("(%s)" % ", ".join([str(x) for x in arguments]))
          s.write("\n\n")
          if not pixel_type is None:
             pixel_type_name = util.get_pixel_type_name(pixel_type)
@@ -513,7 +513,7 @@ class ClassDocumentationGenerator:
    def __init__(self, docgen, classes):
       if not len(classes):
          return
-      print "Generating class documentation"
+      print("Generating class documentation")
       self.docgen = docgen
       self.class_names = []
       for cls in classes:
@@ -524,14 +524,14 @@ class ClassDocumentationGenerator:
       module_name, cls_name, members = cls_desc
       combined_name = ".".join([module_name, cls_name])
       self.class_names.append((cls_name, combined_name))
-      print "  ", combined_name
-      if type(members) in (str, unicode):
+      print("  ", combined_name)
+      if type(members) in (str, str):
          members = members.split()
       s = codecs.open(os.path.join(self.docgen.src_path, combined_name + ".txt"), "w", "utf-8")
-      s.write(u"class ``%s``\n%s\n\n" % (cls_name, underline(0, cls_name, 10)))
-      s.write(u"``%s``\n%s\n\nIn module ``%s``\n\n" % (cls_name, underline(1, cls_name, 4), module_name))
-      s.write(u".. docstring:: %s %s\n   :no_title:\n\n" % (module_name, cls_name))
-      s.write(u".. docstring:: %s %s %s\n\n" % (module_name, cls_name, " ".join(members)))
+      s.write("class ``%s``\n%s\n\n" % (cls_name, underline(0, cls_name, 10)))
+      s.write("``%s``\n%s\n\nIn module ``%s``\n\n" % (cls_name, underline(1, cls_name, 4), module_name))
+      s.write(".. docstring:: %s %s\n   :no_title:\n\n" % (module_name, cls_name))
+      s.write(".. docstring:: %s %s %s\n\n" % (module_name, cls_name, " ".join(members)))
 
    def table_of_contents(self, classes):
       s = codecs.open(os.path.join(self.docgen.src_path, "classes.txt"), "w", "utf-8")
@@ -550,7 +550,7 @@ class ClassDocumentationGenerator:
               first = True
           if not first:
               s.write(", ")
-          s.write(u"%s_ (%s)" % (name, combined_name))
+          s.write("%s_ (%s)" % (name, combined_name))
           first = False
           links.append(".. _%s: %s.html" % (name, combined_name))
       s.write("\n\n")
@@ -574,8 +574,8 @@ def docstring(name, arguments, options, content, lineno,
       else:
          text = doc_string + "\n\n"
       content = docutils.statemachine.string2lines(text, convert_whitespace=1)
-      if not options.has_key('no_title'):
-         title_text = u"``%s``" % name
+      if 'no_title' not in options:
+         title_text = "``%s``" % name
          textnodes, messages = state.inline_text(title_text, lineno)
          titles = [docutils.nodes.title(title_text, '', *textnodes)] + messages
          node = docutils.nodes.section(text, *titles)
@@ -597,7 +597,7 @@ def docstring(name, arguments, options, content, lineno,
       try:
          obj = getattr(base_obj, name)
       except AttributeError:
-         print "Warning: '%s' could not be found in '%s'" % (name, base_obj.__name__)
+         print("Warning: '%s' could not be found in '%s'" % (name, base_obj.__name__))
       else:
          nodes.append(do_docstring(obj, name))
    return nodes
@@ -628,11 +628,11 @@ class Paths:
         self.output_images_path = join(self.output_path, "images/")
 
 def print_usage():
-    print "Gamera documentation generator."
-    print "Usage: gendoc.py [-d doc_directory]"
-    print "  (if doc_directory is omitted, the current directory"
-    print "   will be used.)"
-    print 
+    print("Gamera documentation generator.")
+    print("Usage: gendoc.py [-d doc_directory]")
+    print("  (if doc_directory is omitted, the current directory")
+    print("   will be used.)")
+    print() 
    
 def gendoc(classes=[], plugins=None, sourceforge_logo=False, contact_url="http://gamera.informatik.hsnr.de/contact.html"):
    print_usage()
@@ -646,11 +646,11 @@ def gendoc(classes=[], plugins=None, sourceforge_logo=False, contact_url="http:/
          test_mode = True
    try:
       docgen = DocumentationGenerator(root, test_mode, classes=classes, plugins=plugins, sourceforge_logo=sourceforge_logo, contact_url=contact_url)
-   except Exception, e:
-      print "Documentation generation failed with the following exception:"
-      print e
+   except Exception as e:
+      print("Documentation generation failed with the following exception:")
+      print(e)
    else:
       try:
          docgen.generate()
       except KeyboardInterrupt:
-         print "Documentation generation stopped by user."
+         print("Documentation generation stopped by user.")

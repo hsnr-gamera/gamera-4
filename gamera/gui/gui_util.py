@@ -210,7 +210,7 @@ class ProgressBox:
 try:
    import docutils.core
    import docutils.parsers.rst
-except ImportError, e:
+except ImportError as e:
    # If we don't have docutils, we just wrap the docstring
    # in <pre> tags
    def docstring_to_html(docstring):
@@ -235,6 +235,6 @@ else:
          corrected = docstring.replace("*args", "\*args")
          corrected = corrected.replace("**kwargs", "\*\*kwargs")
          html = docutils.core.publish_string(corrected, writer_name="html")
-      except Exception, e:
+      except Exception as e:
          html = '''<pre>%s</pre><br/<br/><font size=1><pre>%s</pre></font>''' % (docstring, str(e))
       return html.decode("utf-8")

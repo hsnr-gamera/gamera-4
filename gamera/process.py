@@ -19,17 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import os.path, sys, cStringIO
-from util import Set
+import os.path, sys, io
+from .util import Set
 from dis import dis
 from inspect import getmodule
 from types import *
 
-from args import *
+from .args import *
 
 # Finds the member variables that a method accesses and sets
 def find_method_dependencies(method):
-   buffer = cStringIO.StringIO()
+   buffer = io.StringIO()
    stdout = sys.stdout
    sys.stdout = buffer
    dis(method)
@@ -51,11 +51,11 @@ def find_method_dependencies(method):
          elif (len(bytecode) > 3 and bytecode[1] == "LOAD_FAST" and
                bytecode[2] == "0"):
             self = 1
-   requires = filter(lambda x: x not in sets, requires)
+   requires = [x for x in requires if x not in sets]
    if sets == [] and requires == []:
-      print ("WARNING: %s appears to have no side effects." 
+      print(("WARNING: %s appears to have no side effects." 
              "What are you, some kind of functional programmer? ;)" %
-             method.__name__)
+             method.__name__))
    return sets, requires
 
 # Generic base class for high-level processes.
@@ -89,13 +89,13 @@ class Process:
          self.__do_step(step)
       if save_members == None:
          for saveable in self.saveable_members():
-            if (self.__dict__.has_key(saveable)):
+            if (saveable in self.__dict__):
                self.__save_attr(saveable)
       else:
          for save in save_members:
             self.__save_attr(save)
 
-   def next(self):
+   def __next__(self):
       if self.current_step >= len(self.steps):
          return -1
       sets, requires = self.do_step(self.current_step)
@@ -103,7 +103,7 @@ class Process:
       self.current_step += 1
 
    def saveable_members(self):
-      return [x[5:] for x in self.__class__.__dict__.keys()
+      return [x[5:] for x in list(self.__class__.__dict__.keys())
               if x[:5] == "save_"]
 
    def __do_step(self, step):
@@ -113,7 +113,7 @@ class Process:
       for load in requires:
          if not hasattr(self, load):
             self.__load_attr(load, step)
-      print "Step %d: %s" % (step_no, step)
+      print("Step %d: %s" % (step_no, step))
       if not self.display_only:
          function()
       return sets, requires
@@ -124,20 +124,20 @@ class Process:
                             "However, there is no load_%s function defined."
                             % (step, load, load))
       else:
-         print "Loading %s" % load
+         print("Loading %s" % load)
          if not self.display_only:
             getattr(self, "load_" + load)()
 
    def __save_attr(self, save):
       if not hasattr(self, save):
-         print ("WARNING: %s is not defined, therefore it can not be saved."
-                % save)
+         print(("WARNING: %s is not defined, therefore it can not be saved."
+                % save))
       if not hasattr(self, "save_" + save):
          raise RuntimeError("The Gamera process system wants to save %s, "
                             "but there is no save_%s function defined."
                             % (save, save))
       else:
-         print "Saving %s" % save
+         print("Saving %s" % save)
          if not self.display_only:
             getattr(self, "save_" + save)()
 

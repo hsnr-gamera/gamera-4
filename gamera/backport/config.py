@@ -18,8 +18,8 @@ Copyright (C) 2001-2005 Michael Droettboom
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from optparse import OptionParser, make_option, OptionConflictError
-import ConfigParser
+from .optparse import OptionParser, make_option, OptionConflictError
+from . import ConfigParser
 
 from os.path import isfile, expanduser, split, join
 from sys import platform

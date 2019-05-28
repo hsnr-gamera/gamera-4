@@ -107,11 +107,11 @@ class ResultPanel(wx.ScrolledWindow):
         else:
             raise ValueError("ResultPanel.UpdateResultWidgets: unknown mode of operation")
 
-        if len([x for x in self.bars.keys() if x not in feature_names]) != 0:
+        if len([x for x in list(self.bars.keys()) if x not in feature_names]) != 0:
             self.initResultsWidgets()
             return
 
-        if len([x for x in feature_names if x not in self.bars.keys()]) != 0:
+        if len([x for x in feature_names if x not in list(self.bars.keys())]) != 0:
             self.initResultsWidgets()
             return
 

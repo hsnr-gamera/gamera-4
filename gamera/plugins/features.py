@@ -398,7 +398,7 @@ class generate_features(PluginFunction):
       self.feature_functions = features
       features, num_features = features
       if len(self.features) != num_features:
-          if not generate_features.cache.has_key(num_features):
+          if num_features not in generate_features.cache:
               generate_features.cache[num_features] = [0] * num_features
           self.features = array.array('d', generate_features.cache[num_features])
       offset = 0

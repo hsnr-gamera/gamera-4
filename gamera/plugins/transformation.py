@@ -54,7 +54,7 @@ class rotate(PluginFunction):
     args = Args([Float("angle"), Pixel("bgcolor", default=NoneDefault), Int("order", range=(1,3), default=1)])
     args.list[0].rng = (-180,180)
     doc_examples = [(RGB, 32.0, RGBPixel(255, 255, 255), 3), (COMPLEX, 15.0, 0.0j, 3)]
-    author = u"Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
+    author = "Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
     def __call__(self, angle, bgcolor=None, order=1):
       if (bgcolor == None):
           bgcolor = self.white()
@@ -173,7 +173,7 @@ class grey_convert(PluginFunction):
     self_type = ImageType([GREYSCALE])
     return_type = ImageType([GREYSCALE])
     args = Args([IntVector ("newgrey")])
-    doc_examples = [(GREYSCALE,range(255,-1,-1))]
+    doc_examples = [(GREYSCALE,list(range(255,-1,-1)))]
 
 class TransformationModule(PluginModule):
     cpp_headers=["transformation.hpp"]

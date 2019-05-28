@@ -72,8 +72,8 @@ def create_help_display(parent, docstring):
          else:
             window.SetInitialSize(wx.Size(50, 150))
          return window
-      except Exception, e:
-         print e
+      except Exception as e:
+         print(e)
    else:
       from gamera import util
 

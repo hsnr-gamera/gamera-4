@@ -45,7 +45,7 @@ Options:
 
 
 import sys, os, glob, getopt, tempfile, string
-import cPickle, cStringIO, zlib
+import pickle, io, zlib
 import img2img
 try:
     import wx
@@ -62,7 +62,7 @@ def crunch_data(data, compressed):
     data = repr(data)
 
     # This next bit is borrowed from PIL.  It is used to wrap the text intelligently.
-    fp = cStringIO.StringIO()
+    fp = io.StringIO()
     data = data + " "  # buffer for the +1 test
     c = i = 0
     word = ""
@@ -103,7 +103,7 @@ def crunch_data(data, compressed):
 
 def main(args):
     if not args or ("-h" in args):
-        print __doc__
+        print(__doc__)
         return
 
     append = 0
@@ -115,7 +115,7 @@ def main(args):
     try:
         opts, fileArgs = getopt.getopt(args, "auin:m:")
     except getopt.GetoptError:
-        print __doc__
+        print(__doc__)
         return
 
     for opt, val in opts:
@@ -131,7 +131,7 @@ def main(args):
             icon = 1
 
     if len(fileArgs) != 2:
-        print __doc__
+        print(__doc__)
         return
 
     image_file, python_file = fileArgs
@@ -140,7 +140,7 @@ def main(args):
     tfname = tempfile.mktemp()
     ok, msg = img2img.convert(image_file, maskClr, None, tfname, wx.BITMAP_TYPE_PNG, ".png")
     if not ok:
-        print msg
+        print(msg)
         return
 
     data = open(tfname, "rb").read()
@@ -198,7 +198,7 @@ def main(args):
         m_msg = " with mask %s" % maskClr
     else:
         m_msg = ""
-    print "Embedded %s%s into %s%s" % (image_file, n_msg, python_file, m_msg)
+    print("Embedded %s%s into %s%s" % (image_file, n_msg, python_file, m_msg))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

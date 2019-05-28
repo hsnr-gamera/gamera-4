@@ -25,7 +25,7 @@ from gamera import util
 import new, os, os.path, imp, inspect, sys, copy
 from gamera.backport import sets
 from types import *
-from enums import *
+from .enums import *
 
 
 plugin_methods = {}
@@ -118,8 +118,8 @@ class PluginFunction:
       else:
          func = cls.__call__
          if type(cls.__call__) == new.instancemethod:
-            func = cls.__call__.im_func
-         func.func_doc = ("%s\n\n%s" %
+            func = cls.__call__.__func__
+         func.__doc__ = ("%s\n\n%s" %
                           (cls.get_formatted_argument_list(),
                            util.dedent(cls.__doc__)))
       cls.__call__ = staticmethod(func)
@@ -135,11 +135,11 @@ class PluginFunction:
          else:
             pixel_types = [NONIMAGE]
          for pixel_type in pixel_types:
-            if not plugin_methods.has_key(pixel_type):
+            if pixel_type not in plugin_methods:
                plugin_methods[pixel_type] = {}
             start = plugin_methods[pixel_type]
             for subcategory in category.split('/'):
-               if not start.has_key(subcategory):
+               if subcategory not in start:
                   start[subcategory] = {}
                start = start[subcategory]
             start[cls.__name__] = cls
@@ -178,15 +178,15 @@ def methods_flat_category(category, pixel_type=None):
          # We have to cast the lists to sets here to make Python 2.3.0 happy.
          methods.update(sets.Set(methods_flat_category(category, pixel_type)))
       return list(methods)
-   elif plugin_methods.has_key(pixel_type):
+   elif pixel_type in plugin_methods:
       methods = plugin_methods[pixel_type]
-      if methods.has_key(category):
+      if category in methods:
          return _methods_flatten(methods[category])
    return []
 
 def _methods_flatten(mat):
    list = []
-   for key, val in mat.items():
+   for key, val in list(mat.items()):
       if type(val) == DictType:
          list.extend(_methods_flatten(val))
       else:

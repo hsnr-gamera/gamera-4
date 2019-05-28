@@ -131,7 +131,7 @@ class create_gabor_filter(PluginFunction):
     args = Args([Float("orientation", default=45.0),
                  Float("frequency", default=0.375),
                  Int("direction", default=5)])
-    author = u"Ullrich K\u00f6the (wrapped from VIGRA by Uma Kompella)"
+    author = "Ullrich K\u00f6the (wrapped from VIGRA by Uma Kompella)"
     doc_examples = [(GREYSCALE,)]
     def __call__(self,
                  orientation=45.0,

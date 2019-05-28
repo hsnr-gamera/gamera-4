@@ -101,7 +101,7 @@ else:
             if len(shape) == 3 and shape[2] == 3 and typecode == n.dtype('uint8'):
                 return RGB
             elif len(shape) == 2:
-                if _inverse_typecodes.has_key(typecode):
+                if typecode in _inverse_typecodes:
                     return _inverse_typecodes[typecode]
             raise ValueError('Array is not one of the acceptable types (uint8 * 3, uint8, uint16, uint32, float64, complex128)')
         _check_input = staticmethod(_check_input)

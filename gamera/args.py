@@ -23,7 +23,7 @@ from gamera.gui import has_gui
 from new import instancemethod
 import sys, os.path   # Python standard library
 from types import *
-import util, paths            # Gamera specific
+from . import util, paths            # Gamera specific
 
 # the maximum default number (int, float) in argument boxes
 # necessary because sys.maxint is not accepted by some wxPython widgets
@@ -219,7 +219,7 @@ class Class(Arg):
 
 class ImageType(Arg):
    def __init__(self, pixel_types, name=None, list_of=False, default=None):
-      import core
+      from . import core
       Arg.__init__(self, name)
       if not util.is_sequence(pixel_types):
          pixel_types = (pixel_types,)
@@ -257,7 +257,7 @@ class ImageType(Arg):
 
 class Rect(Arg):
    def __init__(self, name=None, list_of=False):
-      import core
+      from . import core
       Arg.__init__(self, name)
       if not core is None:
          self.klass = core.Rect
@@ -495,6 +495,6 @@ ___mixin_locals = locals()
 def mixin(module, name):
    for cls_name in __all__ + ["Arg"]:
       cls = ___mixin_locals[cls_name]
-      if module.has_key(cls_name):
+      if cls_name in module:
          cls.__bases__ = tuple([module[cls_name]] + list(cls.__bases__))
    sys.stdout.write("\n")

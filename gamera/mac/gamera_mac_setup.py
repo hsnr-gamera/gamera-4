@@ -28,19 +28,19 @@ from distutils.file_util import copy_file
 from os.path import join
 import os
 import glob
-import commands
+import subprocess
 import datetime
 def _run_command(exc, line):
-    print line
+    print(line)
     try:
         try:
-            status, output = commands.getstatusoutput(line)
+            status, output = subprocess.getstatusoutput(line)
         except Exception:
             raise IOError("Error running %s" % exc)
         if status:
             raise IOError("Error running %s" % exc)
     finally:
-        print output
+        print(output)
     return output
 
 def run_command(exc, *args):
@@ -113,7 +113,7 @@ class bdist_osx(Command):
       copy_file('README', 'gamera/mac/resources/ReadMe.txt')
       copy_file('LICENSE', 'gamera/mac/resources/License.txt')
 
-      import buildpkg
+      from . import buildpkg
       import __version__
       log.info("Building %s.pkg..." % fullname)
       pm = buildpkg.PackageMaker(fullname, version, description)
