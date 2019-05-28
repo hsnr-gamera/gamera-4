@@ -50,11 +50,11 @@ struct NTIteratorObject: IteratorObject {
          Py_INCREF(_graph);
    };
    static PyObject* next(IteratorObject* self) {
-      if(self == nullptr || ((NTIteratorObject*)self)->_iterator == nullptr)
-        return nullptr;
+      if(self == NULL || ((NTIteratorObject*)self)->_iterator == NULL)
+        return NULL;
       Node *n = ((NTIteratorObject*)self)->_iterator->next();
-      if (n == nullptr)
-         return nullptr;
+      if (n == NULL)
+         return NULL;
       return (PyObject*)node_deliver(n,((NTIteratorObject*)self)->_graph);
    }
    static void dealloc(IteratorObject* self) {
@@ -80,12 +80,12 @@ struct ETIteratorObject: IteratorObject {
          Py_INCREF(_graph);
    }
    static PyObject* next(IteratorObject* self) {
-      if(self == nullptr || ((ETIteratorObject*)self)->_iterator == nullptr || ((ETIteratorObject*)self)->_graph == nullptr)
-         return nullptr;
+      if(self == NULL || ((ETIteratorObject*)self)->_iterator == NULL || ((ETIteratorObject*)self)->_graph == NULL)
+         return NULL;
 
       Edge *n = ((ETIteratorObject*)self)->_iterator->next();
-      if (n == nullptr)
-         return nullptr;
+      if (n == NULL)
+         return NULL;
       return (PyObject*)edge_deliver(n,((ETIteratorObject*)self)->_graph);
    }
    static void dealloc(IteratorObject* self) {

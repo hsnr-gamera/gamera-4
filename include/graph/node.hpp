@@ -32,7 +32,7 @@ struct Node {
    GraphData * _value;    /// < nodes's value
    Graph* _graph;
 
-   Node(GraphData * value, Graph* graph = nullptr);
+   Node(GraphData * value, Graph* graph = NULL);
    ~Node();
    Node(Node& node);
    Node(Node* node);
@@ -42,8 +42,8 @@ struct Node {
    }
 
    void remove_from_graph() {
-      if(_graph != nullptr) {
-         _graph = nullptr;
+      if(_graph != NULL) {
+         _graph = NULL;
       }
    }
 
@@ -72,7 +72,7 @@ struct Node {
    size_t get_nnodes() {
       NodePtrEdgeIterator* it = get_nodes();
       size_t count = 0;
-      while(it->next() != nullptr)
+      while(it->next() != NULL)
          count++;
 
       delete it;

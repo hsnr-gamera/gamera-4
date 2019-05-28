@@ -135,7 +135,7 @@ PyObject* graph_create_spanning_tree(PyObject* self, PyObject* pyobject) {
 		GraphDataPyObject a(pyobject);
 		g = so->_graph->create_spanning_tree(&a);
 	}
-	if (g == nullptr) {
+	if (g == NULL) {
 		PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
 		Py_RETURN_NONE;
 	}
@@ -169,8 +169,8 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       PyObject* images, PyObject* uniq_dists) {
 
    PyObject* images_seq = PySequence_Fast(images, "images must be iteratable");
-   if (images_seq == nullptr)
-      return nullptr;
+   if (images_seq == NULL)
+      return NULL;
 
    static PyTypeObject* imagebase = 0;
    if (imagebase == 0) {
@@ -226,7 +226,7 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
    for (i = 0; i < images_len; ++i) {
       GraphDataPyObject* obj = new GraphDataPyObject(PySequence_Fast_GET_ITEM(images_seq, i));
       nodes[i] = so->_graph->add_node_ptr(obj);
-      assert(nodes[i] != nullptr);
+      assert(nodes[i] != NULL);
    }
    Py_DECREF(images_seq);
 
@@ -251,17 +251,17 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
 PyObject* graph_create_minimum_spanning_tree(PyObject* self, PyObject* args) {
    INIT_SELF_GRAPH();
 
-   PyObject* images = nullptr;
-   PyObject* uniq_dists = nullptr;
+   PyObject* images = NULL;
+   PyObject* uniq_dists = NULL;
    if(PyArg_ParseTuple(args, CHAR_PTR_CAST "|OO:create_minimum_spanning_tree", 
             &images, &uniq_dists) <= 0)
-      return nullptr;
+      return NULL;
    
-   if (images == nullptr || uniq_dists == nullptr) {
+   if (images == NULL || uniq_dists == NULL) {
       Graph* g = so->_graph->create_minimum_spanning_tree(); 
-      if(g == nullptr) {
+      if(g == NULL) {
          PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
-         return nullptr;
+         return NULL;
       }
 
       return (PyObject*)graph_new(g);
@@ -278,16 +278,16 @@ PyObject* graph_create_minimum_spanning_tree(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------
 PyObject* graph_BFS(PyObject* self, PyObject* root) {
    INIT_SELF_GRAPH();
-   BfsIterator* it = nullptr;
+   BfsIterator* it = NULL;
    if(is_NodeObject(root))
       it = so->_graph->BFS(((NodeObject*)root)->_node);
    else {
       GraphDataPyObject a(root);
       it = so->_graph->BFS(&a);
    }
-   if(it == nullptr) {
+   if(it == NULL) {
       PyErr_SetString(PyExc_KeyError, "starting-node not found");
-      return nullptr;
+      return NULL;
 
    }
 
@@ -303,16 +303,16 @@ PyObject* graph_BFS(PyObject* self, PyObject* root) {
 // -----------------------------------------------------------------------------
 PyObject* graph_DFS(PyObject* self, PyObject* root) {
    INIT_SELF_GRAPH();
-   DfsIterator* it = nullptr;
+   DfsIterator* it = NULL;
    if(is_NodeObject(root))
       it = so->_graph->DFS(((NodeObject*)root)->_node);
    else {
       GraphDataPyObject a(root);
       it = so->_graph->DFS(&a);
    }
-   if(it == nullptr) {
+   if(it == NULL) {
       PyErr_SetString(PyExc_KeyError, "starting-node not found");
-      return nullptr;
+      return NULL;
 
    }
 
@@ -347,7 +347,7 @@ PyObject* graph_colorize(PyObject* self, PyObject* pyobject) {
    }
    catch (std::runtime_error e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());
-      return nullptr;
+      return NULL;
    }
    
 }

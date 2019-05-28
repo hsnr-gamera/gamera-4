@@ -670,7 +670,7 @@ namespace Gamera {
       }
       Py_DECREF(seq);
       Py_DECREF(row_seq);
-      if (PyInt_Check(pixel))
+      if (PyLong_Check(pixel))
         pixel_type = GREYSCALE;
       else if (PyFloat_Check(pixel))
         pixel_type = FLOAT;

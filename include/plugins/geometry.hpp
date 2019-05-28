@@ -415,8 +415,8 @@ namespace Gamera {
         PyObject *adj_list = PyList_GetItem(labelpairs, i);
         PyObject *region1 = PyList_GetItem(adj_list, 0);
         PyObject *region2 = PyList_GetItem(adj_list, 1);
-        GraphDataLong* a_p = new GraphDataLong(PyInt_AsLong(region1));
-        GraphDataLong* b_p = new GraphDataLong(PyInt_AsLong(region2));
+        GraphDataLong* a_p = new GraphDataLong(PyLong_AsLong(region1));
+        GraphDataLong* b_p = new GraphDataLong(PyLong_AsLong(region2));
         bool del_a = !graph->add_node(a_p);
         bool del_b = !graph->add_node(b_p);
         graph->add_edge(a_p, b_p); 

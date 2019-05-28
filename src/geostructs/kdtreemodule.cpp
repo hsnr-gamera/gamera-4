@@ -41,7 +41,7 @@ struct KdNodeObject {
 };
 
 static PyTypeObject KdNodeType = {
-  PyVarObject_HEAD_INIT(nullptr, 0)
+  PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -155,7 +155,7 @@ struct KdTreeObject {
 };
 
 static PyTypeObject KdTreeType = {
-  PyVarObject_HEAD_INIT(nullptr, 0)
+  PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -396,19 +396,19 @@ void init_KdTreeType(PyObject* d) {
 //======================================================================
 
 PyMethodDef kdtree_module_methods[] = {
-  {nullptr}
+  {NULL}
 };
 
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.kdtree",
-        nullptr,
+        NULL,
         -1,
         kdtree_module_methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
+        NULL,
+        NULL,
+        NULL,
+        NULL
 };
 
 PyMODINIT_FUNC PyInit_kdtree(void) {

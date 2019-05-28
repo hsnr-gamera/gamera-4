@@ -30,7 +30,7 @@ namespace Gamera { namespace GraphApi {
 void ShortestPath::init_single_source(Graph* g, Node *s) {
    NodePtrIterator *it = g->get_nodes();
    Node* itn; 
-   while((itn = it->next()) != nullptr) {
+   while((itn = it->next()) != NULL) {
       DijkstraNode *n = new DijkstraNode(itn);
       if(itn == s) {
          n->distance = 0;
@@ -49,7 +49,7 @@ ShortestPathMap* ShortestPath::dijkstra_shortest_path(Graph* g, Node *source) {
    DfsIterator* it = g->DFS(source);
    Node* node;
    
-   while((node = it->next()) != nullptr) {
+   while((node = it->next()) != NULL) {
       DijkstraNode *n = new DijkstraNode(node);
       nodes[node] = n;
    }
@@ -66,7 +66,7 @@ ShortestPathMap* ShortestPath::dijkstra_shortest_path(Graph* g, Node *source) {
          n->visited = true;
          EdgePtrIterator* eit = n->node->get_edges();
          Edge* e;
-         while((e = eit->next()) != nullptr) {
+         while((e = eit->next()) != NULL) {
             DijkstraNode* from = nodes[e->from_node];
             DijkstraNode* to = nodes[e->to_node];
 
@@ -94,23 +94,23 @@ ShortestPathMap* ShortestPath::dijkstra_shortest_path(Graph* g, Node *source) {
    ShortestPathMap *result = new ShortestPathMap();
    NodePtrIterator *it2 = g->get_nodes();
    Node* itn;
-   while((itn = it2->next()) != nullptr) {
+   while((itn = it2->next()) != NULL) {
       DijkstraPath path;
       Node* n = itn;
       
       DijkstraNode *dn = nodes[n];
-      if(dn != nullptr) {
+      if(dn != NULL) {
          path.cost = dn->distance;
       }
       else
          path.cost = 0;
-      while(n != nullptr) {
+      while(n != NULL) {
          path.path.push_back(n);
          dn = nodes[n];
-         if(dn != nullptr)
+         if(dn != NULL)
             n = dn->predecessor;
          else
-            n = nullptr;
+            n = NULL;
       }
       (*result)[itn] = path;
    }
@@ -129,7 +129,7 @@ std::map<Node*,ShortestPathMap*>* ShortestPath::dijkstra_all_pairs_shortest_path
    std::map<Node*, ShortestPathMap*>* result = new std::map<Node*, ShortestPathMap*>;
    NodePtrIterator* it = g->get_nodes();
    Node* n;
-   while((n = it->next()) != nullptr) {
+   while((n = it->next()) != NULL) {
       (*result)[n] = dijkstra_shortest_path(g, n);
    }
    delete it;
@@ -159,7 +159,7 @@ ShortestPathMap *ShortestPath::faster_all_pairs_shortest_path(Graph* g) {
    //init nodes
    Node *n;
    NodePtrIterator* nit = g->get_nodes();
-   while((n = nit->next()) != nullptr) {
+   while((n = nit->next()) != NULL) {
       nodes[n] = i;
       i++;
    }
@@ -169,13 +169,13 @@ ShortestPathMap *ShortestPath::faster_all_pairs_shortest_path(Graph* g) {
    //init edges
    Edge *e;
    EdgePtrIterator* eit = g->get_edges();
-   while((e = eit->next()) != nullptr) {
+   while((e = eit->next()) != NULL) {
       size_t from = nodes[e->from_node];
       size_t to = nodes[e->to_node];
       weights[from*nnodes+to] = e->weight;
    }
    delete eit;
-   return nullptr;
+   return NULL;
 }
 
 

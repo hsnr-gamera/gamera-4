@@ -1501,13 +1501,13 @@ PyMethodDef knn_module_methods[] = {
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.knncore",
-        nullptr,
+        NULL,
         -1,
         knn_module_methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
+        NULL,
+        NULL,
+        NULL,
+        NULL
 };
 
 PyMODINIT_FUNC PyInit_knncore(void) {
@@ -1521,8 +1521,8 @@ PyMODINIT_FUNC PyInit_knncore(void) {
     KnnType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
     KnnType.tp_new = knn_new;
     KnnType.tp_getattro = PyObject_GenericGetAttr;
-    KnnType.tp_alloc = nullptr; // PyType_GenericAlloc;
-    KnnType.tp_free = nullptr; // _PyObject_Del;
+    KnnType.tp_alloc = NULL; // PyType_GenericAlloc;
+    KnnType.tp_free = NULL; // _PyObject_Del;
     KnnType.tp_methods = knn_methods;
     KnnType.tp_getset = knn_getset;
     PyType_Ready(&KnnType);
@@ -1535,11 +1535,11 @@ PyMODINIT_FUNC PyInit_knncore(void) {
                          Py_BuildValue(CHAR_PTR_CAST "i", FAST_EUCLIDEAN));
 
     PyObject* array_dict = get_module_dict("array");
-    if (array_dict == nullptr) {
+    if (array_dict == NULL) {
         return m;
     }
     array_init = PyDict_GetItemString(array_dict, "array");
-    if (array_init == nullptr) {
+    if (array_init == NULL) {
         PyErr_SetString(PyExc_RuntimeError, "Unable to get array init method\n");
         return m;
     }

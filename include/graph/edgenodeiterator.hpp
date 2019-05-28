@@ -46,7 +46,7 @@ public:
 
    Node* next() {
       if(it == _end)
-         return nullptr;
+         return NULL;
       
       Node* nextnode = *it;
       it++;
@@ -77,7 +77,7 @@ public:
 
 // -----------------------------------------------------------------------------
 /// lazy iterator iterating over a EdgeVector between given borders
-/// returning all edges if from_node is nullptr
+/// returning all edges if from_node is NULL
 /// returning edges with from_node as start_node
 class EdgePtrIterator {
 protected:
@@ -89,7 +89,7 @@ protected:
 
 public:
    EdgePtrIterator(Graph* graph, EdgeIterator begin, EdgeIterator end, 
-         Node* from_node=nullptr) {
+         Node* from_node=NULL) {
 
       _graph = graph;
       _begin = begin;
@@ -99,7 +99,7 @@ public:
    }
    Edge* next() {
       if(it == _end)
-         return nullptr;
+         return NULL;
       Edge* nextedge = *it;
       it++;
       if(_from && nextedge->from_node != _from)
@@ -118,19 +118,19 @@ class NodePtrEdgeIterator: public EdgePtrIterator {
    Node* _from_node_node;
 public:
    NodePtrEdgeIterator(Graph* graph, EdgeIterator begin, EdgeIterator end, 
-         Node* from_node = nullptr):
-      EdgePtrIterator(graph, begin, end, nullptr) {
+         Node* from_node = NULL):
+      EdgePtrIterator(graph, begin, end, NULL) {
         _from_node_node = from_node; 
       }
 
 
    Node* next() {
       Edge* e = EdgePtrIterator::next();
-      if(e == nullptr)
-         return nullptr;
+      if(e == NULL)
+         return NULL;
 
       Node* n = e->traverse(_from_node_node);
-      if(n == nullptr)
+      if(n == NULL)
          return next();
       
       return n;

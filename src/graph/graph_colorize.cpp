@@ -35,7 +35,7 @@ namespace Gamera { namespace GraphApi {
    
 // -----------------------------------------------------------------------------
 unsigned int Graph::get_color(Node* n) {
-   if(_colors == nullptr)
+   if(_colors == NULL)
       throw std::runtime_error("Graph::get_color: Graph is not colorized");
 
    
@@ -50,7 +50,7 @@ unsigned int Graph::get_color(Node* n) {
 
 // -----------------------------------------------------------------------------
 void Graph::set_color(Node* n, unsigned int color) {
-   if(_colors == nullptr) {
+   if(_colors == NULL) {
       _colors = new ColorMap();
    }
    (*_colors)[n] = color;
@@ -79,7 +79,7 @@ void Graph::colorize(unsigned int ncolors) {
    // --------------------------------------------------------------------------
    //Step 1: form degree_list
    n_it = get_nodes();
-   while((n = n_it->next()) != nullptr) {
+   while((n = n_it->next()) != NULL) {
       size_t nnodes = n->get_nnodes();
       if(degrees.find(nnodes) == degrees.end())
          degrees[nnodes] = new NodeList;
@@ -91,10 +91,10 @@ void Graph::colorize(unsigned int ncolors) {
    // --------------------------------------------------------------------------
    //Step 2
    //
-   std::vector<Node*> removed(get_nnodes(),nullptr);
+   std::vector<Node*> removed(get_nnodes(),NULL);
 
    for(int i = get_nnodes()-1; i >= 0; i--) {
-      Node* to_be_removed = nullptr;
+      Node* to_be_removed = NULL;
 
       //find first Node of smallest degree
       for(DegreeMap::iterator it = degrees.begin(); it != degrees.end(); it++) {
@@ -106,13 +106,13 @@ void Graph::colorize(unsigned int ncolors) {
          } 
       }
 
-      if(to_be_removed == nullptr)
+      if(to_be_removed == NULL)
          throw std::runtime_error("Something went wrong when colorizing");
 
 
       NodePtrEdgeIterator* neighbors = to_be_removed->get_nodes();
       Node* neighbor;
-      while((neighbor = neighbors->next()) != nullptr) {
+      while((neighbor = neighbors->next()) != NULL) {
          int degree = nodedegrees[neighbor];
          if(degree == -1) // not in a degree list
             continue;
@@ -142,7 +142,7 @@ void Graph::colorize(unsigned int ncolors) {
    //Step 3
    
    //initialize histogram with 0
-   if(_colorhistogram != nullptr) {
+   if(_colorhistogram != NULL) {
       delete _colorhistogram;
    }
    _colorhistogram = new Histogram(ncolors, 0);
@@ -150,9 +150,9 @@ void Graph::colorize(unsigned int ncolors) {
    n_it = get_nodes();
    try {
       for(std::vector<Node*>::iterator it = removed.begin(); it != removed.end(); it++) {
-   //   while ((n = n_it->next()) != nullptr) {
+   //   while ((n = n_it->next()) != NULL) {
          n = *it;
-         if(n == nullptr) {
+         if(n == NULL) {
             continue;
          }
 
@@ -162,7 +162,7 @@ void Graph::colorize(unsigned int ncolors) {
          NodePtrEdgeIterator* neighbors = n->get_nodes();
          Node* neighbor;
          unsigned int neighbor_color;
-         while((neighbor = neighbors->next()) != nullptr) {
+         while((neighbor = neighbors->next()) != NULL) {
             try {
                neighbor_color = get_color(neighbor);
                available_colors[neighbor_color] = false;

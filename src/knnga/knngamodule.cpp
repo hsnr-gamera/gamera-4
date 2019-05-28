@@ -32,7 +32,7 @@ struct GABaseSettingObject {
 };
 
 static PyTypeObject GABaseSettingType = {
-    PyVarObject_HEAD_INIT(nullptr, 0)
+    PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 static PyObject *GABaseSetting_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
@@ -1858,13 +1858,13 @@ PyMethodDef knnga_module_methods[] = {
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.knnga",
-        nullptr,
+        NULL,
         -1,
         knnga_module_methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
+        NULL,
+        NULL,
+        NULL,
+        NULL
 };
 
 

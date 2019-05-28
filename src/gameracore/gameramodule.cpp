@@ -48,13 +48,13 @@ PyMethodDef gamera_module_methods[] = {
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.gameracore",
-        nullptr,
+        NULL,
         -1,
         gamera_module_methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
+        NULL,
+        NULL,
+        NULL,
+        NULL
 };
 
 PyMODINIT_FUNC PyInit_gameracore(void) {

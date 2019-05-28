@@ -35,9 +35,9 @@ struct GraphDataPyObject: public GraphData {
    PyObject* data;
    PyObject* _node;
 
-    explicit GraphDataPyObject(PyObject* d = nullptr)  {
+    explicit GraphDataPyObject(PyObject* d = NULL)  {
       data = d;
-      _node = nullptr;
+      _node = NULL;
       incref();
    }
 
@@ -54,16 +54,16 @@ struct GraphDataPyObject: public GraphData {
    }
 
    void incref() override{
-      if(data != nullptr)
+      if(data != NULL)
          Py_INCREF(data);
-      if(_node != nullptr)
+      if(_node != NULL)
          Py_INCREF(_node);
    }
 
    void decref() override{
-      if(data != nullptr)
+      if(data != NULL)
          Py_DECREF(data);
-      if(_node != nullptr)
+      if(_node != NULL)
          Py_DECREF(_node);
    }
 

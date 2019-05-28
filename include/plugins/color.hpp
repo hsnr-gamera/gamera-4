@@ -431,7 +431,7 @@ namespace Gamera {
         RGBPixel *rgbpixel = ((RGBPixelObject *) itemKey)->m_x;
         testKey = (rgbpixel->red() << 16) | (rgbpixel->green() << 8) | rgbpixel->blue();
         
-        given_label = PyInt_AsLong(itemValue);
+        given_label = PyLong_AsLong(itemValue);
         if (given_label < 0)
           throw std::invalid_argument("Labels must be positive integers.");
         if (pixel.find(testKey) == pixel.end()) 

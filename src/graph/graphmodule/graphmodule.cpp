@@ -25,10 +25,10 @@
 // Factory wrapper for creating graph easier
 template<flag_t F>
 static PyObject* Factory(PyObject* self, PyObject* args) {
-  PyObject *a = nullptr;
+  PyObject *a = NULL;
   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|O", &a) <= 0)
     return 0;
-  if (a == nullptr)
+  if (a == NULL)
     return (PyObject*)graph_new(F);
   if (is_GraphObject(a))
     return (PyObject*)graph_copy((GraphObject*)a, F);
@@ -50,19 +50,19 @@ PyMethodDef graph_module_methods[] = {
     CHAR_PTR_CAST "Create a new directed acyclic graph" },
   { CHAR_PTR_CAST "Undirected", Factory<FLAG_UNDIRECTED>, METH_VARARGS,
     CHAR_PTR_CAST "Create a new undirected (cyclic) graph" },
-  {nullptr}
+  {NULL}
 };
 
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.graph",
-        nullptr,
+        NULL,
         -1,
         graph_module_methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
+        NULL,
+        NULL,
+        NULL,
+        NULL
 };
 
 
@@ -73,7 +73,7 @@ PyMODINIT_FUNC PyInit_graph(void) {
     init_NodeType();
     init_EdgeType();
     if(!init_GraphType(d)){
-    	return nullptr;
+    	return NULL;
     }
 
     PyDict_SetItemString(d, "DEFAULT", PyLong_FromLong(FLAG_DEFAULT));

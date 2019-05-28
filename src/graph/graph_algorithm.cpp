@@ -53,7 +53,7 @@ size_t Graph::get_nsubgraphs() {
 // -----------------------------------------------------------------------------
 size_t Graph::size_of_subgraph(GraphData * value) {
    Node* node = get_node(value);
-   if(node != nullptr) {
+   if(node != NULL) {
       return size_of_subgraph(node);
    }
    return 0;
@@ -66,7 +66,7 @@ bool Graph::is_fully_connected() {
    Node* start = _nodes.front();
    size_t count = 0;
    DfsIterator *it = DFS(start);
-   while(it->next() != nullptr)
+   while(it->next() != NULL)
       count++;
 
    delete it;
@@ -80,7 +80,7 @@ bool Graph::has_path(GraphData * from_value, GraphData * to_value) {
    Node* from_node = get_node(from_value);
    Node* to_node = get_node(to_value);
    
-   if(from_node == nullptr || to_node == nullptr)
+   if(from_node == NULL || to_node == NULL)
       return false;
    else
       return has_path(from_node, to_node);
@@ -93,7 +93,7 @@ bool Graph::has_path(GraphData * from_value, GraphData * to_value) {
 bool Graph::has_path(Node* from_node, Node* to_node) {
    DfsIterator it(this, from_node);
    Node* n;
-   while((n = it.next()) != nullptr) {
+   while((n = it.next()) != NULL) {
       if(to_node == n)
          return true;
    }
@@ -109,7 +109,7 @@ size_t Graph::size_of_subgraph(Node* node) {
    DfsIterator it(this, node);
    size_t count = 0;
 
-   while(it.next() != nullptr)
+   while(it.next() != NULL)
       count++;
 
    return count;
@@ -121,8 +121,8 @@ size_t Graph::size_of_subgraph(Node* node) {
 // algorithms
 // -----------------------------------------------------------------------------
 BfsIterator* Graph::BFS(Node* node) {
-   if(node == nullptr)
-      return nullptr;
+   if(node == NULL)
+      return NULL;
    BfsIterator* it = new BfsIterator(this, node);
    return it;
 }
@@ -139,8 +139,8 @@ BfsIterator* Graph::BFS(GraphData * value) {
 
 // -----------------------------------------------------------------------------
 DfsIterator* Graph::DFS(Node* node) {
-   if(node == nullptr)
-      return nullptr;
+   if(node == NULL)
+      return NULL;
    DfsIterator* it = new DfsIterator(this, node);
    return it;
 }
@@ -157,8 +157,8 @@ DfsIterator* Graph::DFS(GraphData * value) {
 
 // -----------------------------------------------------------------------------
 ShortestPathMap* Graph::dijkstra_shortest_path(Node* node) {
-   if(node == nullptr) {
-      return nullptr;
+   if(node == NULL) {
+      return NULL;
    }
    else {
       ShortestPath s;
@@ -182,7 +182,7 @@ std::map<Node*, ShortestPathMap*> Graph::dijkstra_all_pairs_shortest_path() {
    NodePtrIterator *it = get_nodes();
    Node* n;
    
-   while((n=it->next()) != nullptr) {
+   while((n=it->next()) != NULL) {
       res[n] = dijkstra_shortest_path(n);
    }   
    delete it;
@@ -203,8 +203,8 @@ std::map<Node*, ShortestPathMap*> Graph::all_pairs_shortest_path() {
 // -----------------------------------------------------------------------------
 Graph *Graph::create_spanning_tree(GraphData * value) {
    Node* n = get_node(value);
-   if(n == nullptr)
-      return nullptr;
+   if(n == NULL)
+      return NULL;
 
    return create_spanning_tree(n);
 }

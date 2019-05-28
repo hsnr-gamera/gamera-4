@@ -82,9 +82,9 @@ struct Graph {
    // --------------------------------------------------------------------------
    int add_edge(GraphData * from_value, GraphData * to_value, 
          cost_t cost = 1.0, bool directed = false, 
-         void* label = nullptr);
+         void* label = NULL);
    int add_edge(Node* from_node, Node* to_node, cost_t cost = 1.0, 
-         bool directed = false, void* label = nullptr);
+         bool directed = false, void* label = NULL);
 
    EdgePtrIterator* get_edges();
    bool has_edge(GraphData * from_value, GraphData * to_value);

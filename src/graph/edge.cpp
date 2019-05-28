@@ -50,34 +50,34 @@ void Edge::remove_self() {
    catch (...) {
       assert(false);
    }
-   from_node = nullptr;
-   to_node = nullptr;
+   from_node = NULL;
+   to_node = NULL;
 }
 
 
 
 // -----------------------------------------------------------------------------
 Node* Edge::traverse(Node* node) {
-   if(from_node == nullptr || to_node == nullptr)
-      return nullptr;
+   if(from_node == NULL || to_node == NULL)
+      return NULL;
    else if(node == from_node)
       return to_node;
    else if(!is_directed && node == to_node)
       return from_node;
-   return nullptr;
+   return NULL;
 }
 
 
 
 // -----------------------------------------------------------------------------
 Node* Edge::traverse(GraphData * value) { 
-   if(from_node == nullptr || to_node == nullptr)
-      return nullptr;
+   if(from_node == NULL || to_node == NULL)
+      return NULL;
    else if(*value == *from_node->_value)
       return to_node;
    else if(!is_directed && *value == *to_node->_value)
       return from_node;
-   return nullptr;
+   return NULL;
 }
 
 

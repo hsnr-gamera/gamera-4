@@ -63,7 +63,7 @@ namespace Gamera {
       delete v;
       return Py_BuildValue("f",m);
     }
-    else if (PyInt_Check(entry)) {
+    else if (PyLong_Check(entry)) {
       IntVector* v = IntVector_from_python(list);
       if (!v)
         throw std::runtime_error("median: Cannot convert list to int type. Is the list inhomogeneous?");

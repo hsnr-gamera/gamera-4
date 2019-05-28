@@ -260,9 +260,22 @@ template = Template("""
       }
     [[end]]
   [[end]]
+  
+  static struct PyModuleDef module[[module_name]]Def = {
+        PyModuleDef_HEAD_INIT,
+        \"[[module_name]]\",
+        nullptr,
+        0,
+        [[module_name]]_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+  };
 
-  DL_EXPORT(void) init[[module_name]](void) {
-    Py_InitModule(CHAR_PTR_CAST \"[[module_name]]\", [[module_name]]_methods);
+
+  PyMODINIT_FUNC PyInit_[[module_name]](void) {
+    return PyModule_Create(&module[[module_name]]Def);
   }
   """)
 

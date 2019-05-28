@@ -33,7 +33,7 @@ namespace Gamera { namespace GraphApi {
   * must be subclassed for using a concrete alrogithm 
   * (BFS, DFS, etc)
   * 
-  * next() returns next Node or nullptr when there are no more nodes.
+  * next() returns next Node or NULL when there are no more nodes.
   *
   * Please note that chaning the graph invalidates this iterator and 
   * leads to undefined behaviour.
@@ -67,7 +67,7 @@ public:
       return _visited.count(node) == 1;
    }
 
-   /// returns pointer to next node or nullptr when there is no more node
+   /// returns pointer to next node or NULL when there is no more node
    virtual Node* next() = 0;
 };
 

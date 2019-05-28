@@ -29,7 +29,7 @@
 /* Python Type Definition                                                     */
 // -----------------------------------------------------------------------------
 static PyTypeObject NodeType = {
-   PyVarObject_HEAD_INIT(nullptr, 0)
+   PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
@@ -47,14 +47,14 @@ PyObject* node_new(Node* n) {
    std::cout<<"node_new(Node* n)\n";
 #endif
 
-   if (n == nullptr) {
+   if (n == NULL) {
       RETURN_VOID()
    }
 
    NodeObject* so;
    so = (NodeObject*)(NodeType.tp_alloc(&NodeType, 0));
    so->_node=n;
-   so->_graph = nullptr;
+   so->_graph = NULL;
    return (PyObject*)so;
 }
 
@@ -62,11 +62,11 @@ PyObject* node_new(Node* n) {
 
 // -----------------------------------------------------------------------------
 PyObject* node_deliver(Node* n, GraphObject* go) {
-   if(n == nullptr || go == nullptr)
-      return nullptr;
+   if(n == NULL || go == NULL)
+      return NULL;
 
    GraphDataPyObject* nodedata = dynamic_cast<GraphDataPyObject*>(n->_value);
-   if(nodedata->_node == nullptr) {
+   if(nodedata->_node == NULL) {
       nodedata->_node = node_new(n);
       ((NodeObject*)nodedata->_node)->_graph = go;
       Py_INCREF(go);
@@ -103,10 +103,10 @@ static void node_dealloc(PyObject* self) {
    INIT_SELF_NODE();
    if(so->_node) {
       GraphDataPyObject* nodedata = dynamic_cast<GraphDataPyObject*>(so->_node->_value);
-      nodedata->_node = nullptr;
+      nodedata->_node = NULL;
    }
    
-   if(so->_graph != nullptr && is_GraphObject((PyObject*)so->_graph)) {
+   if(so->_graph != NULL && is_GraphObject((PyObject*)so->_graph)) {
       Py_DECREF(so->_graph);
    }
 
@@ -185,16 +185,16 @@ static PyObject* node___repr__(PyObject* self) {
 
 // -----------------------------------------------------------------------------
 PyGetSetDef node_getset[] = {
-        { CHAR_PTR_CAST "data", (getter)node_get_data, nullptr,
-                CHAR_PTR_CAST "The value the identified with this node. (get/set)", nullptr },
-        { CHAR_PTR_CAST "edges", (getter)node_get_edges, nullptr,
-                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", nullptr },
-        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, nullptr,
+        { CHAR_PTR_CAST "data", (getter)node_get_data, NULL,
+                CHAR_PTR_CAST "The value the identified with this node. (get/set)", NULL },
+        { CHAR_PTR_CAST "edges", (getter)node_get_edges, NULL,
+                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", NULL },
+        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, NULL,
                 CHAR_PTR_CAST "An iterator over nodes that can be reached directly "
-                              "(through a single edge) from this node (get)", nullptr },
-        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, nullptr,
-                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", nullptr },
-        { nullptr }
+                              "(through a single edge) from this node (get)", NULL },
+        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, NULL,
+                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", NULL },
+        { NULL }
 };
 
 
@@ -208,8 +208,8 @@ void init_NodeType() {
     NodeType.tp_repr = node___repr__;
     NodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
     NodeType.tp_getattro = PyObject_GenericGetAttr;
-    NodeType.tp_alloc = nullptr; // PyType_GenericAlloc;
-    NodeType.tp_free = nullptr; // _PyObject_Del;
+    NodeType.tp_alloc = NULL; // PyType_GenericAlloc;
+    NodeType.tp_free = NULL; // _PyObject_Del;
     NodeType.tp_methods = node_methods;
     NodeType.tp_getset = node_getset;
     NodeType.tp_call = node___call__;
