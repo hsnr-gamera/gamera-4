@@ -189,12 +189,15 @@ namespace {
 
 template<class T>
 PyObject* to_string(T& m) {
-  PyObject* str = PyString_FromStringAndSize(NULL, m.nrows() * m.ncols() * 3);
+
+  //PyObject* str = PyString_FromStringAndSize(NULL, m.nrows() * m.ncols() * 3);
+	PyObject* str = PyUnicode_FromStringAndSize(NULL, m.nrows() * m.ncols() * 3);
   if (!str)
     throw std::exception();
   char* buffer;
   Py_ssize_t length;
-  int error = PyString_AsStringAndSize(str, &buffer, &length);
+  int error = PyBytes_AsStringAndSize(str, &buffer, &length);
+  PyUnicode_AsU
   if (error) {
     Py_DECREF(str);
     throw std::exception();
