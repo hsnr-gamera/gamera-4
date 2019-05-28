@@ -57,7 +57,7 @@ def test_voronoi_cell_labeling():
 def test_delaunay_triangulation():
     # all labels different
     points = [(50,50),(25,100),(50,150),(150,60),(150,125)]
-    edges = delaunay_from_points(points,range(len(points)))
+    edges = delaunay_from_points(points,list(range(len(points))))
     assert len(edges) == 7
     assert [0,1] in edges
     assert [0,2] in edges
@@ -78,7 +78,7 @@ def test_delaunay_triangulation():
     assert [2,3] in edges
     # collinear edge resolution
     points = [(50,50),(50,100),(50,150),(50,200),(150,125)]
-    edges = delaunay_from_points(points,range(len(points)))
+    edges = delaunay_from_points(points,list(range(len(points))))
     assert len(edges) == 7
     assert [0, 1] in edges
     assert [0, 4] in edges

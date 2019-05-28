@@ -306,7 +306,7 @@ class RawConfigParser:
         d.update(d2)
         if "__name__" in d:
             del d["__name__"]
-        return list(d.items())
+        return d.items()
 
     def _get(self, section, conv, option):
         return conv(self.get(section, option))

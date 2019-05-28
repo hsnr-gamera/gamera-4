@@ -98,7 +98,7 @@ class PluginFunction:
          if cls.return_type.name is None:
             cls.return_type = copy.copy(cls.return_type)
             cls.return_type.name = cls.__name__
-      if "__call__" not in cls:
+      if "__call__" not in cls.__dict__:
          # This loads the actual C++ function if it is not directly
          # linked in the Python PluginFunction class
          parts = cls.__module__.split('.')
@@ -153,7 +153,8 @@ def PluginFactory(name, category=None,
                   self_type=ImageType(ALL),
                   args=None):
    from gamera import core
-   cls = new.classobj(name, (PluginFunction,), {})
+   func = getattr(core.ImageBase, name)
+   cls = type(name, (PluginFunction,), {"__doc__" : util.dedent(func.__doc__)})
    if not category is None:
       cls.category = category
    cls.return_type = return_type
@@ -186,8 +187,8 @@ def methods_flat_category(category, pixel_type=None):
 
 def _methods_flatten(mat):
    list = []
-   for key, val in list(mat.items()):
-      if type(val) == DictType:
+   for key, val in mat.items():
+      if type(val) is dict:
          list.extend(_methods_flatten(val))
       else:
          list.append((key, val))

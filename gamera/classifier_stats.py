@@ -148,7 +148,7 @@ class ClassNameHistogram(ClassifierStat):
          id = glyph.get_main_id()
          result[id] += 1
 
-      result = [(val, key) for key, val in list(result.items())]
+      result = [(val, key) for key, val in result.items()]
       result.sort()
       result.reverse()
 

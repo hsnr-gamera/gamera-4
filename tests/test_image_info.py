@@ -6,7 +6,7 @@ init_gamera()
 def test_image_info():
    def _test_image_info(name, *args):
       for ext in ['png', 'tiff']:
-         print "data/%s_generic.%s" % (name, ext)
+         print("data/%s_generic.%s" % (name, ext))
          info = image_info("data/%s_generic.%s" % (name, ext))
          assert (info.depth, info.ncolors, info.ncols, info.nrows, info.x_resolution, info.y_resolution) == args
 

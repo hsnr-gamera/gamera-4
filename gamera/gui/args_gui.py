@@ -338,7 +338,7 @@ class Class:
       else:
          choices = []
          if self.list_of:
-            for key, val in list(locals.items()):
+            for key, val in locals.items():
                try:
                   it = iter(val)
                except Exception:
@@ -356,7 +356,7 @@ class Class:
                      if good:
                         choices.append(key)
          else:
-            for key, val in list(locals.items()):
+            for key, val in locals.items():
                if isinstance(val, self.klass):
                   choices.append(key)
       if isinstance(self.default, CNoneDefault):
@@ -444,7 +444,7 @@ class _Vector(Class):
    def determine_choices(self, locals):
       self.locals = locals
       choices = []
-      for key, val in list(locals.items()):
+      for key, val in locals.items():
          if (isinstance(val, array.array) and
              val.typecode == self.typecode):
             choices.append(key)
@@ -460,7 +460,7 @@ class ImageType(Class):
       self.locals = locals
       if locals:
          if self.list_of:
-            for key, val in list(locals.items()):
+            for key, val in locals.items():
                try:
                   it = iter(val)
                except Exception:
@@ -479,7 +479,7 @@ class ImageType(Class):
                      if good:
                         choices.append(key)
          else:
-            for key, val in list(locals.items()):
+            for key, val in locals.items():
                if isinstance(val, core.ImageBase) and val.data.pixel_type in self.pixel_types:
                   choices.append(key)
       if self.has_default and isinstance(self.default,CNoneDefault):

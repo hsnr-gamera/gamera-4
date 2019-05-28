@@ -133,7 +133,7 @@ class ImageMenu:
       return menu
 
    def create_methods(self, methods, menu):
-      items = list(methods.items())
+      items = methods.items()
       items.sort()
       for key, val in items:
          if type(val) == dict:
@@ -148,7 +148,7 @@ class ImageMenu:
       return menu
 
    def create_extra_methods(self, methods, menu):
-      items = list(methods.items())
+      items = methods.items()
       items.sort()
       for key, val in items:
          if type(val) == dict:

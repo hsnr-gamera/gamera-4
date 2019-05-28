@@ -5,21 +5,21 @@ init_gamera()
 
 def make_test(inner):
    def _generate_rgb():
-      rng = range(0, 255, 8)
+      rng = list(range(0, 255, 8))
       for r in rng:
          for g in rng:
             for b in rng:
                yield RGBPixel(r,g,b)
 
    def test():
-      for type, value in [(ONEBIT, range((2 ** 16) - 1)),
-                          (GREYSCALE, range((2 ** 8) - 1)),
+      for type, value in [(ONEBIT, list(range((2 ** 16) - 1))),
+                          (GREYSCALE, list(range((2 ** 8) - 1))),
                           (FLOAT, [float(x) for x in range(-5, 5)]),
                           (COMPLEX, [complex(x) for x in range(-5, 5)]),
                           (RGB, _generate_rgb()),
-                          (GREY16, range((2 ** 16) - 1))]:
+                          (GREY16, list(range((2 ** 16) - 1)))]:
          inner(type, value, DENSE)
-      inner(ONEBIT, range(0, 2 ** 16 - 1), RLE)
+      inner(ONEBIT, list(range(0, 2 ** 16 - 1)), RLE)
    return test
 
 def _test_image_constructors(type, value, storage):
@@ -117,10 +117,10 @@ def _test_index(type, value, storage):
       for c in range(50):
          image[r, c] = val
          assert image[r, c] == val
-   print len(image)
+   print(len(image))
    for i, p in enumerate(image):
       if p != val:
-         print i
+         print(i)
       assert p == val
    py.test.raises(IndexError, _fail1)
    py.test.raises(IndexError, _fail2)

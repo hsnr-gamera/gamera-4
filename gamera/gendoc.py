@@ -294,7 +294,7 @@ class PluginDocumentationGenerator:
 
    def get_methods(plugins):
       def methods_flatten(dest, source, flat, all=False):
-         for key, val in list(source.items()):
+         for key, val in source.items():
           if type(val) == dict:
             if key != "Test":
                if plugins is None or key in plugins or all:
@@ -317,7 +317,7 @@ class PluginDocumentationGenerator:
    get_methods = staticmethod(get_methods)
 
    def recurse(self, methods, level, images, s=None):
-      methods_list = list(methods.items())
+      methods_list = methods.items()
       methods_list.sort()
       for key, val in methods_list:
          if type(val) == dict:
@@ -334,7 +334,7 @@ class PluginDocumentationGenerator:
 
    def table_of_contents(self, methods):
       def toc_recurse(s, methods, level, links, index, filename=None):
-          methods_list = list(methods.items())
+          methods_list = methods.items()
           methods_list.sort()
           for key, val in methods_list:
              if key.startswith("_"):

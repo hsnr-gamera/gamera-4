@@ -296,7 +296,7 @@ class FunctionTemplateNode(TemplateNode):
             remember_vars[var] = data[var]
          data[var] = args[index]
       TemplateNode.execute(self, stream, data)
-      for key, value in list(remember_vars.items()):
+      for key, value in remember_vars.items():
          data[key] = value
 
 class LeafTemplateNode(TemplateNode):

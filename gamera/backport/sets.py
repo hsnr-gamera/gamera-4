@@ -360,7 +360,7 @@ class BaseSet(object):
 
         value = True
 
-        if type(iterable) in (list, tuple, xrange):
+        if type(iterable) in (list, tuple, range):
             # Optimized: we know that __iter__() and next() can't
             # raise TypeError, so we can move 'try:' out of the loop.
             it = iter(iterable)

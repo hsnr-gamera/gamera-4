@@ -662,7 +662,7 @@ class Values:
 
     def __init__ (self, defaults=None):
         if defaults:
-            for (attr, val) in list(defaults.items()):
+            for (attr, val) in defaults.items():
                 setattr(self, attr, val)
 
     def __repr__ (self):

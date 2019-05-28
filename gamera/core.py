@@ -94,7 +94,8 @@ supported.
 
    try:
       filename = filename.encode('utf8')
-   except Exception:
+   except Exception as ex:
+      print(ex)
       pass
    # First, try being smart by loading by extension
    for method in methods:
@@ -102,7 +103,8 @@ supported.
          if os.path.splitext(filename)[1].lower() == ext.lower():
             try:
                image = method.__call__(filename, compression)
-            except Exception:
+            except Exception as ex:
+               print(ex)
                pass
             else:
                return image
@@ -111,7 +113,8 @@ supported.
    for method in methods:
       try:
          image = method.__call__(filename, compression)
-      except Exception:
+      except Exception as ex:
+         print(ex)
          pass
       else:
          return image
@@ -651,7 +654,7 @@ def _init_gamera():
    if _gamera_initialised:
       return
    _gamera_initialised = True
-   from gamera import plugin, gamera_xml, sys
+   from gamera import plugin, gamera_xml
    from gamera.args import NoneDefault
    # Create the default functions for the menupl
    for method in (

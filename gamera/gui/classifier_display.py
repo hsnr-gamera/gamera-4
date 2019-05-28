@@ -97,7 +97,7 @@ class ExtendedMultiImageDisplay(MultiImageDisplay):
                ids[id] = 1
             else:
                ids[id] += 1
-         ids = [(val, key) for (key, val) in list(ids.items())]
+         ids = [(val, key) for (key, val) in ids.items()]
          ids.sort()
          ids.reverse()
          ids = [x[1] for x in ids]

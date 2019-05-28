@@ -173,7 +173,7 @@ class PackageMaker:
 
         # replace default option settings with user ones if provided
         fields = list(self. packageInfoDefaults.keys())
-        for k, v in list(options.items()):
+        for k, v in options.items():
             if k in fields:
                 self.packageInfo[k] = v
             elif not k in ["OutputDir"]:
