@@ -29,11 +29,11 @@ PyObject* _to_raw_string(const T &image) {
   typedef typename T::value_type value_type;
   typename T::const_vec_iterator j = image.vec_begin();
   size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-  PyObject* pystring = PyString_FromStringAndSize((char *)NULL,
+  PyObject* pystring = PyUnicode_FromStringAndSize((char *)NULL,
 						  (int)image_size);
   if (pystring == NULL)
     return NULL;
-  value_type* i = (value_type*)PyString_AS_STRING(pystring);
+  value_type* i = (value_type*)PyBytes_AsString(pystring);
   for (; j != image.vec_end(); ++i, ++j) {
     *i = *j;
   }
@@ -42,13 +42,25 @@ PyObject* _to_raw_string(const T &image) {
 
 template <class T>
 bool fill_image_from_string(T &image, PyObject* data_string) {
-  if (!PyString_CheckExact(data_string)) {
+  if (!PyUnicode_CheckExact(data_string)) {
     PyErr_SetString(PyExc_TypeError,
 		    "data_string must be a Python string");
     return false;
   }
-  char* s = PyString_AS_STRING(data_string);
-  size_t length = PyString_GET_SIZE(data_string);
+	auto tmp = PyUnicode_AsUTF8String(data_string);
+	if(tmp == nullptr){
+		PyErr_SetString(PyExc_TypeError, "could not get string from id_name tuple.");
+		return -1;
+	}
+	char* s = PyBytes_AsString(tmp);
+	Py_DECREF(tmp);
+	if (s == nullptr) {
+		PyErr_SetString(PyExc_TypeError, "could not get string from id_name tuple.");
+		return -1;
+	}
+	size_t length = PyUnicode_GetLength(data_string);
+  //char* s = PyString_AS_STRING(data_string);
+  //size_t length = PyString_GET_SIZE(data_string);
   typedef typename T::value_type value_type;
   size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
   if (length != image_size) {
