@@ -38,7 +38,7 @@ global plugins_to_ignore
 # magic_import_setup. generate_plugin uses this to prevent
 # the loading of C++ modules that may not exist yet during
 # the build process.
-def magic_import(name, globals_={}, locals_={}, fromlist=[], level=-1):
+def magic_import(name, globals_={}, locals_={}, fromlist=[], level=0):
    if fromlist != None and "core" in fromlist:
       fromlist = list(fromlist)
       fromlist.remove("core")

@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from gamera.plugin import *
-from gamera.plugins.listutilities import kernel_density, argmax
+import _pagesegmentation
 from math import sqrt
 
-import _pagesegmentation
+from gamera.plugin import *
+from gamera.plugins.listutilities import kernel_density, argmax
 
 
 class projection_cutting(PluginFunction):
@@ -67,13 +67,16 @@ class projection_cutting(PluginFunction):
       to a segment, in other words, they are ignored.
     """
     self_type = ImageType([ONEBIT])
-    args = Args([Int('Tx', default = 0), Int('Ty', default = 0), \
-		 Int('noise', default = 0), Choice('gap_treatment', ["cut", "ignore"], default=0)])
+    args = Args([Int('Tx', default=0), Int('Ty', default=0), \
+                 Int('noise', default=0), Choice('gap_treatment', ["cut", "ignore"], default=0)])
     return_type = ImageList("ccs")
     author = "Maria Elhachimi and Robert Butz"
-    def __call__(image, Tx = 0, Ty = 0, noise = 0, gap_treatment = 0):
-	    return _pagesegmentation.projection_cutting(image, Tx, Ty, noise, gap_treatment)
+
+    def __call__(image, Tx=0, Ty=0, noise=0, gap_treatment=0):
+        return _pagesegmentation.projection_cutting(image, Tx, Ty, noise, gap_treatment)
+
     __call__ = staticmethod(__call__)
+
 
 class runlength_smearing(PluginFunction):
     """
@@ -111,11 +114,13 @@ class runlength_smearing(PluginFunction):
     """
     self_type = ImageType([ONEBIT])
     return_type = ImageList("ccs")
-    args = Args([Int('Cx', default = -1), Int('Cy', default = -1), \
-		 Int('Csm', default = -1)])
+    args = Args([Int('Cx', default=-1), Int('Cy', default=-1), \
+                 Int('Csm', default=-1)])
     author = "Christoph Dalitz and Iliya Stoyanov"
-    def __call__(image, Cx = -1, Cy = -1, Csm = -1):
-	return _pagesegmentation.runlength_smearing(image, Cx, Cy, Csm)
+
+    def __call__(image, Cx=-1, Cy=-1, Csm=-1):
+        return _pagesegmentation.runlength_smearing(image, Cx, Cy, Csm)
+
     __call__ = staticmethod(__call__)
 
 
@@ -155,7 +160,7 @@ class bbox_merging(PluginFunction):
     """
     self_type = ImageType([ONEBIT])
     return_type = ImageList("ccs")
-    args = Args([Int('Ex', default = -1), Int('Ey', default = -1), Int('iterations', default=2)])
+    args = Args([Int('Ex', default=-1), Int('Ey', default=-1), Int('iterations', default=2)])
     pure_python = True
     author = "Rene Baston, Karl MacMillan, and Christoph Dalitz"
 
@@ -169,6 +174,7 @@ class bbox_merging(PluginFunction):
                     self.rect = Rect(allccs[indices[0]])
                 else:
                     self.rect = allccs[indices[0]].union_images([allccs[i] for i in indices])
+
             def extend(self, Ex, Ey, img):
                 ul_y = max(0, self.rect.ul_y - Ey)
                 ul_x = max(0, self.rect.ul_x - Ex)
@@ -177,24 +183,26 @@ class bbox_merging(PluginFunction):
                 nrows = lr_y - ul_y + 1
                 ncols = lr_x - ul_x + 1
                 self.rect = Rect(Point(ul_x, ul_y), Dim(ncols, nrows))
+
             def merge(self, other):
                 self.indices += other.indices
                 self.rect.union(other.rect)
+
         # does one merging step
         def merge_boxes(bboxes):
             from gamera import graph
-            bboxes.sort(lambda b1, b2: b1.rect.ul_y-b2.rect.ul_y)
+            bboxes.sort(lambda b1, b2: b1.rect.ul_y - b2.rect.ul_y)
             g = graph.Graph(graph.UNDIRECTED)
             # build graph where edge means overlap of two boxes
             for i in range(len(bboxes)):
                 g.add_node(i)
             for i in range(len(bboxes)):
-                for j in range(i+1, len(bboxes)):
+                for j in range(i + 1, len(bboxes)):
                     if bboxes[j].rect.ul_y > bboxes[i].rect.lr_y:
                         break
                     if bboxes[i].rect.intersects(bboxes[j].rect):
-                        if not g.has_edge(i,j):
-                            g.add_edge(i,j)
+                        if not g.has_edge(i, j):
+                            g.add_edge(i, j)
             new_bboxes = []
             for sg in g.get_subgraph_roots():
                 seg = [n() for n in g.BFS(sg)]
@@ -213,7 +221,7 @@ class bbox_merging(PluginFunction):
 
         # compute average CC size
         if Ex == -1:
-            Ex = 2*median([c.ncols for c in ccs])
+            Ex = 2 * median([c.ncols for c in ccs])
         if Ey == -1:
             Ey = median([c.nrows for c in ccs])
 
@@ -227,8 +235,8 @@ class bbox_merging(PluginFunction):
             if oldlen == len(bboxes):
                 break
         seg_ccs = []
-        for i,bbox in enumerate(bboxes):
-            label = i+1
+        for i, bbox in enumerate(bboxes):
+            label = i + 1
             ccs_of_segment = [ccs[j] for j in bbox.indices]
             for cc in ccs_of_segment:
                 self.highlight(cc, label)
@@ -272,7 +280,7 @@ class kise_block_extraction(PluginFunction):
     """
     self_type = ImageType([ONEBIT])
     return_type = ImageList("ccs")
-    args = Args([Float('Ta', default = 40.0), Float('fr', default = 0.34)])
+    args = Args([Float('Ta', default=40.0), Float('fr', default=0.34)])
     pure_python = True
     author = "Christoph Dalitz"
 
@@ -285,7 +293,7 @@ class kise_block_extraction(PluginFunction):
         labels = []
         labels2ccs = {}
         for cc in ccs:
-            p = cc.contour_samplepoints(15,1)
+            p = cc.contour_samplepoints(15, 1)
             cc.points = p
             points += p
             labels += [cc.label] * len(p)
@@ -294,23 +302,27 @@ class kise_block_extraction(PluginFunction):
 
         # compute edge properties
         class Edge(object):
-            def __init__(self,cc1,cc2,d2):
-                self.cc1 = cc1; self.cc2 = cc2
+            def __init__(self, cc1, cc2, d2):
+                self.cc1 = cc1;
+                self.cc2 = cc2
                 self.d = d2
                 a = [cc1.black_area()[0], cc2.black_area()[0]]
-                self.ar = max(a)/min(a)
+                self.ar = max(a) / min(a)
+
         labelneighbors = {}
         for pair in neighbors:
             if (labels[pair[0]] < labels[pair[1]]):
-                label1 = labels[pair[0]]; label2 = labels[pair[1]]
+                label1 = labels[pair[0]];
+                label2 = labels[pair[1]]
             else:
-                label1 = labels[pair[1]]; label2 = labels[pair[0]]
+                label1 = labels[pair[1]];
+                label2 = labels[pair[0]]
             if label1 == label2:
                 continue
             p1 = points[pair[0]]
             p2 = points[pair[1]]
-            d2 = (p1.x-p2.x)**2 + (p1.y-p2.y)**2
-            key = "%i;%i" % (label1,label2)
+            d2 = (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2
+            key = "%i;%i" % (label1, label2)
             if key not in labelneighbors:
                 labelneighbors[key] = Edge(labels2ccs[label1], labels2ccs[label2], d2)
             else:
@@ -324,13 +336,13 @@ class kise_block_extraction(PluginFunction):
         distances = [e.d for e in labelneighbors.values()]
         distances.sort()
         if len(distances) > 50:
-            distances = distances[len(distances)/20:(len(distances)-len(distances)/20)]
-        x = [float(i*max(distances))/512.0 for i in range(512)]
+            distances = distances[len(distances) / 20:(len(distances) - len(distances) / 20)]
+        x = [float(i * max(distances)) / 512.0 for i in range(512)]
         density = kernel_density(distances, x, kernel=2)
         local_maxima_i = []
         local_maxima_d = []
-        for i in range(1,len(density)-1):
-            if density[i] > density[i-1] and density[i] > density[i+1]:
+        for i in range(1, len(density) - 1):
+            if density[i] > density[i - 1] and density[i] > density[i + 1]:
                 local_maxima_i.append(i)
                 local_maxima_d.append(density[i])
         m1 = argmax(local_maxima_d)
@@ -345,12 +357,12 @@ class kise_block_extraction(PluginFunction):
         dmax = density[i2]
         i2 += 1
         while i2 < len(x) - 1:
-            if density[i2] < fr*dmax:
+            if density[i2] < fr * dmax:
                 break
             i2 += 1
         Td1 = x[i1]
         Td2 = x[i2]
-        #print "Td1 =", Td1, "Td2 =", Td2, "(plugin)"
+        # print "Td1 =", Td1, "Td2 =", Td2, "(plugin)"
 
         # build graph
         from gamera import graph
@@ -361,15 +373,15 @@ class kise_block_extraction(PluginFunction):
                 g.add_node(e.cc1.label)
             if not g.has_node(e.cc2.label):
                 g.add_node(e.cc2.label)
-            if (e.d/Td1 <= 1.0) or (e.d/Td2 + e.ar/Ta <= 1):
+            if (e.d / Td1 <= 1.0) or (e.d / Td2 + e.ar / Ta <= 1):
                 g.add_edge(e.cc1.label, e.cc2.label)
             else:
                 pass
-        
+
         # split graph into connected subgraphs
         from gamera.core import MlCc
         seglabels = []
-        for i,sg in enumerate(g.get_subgraph_roots()):
+        for i, sg in enumerate(g.get_subgraph_roots()):
             seg = [n() for n in g.BFS(sg)]
             seglabels.append(seg)
         segments = []
@@ -463,44 +475,47 @@ class textline_reading_order(PluginFunction):
     args = Args([ImageList("lineccs")])
     pure_python = True
     author = "Christoph Dalitz"
+
     def __call__(lineccs):
         # utilities for Gamera's graph API
         from gamera import graph
-        from gamera import graph_util
         class SegForGraph:
-            def __init__(self,seg):
+            def __init__(self, seg):
                 self.segment = seg
                 self.label = 0
+
         #
         # build directed graph of all lines
         #
         G = graph.Graph(graph.FLAG_DAG)
         seg_data = [SegForGraph(s) for s in lineccs]
         # sort by y-position for row over column preference in ambiguities
-        seg_data.sort(lambda s,t: s.segment.offset_y - t.segment.offset_y)
+        seg_data.sort(lambda s, t: s.segment.offset_y - t.segment.offset_y)
         G.add_nodes(seg_data)
         for s in seg_data:
             for t in seg_data:
                 if s.segment.offset_x <= t.segment.offset_x + t.segment.ncols and \
                         s.segment.offset_x + s.segment.ncols >= t.segment.offset_x:
                     if s.segment.offset_y < t.segment.offset_y:
-                        G.add_edge(s,t)
+                        G.add_edge(s, t)
                 elif s.segment.offset_x < t.segment.offset_x:
-                        G.add_edge(s,t)
+                    G.add_edge(s, t)
         #
         # compute topoligical sorting by depth-first-search
         #
-        segs_sorted = [] # topologically sorted list
+        segs_sorted = []  # topologically sorted list
+
         def dfs_visit(node):
             node.data.label = 1
             for nextnode in node.nodes:
                 if nextnode.data.label == 0:
                     dfs_visit(nextnode)
             segs_sorted.append(node.data.segment)
+
         for node in G.get_nodes():
             if node.data.label == 0:
                 dfs_visit(node)
-        segs_sorted.reverse() # correct that we always appended to the back
+        segs_sorted.reverse()  # correct that we always appended to the back
         return segs_sorted
 
     __call__ = staticmethod(__call__)
@@ -572,9 +587,11 @@ class PageSegmentationModule(PluginModule):
     cpp_namespace = ["Gamera"]
     category = "PageSegmentation"
     functions = [projection_cutting, runlength_smearing, bbox_merging, \
-                     kise_block_extraction, sub_cc_analysis, textline_reading_order, \
-                     segmentation_error]
-module = PageSegmentationModule() # create an instance of the module
+                 kise_block_extraction, sub_cc_analysis, textline_reading_order, \
+                 segmentation_error]
+
+
+module = PageSegmentationModule()  # create an instance of the module
 
 # free function instances
 textline_reading_order = textline_reading_order()

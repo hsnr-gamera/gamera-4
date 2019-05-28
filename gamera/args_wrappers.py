@@ -25,7 +25,7 @@ import re
 from .enums import *
 from . import util
 
-class Arg:
+class Arg(object):
    arg_format = 'O'
    convert_from_PyObject = False
    multiple = False
@@ -96,7 +96,7 @@ class Int(Arg):
    c_type = 'int'
 
    def to_python(self):
-      return '%(pysymbol)s = PyInt_FromLong((long)%(symbol)s);' % self
+      return '%(pysymbol)s = PyLong_FromLong((long)%(symbol)s);' % self
 
 Choice = Check = Int
 
@@ -124,7 +124,7 @@ class String(Arg):
    return_type = 'std::string'
 
    def to_python(self):
-      return "%(pysymbol)s = PyString_FromStringAndSize(%(symbol)s.data(), %(symbol)s.size());" % self
+      return "%(pysymbol)s = PyUnicode_FromStringAndSize(%(symbol)s.data(), %(symbol)s.size());" % self
 
 FileOpen = FileSave = Directory = ChoiceString = String
 
@@ -180,8 +180,7 @@ class ImageType(Arg):
 
    def _get_choices(self):
       result = []
-      pixel_types = list(self.pixel_types[:])
-      pixel_types.sort()
+      pixel_types = sorted(self.pixel_types[:])
       for type in pixel_types:
          result.extend(self._get_choices_for_pixel_type(type))
       return result
@@ -430,7 +429,7 @@ class PointVector(Arg):
       """ % self
 
 class ImageInfo(Arg):
-   arg_format = "O";
+   arg_format = "O"
    c_type = 'ImageInfo*'
    convert_from_PyObject = True
 

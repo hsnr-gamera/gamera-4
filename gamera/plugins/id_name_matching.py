@@ -122,7 +122,7 @@ class match_id_name(PluginFunction):
         return 0
     __call__ = staticmethod(__call__)
 
-_valid = string.letters + string.digits + "_"
+_valid = string.ascii_letters + string.digits + "_"
 def id_name_to_identifier(symbol):
     while len(symbol) and symbol[0] == '.':
         symbol = symbol[1:]

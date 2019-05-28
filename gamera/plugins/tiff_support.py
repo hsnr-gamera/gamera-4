@@ -18,10 +18,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from gamera.plugin import *
-import sys
 import glob
+import sys
+
 import _tiff_support
+
+from gamera.plugin import *
+
 
 class tiff_info(PluginFunction):
     """
@@ -32,6 +35,7 @@ class tiff_info(PluginFunction):
     self_type = None
     args = Args([String("image_file_name")])
     return_type = ImageInfo("tiff_info")
+
 
 class load_tiff(PluginFunction):
     """
@@ -52,12 +56,17 @@ class load_tiff(PluginFunction):
     args = Args([FileOpen("image_file_name", "", "*.tiff;*.tif"),
                  Choice("storage format", ["DENSE", "RLE"])])
     return_type = ImageType([ONEBIT, GREYSCALE, GREY16, RGB, FLOAT])
-    def __call__(filename, compression = 0):
+
+    def __call__(filename, compression=0):
         return _tiff_support.load_tiff(filename, compression)
+
     __call__ = staticmethod(__call__)
     exts = ["tiff", "tif"]
+
+
 load_tiff_class = load_tiff
 load_tiff = load_tiff()
+
 
 class save_tiff(PluginFunction):
     """
@@ -70,6 +79,7 @@ class save_tiff(PluginFunction):
     args = Args([FileSave("image_file_name", "image.tiff", "*.tiff;*.tif")])
     return_type = None
     exts = ["tiff", "tif"]
+
 
 class TiffSupportModule(PluginModule):
     category = "File"
@@ -91,16 +101,17 @@ class TiffSupportModule(PluginModule):
     elif sys.platform == 'darwin':
         cpp_sources = glob.glob("src/libtiff/*.c")
         try:
-	   cpp_sources.remove("src/libtiff/tif_win32.c")
-	except Exception:
-	   pass
-	extra_compile_args = ['-Dunix']
+            cpp_sources.remove("src/libtiff/tif_win32.c")
+        except Exception:
+            pass
+        extra_compile_args = ['-Dunix']
     else:
         extra_libraries = ["tiff"]
     functions = [tiff_info, load_tiff_class, save_tiff]
     cpp_include_dirs = ["src/libtiff"]
     author = "Michael Droettboom and Karl MacMillan"
     url = "http://gamera.sourceforge.net/"
+
 
 module = TiffSupportModule()
 

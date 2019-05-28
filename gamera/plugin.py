@@ -22,10 +22,10 @@
 from gamera.args import *
 from gamera import paths
 from gamera import util
-import new, os, os.path, imp, inspect, sys, copy
+import os, os.path, imp, inspect, sys, copy
 from gamera.backport import sets
 from types import *
-from .enums import *
+from gamera.enums import *
 
 
 plugin_methods = {}
@@ -57,7 +57,7 @@ class PluginModule:
       if core is None:
          return
       for function in self.functions:
-         if not isinstance(function, ClassType):
+         if not inspect.isclass(function):
             function = function.__class__
          function.register()
 

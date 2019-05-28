@@ -9,14 +9,6 @@ __revision__ = "$Id$"
 
 import string, re
 
-# Do the right thing with boolean values for all known Python versions
-# (so this module can be copied to projects that don't depend on Python
-# 2.3, e.g. Optik and Docutils).
-try:
-    True, False
-except NameError:
-    (True, False) = (1, 0)
-
 __all__ = ['TextWrapper', 'wrap', 'fill']
 
 # Hardcode the recognized whitespace characters to the US-ASCII
@@ -65,7 +57,7 @@ class TextWrapper:
         be broken, and some lines might be longer than 'width'.
     """
 
-    whitespace_trans = string.maketrans(_whitespace, ' ' * len(_whitespace))
+    whitespace_trans = str.maketrans(_whitespace, ' ' * len(_whitespace))
 
     unicode_whitespace_trans = {}
     uspace = ord(' ')
@@ -87,7 +79,7 @@ class TextWrapper:
     sentence_end_re = re.compile(r'[%s]'              # lowercase letter
                                  r'[\.\!\?]'          # sentence-ending punct.
                                  r'[\"\']?'           # optional end-of-quote
-                                 % string.lowercase)
+                                 % str.lower)
 
 
     def __init__ (self,

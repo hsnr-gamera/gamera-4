@@ -219,7 +219,7 @@ class ForTemplateNode(TemplateNode):
          else:
             data[self.vars[0]] = list
          TemplateNode.execute(self, stream, data)
-      for key, value in list(remember_vars.items()):
+      for key, value in remember_vars.items():
          data[key] = value
 
 class IfTemplateNode(TemplateNode):
@@ -317,7 +317,9 @@ class CommentTemplateNode(LeafTemplateNode):
 class ExpressionTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
-         stream.write(str(eval(self.s, globals(), data)).encode("utf-8"))
+         tmp = str(eval(self.s, globals(), data))
+         tmp = u"" + tmp
+         stream.write(tmp)
       except Exception as e:
          self.parent.parser_exception(self.s, e)
 

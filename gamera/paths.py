@@ -20,8 +20,8 @@
 #
 
 
-import os, sys, dircache, glob, imp  # Python standard library
-
+import os, sys, glob, imp  # Python standard library
+from gamera.backport import dircache
 if 1:
    def dummy():
       pass

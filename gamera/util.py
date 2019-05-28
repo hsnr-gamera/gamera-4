@@ -53,7 +53,7 @@ def is_image_list(l):
    return True
 
 def is_string_or_unicode(s):
-   return type(s) in (StringType, UnicodeType)
+   return type(s) in (type(""), type(u""))
 
 def is_homogeneous_image_list(l):
    "Determines if a list contains only images of the same pixel type"
@@ -76,7 +76,7 @@ def is_homogenous_list(l, t):
    return True
 
 def is_string_or_unicode_list(l):
-   return is_homogenous_list(l, (StringType, UnicodeType))
+   return is_homogenous_list(l, (type(""), type(u"")))
 
 def replace_prefix(s, a, b):
    "replaces the prefix a in s with b"
