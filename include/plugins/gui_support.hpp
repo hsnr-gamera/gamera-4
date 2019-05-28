@@ -197,7 +197,6 @@ PyObject* to_string(T& m) {
   char* buffer;
   Py_ssize_t length;
   int error = PyBytes_AsStringAndSize(str, &buffer, &length);
-  PyUnicode_AsU
   if (error) {
     Py_DECREF(str);
     throw std::exception();
