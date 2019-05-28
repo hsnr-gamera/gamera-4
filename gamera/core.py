@@ -48,21 +48,21 @@ from types import *
 
 # import the classification states
 try:
-   from gameracore import UNCLASSIFIED, AUTOMATIC, HEURISTIC, MANUAL
+   from gamera.gameracore import UNCLASSIFIED, AUTOMATIC, HEURISTIC, MANUAL
 except ImportError:
    raise ImportError("Couldn't import the core of Gamera.  Are you trying to start the GUI from the root of the Gamera source tree?  This confuses the Python module loading mechanism.")
 # import the pixel types
-from gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
+from gamera.gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
 from .enums import ALL, NONIMAGE
 # import the storage types
-from gameracore import DENSE, RLE
+from gamera.gameracore import DENSE, RLE
 # import some of the basic types
-from gameracore import ImageData, Size, Dim, Point, \
+from gamera.gameracore import ImageData, Size, Dim, Point, \
      FloatPoint, Rect, Region, RegionMap, ImageInfo, RGBPixel
 # import confidence types
-from gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
+from gamera.gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
 # import gamera.gameracore for subclassing
-import gameracore
+import gamera.gameracore
 from gamera.gui import has_gui
 
 # from gamera.classify import *
@@ -358,7 +358,7 @@ This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(1.0, id_name)]
-      elif type(id_name) != ListType:
+      elif type(id_name) != type(list):
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -385,7 +385,7 @@ the main id; this must be set separately.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.0, id_name)]
-      elif type(id_name) != ListType:
+      elif id_name is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.classification_state = AUTOMATIC
@@ -410,7 +410,7 @@ this glyph. This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.5, id_name)]
-      elif type(id_name) != ListType:
+      elif id_name is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -523,13 +523,13 @@ Changes to subimages will affect all other subimages viewing the same data.
       if not all_strings:
          from . import plugin
          all_functions = False
-         if (type(features) == tuple and
+         if (features is tuple and
              len(features) == 2 and
-             type(features[0]) == list and
+             features[0] is list and
              type(features[1]) == int):
             all_functions = True
             for feature in features[0]:
-               if not (type(feature) == tuple and
+               if not (feature is tuple and
                        util.is_string_or_unicode(feature[0]) and
                        issubclass(feature[1], plugin.PluginFunction)):
                   all_functions = False

@@ -69,7 +69,7 @@ class Process:
    def get_step_number(self, step, default = 0):
       if step == None:
          return default
-      elif type(step) == StringType and step in self.steps:
+      elif step is str and step in self.steps:
          return self.steps.index(step)
       elif type(step) == IntType and step < len(self.steps):
          return step

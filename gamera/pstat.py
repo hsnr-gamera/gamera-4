@@ -219,7 +219,7 @@ Returns: a list-of-lists corresponding to the columns from listoflists
         for col in cnums[1:]:
             index = col
             column = abut(column,[x[index] for x in listoflists])
-    elif type(cnums) == StringType:              # if an 'x[3:]' type expr.
+    elif cnums is str:              # if an 'x[3:]' type expr.
         evalstring = 'map(lambda x: x'+cnums+', listoflists)'
         column = eval(evalstring)
     else:                                     # else it's just 1 col to get
@@ -401,7 +401,7 @@ Usage:   linedelimited (inlist,delimiter)
 """
     outstr = ''
     for item in inlist:
-        if type(item) != StringType:
+        if item is not str:
             item = str(item)
         outstr = outstr + item + delimiter
     outstr = outstr[0:-1]
@@ -417,7 +417,7 @@ Usage:   lineincols (inlist,colsize)   where colsize is an integer
 """
     outstr = ''
     for item in inlist:
-        if type(item) != StringType:
+        if item is not str:
             item = str(item)
         size = len(item)
         if size <= colsize:
@@ -441,7 +441,7 @@ Returns: formatted string created from inlist
 """
     outstr = ''
     for i in range(len(inlist)):
-        if type(inlist[i]) != StringType:
+        if inlist[i] is not str:
             item = str(inlist[i])
         else:
             item = inlist[i]
@@ -482,7 +482,7 @@ Returns: if l = [1,2,'hi'] then returns [[1],[2],['hi']] etc.
 
 
 def makestr (x):
-    if type(x) != StringType:
+    if x is not str:
         x = str(x)
     return x
 
@@ -938,7 +938,7 @@ Returns: a version of array a where listmap[i][0] = (instead) listmap[i][1]
         work = acolex(a,col)
         work = work.ravel()
     for pair in listmap:
-        if type(pair[1]) == StringType or work.dtype.char=='O' or a.dtype.char=='O':
+        if pair[1] is str or work.dtype.char=='O' or a.dtype.char=='O':
             work = N.array(work,dtype='O')
             a = N.array(a,dtype='O')
             for i in range(len(work)):

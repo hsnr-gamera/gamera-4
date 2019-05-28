@@ -559,7 +559,7 @@ Usage:   mghbget(imfile, numslices=-1, xsize=64, ysize=64,
     try:
         header = imfile[0:-6]+'hdr'
         vals = get(header,0)  # '0' means no missing-file warning msg
-        if type(vals[0]) == ListType:  # it's an extended header
+        if vals[0] is list:  # it's an extended header
             xsize = int(vals[0][0])
             ysize = int(vals[0][1])
             numslices = int(vals[0][2])
@@ -686,7 +686,7 @@ Usage:   mget(fname,btype)
     try:
         header = fname[0:-6]+'hdr'
         vals = get(header,0)  # '0' means no missing-file warning msg
-        if type(vals[0]) == ListType:  # it's an extended header
+        if vals[0] is list:  # it's an extended header
             xsize = int(vals[0][0])
             ysize = int(vals[0][1])
             numslices = int(vals[0][2])
@@ -1042,7 +1042,7 @@ Returns: data in file fname of type btype
         header = fname[:-3]+'hdr'
         vals = get(header,0)  # '0' means no missing-file warning msg
         print(vals)
-        if type(vals[0]) == ListType:  # it's an extended header
+        if vals[0] is list:  # it's an extended header
             xsize = int(vals[0][0])
             ysize = int(vals[0][1])
             numslices = int(vals[0][2])
@@ -1115,7 +1115,7 @@ Returns: appropriate "type" for params, or None if fails
             result = []
             for j in range(i+2,len(lines)):
                 for k in range(len(d[j])):
-                    if type(d[j][k]) == StringType:
+                    if d[j][k] is str:
                         result = d[j][k][1:count]
                         return result
                     else:

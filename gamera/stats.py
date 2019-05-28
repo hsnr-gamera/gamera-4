@@ -2722,7 +2722,7 @@ Usage:   asamplevar(inarray,dimension=None,keepdims=0)
     else:
         mn = amean(inarray,dimension,keepdims=1)
     deviations = inarray - mn 
-    if type(dimension) == ListType:
+    if dimension is list:
         n = 1
         for d in dimension:
             n = n*inarray.shape[d]
@@ -2778,7 +2778,7 @@ Usage:   acov(x,y,dimension=None,keepdims=0)
     xdeviations = x - xmn
     ymn = amean(y,dimension,1)  # keepdims
     ydeviations = y - ymn
-    if type(dimension) == ListType:
+    if dimension is list:
         n = 1
         for d in dimension:
             n = n*x.shape[d]
@@ -2803,7 +2803,7 @@ Usage:   avar(inarray,dimension=None,keepdims=0)
         dimension = 0
     mn = amean(inarray,dimension,1)
     deviations = inarray - mn
-    if type(dimension) == ListType:
+    if dimension is list:
         n = 1
         for d in dimension:
             n = n*inarray.shape[d]
@@ -2855,7 +2855,7 @@ Usage:   asem(inarray,dimension=None, keepdims=0)
     if dimension == None:
         inarray = N.ravel(inarray)
         dimension = 0
-    if type(dimension) == ListType:
+    if dimension is list:
         n = 1
         for d in dimension:
             n = n*inarray.shape[d]

@@ -213,7 +213,7 @@ template = Template("""
 
       [[if function.feature_function]]
          if (offset < 0) {
-           PyObject* str = PyString_FromStringAndSize((char*)feature_buffer, [[function.return_type.length]] * sizeof(feature_t));
+           PyObject* str = PyUnicode_FromStringAndSize((char*)feature_buffer, [[function.return_type.length]] * sizeof(feature_t));
            if (str != 0) {
               [[# This is pretty expensive, but simple #]]
               PyObject* array_init = get_ArrayInit();

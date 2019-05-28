@@ -316,7 +316,7 @@ class ChoiceString(Arg):
          self.has_default = False
          self.default = choices[0]
       else:
-         if type(default) != str:
+         if default is not str:
             raise TypeError("'default' must be a string")
          if default not in choices:
             raise ValueError("Given 'default' must be in available 'choices'")
