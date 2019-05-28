@@ -385,21 +385,21 @@ class PluginDocumentationGenerator:
       s.write("``%s``\n" % func.__name__)
       s.write(underline(level, func.__name__, 4))
       s.write("\n\n")
-      if func.return_type != None:
+      if func.return_type is not None:
          s.write(func.return_type.rest_repr() + " ")
       header = "**%s** (%s)\n" % (func.__name__, ', '.join(
           [x.rest_repr(True) for x in func.args.list]))
       s.write(header)
       s.write("\n\n")
-      if func.self_type != None:
+      if func.self_type is not None:
          s.write(":Operates on: %s\n" % func.self_type.rest_repr(False))
-      if func.return_type != None:
+      if func.return_type is not None:
          s.write(":Returns: %s\n" % (func.return_type.rest_repr(False)))
-      if func.category == None:
+      if func.category is None:
          category = func.module.category
       else:
          category = func.category
-      if category != None:
+      if category is not None:
          s.write(":Category: %s\n" % category)
       file = os.path.split(inspect.getsourcefile(func))[1]
       if file == 'plugin.py':
@@ -409,8 +409,8 @@ class PluginDocumentationGenerator:
           author = func.module.author
       else:
           author = func.author
-      if author != None:
-         if func.module.url != None and 0:
+      if author is not None:
+         if func.module.url is not None and 0:
             s.write(":Author: `%s`__\n.. __: %s\n" % (author, func.module.url))
          else:
             s.write(":Author: %s\n" % (author,))
@@ -447,7 +447,7 @@ class PluginDocumentationGenerator:
             result = func.__call__(*tuple(arguments))
          # add quotes around string args for display
          displayargs = None
-         if display_arguments != None:
+         if display_arguments is not None:
             displayargs = []
             for da in display_arguments:
                if isinstance(da,str):

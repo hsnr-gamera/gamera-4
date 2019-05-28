@@ -56,7 +56,7 @@ class ConfigOptionParser(OptionParser):
                if self.has_option("--" + key):
                   option = self.get_option("--" + key)
                   if (option.help.startswith("[%s]" % section) and
-                      getattr(options, option.dest) == None):
+                      getattr(options, option.dest) is None):
                      option.process("", val, self.values, self)
          self._cache = (options, args)
       return self._cache

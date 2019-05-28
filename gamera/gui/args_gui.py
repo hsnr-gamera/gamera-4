@@ -62,7 +62,7 @@ class Args:
    def _create_page_impl(self, locals, parent, page):
       gs = wx.FlexGridSizer(len(page), 2, 2, 2)
       for item in page:
-         if item.name == None:
+         if item.name is None:
             item.name = "ERROR!  No name given!"
          gs.Add(wx.StaticText(parent, -1, item.name),
                 0,
@@ -141,7 +141,7 @@ class Args:
       else:
          buttons = self._create_buttons()
       # Put it all together
-      if self.title != None:
+      if self.title is not None:
          static_text = wx.StaticText(self.window, 0, self.title)
          font = wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD, False, "Helvetica")
          static_text.SetFont(font)
@@ -202,7 +202,7 @@ class Args:
    def show(self, parent=None, locals={}, function=None, wizard=0, docstring=""):
       docstring = util.dedent(docstring)
       self.wizard = wizard
-      if function != None:
+      if function is not None:
          self.function = function
       self.setup(parent, locals, docstring, function)
       while 1:

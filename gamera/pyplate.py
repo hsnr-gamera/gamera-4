@@ -75,7 +75,7 @@ class ParserException(Exception):
 
 class Template:
    def __init__(self, filename=None):
-      if filename != None:
+      if filename is not None:
          try:
             self.parse_file(filename)
          except Exception:
@@ -109,7 +109,7 @@ class Template:
 
    def parser_exception(self, s, e=None):
       import traceback
-      if e != None:
+      if e is not None:
          traceback.print_exc()
       raise ParserException(self.lineno, s)
 
@@ -156,7 +156,7 @@ class TemplateNode:
    def add_node(self, node):
       if node == 'end':
          return 1
-      elif node != None:
+      elif node is not None:
          self.node_list.append(node)
       else:
          raise self.parent.parser_exception(
@@ -178,7 +178,7 @@ class TopLevelTemplateNode(TemplateNode):
       TemplateNode.__init__(self, parent, '')
 
    def add_node(self, node):
-      if node != None:
+      if node is not None:
          self.node_list.append(node)
       else:
          return 1
@@ -187,7 +187,7 @@ class ForTemplateNode(TemplateNode):
    def __init__(self, parent, s):
       TemplateNode.__init__(self, parent, s)
       match = re_for_loop.match(s)
-      if match == None:
+      if match is None:
          raise self.parent.parser_exception(
            "[[%s]] is not a valid for-loop expression" % self.s)
       else:
@@ -227,7 +227,7 @@ class IfTemplateNode(TemplateNode):
       self.else_node = None
       TemplateNode.__init__(self, parent, s)
       match = re_if.match(s)
-      if match == None:
+      if match is None:
          raise self.parent.parser_exception(
            "[[%s]] is not a valid if expression" % self.s)
       else:
@@ -242,7 +242,7 @@ class IfTemplateNode(TemplateNode):
       elif isinstance(node, ElifTemplateNode):
          self.else_node = node
          return 1
-      elif node != None:
+      elif node is not None:
          self.node_list.append(node)
       else:
          raise self.parent.parser_exception(
@@ -255,7 +255,7 @@ class IfTemplateNode(TemplateNode):
          self.parent.parser_exception(self.expression, e)
       if x:
          TemplateNode.execute(self, stream, data)
-      elif self.else_node != None:
+      elif self.else_node is not None:
          self.else_node.execute(stream, data)
 
 class ElifTemplateNode(IfTemplateNode):
@@ -263,7 +263,7 @@ class ElifTemplateNode(IfTemplateNode):
       self.else_node = None
       TemplateNode.__init__(self, parent, s)
       match = re_elif.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid elif expression" % self.s)
       else:
@@ -276,7 +276,7 @@ class FunctionTemplateNode(TemplateNode):
    def __init__(self, parent, s):
       TemplateNode.__init__(self, parent, s)
       match = re_def.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid function definition" % self.s)
       self.function_name = match.group(1)
@@ -327,7 +327,7 @@ class ExecTemplateNode(LeafTemplateNode):
    def __init__(self, parent, s):
       LeafTemplateNode.__init__(self, parent, s)
       match = re_exec.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid statement" % self.s)
       self.s = match.group(1)
@@ -342,7 +342,7 @@ class CallTemplateNode(LeafTemplateNode):
    def __init__(self, parent, s):
       LeafTemplateNode.__init__(self, parent, s)
       match = re_call.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid function call" % self.s)
       self.function_name = match.group(1)
@@ -372,10 +372,10 @@ template_factory_types = list(template_factory_type_map.keys())
 def TemplateNodeFactory(parent):
    src = parent.parser_get()
 
-   if src == None:
+   if src is None:
       return None
    match = re_directive.search(src)
-   if match == None:
+   if match is None:
       parent.parser_eat(len(src))
       return LeafTemplateNode(parent, src)
    elif src == '' or match.start() != 0:

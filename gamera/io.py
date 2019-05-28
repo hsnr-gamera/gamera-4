@@ -424,7 +424,7 @@ Usage:   bget(imfile,shp=None,unpackstr=np.int16,bytesperpixel=2.0,sliceinit=0)
     if imfile[-3:] == 'img':
         return mghbget(imfile,unpackstr,shp)
     if imfile[-6:] == 'bshort' or imfile[-6:] == 'bfloat':
-        if shp == None:
+        if shp is None:
             return mghbget(imfile,unpackstr=unpackstr,bytesperpixel=bytesperpixel,sliceinit=sliceinit)
         else:
             return mghbget(imfile,shp[0],shp[1],shp[2],unpackstr,bytesperpixel,sliceinit)
@@ -449,7 +449,7 @@ Loads in a .MNC file.
 
 Usage:  mincget(imfile,unpackstr=np.int16,shp=None)  default shp = -1,20,64,64
 """
-    if shp == None:
+    if shp is None:
         shp = (-1,20,64,64)
     os.system('mincextract -short -range 0 4095 -image_range 0 4095 ' +
               imfile+' > minctemp.bshort')
@@ -471,7 +471,7 @@ Gets an AFNI BRIK file.
 
 Usage:  brikget(imfile,unpackstr=np.int16,shp=None)  default shp: (-1,48,61,51)
 """
-    if shp == None:
+    if shp is None:
         shp = (-1,48,61,51)
     try:
         file = open(imfile, "rb")

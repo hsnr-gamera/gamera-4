@@ -487,7 +487,7 @@ class Wizard:
    def show(self, dialog):
       dialog_history = ['start', dialog]
       next_dialog = dialog
-      while next_dialog != None:
+      while next_dialog is not None:
          if next_dialog == 'start':
             return
          result = next_dialog.show(self.parent, self.locals, wizard=1)

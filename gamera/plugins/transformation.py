@@ -56,7 +56,7 @@ class rotate(PluginFunction):
     doc_examples = [(RGB, 32.0, RGBPixel(255, 255, 255), 3), (COMPLEX, 15.0, 0.0j, 3)]
     author = "Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
     def __call__(self, angle, bgcolor=None, order=1):
-      if (bgcolor == None):
+      if (bgcolor is None):
           bgcolor = self.white()
       return _transformation.rotate(self, angle, bgcolor, order)
     __call__ = staticmethod(__call__)

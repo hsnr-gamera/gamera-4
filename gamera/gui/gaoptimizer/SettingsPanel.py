@@ -253,7 +253,7 @@ class SettingsPanel(wx.ScrolledWindow):
     def startCalculation(self):
     #---------------------------------------------------------------------------
 
-        if self.frame.classifier == None:
+        if self.frame.classifier is None:
             gui_util.message("No classifier loaded")
             return
 
@@ -414,7 +414,7 @@ class SettingsPanel(wx.ScrolledWindow):
     #---------------------------------------------------------------------------
     def stopCalculation(self):
     #---------------------------------------------------------------------------
-        if self.workerThread == None:
+        if self.workerThread is None:
             return True
 
         if self.workerThread.GAOptimizer.status:

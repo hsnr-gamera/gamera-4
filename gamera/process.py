@@ -67,7 +67,7 @@ class Process:
       self.current_step = 0
 
    def get_step_number(self, step, default = 0):
-      if step == None:
+      if step is None:
          return default
       elif step is str and step in self.steps:
          return self.steps.index(step)
@@ -87,7 +87,7 @@ class Process:
          if (step[:5] == "DEBUG" and step != self.steps[last_step]):
             continue
          self.__do_step(step)
-      if save_members == None:
+      if save_members is None:
          for saveable in self.saveable_members():
             if (saveable in self.__dict__):
                self.__save_attr(saveable)

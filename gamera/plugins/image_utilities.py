@@ -128,7 +128,7 @@ class fill(PluginFunction):
 class pad_image_default(PluginFunction):
     """Pads an image with the default pixel value white"""
     # This is only for plugin generation, it will not be added to the image type
-    # (since self_type == None)
+    # (since self_type is None)
     category = None
     self_type = None
     args = Args([ImageType(ALL), Int("top"), Int("right"), Int("bottom"), Int("left")])
@@ -180,7 +180,7 @@ class trim_image(PluginFunction):
     return_type = ImageType([ONEBIT, GREYSCALE, GREY16, FLOAT, RGB])
     author = "Tobias Bolten"
     def __call__(self, PixelValue=None):
-        if (PixelValue == None):
+        if (PixelValue is None):
             PixelValue = self.white()
         return _image_utilities.trim_image(self, PixelValue)
     __call__ = staticmethod(__call__)

@@ -39,7 +39,7 @@ global plugins_to_ignore
 # the loading of C++ modules that may not exist yet during
 # the build process.
 def magic_import(name, globals_={}, locals_={}, fromlist=[], level=0):
-   if fromlist != None and "core" in fromlist:
+   if fromlist is not None and "core" in fromlist:
       fromlist = list(fromlist)
       fromlist.remove("core")
 
@@ -140,7 +140,7 @@ template = Template("""
       [[# be Null because this functions is not actually bound to an object #]]
 
       PyErr_Clear();
-      [[if function.self_type == None]]
+      [[if function.self_type is None]]
         [[exec args = function.args.list]]
       [[else]]
         [[exec args = [function.self_type] + function.args.list]]
@@ -148,7 +148,7 @@ template = Template("""
       [[end]]
       [[# for each argument insert the appropriate conversion code into the string that will #]]
       [[# be passed to PyArg_ParseTuple and create a variable to hold the result. #]]
-      [[if function.return_type != None]]
+      [[if function.return_type is not None]]
         [[exec function.return_type.name = 'return']]
         [[exec function.return_type.convert_from_PyObject = True]]
         [[if not function.feature_function]]
@@ -200,7 +200,7 @@ template = Template("""
           [[if len(args)]]
             [[args[0].call(function, args[1:], [])]]
           [[else]]
-            [[if function.return_type != None]]
+            [[if function.return_type is not None]]
               [[function.return_type.symbol]] =
             [[end]]
             [[function.__name__]]([[if function.progress_bar]]ProgressBar("[[function.progress_bar]]")[[else]][[end]]);
@@ -236,7 +236,7 @@ template = Template("""
         [[for arg in function.args]]
           [[arg.delete()]]
         [[end]]
-        [[if function.return_type == None]]
+        [[if function.return_type is None]]
           Py_INCREF(Py_None);
           return Py_None;
         [[else]]

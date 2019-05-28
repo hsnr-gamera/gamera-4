@@ -330,7 +330,7 @@ class ProgressText:
             sys.stdout.flush()
 
 def ProgressFactory(message, length=1, numsteps=0):
-   if has_gui.gui != None:
+   if has_gui.gui is not None:
       return has_gui.gui.ProgressBox(message, length, numsteps)
    elif config.get("progress_bar"):
       return ProgressText(message, length)

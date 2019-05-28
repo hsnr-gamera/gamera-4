@@ -79,7 +79,7 @@ def build_menu(parent, menu_spec):
       if util.is_sequence(func):
          menu_item_id = wx.NewId()
          compat_wx.extend_menu(menu, menu_item_id, name, build_menu(parent, func))
-      elif name == None:
+      elif name is None:
          menu.AppendSeparator()
       else:
          menu_item_id = wx.NewId()

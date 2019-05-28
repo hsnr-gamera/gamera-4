@@ -95,7 +95,7 @@ class WriteXML:
       return stream.getvalue()
 
    def write_stream(self, stream=None):
-      if stream == None:
+      if stream is None:
          return self.string()
       self._write_core(stream)
 
@@ -191,7 +191,7 @@ class WriteXML:
 
 class WriteXMLFile(WriteXML):
    def write_stream(self, stream=None):
-      if stream == None:
+      if stream is None:
          return self.string()
       self.stream = stream
       encoding = config.get("xml_encoding")
@@ -452,7 +452,7 @@ Loads glyphs from a Gamera XML file, and then generates features
 for all of those glyphs.  The set of features can be specified with the
 *feature_functions* argument (which defaults to all features)."""
    warnings.warn("Use glyphs_from_xml with a feature descriptor instead of glyphs_with_features_from_xml.", DeprecationWarning)
-   if feature_functions == None:
+   if feature_functions is None:
       feature_functions = 'all'
    return glyphs_from_xml(filename, feature_functions)
 

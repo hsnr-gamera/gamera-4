@@ -94,7 +94,7 @@ class StatusPanel(wx.ScrolledWindow):
     def Update(self):
     #---------------------------------------------------------------------------
         # init rate
-        if self.frame.settingsPanel.initLOO == None:
+        if self.frame.settingsPanel.initLOO is None:
             self.initLOO.SetLabel("unknown")
         else:
             rate = self.frame.settingsPanel.initLOO
@@ -102,7 +102,7 @@ class StatusPanel(wx.ScrolledWindow):
             self.initLOO.SetLabel("%.2lf %%" % rate)
 
         # consumed time
-        if self.starttime != None:
+        if self.starttime is not None:
             now = time.time()
             timediff = now - self.starttime
 
@@ -113,7 +113,7 @@ class StatusPanel(wx.ScrolledWindow):
             self.time.SetLabel("%d h %d m %d s" % (hours, minutes, secs))
 
         # status, generation count, current rate and monitor
-        if self.frame.settingsPanel.workerThread == None:
+        if self.frame.settingsPanel.workerThread is None:
             self.status.SetLabel("not running")
         else:
             if self.frame.settingsPanel.workerThread.isAlive():

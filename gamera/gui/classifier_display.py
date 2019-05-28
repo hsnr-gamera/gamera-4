@@ -275,7 +275,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
       list = self.sorted_glyphs
       for i in range(image_no + 1, len(list)):
          image = list[i]
-         if (image != None and
+         if (image is not None and
              not hasattr(image, 'dead') and
              image.classification_state in state):
             found = i
@@ -322,7 +322,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
       if x1 == x2 or y1 == y2:
          point = Point(x1, y1)
          for i, g in enumerate(self.sorted_glyphs):
-            if g != None and g.contains_point(Point(x1, y1)):
+            if g is not None and g.contains_point(Point(x1, y1)):
                for x, y in self._search_order:
                   if (g.contains_point(Point(x1 + x, y1 + y)) and
                       (g.get((x1 + x - g.ul_x, y1 + y - g.ul_y)) != 0)):
@@ -332,7 +332,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
          r = Rect((x1, y1), (x2, y2))
          for i in range(len(self.sorted_glyphs)):
             g = self.sorted_glyphs[i]
-            if g != None and r.contains_rect(g):
+            if g is not None and r.contains_rect(g):
                   matches.add(i)
       first = True
       if shift:
@@ -453,7 +453,7 @@ class ClassifierImageWindow(ImageWindow):
       dlg = Args([Class("Image for context display", ImageBase)])
       image = dlg.show(self, image_menu.shell.locals,
                        docstring="""Choose an image to display in the context (bottom) pane.""")
-      if image != None:
+      if image is not None:
          self.id.set_image(image[0])
 
    def get_display(self):
@@ -718,7 +718,7 @@ class ClassifierFrame(ImageFrameBase):
          wx.EndBusyCursor()
 
    def set_single_image(self, image=None, weak=False):
-      if image == None:
+      if image is None:
          if not aui:
             if self.splitterhr0.IsSplit():
                self.splitterhr0.Unsplit()
@@ -919,11 +919,11 @@ class ClassifierFrame(ImageFrameBase):
              When checked, load the source image from the directory
              into the context pane.
            """)
-      if results == None:
+      if results is None:
          return
       self._save_state_dialog = results
       settings, page, classifier, symbols, source, directory = results
-      if directory == None:
+      if directory is None:
          gui_util.message("You must provide a directory to load.")
          return
       if settings:
@@ -989,11 +989,11 @@ class ClassifierFrame(ImageFrameBase):
            *Source image*
              When checked, save the source image.
            """)
-      if results == None:
+      if results is None:
          return
       self._save_state_dialog = results
       settings, page, classifier, symbols, source, with_features, directory = results
-      if directory == None:
+      if directory is None:
          gui_util.message("You must provide a directory to load.")
          return
       error_messages = util.sets.Set()
@@ -1103,7 +1103,7 @@ class ClassifierFrame(ImageFrameBase):
 
       # One big filtering list comprehension
       glyphs = [x for x in glyphs
-                if ((x != None and not hasattr(x, 'dead')) and
+                if ((x is not None and not hasattr(x, 'dead')) and
                     ((x.classification_state == UNCLASSIFIED and un) or
                      (x.classification_state == AUTOMATIC and auto) or
                      (x.classification_state == HEURISTIC and heur) or
@@ -1161,7 +1161,7 @@ class ClassifierFrame(ImageFrameBase):
          self.update_symbol_table()
 
    def _OnSaveClassifierCollection(self, event):
-      if self.classifier_collection_filename == None:
+      if self.classifier_collection_filename is None:
          self._OnSaveClassifierCollectionAs(event)
       else:
          if gui_util.are_you_sure_dialog(
@@ -1242,7 +1242,7 @@ class ClassifierFrame(ImageFrameBase):
 
    def _OnSavePageCollection(self, event):
       glyphs = self.multi_iw.id.GetAllItems()
-      if self.page_collection_filename == None:
+      if self.page_collection_filename is None:
          self._OnSavePageCollectionAs(event)
       else:
          if gui_util.are_you_sure_dialog(
@@ -1358,7 +1358,7 @@ class ClassifierFrame(ImageFrameBase):
             return
          filename, segmenter = results
          self.default_segmenter = segmenter
-         if filename == None:
+         if filename is None:
             gui_util.message("You must provide a filename to load.")
 
       wx.BeginBusyCursor()
@@ -1899,7 +1899,7 @@ class SymbolTreeCtrl(wx.TreeCtrl):
 
    def _OnActivated(self, event):
       symbol = compat_wx.get_tree_item_data(self, event.GetItem())
-      if symbol != None:
+      if symbol is not None:
          self.toplevel.toplevel.classify_manual(symbol)
 
    def _OnChanged(self, event):
@@ -1910,7 +1910,7 @@ class SymbolTreeCtrl(wx.TreeCtrl):
          event.Skip()
          return
       text = self.toplevel.text.GetValue()
-      if data != None and text != data and text and text[-1] != ".":
+      if data is not None and text != data and text and text[-1] != ".":
          self.toplevel.text.SetValue(data)
          self.toplevel.text.SetInsertionPointEnd()
       event.Skip()

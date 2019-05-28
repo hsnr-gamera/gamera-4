@@ -94,11 +94,11 @@ class PluginFunction:
 
    def register(cls):
       # add_to_image = add_to_image and cls.add_to_image
-      if cls.return_type != None:
-         if cls.return_type.name == None:
+      if cls.return_type is not None:
+         if cls.return_type.name is None:
             cls.return_type = copy.copy(cls.return_type)
             cls.return_type.name = cls.__name__
-      if not hasattr(cls, "__call__"):
+      if "__call__" not in cls:
          # This loads the actual C++ function if it is not directly
          # linked in the Python PluginFunction class
          parts = cls.__module__.split('.')
@@ -110,21 +110,21 @@ class PluginFunction:
          del sys.path[-1]
          if found:
              module = imp.load_module(cpp_module_name, *found)
-         if module == None:
+         if module is None:
             return
          func = getattr(module, cls.__name__)
       elif cls.__call__ is None:
          func = None
       else:
          func = cls.__call__
-         if type(cls.__call__) == new.instancemethod:
+         if isinstance(cls.__call__, MethodType):
             func = cls.__call__.__func__
          func.__doc__ = ("%s\n\n%s" %
-                          (cls.get_formatted_argument_list(),
-                           util.dedent(cls.__doc__)))
+                         (cls.get_formatted_argument_list(),
+                          util.dedent(cls.__doc__)))
       cls.__call__ = staticmethod(func)
 
-      if cls.category == None:
+      if cls.category is None:
          category = cls.module.category
       else:
          category = cls.category
@@ -172,7 +172,7 @@ def get_config_options(command):
    return os.popen(command).read()
 
 def methods_flat_category(category, pixel_type=None):
-   if pixel_type == None:
+   if pixel_type is None:
       methods = sets.Set()
       for pixel_type in ALL + [NONIMAGE]:
          # We have to cast the lists to sets here to make Python 2.3.0 happy.

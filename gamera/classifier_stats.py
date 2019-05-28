@@ -85,7 +85,7 @@ class ClassifierStat:
       def convert(x):
          if isinstance(x, ImageBase):
             return x.get_main_id()
-         elif x == None:
+         elif x is None:
             return ""
          else:
             return str(x)

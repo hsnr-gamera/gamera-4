@@ -34,7 +34,7 @@ class ResultPanel(wx.ScrolledWindow):
     #---------------------------------------------------------------------------
     def initResultsWidgets(self):
     #---------------------------------------------------------------------------
-        if self.frame.classifier == None:
+        if self.frame.classifier is None:
             raise ValueError("ResultPanel.initResultsWidgets: no valid classifier given")
 
         for child in self.GetChildren():
@@ -89,10 +89,10 @@ class ResultPanel(wx.ScrolledWindow):
     #---------------------------------------------------------------------------
     def UpdateResultWidgets(self):
     #---------------------------------------------------------------------------
-        if self.frame.classifier == None:
+        if self.frame.classifier is None:
             return
 
-        if self.bars == None:
+        if self.bars is None:
             self.bars = {}
             self.initResultsWidgets()
 

@@ -62,7 +62,7 @@ from gamera.gameracore import ImageData, Size, Dim, Point, \
 # import confidence types
 from gamera.gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
 # import gamera.gameracore for subclassing
-import gamera.gameracore
+import gamera.gameracore as gameracore
 from gamera.gui import has_gui
 
 # from gamera.classify import *
@@ -280,7 +280,7 @@ process is not running, this method has no effect.
       if self._display:
          self._display.set_image(self, conversion)
       else:
-         if title == None:
+         if title is None:
             self.set_display(
                has_gui.gui.ShowImage(self, self.name, conversion,
                                      owner=self))
@@ -651,7 +651,7 @@ def _init_gamera():
    if _gamera_initialised:
       return
    _gamera_initialised = True
-   import plugin, gamera_xml, sys
+   from gamera import plugin, gamera_xml, sys
    from gamera.args import NoneDefault
    # Create the default functions for the menupl
    for method in (

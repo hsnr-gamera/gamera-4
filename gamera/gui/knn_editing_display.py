@@ -84,7 +84,7 @@ to the just selected algorithm"""
         panelSizer.Add(help, flag = wx.EXPAND | wx.ALL, border = 10)
         panel.Layout()
 
-        if self.panel == None:
+        if self.panel is None:
             self.sizer.Add(panel, flag = wx.EXPAND)
         else:
             self.sizer.Replace(self.panel, panel)

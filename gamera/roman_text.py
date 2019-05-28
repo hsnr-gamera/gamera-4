@@ -227,7 +227,7 @@ class Page:
         # display the sections
         result = self.sections                
 
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:
@@ -240,7 +240,7 @@ class Page:
         """Display the lines found by placing a box around them
         in a display. If clear is true then any boxes already on
         the displayed are cleared first."""
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:
@@ -251,7 +251,7 @@ class Page:
                 display.add_box(core.Rect(core.Point(b.ul_x, b.ul_y), core.Dim(b.ncols, b.nrows)))
 
     def display_glyphs(self, clear=1):
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:

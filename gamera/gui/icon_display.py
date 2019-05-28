@@ -139,7 +139,7 @@ class IconDisplay(wx.ListCtrl):
          self.Refresh()
 
    def update_icons(self, locals=None):
-      if locals != None:
+      if locals is not None:
          self.locals = locals
       okay = []
       for key, val in list(self.locals.items()):
@@ -151,7 +151,7 @@ class IconDisplay(wx.ListCtrl):
                   break
             except Exception:
                pass
-         if t != None:
+         if t is not None:
             if key in self.data:
                self.refresh_icon(key, t, val, icon)
             else:
@@ -248,7 +248,7 @@ class CustomIcon:
       self.index = index_
 
    def register(cls):
-      if has_gui.gui.TopLevel() != None:
+      if has_gui.gui.TopLevel() is not None:
          icon_display = main_win = has_gui.gui.TopLevel().icon_display
          icon_display.add_class(cls)
    register = classmethod(register)
@@ -430,7 +430,7 @@ class CIImageList(CustomIcon):
    def glyphs_to_xml(self, event):
       from gamera import gamera_xml
       filename = gui_util.save_file_dialog(None, gamera_xml.extensions)
-      if filename != None:
+      if filename is not None:
          gamera_xml.glyphs_to_xml(filename, self.data)
 
    def generate_features(self, event):
@@ -515,7 +515,7 @@ class _CIVector(CustomIcon):
       from gamera.gui import matplotlib_support
       if matplotlib_support.matplotlib_installed:
          name = var_name.get("figure")
-         if name != None:
+         if name is not None:
             return "%s = plot(%s)" % (name, self.label)
       else:
          gui_util.message("Plotting is not supported because the optional matplotlib library\n"

@@ -271,7 +271,7 @@ and no data."""
                    self.num_k,
                    _distance_type_to_name[self.distance_type]), indent)
       indent += 1
-      if self.feature_functions != None:
+      if self.feature_functions is not None:
          # selections
          word_wrap(file, '<selections>', indent)
          indent += 1

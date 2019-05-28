@@ -286,7 +286,7 @@ class graph_color_ccs(PluginFunction):
     return_type = ImageType([RGB])
 
     def __call__(image, ccs, colors=None, method=1, unique=False):
-      if colors == None:
+      if colors is None:
         from gamera.core import RGBPixel
         colors = [ RGBPixel(150, 0, 0),
                    RGBPixel(0, 250, 0),

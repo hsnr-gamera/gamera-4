@@ -50,7 +50,7 @@ class Arg(object):
    pysymbol = property(_get_pysymbol)
 
    def declare(self):
-      if self.name == None:
+      if self.name is None:
          self.name = "_%08d" % Arg.uid
          Arg.uid += 1
       if self.name == 'return' and hasattr(self, 'return_type'):
@@ -70,7 +70,7 @@ class Arg(object):
       if function.feature_function:
          return "%s(%s, feature_buffer);" % (function.__name__, ", ".join(output_args))
       else:
-         if function.return_type != None:
+         if function.return_type is not None:
             lhs = function.return_type.symbol + " = "
          else:
             lhs = ""
