@@ -23,7 +23,6 @@ from gamera.args import *
 from gamera import paths
 from gamera import util
 import os, os.path, imp, inspect, sys, copy
-from gamera.backport import sets
 from types import *
 from gamera.enums import *
 
@@ -174,10 +173,10 @@ def get_config_options(command):
 
 def methods_flat_category(category, pixel_type=None):
    if pixel_type is None:
-      methods = sets.Set()
+      methods = set()
       for pixel_type in ALL + [NONIMAGE]:
          # We have to cast the lists to sets here to make Python 2.3.0 happy.
-         methods.update(sets.Set(methods_flat_category(category, pixel_type)))
+         methods.update(set(methods_flat_category(category, pixel_type)))
       return list(methods)
    elif pixel_type in plugin_methods:
       methods = plugin_methods[pixel_type]

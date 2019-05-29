@@ -3,7 +3,6 @@ import py.test
 from gamera.core import *
 init_gamera()
 
-import features
 
 eps = 0.0001
 

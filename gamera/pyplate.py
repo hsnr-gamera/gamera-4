@@ -54,7 +54,7 @@ PyPlate defines the following directives:
 #
 
 
-import sys, string, re, util, io, codecs
+import sys, string, re, gamera.util as util, io, codecs
 
 re_directive = re.compile("\[\[(.*?)\]\]")
 re_for_loop = re.compile("for (.*) in (.*)")

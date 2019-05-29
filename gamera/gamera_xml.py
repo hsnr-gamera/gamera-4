@@ -232,9 +232,9 @@ class LoadXML:
       except OSError as e:
          raise XMLError(str(e))
       if filename.endswith('gz'):
-         fd = gzip.open(filename, 'r')
+         fd = gzip.open(filename, 'rb')
       else:
-         fd = open(filename, 'r')
+         fd = open(filename, 'rb')
       try:
          return self.parse_stream(fd)
       except Exception as e:
@@ -255,7 +255,8 @@ class LoadXML:
       try:
          try:
             self._parser.ParseFile(stream)
-         except expat.ExpatError as e:
+         except Exception as e:
+            print(e)
             raise
       finally:
          self._progress.kill()

@@ -27,7 +27,6 @@ from math import pow
 from gamera.enums import *
 from gamera.gui import has_gui
 from gamera.config import config
-from gamera.backport import sets, textwrap
 
 config.add_option(
    "-p", "--progress-bar", action="store_true",
@@ -470,9 +469,9 @@ class CallbackList(list, CallbackObject):
       list.extend(self, other)
       self.trigger_callback('length_change', len(self))
 
-class CallbackSet(sets.Set, CallbackObject):
+class CallbackSet(set, CallbackObject):
    def __init__(self, initset=None):
-      sets.Set.__init__(self, initset)
+      set.__init__(self, initset)
       CallbackObject.__init__(self)
 
    def __del__(self):
@@ -488,7 +487,7 @@ class CallbackSet(sets.Set, CallbackObject):
 
    def add(self, element):
       alert = element not in self
-      sets.Set.add(self, element)
+      set.add(self, element)
       if alert:
          self.trigger_callback('add', [element])
          self.trigger_callback('length_change', len(self))
@@ -496,25 +495,25 @@ class CallbackSet(sets.Set, CallbackObject):
 
    def remove(self, element):
       alert = element in self
-      sets.Set.remove(self, element)
+      set.remove(self, element)
       if alert:
          self.trigger_callback('remove', [element])
          self.trigger_callback('length_change', len(self))
 
    def discard(self, element):
       if element in self:
-         sets.Set.remove(self, element)
+         set.remove(self, element)
          self.trigger_callback('remove', [element])
          self.trigger_callback('length_change', len(self))
 
    def pop(self):
-      result = sets.Set.pop(self)
+      result = set.pop(self)
       self.trigger_callback('remove', [result])
       self.trigger_callback('length_change', len(self))
 
    def clear(self):
       self.trigger_callback('remove', self)
-      sets.Set.clear(self)
+      set.clear(self)
       self.trigger_callback('length_change', len(self))
 
    def update(self, iterable):
@@ -523,7 +522,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if i not in self:
                yield i
       self.trigger_callback('add', iter())
-      sets.Set.update(self, iterable)
+      set.update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def difference_update(self, iterable):
@@ -532,7 +531,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if i in self:
                yield i
       self.trigger_callback('remove', iter())
-      sets.Set.difference_update(self, iterable)
+      set.difference_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def symmetric_difference_update(self, iterable):
@@ -546,7 +545,7 @@ class CallbackSet(sets.Set, CallbackObject):
                yield i
       self.trigger_callback('remove', remove_iter())
       self.trigger_callback('add', add_iter())
-      sets.Set.symmetric_difference_update(self, iterable)
+      set.symmetric_difference_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def intersection_update(self, iterable):
@@ -555,7 +554,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if not i in iterable:
                yield i
       self.trigger_callback('remove', iter())
-      sets.Set.intersection_update(self, iterable)
+      set.intersection_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def union_update(self, other):
@@ -566,20 +565,19 @@ class CallbackSet(sets.Set, CallbackObject):
    def __setstate__(self, data):
       CallbackObject.__init__(self)
       self.trigger_callback('remove', self)
-      sets.Set.__setstate__(self, data)
+      set.__setstate__(self, data)
       self.trigger_callback('add', self)
       self.trigger_callback('length_change', len(self))
 
 def get_file_extensions(mode):
    from gamera import plugin
    import os.path
-   from gamera.backport import sets
    methods = plugin.methods_flat_category("File")
    methods = [y for x, y in methods if x.startswith(mode) and not x.endswith("image")]
 
    if len(methods) == 0:
       raise RuntimeError("There don't seem to be any imported plugins that can %s files.  Try running init_gamera() or explictly loading file i/o plugins such as tiff_support and png_support." % mode)
-   extensions = sets.Set()
+   extensions = set()
    types = []
    for method in methods:
       wildcards = ";".join(["*.%s;*.%s" %
@@ -587,8 +585,8 @@ def get_file_extensions(mode):
       type = "%s Files (%s)|%s" % (method.exts[0].upper(), wildcards, wildcards)
       types.append(type)
       # We have to cast the lists to sets here to make Python 2.3.0 happy.
-      extensions.update(sets.Set(method.exts))
-      extensions.update(sets.Set([x.upper() for x in method.exts]))
+      extensions.update(set(method.exts))
+      extensions.update(set([x.upper() for x in method.exts]))
    all_extensions = ";".join(["*.%s" % x for x in extensions])
    types.insert(0, "All images (%s)|%s" % (all_extensions, all_extensions))
    types.append("All files (*.*)|*.*")
