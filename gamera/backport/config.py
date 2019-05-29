@@ -18,8 +18,8 @@ Copyright (C) 2001-2005 Michael Droettboom
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from .optparse import OptionParser, make_option, OptionConflictError
-from . import ConfigParser
+from optparse import OptionParser, make_option, OptionConflictError
+import configparser
 
 from os.path import isfile, expanduser, split, join
 from sys import platform
@@ -49,7 +49,7 @@ class ConfigOptionParser(OptionParser):
       if self._cache is None:
          options, args = OptionParser.parse_args(self, args)
          files = self.get_config_files()
-         config_parser = ConfigParser.RawConfigParser()
+         config_parser = configparser.RawConfigParser()
          config_parser.read(files)
          for section in config_parser.sections():
             for key, val in config_parser.items(section):
