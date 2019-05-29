@@ -93,9 +93,8 @@ supported.
       raise RuntimeError("There don't seem to be any imported plugins that can load files.  Try running init_gamera(), or explicitly loading the plugins that support file loading, such as tiff_support and png_support.")
 
    try:
-      filename = filename.encode('utf8')
-   except Exception as ex:
-      print(ex)
+      filename = str(filename)
+   except Exception:
       pass
    # First, try being smart by loading by extension
    for method in methods:
@@ -103,8 +102,7 @@ supported.
          if os.path.splitext(filename)[1].lower() == ext.lower():
             try:
                image = method.__call__(filename, compression)
-            except Exception as ex:
-               print(ex)
+            except Exception:
                pass
             else:
                return image
@@ -113,8 +111,7 @@ supported.
    for method in methods:
       try:
          image = method.__call__(filename, compression)
-      except Exception as ex:
-         print(ex)
+      except Exception:
          pass
       else:
          return image

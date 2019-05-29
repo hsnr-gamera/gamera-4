@@ -53,7 +53,7 @@ def is_image_list(l):
    return True
 
 def is_string_or_unicode(s):
-   return type(s) in (type(""), type(u""))
+   return type(s) in [type(""), type(u"")]
 
 def is_homogeneous_image_list(l):
    "Determines if a list contains only images of the same pixel type"
