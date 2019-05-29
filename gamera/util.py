@@ -470,7 +470,7 @@ class CallbackList(list, CallbackObject):
       self.trigger_callback('length_change', len(self))
 
 class CallbackSet(set, CallbackObject):
-   def __init__(self, initset=None):
+   def __init__(self, initset=[]):
       set.__init__(self, initset)
       CallbackObject.__init__(self)
 
