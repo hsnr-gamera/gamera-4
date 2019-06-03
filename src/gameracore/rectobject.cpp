@@ -23,166 +23,8 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* rect_new(PyTypeObject* pytype, PyObject* args,
-			    PyObject* kwds);
-  static void rect_dealloc(PyObject* self);
-  // get
-  static PyObject* rect_get_ul(PyObject* self);
-  static PyObject* rect_get_ul_x(PyObject* self);
-  static PyObject* rect_get_ul_y(PyObject* self);
-  static PyObject* rect_get_ur(PyObject* self);
-  static PyObject* rect_get_ur_x(PyObject* self);
-  static PyObject* rect_get_ur_y(PyObject* self);
-  static PyObject* rect_get_lr(PyObject* self);
-  static PyObject* rect_get_lr_x(PyObject* self);
-  static PyObject* rect_get_lr_y(PyObject* self);
-  static PyObject* rect_get_ll(PyObject* self);
-  static PyObject* rect_get_ll_x(PyObject* self);
-  static PyObject* rect_get_ll_y(PyObject* self);
-  static PyObject* rect_get_dim(PyObject* self);
-  static PyObject* rect_get_size(PyObject* self);
-  static PyObject* rect_get_ncols(PyObject* self);
-  static PyObject* rect_get_nrows(PyObject* self);
-  static PyObject* rect_get_width(PyObject* self);
-  static PyObject* rect_get_height(PyObject* self);
-  static PyObject* rect_get_offset_x(PyObject* self);
-  static PyObject* rect_get_offset_y(PyObject* self);
-  static PyObject* rect_get_center(PyObject* self);
-  static PyObject* rect_get_center_x(PyObject* self);
-  static PyObject* rect_get_center_y(PyObject* self);
-  // set
-  static int rect_set_ul(PyObject* self, PyObject* value);
-  static int rect_set_ul_x(PyObject* self, PyObject* value);
-  static int rect_set_ul_y(PyObject* self, PyObject* value);
-  static int rect_set_ur(PyObject* self, PyObject* value);
-  static int rect_set_ur_x(PyObject* self, PyObject* value);
-  static int rect_set_ur_y(PyObject* self, PyObject* value);
-  static int rect_set_lr(PyObject* self, PyObject* value);
-  static int rect_set_lr_x(PyObject* self, PyObject* value);
-  static int rect_set_lr_y(PyObject* self, PyObject* value);
-  static int rect_set_ll(PyObject* self, PyObject* value);
-  static int rect_set_ll_x(PyObject* self, PyObject* value);
-  static int rect_set_ll_y(PyObject* self, PyObject* value);
-  static int rect_set_dim(PyObject* self, PyObject* value);
-  static int rect_set_size(PyObject* self, PyObject* value);
-  static int rect_set_ncols(PyObject* self, PyObject* value);
-  static int rect_set_nrows(PyObject* self, PyObject* value);
-  static int rect_set_width(PyObject* self, PyObject* value);
-  static int rect_set_height(PyObject* self, PyObject* value);
-  static int rect_set_offset_x(PyObject* self, PyObject* value);
-  static int rect_set_offset_y(PyObject* self, PyObject* value);
-  // member functions
-  static PyObject* rect_set(PyObject* self, PyObject* args);
-  static PyObject* rect_move(PyObject* self, PyObject* args);
-  static PyObject* rect_contains_x(PyObject* self, PyObject* args);
-  static PyObject* rect_contains_y(PyObject* self, PyObject* args);
-  static PyObject* rect_contains_point(PyObject* self, PyObject* args);
-  static PyObject* rect_contains_rect(PyObject* self, PyObject* args);
-  static PyObject* rect_expand(PyObject* self, PyObject* args);
-  static PyObject* rect_intersects_x(PyObject* self, PyObject* args);
-  static PyObject* rect_intersects_y(PyObject* self, PyObject* args);
-  static PyObject* rect_intersects(PyObject* self, PyObject* args);
-  static PyObject* rect_intersection(PyObject* self, PyObject* args);
-  static PyObject* rect_union_rects(PyObject* _, PyObject* rects);
-  static PyObject* rect_union(PyObject* self, PyObject* args);
-  static PyObject* rect_distance_euclid(PyObject* self, PyObject* args);
-  static PyObject* rect_distance_bb(PyObject* self, PyObject* args);
-  static PyObject* rect_distance_cx(PyObject* self, PyObject* args);
-  static PyObject* rect_distance_cy(PyObject* self, PyObject* args);
-  static PyObject* rect_richcompare(PyObject* a, PyObject* b, int op);
-  static PyObject* rect_repr(PyObject* self);
-}
-
 static PyTypeObject RectType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
-};
-
-static PyGetSetDef rect_getset[] = {
-  {(char *)"ul", (getter)rect_get_ul, (setter)rect_set_ul,
-  (char *)"(Point property)\n\nThe upper-left coordinate of the rectangle in logical coordinate space."},
-  {(char *)"ul_x", (getter)rect_get_ul_x, (setter)rect_set_ul_x,
-   (char *)"(int property)\n\nThe left edge of the rectangle in logical coordinate space."},
-  {(char *)"ul_y", (getter)rect_get_ul_y, (setter)rect_set_ul_y,
-   (char *)"(int property)\n\nThe upper edge of the rectangle in logical coordinate space."},
-  {(char *)"ur", (getter)rect_get_ur, (setter)rect_set_ur,
-   (char *)"(Point property)\n\nThe upper-right coordinate of the rectangle in logical coordinate space."},
-  {(char *)"ur_x", (getter)rect_get_ur_x, (setter)rect_set_ur_x,
-   (char *)"(int property)\n\nThe right edge of the rectangle in logical coordinate space."},
-  {(char *)"ur_y", (getter)rect_get_ur_y, (setter)rect_set_ur_y,
-   (char *)"(int property)\n\nThe upper edge of the rectangle in logical coordinate space."},
-  {(char *)"lr", (getter)rect_get_lr, (setter)rect_set_lr,
-   (char *)"(Point property)\n\nThe lower-right coordinate of the rectangle in logical coordinate space."},
-  {(char *)"lr_x", (getter)rect_get_lr_x, (setter)rect_set_lr_x,
-   (char *)"(int property)\n\nThe right edge of the rectangle in logical coordinate space."},
-  {(char *)"lr_y", (getter)rect_get_lr_y, (setter)rect_set_lr_y,
-   (char *)"(int property)\n\nThe lower edge of the rectangle in logical coordinate space."},
-  {(char *)"ll", (getter)rect_get_ll, (setter)rect_set_ll,
-   (char *)"(Point property)\n\nThe lower-left coordinate of the rectangle in logical coordinate space."},
-  {(char *)"ll_x", (getter)rect_get_ll_x, (setter)rect_set_ll_x,
-   (char *)"(int property)\n\nThe left edge of the rectangle in logical coordinate space."},
-  {(char *)"ll_y", (getter)rect_get_ll_y, (setter)rect_set_ll_y,
-   (char *)"(int property)\n\nThe lower edge of the rectangle in logical coordinate space."},
-  {(char *)"dim", (getter)rect_get_dim, (setter)rect_set_dim,
-   (char *)"(Dim property)\n\nThe dimensions of the rectangle.  Equivalent to ``Dim(image.ncols, image.nrows)``."},
-  {(char *)"size", (getter)rect_get_size, (setter)rect_set_size,
-   (char *)"(Size property)\n\nThe size of the rectangle.  Equivalent to ``Size(image.width, image.height)``."},
-  {(char *)"nrows", (getter)rect_get_nrows, (setter)rect_set_nrows,
-  (char *)"(int property)\n\nThe number of rows in the rectangle."},
-  {(char *)"ncols", (getter)rect_get_ncols, (setter)rect_set_ncols,
-  (char *)"(int property)\n\nThe number of columns in the rectangle."},
-  {(char *)"width", (getter)rect_get_width, (setter)rect_set_width,
-   (char *)"(int property)\n\nThe width of the rectangle. Equivalent to ``ncols - 1``."},
-  {(char *)"height", (getter)rect_get_height, (setter)rect_set_height,
-   (char *)"(int property)\n\nThe height of the rectangle. Equivalent to ``nrows - 1``."},
-  {(char *)"offset_x", (getter)rect_get_offset_x, (setter)rect_set_offset_x,
-   (char *)"(int property)\n\nThe left edge of the rectangle in the logical coordinate space."},
-  {(char *)"offset_y", (getter)rect_get_offset_y, (setter)rect_set_offset_y,
-   (char *)"(int property)\n\nThe upper edge of the rectable in the logical coordinate space."},
-  {(char *)"center", (getter)rect_get_center, NULL,
-   (char *)"(Point property)\n\nThe coordinate at the exact center of the rectangle in the logical coordinate space."},
-  {(char *)"center_x", (getter)rect_get_center_x, NULL,
-   (char *)"(int property)\n\nThe x-location at the exact center of the rectangle in the logical coordinate space."},
-  {(char *)"center_y", (getter)rect_get_center_y, NULL,
-   (char *)"(int property)\n\nThe y-location at the exact center of the rectangle in the logical coordinate space."},
-  { NULL }
-};
-
-static PyMethodDef rect_methods[] = {
-  {(char *)"rect_set", rect_set, METH_VARARGS,
-   (char *)"**rect_set** (...)\n\nChanges the position and size of the rectangle.  Takes the same arguments as the Rect constructor."},
-  {(char *)"contains_x", rect_contains_x, METH_VARARGS,
-   (char *)"bool **contains_x** (Int *x*)\n\n``True`` if the rectangle contains the given x-value in logical coordinate space."},
-  {(char *)"contains_y", rect_contains_y, METH_VARARGS,
-   (char *)"bool **contains_y** (Int *y*)\n\n``True`` if the rectangle contains the given y-value in logical coordinate space."},
-  {(char *)"contains_point", rect_contains_point, METH_VARARGS,
-   (char *)"bool **contains_point** (Point *point*)\n\n``True`` if the rectangle contains the given ``Point`` in logical coordinate space"},
-  {(char *)"contains_rect", rect_contains_rect, METH_VARARGS,
-   (char *)"bool **contains_rect** (Rect *other*)\n\n``True`` if rectangle completely contains the given rectangle in logical coordinate space."},
-  {(char *)"expand", rect_expand, METH_VARARGS,
-   (char *)"Rect **expand** (int *size*)\n\nReturns a new Rect that is padded on all four sides by *size*."},
-  {(char *)"intersects_x", rect_intersects_x, METH_VARARGS,
-   (char *)"bool **intersects_x** (Rect *other*)\n\n``True`` if rectangle intersects the given rectangle in the *x* direction (completely ignoring the *y* direction).  (``True`` if the two rectangles are merely \"vertically aligned\".)"},
-  {(char *)"intersects_y", rect_intersects_y, METH_VARARGS,
-   (char *)"bool **intersects_y** (Rect *other*)\n\n``True`` if rectangle intersects the given rectangle in the *y* direction (completely ignoring the *x* direction).  (``True`` if the two rectangles are merely \"horizontally aligned\".)"},
-  {(char *)"intersects", rect_intersects, METH_VARARGS,
-   (char *)"bool **intersects** (Rect *other*)\n\n``True`` if rectangle intersects with the given rectangle."},
-  {(char *)"intersection", rect_intersection, METH_VARARGS,
-   (char *)"bool **intersection** (Rect *other*)\n\nReturns a new Rect that is the intersection of ``self`` and the given Rect object."},
-  {(char *)"move", rect_move, METH_VARARGS},
-  {(char *)"union_rects", rect_union_rects, METH_O,
-   (char *)"Rect **union_rects** (RectList *rects*)\n\nReturns a new rectangle that encloses all of the given rectangles in a list."},
-  {(char *)"union", rect_union, METH_VARARGS,
-   (char *)"**union** (Rect *other*)\n\nExpands the rectangle to include the given rectangle and itself."},
-  {(char *)"distance_euclid", rect_distance_euclid, METH_VARARGS,
-   (char *)"float **distance_euclid** (Rect *other*)\n\nReturns the Euclidean distance between the center points of this rectangle and the given rectangle."},
-  {(char *)"distance_bb", rect_distance_bb, METH_VARARGS,
-   (char *)"float **distance_bb** (Rect *other*)\n\nReturns the closest (Euclidean) distance between the edges of this rectangle and the edges of the given rectangle."},
-  {(char *)"distance_cx", rect_distance_cx, METH_VARARGS,
-   (char *)"int **distance_cx** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the horizontal direction."},
-  {(char *)"distance_cy", rect_distance_cy, METH_VARARGS,
-   (char *)"int **distance_cy** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the vertical direction."},
-  {NULL, NULL}
 };
 
 extern PyTypeObject* get_RectType() {
@@ -683,6 +525,94 @@ static long rect_hash(PyObject* self) {
   Rect* x = ((RectObject*)self)->m_x;
   return (((x->ul_x() & 0xff) << 24) & ((x->ul_y() & 0xff) << 16) & ((x->lr_x() & 0xff) << 8) & (x->lr_y() & 0xff));
 }
+
+static PyGetSetDef rect_getset[] = {
+        {(char *)"ul", (getter)rect_get_ul, (setter)rect_set_ul,
+                (char *)"(Point property)\n\nThe upper-left coordinate of the rectangle in logical coordinate space."},
+        {(char *)"ul_x", (getter)rect_get_ul_x, (setter)rect_set_ul_x,
+                (char *)"(int property)\n\nThe left edge of the rectangle in logical coordinate space."},
+        {(char *)"ul_y", (getter)rect_get_ul_y, (setter)rect_set_ul_y,
+                (char *)"(int property)\n\nThe upper edge of the rectangle in logical coordinate space."},
+        {(char *)"ur", (getter)rect_get_ur, (setter)rect_set_ur,
+                (char *)"(Point property)\n\nThe upper-right coordinate of the rectangle in logical coordinate space."},
+        {(char *)"ur_x", (getter)rect_get_ur_x, (setter)rect_set_ur_x,
+                (char *)"(int property)\n\nThe right edge of the rectangle in logical coordinate space."},
+        {(char *)"ur_y", (getter)rect_get_ur_y, (setter)rect_set_ur_y,
+                (char *)"(int property)\n\nThe upper edge of the rectangle in logical coordinate space."},
+        {(char *)"lr", (getter)rect_get_lr, (setter)rect_set_lr,
+                (char *)"(Point property)\n\nThe lower-right coordinate of the rectangle in logical coordinate space."},
+        {(char *)"lr_x", (getter)rect_get_lr_x, (setter)rect_set_lr_x,
+                (char *)"(int property)\n\nThe right edge of the rectangle in logical coordinate space."},
+        {(char *)"lr_y", (getter)rect_get_lr_y, (setter)rect_set_lr_y,
+                (char *)"(int property)\n\nThe lower edge of the rectangle in logical coordinate space."},
+        {(char *)"ll", (getter)rect_get_ll, (setter)rect_set_ll,
+                (char *)"(Point property)\n\nThe lower-left coordinate of the rectangle in logical coordinate space."},
+        {(char *)"ll_x", (getter)rect_get_ll_x, (setter)rect_set_ll_x,
+                (char *)"(int property)\n\nThe left edge of the rectangle in logical coordinate space."},
+        {(char *)"ll_y", (getter)rect_get_ll_y, (setter)rect_set_ll_y,
+                (char *)"(int property)\n\nThe lower edge of the rectangle in logical coordinate space."},
+        {(char *)"dim", (getter)rect_get_dim, (setter)rect_set_dim,
+                (char *)"(Dim property)\n\nThe dimensions of the rectangle.  Equivalent to ``Dim(image.ncols, image.nrows)``."},
+        {(char *)"size", (getter)rect_get_size, (setter)rect_set_size,
+                (char *)"(Size property)\n\nThe size of the rectangle.  Equivalent to ``Size(image.width, image.height)``."},
+        {(char *)"nrows", (getter)rect_get_nrows, (setter)rect_set_nrows,
+                (char *)"(int property)\n\nThe number of rows in the rectangle."},
+        {(char *)"ncols", (getter)rect_get_ncols, (setter)rect_set_ncols,
+                (char *)"(int property)\n\nThe number of columns in the rectangle."},
+        {(char *)"width", (getter)rect_get_width, (setter)rect_set_width,
+                (char *)"(int property)\n\nThe width of the rectangle. Equivalent to ``ncols - 1``."},
+        {(char *)"height", (getter)rect_get_height, (setter)rect_set_height,
+                (char *)"(int property)\n\nThe height of the rectangle. Equivalent to ``nrows - 1``."},
+        {(char *)"offset_x", (getter)rect_get_offset_x, (setter)rect_set_offset_x,
+                (char *)"(int property)\n\nThe left edge of the rectangle in the logical coordinate space."},
+        {(char *)"offset_y", (getter)rect_get_offset_y, (setter)rect_set_offset_y,
+                (char *)"(int property)\n\nThe upper edge of the rectable in the logical coordinate space."},
+        {(char *)"center", (getter)rect_get_center, NULL,
+                (char *)"(Point property)\n\nThe coordinate at the exact center of the rectangle in the logical coordinate space."},
+        {(char *)"center_x", (getter)rect_get_center_x, NULL,
+                (char *)"(int property)\n\nThe x-location at the exact center of the rectangle in the logical coordinate space."},
+        {(char *)"center_y", (getter)rect_get_center_y, NULL,
+                (char *)"(int property)\n\nThe y-location at the exact center of the rectangle in the logical coordinate space."},
+        { NULL }
+};
+
+static PyMethodDef rect_methods[] = {
+        {(char *)"rect_set", rect_set, METH_VARARGS,
+                (char *)"**rect_set** (...)\n\nChanges the position and size of the rectangle.  Takes the same arguments as the Rect constructor."},
+        {(char *)"contains_x", rect_contains_x, METH_VARARGS,
+                (char *)"bool **contains_x** (Int *x*)\n\n``True`` if the rectangle contains the given x-value in logical coordinate space."},
+        {(char *)"contains_y", rect_contains_y, METH_VARARGS,
+                (char *)"bool **contains_y** (Int *y*)\n\n``True`` if the rectangle contains the given y-value in logical coordinate space."},
+        {(char *)"contains_point", rect_contains_point, METH_VARARGS,
+                (char *)"bool **contains_point** (Point *point*)\n\n``True`` if the rectangle contains the given ``Point`` in logical coordinate space"},
+        {(char *)"contains_rect", rect_contains_rect, METH_VARARGS,
+                (char *)"bool **contains_rect** (Rect *other*)\n\n``True`` if rectangle completely contains the given rectangle in logical coordinate space."},
+        {(char *)"expand", rect_expand, METH_VARARGS,
+                (char *)"Rect **expand** (int *size*)\n\nReturns a new Rect that is padded on all four sides by *size*."},
+        {(char *)"intersects_x", rect_intersects_x, METH_VARARGS,
+                (char *)"bool **intersects_x** (Rect *other*)\n\n``True`` if rectangle intersects the given rectangle in the *x* direction (completely ignoring the *y* direction).  (``True`` if the two rectangles are merely \"vertically aligned\".)"},
+        {(char *)"intersects_y", rect_intersects_y, METH_VARARGS,
+                (char *)"bool **intersects_y** (Rect *other*)\n\n``True`` if rectangle intersects the given rectangle in the *y* direction (completely ignoring the *x* direction).  (``True`` if the two rectangles are merely \"horizontally aligned\".)"},
+        {(char *)"intersects", rect_intersects, METH_VARARGS,
+                (char *)"bool **intersects** (Rect *other*)\n\n``True`` if rectangle intersects with the given rectangle."},
+        {(char *)"intersection", rect_intersection, METH_VARARGS,
+                (char *)"bool **intersection** (Rect *other*)\n\nReturns a new Rect that is the intersection of ``self`` and the given Rect object."},
+        {(char *)"move", rect_move, METH_VARARGS},
+        {(char *)"union_rects", rect_union_rects, METH_O,
+                (char *)"Rect **union_rects** (RectList *rects*)\n\nReturns a new rectangle that encloses all of the given rectangles in a list."},
+        {(char *)"union", rect_union, METH_VARARGS,
+                (char *)"**union** (Rect *other*)\n\nExpands the rectangle to include the given rectangle and itself."},
+        {(char *)"distance_euclid", rect_distance_euclid, METH_VARARGS,
+                (char *)"float **distance_euclid** (Rect *other*)\n\nReturns the Euclidean distance between the center points of this rectangle and the given rectangle."},
+        {(char *)"distance_bb", rect_distance_bb, METH_VARARGS,
+                (char *)"float **distance_bb** (Rect *other*)\n\nReturns the closest (Euclidean) distance between the edges of this rectangle and the edges of the given rectangle."},
+        {(char *)"distance_cx", rect_distance_cx, METH_VARARGS,
+                (char *)"int **distance_cx** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the horizontal direction."},
+        {(char *)"distance_cy", rect_distance_cy, METH_VARARGS,
+                (char *)"int **distance_cy** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the vertical direction."},
+        {NULL, NULL}
+};
+
 
 void init_RectType(PyObject* module_dict) {
   Py_TYPE(&RectType) = &PyType_Type;

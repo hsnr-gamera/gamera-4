@@ -22,42 +22,8 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* imageinfo_new(PyTypeObject* pytpe, PyObject* args, PyObject* kwds);
-  static void imageinfo_dealloc(PyObject* self);
-  // get/set
-  static int imageinfo_set_x_resolution(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_x_resolution(PyObject* self);
-  static int imageinfo_set_y_resolution(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_y_resolution(PyObject* self);
-  static int imageinfo_set_ncols(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_ncols(PyObject* self);
-  static int imageinfo_set_nrows(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_nrows(PyObject* self);
-  static int imageinfo_set_depth(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_depth(PyObject* self);
-  static int imageinfo_set_ncolors(PyObject* self, PyObject* value);
-  static PyObject* imageinfo_get_ncolors(PyObject* self);
-}
-
 static PyTypeObject ImageInfoType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
-};
-
-static PyGetSetDef imageinfo_getset[] = {
-  { (char *)"x_resolution", (getter)imageinfo_get_x_resolution,
-    (setter)imageinfo_set_x_resolution, (char *)"The x resolution of the image." },
-  { (char *)"y_resolution", (getter)imageinfo_get_y_resolution,
-    (setter)imageinfo_set_y_resolution, (char *)"The y resolution of the image." },
-  { (char *)"ncols", (getter)imageinfo_get_ncols,
-    (setter)imageinfo_set_ncols, (char *)"The number of columns of the image." },
-  { (char *)"nrows", (getter)imageinfo_get_nrows,
-    (setter)imageinfo_set_nrows, (char *)"The number of rows of the image." },
-  { (char *)"depth", (getter)imageinfo_get_depth,
-    (setter)imageinfo_set_depth, (char *)"The bit depth of the image (in bits)." },
-  { (char *)"ncolors", (getter)imageinfo_get_ncolors,
-    (setter)imageinfo_set_ncolors, (char *)"The number of colors in the image." },
-  { NULL }
 };
 
 PyTypeObject* get_ImageInfoType() {
@@ -116,6 +82,22 @@ CREATE_GET_FUNC(depth)
 CREATE_SET_FUNC(depth)
 CREATE_GET_FUNC(ncolors)
 CREATE_SET_FUNC(ncolors)
+
+static PyGetSetDef imageinfo_getset[] = {
+        { (char *)"x_resolution", (getter)imageinfo_get_x_resolution,
+                (setter)imageinfo_set_x_resolution, (char *)"The x resolution of the image." },
+        { (char *)"y_resolution", (getter)imageinfo_get_y_resolution,
+                (setter)imageinfo_set_y_resolution, (char *)"The y resolution of the image." },
+        { (char *)"ncols", (getter)imageinfo_get_ncols,
+                (setter)imageinfo_set_ncols, (char *)"The number of columns of the image." },
+        { (char *)"nrows", (getter)imageinfo_get_nrows,
+                (setter)imageinfo_set_nrows, (char *)"The number of rows of the image." },
+        { (char *)"depth", (getter)imageinfo_get_depth,
+                (setter)imageinfo_set_depth, (char *)"The bit depth of the image (in bits)." },
+        { (char *)"ncolors", (getter)imageinfo_get_ncolors,
+                (setter)imageinfo_set_ncolors, (char *)"The number of colors in the image." },
+        { NULL }
+};
 
 void init_ImageInfoType(PyObject* module_dict) {
   Py_TYPE(&ImageInfoType) = &PyType_Type;

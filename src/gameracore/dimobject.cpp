@@ -22,30 +22,9 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* dim_new(PyTypeObject* pytype, PyObject* args,
-			    PyObject* kwds);
-  static void dim_dealloc(PyObject* self);
-  static int dim_set_nrows(PyObject* self, PyObject* value);
-  static PyObject* dim_get_nrows(PyObject* self);
-  static int dim_set_ncols(PyObject* self, PyObject* value);
-  static PyObject* dim_get_ncols(PyObject* self);
-  static PyObject* dim_richcompare(PyObject* a, PyObject* b, int op);
-  static PyObject* dim_repr(PyObject* self);
-}
-
 static PyTypeObject DimType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
-
-static PyGetSetDef dim_getset[] = {
-  { (char *)"nrows", (getter)dim_get_nrows, (setter)dim_set_nrows,
-    (char *)"(int property get/set)\n\nThe current number of rows", 0},
-  { (char *)"ncols", (getter)dim_get_ncols, (setter)dim_set_ncols,
-    (char *)"(int property get/set)\n\nthe current number of columns", 0},
-  { NULL }
-};
-
 PyTypeObject* get_DimType() {
   return &DimType;
 }
@@ -132,6 +111,15 @@ static PyObject* dim_repr(PyObject* self) {
   return PyUnicode_FromFormat("Dim(%i, %i)",
 			     (int)x->ncols(), (int)x->nrows());
 }
+
+static PyGetSetDef dim_getset[] = {
+        { (char *)"nrows", (getter)dim_get_nrows, (setter)dim_set_nrows,
+                (char *)"(int property get/set)\n\nThe current number of rows", 0},
+        { (char *)"ncols", (getter)dim_get_ncols, (setter)dim_set_ncols,
+                (char *)"(int property get/set)\n\nthe current number of columns", 0},
+        { NULL }
+};
+
 
 void init_DimType(PyObject* module_dict) {
   Py_TYPE(&DimType) = &PyType_Type;

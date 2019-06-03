@@ -22,28 +22,12 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* regionmap_new(PyTypeObject* pytype, PyObject* args,
-			     PyObject* kwds);
-  static void regionmap_dealloc(PyObject* self);
-  static PyObject* regionmap_lookup(PyObject* self, PyObject* args);
-  static PyObject* regionmap_add_region(PyObject* self, PyObject* args);
-  static PyObject* regionmap___getitem__(PyObject* self, Py_ssize_t index);
-  static Py_ssize_t regionmap___len__(PyObject* self);
-}
-
 static PyTypeObject RegionMapType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PySequenceMethods RegionMapSequenceMethods = {
   0,
-};
-
-static PyMethodDef regionmap_methods[] = {
-  { CHAR_PTR_CAST "lookup", regionmap_lookup, METH_VARARGS },
-  { CHAR_PTR_CAST "add_region", regionmap_add_region, METH_VARARGS },
-  { NULL }
 };
 
 PyTypeObject* get_RegionMapType() {
@@ -112,6 +96,12 @@ static PyObject* regionmap___getitem__(PyObject* self, Py_ssize_t index) {
 static Py_ssize_t regionmap___len__(PyObject* self) {
   return (((RegionMapObject*)self)->m_x->size());
 }
+
+static PyMethodDef regionmap_methods[] = {
+        { CHAR_PTR_CAST "lookup", regionmap_lookup, METH_VARARGS },
+        { CHAR_PTR_CAST "add_region", regionmap_add_region, METH_VARARGS },
+        { NULL }
+};
 
 void init_RegionMapType(PyObject* module_dict) {
   RegionMapSequenceMethods.sq_item = regionmap___getitem__;

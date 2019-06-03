@@ -18,11 +18,6 @@
 
 #include "python_iterator.hpp"
 
-extern "C" {
-  static PyObject* iterator_get_iter(PyObject* self);
-  static PyObject* iterator_next(PyObject* self);
-}
-
 static PyTypeObject IteratorType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };

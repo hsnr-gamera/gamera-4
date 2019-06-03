@@ -20,46 +20,12 @@
 #define GAMERACORE_INTERNAL
 #include "gameramodule.hpp"
 
-extern "C" {
-  static PyObject* floatpoint_new(PyTypeObject* pytype, PyObject* args,
-				  PyObject* kwds);
-  static void floatpoint_dealloc(PyObject* self);
-  // get/set
-  static PyObject* floatpoint_get_x(PyObject* self);
-  static PyObject* floatpoint_get_y(PyObject* self);
-  static PyObject* floatpoint_richcompare(PyObject* a, PyObject* b, int op);
-  // methods
-  static PyObject* floatpoint_distance(PyObject* self, PyObject* args);
-  static PyObject* floatpoint_repr(PyObject* self);
-  // operators
-  static PyObject* floatpoint_add(PyObject* self, PyObject* args);
-  static PyObject* floatpoint_sub(PyObject* self, PyObject* args);
-  static PyObject* floatpoint_mul(PyObject* self, PyObject* args);
-  static PyObject* floatpoint_div(PyObject* self, PyObject* args);
-  static PyObject* floatpoint_negative(PyObject* self);
-  static PyObject* floatpoint_positive(PyObject* self);
-  static PyObject* floatpoint_absolute(PyObject* self);
-}
 
 static PyTypeObject FloatPointType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyNumberMethods floatpoint_number_methods;
-
-static PyGetSetDef floatpoint_getset[] = {
-  { (char *)"x", (getter)floatpoint_get_x, NULL,
-    (char *)"(float property)\n\nGet the current x value", 0},
-  { (char *)"y", (getter)floatpoint_get_y, NULL,
-    (char *)"(float property)\n\nGet the current y value", 0},
-  { NULL }
-};
-
-static PyMethodDef floatpoint_methods[] = {
-  { CHAR_PTR_CAST "distance", floatpoint_distance, METH_O,
-    CHAR_PTR_CAST "**distance** (POINT *p*)\n\nCalculates the Euclidean distance from this point to another point."},
-  { NULL }
-};
 
 PyTypeObject* get_FloatPointType() {
   return &FloatPointType;
@@ -216,6 +182,20 @@ static PyObject* floatpoint_absolute(PyObject* self) {
   FloatPoint result = abs(*x);
   return create_FloatPointObject(result);
 }
+
+static PyGetSetDef floatpoint_getset[] = {
+        { (char *)"x", (getter)floatpoint_get_x, NULL,
+                (char *)"(float property)\n\nGet the current x value", 0},
+        { (char *)"y", (getter)floatpoint_get_y, NULL,
+                (char *)"(float property)\n\nGet the current y value", 0},
+        { NULL }
+};
+
+static PyMethodDef floatpoint_methods[] = {
+        { CHAR_PTR_CAST "distance", floatpoint_distance, METH_O,
+                CHAR_PTR_CAST "**distance** (POINT *p*)\n\nCalculates the Euclidean distance from this point to another point."},
+        { NULL }
+};
 
 void init_FloatPointType(PyObject* module_dict) {
   floatpoint_number_methods.nb_add = floatpoint_add;

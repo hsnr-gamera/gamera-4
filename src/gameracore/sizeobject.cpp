@@ -22,28 +22,8 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* size_new(PyTypeObject* pytype, PyObject* args,
-			    PyObject* kwds);
-  static void size_dealloc(PyObject* self);
-  static PyObject* size_get_width(PyObject* self);
-  static int size_set_width(PyObject* self, PyObject* value);
-  static PyObject* size_get_height(PyObject* self);
-  static int size_set_height(PyObject* self, PyObject* value);
-  static PyObject* size_richcompare(PyObject* a, PyObject* b, int op);
-  static PyObject* size_repr(PyObject* self);
-}
-
 static PyTypeObject SizeType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
-};
-
-static PyGetSetDef size_getset[] = {
-  { (char *)"width", (getter)size_get_width, (setter)size_set_width,
-    (char *)"(int property)\n\nThe width of an object is the right boundary minus the left. This is the same as the number of columns *minus one.*", 0 },
-  { (char *)"height", (getter)size_get_height, (setter)size_set_height,
-    (char *)"(int property)\n\nThe height of an object is the lower boundary minus the upper boundary (remember that *y* is counted in the negative direction). This is the same as the number of rows *minus one*.", 0 },
-  { NULL }
 };
 
 PyTypeObject* get_SizeType() {
@@ -132,6 +112,14 @@ static PyObject* size_repr(PyObject* self) {
   return PyUnicode_FromFormat("Size(%i, %i)",
 			     (int)x->width(), (int)x->height());
 }
+
+static PyGetSetDef size_getset[] = {
+        { (char *)"width", (getter)size_get_width, (setter)size_set_width,
+                (char *)"(int property)\n\nThe width of an object is the right boundary minus the left. This is the same as the number of columns *minus one.*", 0 },
+        { (char *)"height", (getter)size_get_height, (setter)size_set_height,
+                (char *)"(int property)\n\nThe height of an object is the lower boundary minus the upper boundary (remember that *y* is counted in the negative direction). This is the same as the number of rows *minus one*.", 0 },
+        { NULL }
+};
 
 void init_SizeType(PyObject* module_dict) {
   Py_TYPE(&SizeType) = &PyType_Type;

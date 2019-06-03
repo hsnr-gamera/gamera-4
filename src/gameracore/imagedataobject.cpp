@@ -22,63 +22,10 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* imagedata_new(PyTypeObject* pytype, PyObject* args,
-				 PyObject* kwds);
-  static void imagedata_dealloc(PyObject* self);
-  // get/set
-  static PyObject* imagedata_get_stride(PyObject* self);
-  static PyObject* imagedata_get_ncols(PyObject* self);
-  static PyObject* imagedata_get_nrows(PyObject* self);
-  static PyObject* imagedata_get_page_offset_x(PyObject* self);
-  static PyObject* imagedata_get_page_offset_y(PyObject* self);
-  static PyObject* imagedata_get_size(PyObject* self);
-  static PyObject* imagedata_get_bytes(PyObject* self);
-  static PyObject* imagedata_get_mbytes(PyObject* self);
-  static PyObject* imagedata_get_pixel_type(PyObject* self);
-  static PyObject* imagedata_get_storage_format(PyObject* self);
-  static int imagedata_set_page_offset_x(PyObject* self, PyObject* v);
-  static int imagedata_set_page_offset_y(PyObject* self, PyObject* v);
-  static int imagedata_set_nrows(PyObject* self, PyObject* v);
-  static int imagedata_set_ncols(PyObject* self, PyObject* v);
-  // methods
-  static PyObject* imagedata_dimensions(PyObject* self, PyObject* args);
-}
-
 static PyTypeObject ImageDataType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
-static PyGetSetDef imagedata_getset[] = {
-  { (char *)"nrows", (getter)imagedata_get_nrows, (setter)imagedata_set_nrows,
-    (char *)"(int property get/set)\n\nThe number of rows", 0 },
-  { (char *)"ncols", (getter)imagedata_get_ncols, (setter)imagedata_set_ncols,
-    (char *)"(int property get/set)\n\nThe number of columns", 0 },
-  { (char *)"page_offset_x", (getter)imagedata_get_page_offset_x,
-    (setter)imagedata_set_page_offset_x,
-    (char *)"(int property get/set)\n\nThe *x* offset in the page for the data", 0 },
-  { (char *)"page_offset_y", (getter)imagedata_get_page_offset_y,
-    (setter)imagedata_set_page_offset_y,
-    (char *)"(int property get/set)\n\nThe *y* offset in the page for the data", 0 },
-  { (char *)"stride", (getter)imagedata_get_stride, 0,
-    (char *)"(int property get/set)\n\nThe length of the data stride", 0 },
-  { (char *)"size", (getter)imagedata_get_size, 0,
-    (char *)"(Size property get/set)\n\nThe size of the image data", 0 },
-  { (char *)"bytes", (getter)imagedata_get_bytes, 0,
-    (char *)"(int property get/set)\n\nThe size of the data in bytes", 0 },
-  { (char *)"mbytes", (getter)imagedata_get_mbytes, 0,
-    (char *)"(int property get/set)\n\nThe size of the data in megabytes", 0 },
-  { (char *)"pixel_type", (getter)imagedata_get_pixel_type, 0,
-    (char *)"(int property get/set)\n\nThe type of the pixels.  See `pixel types`__ for more info.\n\n.. __: image_types.html#pixel-types", 0 },
-  { (char *)"storage_format", (getter)imagedata_get_storage_format, 0,
-    (char *)"(int property get/set)\n\nThe format of the storage.  See `storage formats`__ for more info.\n\n.. __: image_types.html#storage-formats", 0 },
-  { NULL }
-};
-
-static PyMethodDef imagedata_methods[] = {
-  { CHAR_PTR_CAST "dimensions", imagedata_dimensions, METH_VARARGS },
-  { NULL }
-};
 
 PyTypeObject* get_ImageDataType() {
   return &ImageDataType;
@@ -181,6 +128,37 @@ static PyObject* imagedata_dimensions(PyObject* self, PyObject* args) {
   PyErr_SetString(PyExc_TypeError, "Invalid arguments to ImageData.dimensions.  Must be one Dim argument.");
   return 0;
 }
+
+static PyGetSetDef imagedata_getset[] = {
+        { (char *)"nrows", (getter)imagedata_get_nrows, (setter)imagedata_set_nrows,
+                (char *)"(int property get/set)\n\nThe number of rows", 0 },
+        { (char *)"ncols", (getter)imagedata_get_ncols, (setter)imagedata_set_ncols,
+                (char *)"(int property get/set)\n\nThe number of columns", 0 },
+        { (char *)"page_offset_x", (getter)imagedata_get_page_offset_x,
+                                                        (setter)imagedata_set_page_offset_x,
+                (char *)"(int property get/set)\n\nThe *x* offset in the page for the data", 0 },
+        { (char *)"page_offset_y", (getter)imagedata_get_page_offset_y,
+                                                        (setter)imagedata_set_page_offset_y,
+                (char *)"(int property get/set)\n\nThe *y* offset in the page for the data", 0 },
+        { (char *)"stride", (getter)imagedata_get_stride, 0,
+                (char *)"(int property get/set)\n\nThe length of the data stride", 0 },
+        { (char *)"size", (getter)imagedata_get_size, 0,
+                (char *)"(Size property get/set)\n\nThe size of the image data", 0 },
+        { (char *)"bytes", (getter)imagedata_get_bytes, 0,
+                (char *)"(int property get/set)\n\nThe size of the data in bytes", 0 },
+        { (char *)"mbytes", (getter)imagedata_get_mbytes, 0,
+                (char *)"(int property get/set)\n\nThe size of the data in megabytes", 0 },
+        { (char *)"pixel_type", (getter)imagedata_get_pixel_type, 0,
+                (char *)"(int property get/set)\n\nThe type of the pixels.  See `pixel types`__ for more info.\n\n.. __: image_types.html#pixel-types", 0 },
+        { (char *)"storage_format", (getter)imagedata_get_storage_format, 0,
+                (char *)"(int property get/set)\n\nThe format of the storage.  See `storage formats`__ for more info.\n\n.. __: image_types.html#storage-formats", 0 },
+        { NULL }
+};
+
+static PyMethodDef imagedata_methods[] = {
+        { CHAR_PTR_CAST "dimensions", imagedata_dimensions, METH_VARARGS },
+        { NULL }
+};
 
 void init_ImageDataType(PyObject* module_dict) {
   Py_TYPE(&ImageDataType) = &PyType_Type;

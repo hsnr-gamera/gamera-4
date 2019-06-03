@@ -208,9 +208,9 @@ static PyObject* edge___repr__(PyObject* self) {
    Py_INCREF(from_data);
    Py_INCREF(to_data);
    Py_INCREF(weight);
-   char* a = PyUnicode_AsUTF8(PyObject_Repr(from_data));
-   char* b = PyUnicode_AsUTF8(PyObject_Repr(to_data));
-   char* c = PyUnicode_AsUTF8(PyObject_Repr(weight));
+   char const* a = PyUnicode_AsUTF8(PyObject_Repr(from_data));
+   char const* b = PyUnicode_AsUTF8(PyObject_Repr(to_data));
+   char const* c = PyUnicode_AsUTF8(PyObject_Repr(weight));
 
    PyObject* ret = PyUnicode_FromFormat("<Edge from %s to %s (%s)>", a,b,c);
    return ret;

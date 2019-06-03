@@ -23,39 +23,11 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* point_new(PyTypeObject* pytype, PyObject* args,
-			    PyObject* kwds);
-  static void point_dealloc(PyObject* self);
-  // get/set
-  static int point_set_x(PyObject* self, PyObject* value);
-  static PyObject* point_get_x(PyObject* self);
-  static int point_set_y(PyObject* self, PyObject* value);
-  static PyObject* point_get_y(PyObject* self);
-  static PyObject* point_richcompare(PyObject* a, PyObject* b, int op);
-  // methods
-  static PyObject* point_move(PyObject* self, PyObject* args);
-  static PyObject* point_repr(PyObject* self);
-  static PyObject* point_add(PyObject* self, PyObject* args);
-}
-
 static PyTypeObject PointType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyNumberMethods point_number_methods;
-
-static PyGetSetDef point_getset[] = {
-  { (char *)"x", (getter)point_get_x, (setter)point_set_x, (char *)"(int property)\n\nThe current x value", 0},
-  { (char *)"y", (getter)point_get_y, (setter)point_set_y, (char *)"(int property)\n\nThe current y value", 0},
-  { NULL }
-};
-
-static PyMethodDef point_methods[] = {
-  { (char *)"move", point_move, METH_VARARGS,
-    (char *)"**move** (*x*, *y*)\n\nMoves the point by the given *x*, *y* coordinate, i.e. the vector (*x*, *y*) is added to the point. The following two lines are equivalent:\n\n.. code:: Python\n\n    p.move(x,y)\n    p += Point(x,y)"},
-  { NULL }
-};
 
 
 PyTypeObject* get_PointType() {
@@ -201,6 +173,18 @@ static PyObject* point_add(PyObject* self, PyObject* args) {
     return 0;
   }
 }
+static PyGetSetDef point_getset[] = {
+        { (char *)"x", (getter)point_get_x, (setter)point_set_x, (char *)"(int property)\n\nThe current x value", 0},
+        { (char *)"y", (getter)point_get_y, (setter)point_set_y, (char *)"(int property)\n\nThe current y value", 0},
+        { NULL }
+};
+
+static PyMethodDef point_methods[] = {
+        { (char *)"move", point_move, METH_VARARGS,
+                (char *)"**move** (*x*, *y*)\n\nMoves the point by the given *x*, *y* coordinate, i.e. the vector (*x*, *y*) is added to the point. The following two lines are equivalent:\n\n.. code:: Python\n\n    p.move(x,y)\n    p += Point(x,y)"},
+        { NULL }
+};
+
 
 void init_PointType(PyObject* module_dict) {
   point_number_methods.nb_add = point_add;

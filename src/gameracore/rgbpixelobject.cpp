@@ -23,31 +23,6 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* rgbpixel_new(PyTypeObject* pytype, PyObject* args,
-			  PyObject* kwds);
-  static void rgbpixel_dealloc(PyObject* self);
-  // get/set
-  static int rgbpixel_set_red(PyObject* self, PyObject* value);
-  static int rgbpixel_set_green(PyObject* self, PyObject* value);
-  static int rgbpixel_set_blue(PyObject* self, PyObject* value);
-  static PyObject* rgbpixel_get_red(PyObject* self);
-  static PyObject* rgbpixel_get_green(PyObject* self);
-  static PyObject* rgbpixel_get_blue(PyObject* self);
-  static PyObject* rgbpixel_get_hue(PyObject* self);
-  static PyObject* rgbpixel_get_saturation(PyObject* self);
-  static PyObject* rgbpixel_get_value(PyObject* self);
-  static PyObject* rgbpixel_get_cie_x(PyObject* self);
-  static PyObject* rgbpixel_get_cie_y(PyObject* self);
-  static PyObject* rgbpixel_get_cie_z(PyObject* self);
-  static PyObject* rgbpixel_get_cie_Lab_L(PyObject* self);
-  static PyObject* rgbpixel_get_cie_Lab_a(PyObject* self);
-  static PyObject* rgbpixel_get_cie_Lab_b(PyObject* self);
-  static PyObject* rgbpixel_get_cyan(PyObject* self);
-  static PyObject* rgbpixel_get_magenta(PyObject* self);
-  static PyObject* rgbpixel_get_yellow(PyObject* self);
-}
-
 static PyTypeObject RGBPixelType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
 };
@@ -55,40 +30,6 @@ static PyTypeObject RGBPixelType = {
 PyTypeObject* get_RGBPixelType() {
   return &RGBPixelType;
 }
-
-static PyGetSetDef rgbpixel_getset[] = {
-  { (char *)"red", (getter)rgbpixel_get_red, (setter)rgbpixel_set_red,
-    (char *)"(int property)\n\nThe current red value [0,255]", 0 },
-  { (char *)"green", (getter)rgbpixel_get_green, (setter)rgbpixel_set_green,
-    (char *)"(int property)\n\nThe current green value [0, 255]", 0 },
-  { (char *)"blue", (getter)rgbpixel_get_blue, (setter)rgbpixel_set_blue,
-    (char *)"(int property)\n\nThe current blue value [0, 255]", 0 },
-  { (char *)"hue", (getter)rgbpixel_get_hue, 0,
-    (char *)"(float property)\n\nThe hue [0, 1.0]", 0 },
-  { (char *)"saturation", (getter)rgbpixel_get_saturation, 0,
-    (char *)"(float property)\n\nThe saturation [0, 1.0]", 0 },
-  { (char *)"value", (getter)rgbpixel_get_value, 0,
-    (char *)"(float property)\n\nThe value [0, 1.0]", 0 },
-  { (char *)"cie_x", (getter)rgbpixel_get_cie_x, 0,
-    (char *)"(float property)\n\nThe x value in CIE XYZ color space [0, 1.0]", 0 },
-  { (char *)"cie_y", (getter)rgbpixel_get_cie_y, 0,
-    (char *)"(float property)\n\nThe y value in CIE XYZ color space [0, 1.0]", 0 },
-  { (char *)"cie_z", (getter)rgbpixel_get_cie_z, 0,
-    (char *)"(float property)\n\nThe z value in CIE XYZ color space [0, 1.0]", 0 },
-  { (char *)"cie_Lab_L", (getter)rgbpixel_get_cie_Lab_L, 0,
-    (char *)"(float property)\n\nThe L value in CIE L*a*b* color space [0, 100]", 0 },
-  { (char *)"cie_Lab_a", (getter)rgbpixel_get_cie_Lab_a, 0,
-    (char *)"(float property)\n\nThe a value in CIE L*a*b* color space [-86.2, 98.3]", 0 },
-  { (char *)"cie_Lab_b", (getter)rgbpixel_get_cie_Lab_b, 0,
-    (char *)"(float property)\n\nThe b value in CIE L*a*b* color space [-107.9, 94.5]", 0 },
-  { (char *)"cyan", (getter)rgbpixel_get_cyan, 0,
-    (char *)"(int property)\n\nThe cyan value [0, 255]", 0 },
-  { (char *)"magenta", (getter)rgbpixel_get_magenta, 0,
-    (char *)"(int property)\n\nThe magenta value [0, 255]", 0 },
-  { (char *)"yellow", (getter)rgbpixel_get_yellow, 0,
-    (char *)"(int property)\n\nThe yellow value [0, 255]", 0 },
-  { NULL }
-};
 
 static PyObject* rgbpixel_new(PyTypeObject* pytype, PyObject* args,
 			     PyObject* kwds) {
@@ -214,6 +155,40 @@ static long rgbpixel_hash(PyObject* self) {
 
   return ((x->red() << 16) & (x->green() << 8) & x->blue());
 }
+
+static PyGetSetDef rgbpixel_getset[] = {
+        { (char *)"red", (getter)rgbpixel_get_red, (setter)rgbpixel_set_red,
+                (char *)"(int property)\n\nThe current red value [0,255]", 0 },
+        { (char *)"green", (getter)rgbpixel_get_green, (setter)rgbpixel_set_green,
+                (char *)"(int property)\n\nThe current green value [0, 255]", 0 },
+        { (char *)"blue", (getter)rgbpixel_get_blue, (setter)rgbpixel_set_blue,
+                (char *)"(int property)\n\nThe current blue value [0, 255]", 0 },
+        { (char *)"hue", (getter)rgbpixel_get_hue, 0,
+                (char *)"(float property)\n\nThe hue [0, 1.0]", 0 },
+        { (char *)"saturation", (getter)rgbpixel_get_saturation, 0,
+                (char *)"(float property)\n\nThe saturation [0, 1.0]", 0 },
+        { (char *)"value", (getter)rgbpixel_get_value, 0,
+                (char *)"(float property)\n\nThe value [0, 1.0]", 0 },
+        { (char *)"cie_x", (getter)rgbpixel_get_cie_x, 0,
+                (char *)"(float property)\n\nThe x value in CIE XYZ color space [0, 1.0]", 0 },
+        { (char *)"cie_y", (getter)rgbpixel_get_cie_y, 0,
+                (char *)"(float property)\n\nThe y value in CIE XYZ color space [0, 1.0]", 0 },
+        { (char *)"cie_z", (getter)rgbpixel_get_cie_z, 0,
+                (char *)"(float property)\n\nThe z value in CIE XYZ color space [0, 1.0]", 0 },
+        { (char *)"cie_Lab_L", (getter)rgbpixel_get_cie_Lab_L, 0,
+                (char *)"(float property)\n\nThe L value in CIE L*a*b* color space [0, 100]", 0 },
+        { (char *)"cie_Lab_a", (getter)rgbpixel_get_cie_Lab_a, 0,
+                (char *)"(float property)\n\nThe a value in CIE L*a*b* color space [-86.2, 98.3]", 0 },
+        { (char *)"cie_Lab_b", (getter)rgbpixel_get_cie_Lab_b, 0,
+                (char *)"(float property)\n\nThe b value in CIE L*a*b* color space [-107.9, 94.5]", 0 },
+        { (char *)"cyan", (getter)rgbpixel_get_cyan, 0,
+                (char *)"(int property)\n\nThe cyan value [0, 255]", 0 },
+        { (char *)"magenta", (getter)rgbpixel_get_magenta, 0,
+                (char *)"(int property)\n\nThe magenta value [0, 255]", 0 },
+        { (char *)"yellow", (getter)rgbpixel_get_yellow, 0,
+                (char *)"(int property)\n\nThe yellow value [0, 255]", 0 },
+        { NULL }
+};
 
 void init_RGBPixelType(PyObject* module_dict) {
   Py_TYPE(&RGBPixelType) = &PyType_Type;

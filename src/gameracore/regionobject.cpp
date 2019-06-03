@@ -22,22 +22,8 @@
 
 using namespace Gamera;
 
-extern "C" {
-  static PyObject* region_new(PyTypeObject* pytype, PyObject* args,
-			     PyObject* kwds);
-  static void region_dealloc(PyObject* self);
-  static PyObject* region_get(PyObject* self, PyObject* args);
-  static PyObject* region_add(PyObject* self, PyObject* args);
-}
-
 static PyTypeObject RegionType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
-};
-
-static PyMethodDef region_methods[] = {
-  { CHAR_PTR_CAST "get", region_get, METH_VARARGS },
-  { CHAR_PTR_CAST "add", region_add, METH_VARARGS },
-  { NULL }
 };
 
 PyTypeObject* get_RegionType() {
@@ -109,6 +95,12 @@ static PyObject* region_add(PyObject* self, PyObject* args) {
   Py_INCREF(Py_None);
   return Py_None;
 }
+
+static PyMethodDef region_methods[] = {
+        { CHAR_PTR_CAST "get", region_get, METH_VARARGS },
+        { CHAR_PTR_CAST "add", region_add, METH_VARARGS },
+        { NULL }
+};
 
 void init_RegionType(PyObject* module_dict) {
   Py_TYPE(&RegionType) = &PyType_Type;

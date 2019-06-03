@@ -25,14 +25,7 @@
 
 using namespace Gamera;
 
-extern "C" {
-  // we use __new__ instead of __init__ as constructor...
-  static PyObject* image_new(PyTypeObject* pytype, PyObject* args,
-                             PyObject* kwds);
-  static PyObject* sub_image_new(PyTypeObject* pytype, PyObject* args,
-                                 PyObject* kwds);
-  static PyObject* cc_new(PyTypeObject* pytype, PyObject* args,
-                                 PyObject* kwds);
+
   // ...but we must implement dummy __init__ functions
   // to suppress deprecation warnings in python 2.6
   static int image_init(PyObject* self, PyObject* args, PyObject* kwds)
@@ -41,63 +34,8 @@ extern "C" {
   { return 0; };
   static int cc_init(PyObject* self, PyObject* args, PyObject* kwds)
   { return 0; };
-  
-  // more useful stuff...
-  static void image_dealloc(PyObject* self);
-  static int image_traverse(PyObject* self, visitproc visit, void* arg);
-  static int image_clear(PyObject* self);
-  static PyObject* image_repr(PyObject* self);
-  // methods
-  static PyObject* image_get(PyObject* self, PyObject* args);
-  static PyObject* image_set(PyObject* self, PyObject* args);
-  static PyObject* image_white(PyObject* self, PyObject* args);
-  static PyObject* image_black(PyObject* self, PyObject* args);
-  static PyObject* image_getitem(PyObject* self, PyObject* args);
-  static PyObject* image_setitem(PyObject* self, PyObject* args);
-  static PyObject* image_len(PyObject* self, PyObject* args);
-  // Removed 07/28/04 MGD.  Can't figure out why this is useful.
-  // static PyObject* image_sort(PyObject* self, PyObject* args);
-  // Get/set
-  static PyObject* image_get_data(PyObject* self);
-  static PyObject* image_get_features(PyObject* self);
-  static PyObject* image_get_id_name(PyObject* self);
-  static PyObject* image_get_confidence(PyObject* self);
-  static PyObject* image_get_children_images(PyObject* self);
-  static PyObject* image_get_classification_state(PyObject* self);
-  static PyObject* image_get_scaling(PyObject* self);
-  static PyObject* image_get_resolution(PyObject* self);
-  static int image_set_features(PyObject* self, PyObject* v);
-  static int image_set_id_name(PyObject* self, PyObject* v);
-  static int image_set_confidence(PyObject* self, PyObject* v);
-  static int image_set_children_images(PyObject* self, PyObject* v);
-  static int image_set_classification_state(PyObject* self, PyObject* v);
-  static int image_set_scaling(PyObject* self, PyObject* v);
-  static int image_set_resolution(PyObject* self, PyObject* v);
-  static PyObject* cc_get_label(PyObject* self);
-  static int cc_set_label(PyObject* self, PyObject* v);
-
-  static PyObject* mlcc_new(PyTypeObject* pytype, PyObject* args,
-                                 PyObject* kwds);
-
   static int mlcc_init(PyObject* self, PyObject* args, PyObject* kwds)
   { return 0; };
-
-  static PyObject* cc_convert_to_mlcc(PyObject* self);
-  static PyObject* mlcc_convert_to_cc(PyObject* self);
-  static PyObject* mlcc_convert_to_cc_list(PyObject* self);
-  
-  static PyObject* mlcc_has_label(PyObject* self, PyObject* v);
-  static PyObject* mlcc_relabel(PyObject* self, PyObject* args);
-  static PyObject* mlcc_get_labels(PyObject* self);
-  static PyObject* mlcc_get_neighbors(PyObject* self);
-
-  static PyObject* mlcc_add_label(PyObject* self, PyObject* args);
-  static PyObject* mlcc_remove_label(PyObject* self, PyObject* args);
-  //static PyObject* mlcc_find_bounding_box(PyObject* self, PyObject* args);
-  static PyObject* mlcc_add_neighbors(PyObject* self, PyObject* args);
-
-  static PyObject* mlcc_copy(PyObject* self, PyObject* args);
-}
 
 static PyTypeObject ImageType = {
   PyVarObject_HEAD_INIT(nullptr, 0)
@@ -123,95 +61,6 @@ PyTypeObject* get_CCType() {
   return &CCType;
 }
 
-static PyGetSetDef image_getset[] = {
-  { (char *)"data", (getter)image_get_data, 0,
-    (char *)"(read-only property)\n\n"
-    "Returns the underlying ImageData__ object.\n\n"
-    ".. __: gamera.core.ImageData.html", 0 },
-  { (char *)"features", (getter)image_get_features, (setter)image_set_features,
-    (char *)"(read/write property)\n\n"
-    "The feature vector of the image (of type array)",
-    0 },
-  { (char *)"id_name", (getter)image_get_id_name, (setter)image_set_id_name,
-    (char *)"(read/write property)\n\n"
-    "A list of strings representing the classifications of the image.",
-    0 },
-  { (char *)"confidence", (getter)image_get_confidence, (setter)image_set_confidence,
-    (char *)"(read/write property)\n\n"
-    "A mapping of confidence values for the main id (id_name[0]).",
-    0 },
-  { (char *)"children_images", (getter)image_get_children_images,
-    (setter)image_set_children_images,
-    (char *)"(read/write property)\n\n"
-    "A list of images created from classifications that produce images, such as splitting algorithms.",
-    0 },
-  { (char *)"classification_state", (getter)image_get_classification_state,
-    (setter)image_set_classification_state,
-    (char *)"(read/write property)\n\n"
-    "How (or whether) an image is classified",
-    0 },
-  { (char *)"scaling", (getter)image_get_scaling, (setter)image_set_scaling,
-    (char *)"(read/write property)\n\n"
-    "The scaling (if any) applied to the features as a floating-point value.",
-    0 },
-  { (char *)"resolution", (getter)image_get_resolution, (setter)image_set_resolution,
-    (char *)"(read/write property)\n\n"
-    "The resolution of the image",
-    0 },
-  { NULL }
-};
-
-static PyGetSetDef cc_getset[] = {
-  { (char *)"label", (getter)cc_get_label, (setter)cc_set_label, (char *)"(read/write property)\n\nThe pixel label value for the Cc", 0},
-  { NULL }
-};
-
-static PyMethodDef cc_methods[] = {
-    {"convert_to_mlcc", (PyCFunction)cc_convert_to_mlcc, METH_NOARGS,
-     (char*)"**convert_to_mlcc** ()\n\n"
-     "Converts the ConnectedComponent into a MultiLabelCC."
-    },
-    {NULL} //Sentinel//
-};
-
-static PyMethodDef image_methods[] = {
-  { (char *)"get", image_get, METH_VARARGS,
-(char *)"**get** (Point *p*)\n\n"
-"Gets a pixel value at the given (*x*, *y*) coordinate.\n\n"
-"A 2-element sequence may be used in place of the ``Point`` argument.  For "
-"instance, the following are all equivalent:\n\n"
-".. code:: Python\n\n"
-"    px = image.get(Point(5, 2))\n"
-"    px = image.get((5, 2))\n"
-"    px = image.get([5, 2])\n\n"
-"This coordinate is relative to the image view, not the absolute coordinates."
-  },
-  { (char *)"set", image_set, METH_VARARGS,
-(char *)"**set** (Point *p*, Pixel *value*)\n\n"
-"Sets a pixel value at the given (*x*, *y*) coordinate.\n\n"
-"A 2-element sequence may be used in place of the ``Point`` argument.  For "
-"instance, the following are all equivalent:\n\n"
-".. code:: Python\n\n"
-"    image.set(Point(5, 2), value)\n"
-"    image.set((5, 2), value)\n"
-"    image.set([5, 2], value)\n\n"
-"This coordinate is relative to the image view, not the absolute coordinates."
-  },
-  { (char *)"white", image_white, METH_NOARGS,
-(char *)"Pixel **white** ()\n\n"
-"Returns the pixel value representing the color white for this image."
-  },
-  { (char *)"black", image_black, METH_NOARGS,
-(char *)"Pixel **black** ()\n\n"
-"Returns the pixel value representing the color black for this image."
-  },
-  { (char *)"__getitem__", image_getitem, METH_VARARGS },
-  { (char *)"__setitem__", image_setitem, METH_VARARGS },
-  { (char *)"__len__", image_len, METH_NOARGS },
-  // Removed 07/28/04 MGD.  Can't figure out why this is useful.
-  // { "sort", image_sort, METH_NOARGS },
-  { NULL }
-};
 
 static PyObject* _image_new(PyTypeObject* pytype, const Point& offset, const Dim& dim,
                             int pixel, int format) {
@@ -692,6 +541,24 @@ PyObject* cc_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds) {
   return 0;
 }
 
+
+static int image_clear(PyObject* self) {
+    ImageObject* o = (ImageObject*)self;
+    PyObject* tmp = o->m_id_name;
+    o->m_id_name = NULL;
+    Py_XDECREF(tmp);
+    
+    tmp = o->m_confidence;
+    o->m_confidence = NULL;
+    Py_XDECREF(tmp);
+    
+    tmp = o->m_children_images;
+    o->m_children_images = NULL;
+    Py_XDECREF(tmp);
+    
+    return 0;
+}
+
 static void image_dealloc(PyObject* self) {
   ImageObject* o = (ImageObject*)self;
 
@@ -722,23 +589,6 @@ static int image_traverse(PyObject* self, visitproc visit, void *arg) {
     if (err)
       return err;
   }
-  return 0;
-}
-
-static int image_clear(PyObject* self) {
-  ImageObject* o = (ImageObject*)self;
-  PyObject* tmp = o->m_id_name;
-  o->m_id_name = NULL;
-  Py_XDECREF(tmp);
-
-  tmp = o->m_confidence;
-  o->m_confidence = NULL;
-  Py_XDECREF(tmp);
-
-  tmp = o->m_children_images;
-  o->m_children_images = NULL;
-  Py_XDECREF(tmp);
-
   return 0;
 }
 
@@ -1249,74 +1099,6 @@ PyTypeObject* get_MLCCType() {
 "A 2-element sequence may be used in place of the ``Point`` argument.  For "
 "instance, the following are all equivalent:\n\n"
 */
-
-static PyMethodDef mlcc_methods[] = {
-    {(char*)"add_label", (PyCFunction)mlcc_add_label, METH_VARARGS,
-     (char*)"**add_label** (int *label*, Rect *rect*)\n\n"
-     "Adds a label and a bounding box (for the label) to a MultiLabelCC. The bounding box of the MlCc is extended by the given *rect*."
-    },
-    {(char*)"remove_label", (PyCFunction)mlcc_remove_label, METH_O,
-     (char*)"**remove_label** (int *label*)\n\n"
-     "Removes a label from a MultiLabelCC. The bounding box of the MlCc is shrunk by the bounding box associated with the removed label as far as possible with respect to the other bounding boxes."
-    },
-//     {(char*)"find_bounding_box", (PyCFunction)mlcc_find_bounding_box, METH_NOARGS,
-//      (char*)"**find_bounding_box** ()\n\n"
-//      "Calculates the bounding box of a MultiLabelCC depending from the stored labels/rectangles."
-//     },
-    {(char*)"add_neighbors", (PyCFunction)mlcc_add_neighbors, METH_VARARGS,
-     (char*)"**add_neighbors** (int *i*, int *j*)\n\n"
-     "Adds a neighborhood relation to the MultiLabelCC.\n\n"
-     "This is entirely optional: neighborship relations are only stored, and can be returned with get_neighbors(), but are not used internally by MlCc."
-    },
-    {(char*)"copy", (PyCFunction)mlcc_copy, METH_VARARGS,
-     (char*)"**copy** ()\n\n"
-     "Makes a deep copy of a MultiLabelCC. "
-     "There are a number of ways to to call this Method:\n\n"
-     "  - **copy** (MlCc *other*, Point *upper_left*, Point *lower_right*)\n\n"
-     "  - **copy** (MlCc *other*, Point *upper_left*, Size *size*)\n\n"
-     "  - **copy** (MlCc *other*, Point *upper_left*, Dim *dim*)\n\n"
-     "  - **copy** (MlCc *other*, Rect *rectangle*)\n\n"
-    },
-    {(char*)"get_labels", (PyCFunction)mlcc_get_labels, METH_NOARGS,
-     (char*)"**get_labels** ()\n\n"
-     "Returns a list of all labels belonging to the MultiLabelCC."
-    },
-    {(char*)"has_label", (PyCFunction)mlcc_has_label, METH_O,
-     (char*)"**has_label** (int *label*)\n\n"
-     "Returns whether a label belongs to the MlCc or not."
-    },
-    {(char*)"get_neighbors", (PyCFunction)mlcc_get_neighbors, METH_NOARGS,
-     (char*)"**get_neighbors** ()\n\n"
-     "Returns all pairs of neighbors that have been previously added with add_neighbors()."
-    },
-    {(char*)"relabel", (PyCFunction)mlcc_relabel, METH_VARARGS,
-     (char *)"Returns a new MlCc containing only the given labels. For computing the new bounding boxes, the bounding box information stored for each label are utilized. The neighborship information is lost in the returned MlCc.\n\nThis function is overloaded to return either a single or several new MlCc's:\n\n"
-     "**relabel** (List<int> *l*)\n\n"
-     "Creates a single MultiLabelCC based on the current one.\n\n"
-     ".. code:: Python\n\n"
-     "    new_mlcc = mlcc.relabel([2,3,4])\n\n"
-     "This returns a single MultiLabelCC which contains the labels 2,3,4.\n\n"
-     "**relabel** (List<List<int>> *l*)\n\n"
-     "Creates a list of MultiLabelCC based on the current one.\n\n"
-     ".. code:: Python\n\n"
-     "    new_mlcc_list = mlcc.relabel([[2,3],[4]])\n\n"
-     "This returns a list of two MultiLabelCCs. The first one contains the labels 2,3; the "
-     "second one contains the label 4."
-    },
-    {(char*)"convert_to_cc", (PyCFunction)mlcc_convert_to_cc, METH_NOARGS,
-     (char*)"**convert_to_cc** ()\n\n"
-     "Converts the MultiLabelCC into a ConnectedComponent. All labels belonging to the MultiLabelCc are set to the value of the first label. After calling this method, the MultiLabelCc only has one label."
-    },
-    {(char*)"convert_to_cc_list", (PyCFunction)mlcc_convert_to_cc_list, METH_NOARGS,
-     (char*)"**convert_to_cc_list** ()\n\n"
-     "Converts the MultiLabelCC into a  list of ConnectedComponent."
-     "Each ConnectedComponent in the List represents one label of the MultiLabelCC.\n"
-     "For example: You have a MultiLabelCC with the labels 2, 3, 4. Therefore it would be "
-     "transformed into a list of 3 ConnectedComponent, one for each label."
-    },
-    {NULL} //Sentinel//
-};
-  
 static PyObject* mlcc_add_neighbors(PyObject* self, PyObject* args){
   int i, j;
   
@@ -1857,6 +1639,163 @@ static PyObject* mlcc_richcompare(PyObject* a, PyObject* b, int op) {
     return Py_False;
   }
 }
+static PyGetSetDef image_getset[] = {
+        { (char *)"data", (getter)image_get_data, 0,
+                (char *)"(read-only property)\n\n"
+                        "Returns the underlying ImageData__ object.\n\n"
+                        ".. __: gamera.core.ImageData.html", 0 },
+        { (char *)"features", (getter)image_get_features, (setter)image_set_features,
+                (char *)"(read/write property)\n\n"
+                        "The feature vector of the image (of type array)",
+                                                             0 },
+        { (char *)"id_name", (getter)image_get_id_name, (setter)image_set_id_name,
+                (char *)"(read/write property)\n\n"
+                        "A list of strings representing the classifications of the image.",
+                                                             0 },
+        { (char *)"confidence", (getter)image_get_confidence, (setter)image_set_confidence,
+                (char *)"(read/write property)\n\n"
+                        "A mapping of confidence values for the main id (id_name[0]).",
+                                                             0 },
+        { (char *)"children_images", (getter)image_get_children_images,
+                (setter)image_set_children_images,
+                (char *)"(read/write property)\n\n"
+                        "A list of images created from classifications that produce images, such as splitting algorithms.",
+                                                             0 },
+        { (char *)"classification_state", (getter)image_get_classification_state,
+                (setter)image_set_classification_state,
+                (char *)"(read/write property)\n\n"
+                        "How (or whether) an image is classified",
+                                                             0 },
+        { (char *)"scaling", (getter)image_get_scaling, (setter)image_set_scaling,
+                (char *)"(read/write property)\n\n"
+                        "The scaling (if any) applied to the features as a floating-point value.",
+                                                             0 },
+        { (char *)"resolution", (getter)image_get_resolution, (setter)image_set_resolution,
+                (char *)"(read/write property)\n\n"
+                        "The resolution of the image",
+                                                             0 },
+        { NULL }
+};
+
+static PyGetSetDef cc_getset[] = {
+        { (char *)"label", (getter)cc_get_label, (setter)cc_set_label, (char *)"(read/write property)\n\nThe pixel label value for the Cc", 0},
+        { NULL }
+};
+
+static PyMethodDef cc_methods[] = {
+        {"convert_to_mlcc", (PyCFunction)cc_convert_to_mlcc, METH_NOARGS,
+                (char*)"**convert_to_mlcc** ()\n\n"
+                       "Converts the ConnectedComponent into a MultiLabelCC."
+        },
+        {NULL} //Sentinel//
+};
+
+static PyMethodDef image_methods[] = {
+        { (char *)"get", image_get, METH_VARARGS,
+                (char *)"**get** (Point *p*)\n\n"
+                        "Gets a pixel value at the given (*x*, *y*) coordinate.\n\n"
+                        "A 2-element sequence may be used in place of the ``Point`` argument.  For "
+                        "instance, the following are all equivalent:\n\n"
+                        ".. code:: Python\n\n"
+                        "    px = image.get(Point(5, 2))\n"
+                        "    px = image.get((5, 2))\n"
+                        "    px = image.get([5, 2])\n\n"
+                        "This coordinate is relative to the image view, not the absolute coordinates."
+        },
+        { (char *)"set", image_set, METH_VARARGS,
+                (char *)"**set** (Point *p*, Pixel *value*)\n\n"
+                        "Sets a pixel value at the given (*x*, *y*) coordinate.\n\n"
+                        "A 2-element sequence may be used in place of the ``Point`` argument.  For "
+                        "instance, the following are all equivalent:\n\n"
+                        ".. code:: Python\n\n"
+                        "    image.set(Point(5, 2), value)\n"
+                        "    image.set((5, 2), value)\n"
+                        "    image.set([5, 2], value)\n\n"
+                        "This coordinate is relative to the image view, not the absolute coordinates."
+        },
+        { (char *)"white", image_white, METH_NOARGS,
+                (char *)"Pixel **white** ()\n\n"
+                        "Returns the pixel value representing the color white for this image."
+        },
+        { (char *)"black", image_black, METH_NOARGS,
+                (char *)"Pixel **black** ()\n\n"
+                        "Returns the pixel value representing the color black for this image."
+        },
+        { (char *)"__getitem__", image_getitem, METH_VARARGS },
+        { (char *)"__setitem__", image_setitem, METH_VARARGS },
+        { (char *)"__len__", image_len, METH_NOARGS },
+        // Removed 07/28/04 MGD.  Can't figure out why this is useful.
+        // { "sort", image_sort, METH_NOARGS },
+        { NULL }
+};
+
+
+static PyMethodDef mlcc_methods[] = {
+        {(char*)"add_label", (PyCFunction)mlcc_add_label, METH_VARARGS,
+                (char*)"**add_label** (int *label*, Rect *rect*)\n\n"
+                       "Adds a label and a bounding box (for the label) to a MultiLabelCC. The bounding box of the MlCc is extended by the given *rect*."
+        },
+        {(char*)"remove_label", (PyCFunction)mlcc_remove_label, METH_O,
+                (char*)"**remove_label** (int *label*)\n\n"
+                       "Removes a label from a MultiLabelCC. The bounding box of the MlCc is shrunk by the bounding box associated with the removed label as far as possible with respect to the other bounding boxes."
+        },
+//     {(char*)"find_bounding_box", (PyCFunction)mlcc_find_bounding_box, METH_NOARGS,
+//      (char*)"**find_bounding_box** ()\n\n"
+//      "Calculates the bounding box of a MultiLabelCC depending from the stored labels/rectangles."
+//     },
+        {(char*)"add_neighbors", (PyCFunction)mlcc_add_neighbors, METH_VARARGS,
+                (char*)"**add_neighbors** (int *i*, int *j*)\n\n"
+                       "Adds a neighborhood relation to the MultiLabelCC.\n\n"
+                       "This is entirely optional: neighborship relations are only stored, and can be returned with get_neighbors(), but are not used internally by MlCc."
+        },
+        {(char*)"copy", (PyCFunction)mlcc_copy, METH_VARARGS,
+                (char*)"**copy** ()\n\n"
+                       "Makes a deep copy of a MultiLabelCC. "
+                       "There are a number of ways to to call this Method:\n\n"
+                       "  - **copy** (MlCc *other*, Point *upper_left*, Point *lower_right*)\n\n"
+                       "  - **copy** (MlCc *other*, Point *upper_left*, Size *size*)\n\n"
+                       "  - **copy** (MlCc *other*, Point *upper_left*, Dim *dim*)\n\n"
+                       "  - **copy** (MlCc *other*, Rect *rectangle*)\n\n"
+        },
+        {(char*)"get_labels", (PyCFunction)mlcc_get_labels, METH_NOARGS,
+                (char*)"**get_labels** ()\n\n"
+                       "Returns a list of all labels belonging to the MultiLabelCC."
+        },
+        {(char*)"has_label", (PyCFunction)mlcc_has_label, METH_O,
+                (char*)"**has_label** (int *label*)\n\n"
+                       "Returns whether a label belongs to the MlCc or not."
+        },
+        {(char*)"get_neighbors", (PyCFunction)mlcc_get_neighbors, METH_NOARGS,
+                (char*)"**get_neighbors** ()\n\n"
+                       "Returns all pairs of neighbors that have been previously added with add_neighbors()."
+        },
+        {(char*)"relabel", (PyCFunction)mlcc_relabel, METH_VARARGS,
+                (char *)"Returns a new MlCc containing only the given labels. For computing the new bounding boxes, the bounding box information stored for each label are utilized. The neighborship information is lost in the returned MlCc.\n\nThis function is overloaded to return either a single or several new MlCc's:\n\n"
+                        "**relabel** (List<int> *l*)\n\n"
+                        "Creates a single MultiLabelCC based on the current one.\n\n"
+                        ".. code:: Python\n\n"
+                        "    new_mlcc = mlcc.relabel([2,3,4])\n\n"
+                        "This returns a single MultiLabelCC which contains the labels 2,3,4.\n\n"
+                        "**relabel** (List<List<int>> *l*)\n\n"
+                        "Creates a list of MultiLabelCC based on the current one.\n\n"
+                        ".. code:: Python\n\n"
+                        "    new_mlcc_list = mlcc.relabel([[2,3],[4]])\n\n"
+                        "This returns a list of two MultiLabelCCs. The first one contains the labels 2,3; the "
+                        "second one contains the label 4."
+        },
+        {(char*)"convert_to_cc", (PyCFunction)mlcc_convert_to_cc, METH_NOARGS,
+                (char*)"**convert_to_cc** ()\n\n"
+                       "Converts the MultiLabelCC into a ConnectedComponent. All labels belonging to the MultiLabelCc are set to the value of the first label. After calling this method, the MultiLabelCc only has one label."
+        },
+        {(char*)"convert_to_cc_list", (PyCFunction)mlcc_convert_to_cc_list, METH_NOARGS,
+                (char*)"**convert_to_cc_list** ()\n\n"
+                       "Converts the MultiLabelCC into a  list of ConnectedComponent."
+                       "Each ConnectedComponent in the List represents one label of the MultiLabelCC.\n"
+                       "For example: You have a MultiLabelCC with the labels 2, 3, 4. Therefore it would be "
+                       "transformed into a list of 3 ConnectedComponent, one for each label."
+        },
+        {NULL} //Sentinel//
+};
 
 void init_ImageType(PyObject* module_dict) {
   Py_TYPE(&ImageType) = &PyType_Type;
