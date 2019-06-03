@@ -32,8 +32,8 @@ import sys
 
 # sys.exit(0)
 
-if sys.hexversion < 0x02030000:
-    print("At least Python 2.3 is required to build Gamera.  You have")
+if sys.hexversion < 0x03050000:
+    print("At least Python 3.5 is required to build Gamera.  You have")
     print(sys.version)
     sys.exit(1)
 
