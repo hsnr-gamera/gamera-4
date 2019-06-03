@@ -100,33 +100,27 @@ from gamera import gamera_setup
 command_line_utils = (
     ('gamera_gui', 'gamera_gui.py',
      """#!%(executable)s
- %(header)s
- print "Loading GAMERA..."
- print "Use 'gamera_gui --help' to display command line options"
- import sys
- try:
+%(header)s
+print("Loading GAMERA...")
+print("Use 'gamera_gui --help' to display command line options") 
+import sys
+try:
     from gamera.config import config
     from gamera.gui import gui
     config.parse_args(sys.argv[1:])
     gui.run()
- except Exception, e:
+except Exception as e:
     if not isinstance(e, (SystemExit, KeyboardInterrupt)):
       import traceback
       import textwrap
-      print "Gamera made the following fatal error:"
-      print
-      print textwrap.fill(str(e))
-      print
-      print "=" * 75
-      print "The traceback is below.  Please send this to the Gamera developers"
-      print "if you feel you got here in error."
-      print "-" * 75
-      traceback.print_exc()
-      print "=" * 75
-    if sys.platform == "win32":
-      print
-      print "Press <ENTER> to exit."
-      x = raw_input()
+      print("Gamera made the following fatal error:")
+      print()
+      print(textwrap.fill(str(e)))
+      print()
+      print("=" * 75)
+      print("The traceback is below.  Please send this to the Gamera developers")
+      print("if you feel you got here in error.")
+      print("-" * 75)
     """),)
 
 if sys.platform == 'win32':

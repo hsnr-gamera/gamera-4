@@ -94,7 +94,8 @@ supported.
 
    try:
       filename = str(filename)
-   except Exception:
+   except Exception as ex:
+      print(ex)
       pass
    # First, try being smart by loading by extension
    for method in methods:
@@ -102,7 +103,8 @@ supported.
          if os.path.splitext(filename)[1].lower() == ext.lower():
             try:
                image = method.__call__(filename, compression)
-            except Exception:
+            except Exception as ex:
+               print(ex)
                pass
             else:
                return image
@@ -111,7 +113,8 @@ supported.
    for method in methods:
       try:
          image = method.__call__(filename, compression)
-      except Exception:
+      except Exception as ex:
+         print(ex)
          pass
       else:
          return image
