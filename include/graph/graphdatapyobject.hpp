@@ -45,8 +45,8 @@ struct GraphDataPyObject: public GraphData {
       decref();
    }
 
-
    GraphDataPyObject& operator=(const GraphDataPyObject& other) {
+    	decref();
       data = other.data;
       _node = other._node;
       incref();
@@ -54,17 +54,13 @@ struct GraphDataPyObject: public GraphData {
    }
 
    void incref() override{
-      if(data != NULL)
-         Py_INCREF(data);
-      if(_node != NULL)
-         Py_INCREF(_node);
+     Py_XINCREF(data);
+     Py_XINCREF(_node);
    }
 
    void decref() override{
-      if(data != NULL)
-         Py_DECREF(data);
-      if(_node != NULL)
-         Py_DECREF(_node);
+     Py_XDECREF(data);
+     Py_XDECREF(_node);
    }
 
    int compare(const GraphData& b) const override {

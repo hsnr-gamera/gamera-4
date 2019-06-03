@@ -262,16 +262,18 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
       if(!so->_graph->has_node(from)) {
          del_from = false;
          so->_graph->add_node(from);
+	      Py_XINCREF(so);
       }
       if(!so->_graph->has_node(to)) {
          so->_graph->add_node(to);
          del_to = false;
+	      Py_XINCREF(so);
       }
 #ifdef __DEBUG_GAPI__ 
       std::cerr << from << to << std::endl;
 #endif
-      if(label != NULL)
-         Py_INCREF(label);
+
+      Py_XINCREF(label);
 
       res = so->_graph->add_edge(from, to, cost, so->_graph->is_directed(), label);
       if(del_from) {
@@ -296,7 +298,7 @@ PyObject* graph_add_edges(PyObject* self, PyObject* args) {
    for (size_t i = 0; i < list_size; ++i)
       result += PyLong_AsUnsignedLongMask(graph_add_edge(self, PySequence_Fast_GET_ITEM(seq, i)));
    
-   Py_DECREF(seq);
+   Py_XDECREF(seq);
 
    RETURN_INT(result)
 
