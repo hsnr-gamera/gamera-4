@@ -200,8 +200,8 @@ void floatFourierDescriptorBrokenA(FloatPointVector* interpolatedHullPoints,
     meanY /= interpolatedHullPoints->size();
 
     for(size_t i = 0; i < interpolatedHullSize; i++) {
-        register double x_r = (*interpolatedHullPoints)[i].x() - meanX;
-        register double y_r = (*interpolatedHullPoints)[i].y() - meanY;
+        double x_r = (*interpolatedHullPoints)[i].x() - meanX;
+        double y_r = (*interpolatedHullPoints)[i].y() - meanY;
         double r = sqrt(x_r*x_r + y_r*y_r);
         (*cplx_dat)[i] = Complex(r, (*distances)[i]);
     }

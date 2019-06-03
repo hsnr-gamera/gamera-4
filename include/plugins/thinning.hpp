@@ -75,7 +75,7 @@ namespace Gamera {
 
   template<class T>
   inline void thin_zs_flag(const T& thin, T& flag, const unsigned char a, const unsigned char b) {
-    register unsigned char p;
+    unsigned char p;
     size_t N, S; 
     for (size_t y = 0; y < thin.nrows(); ++y) {
       size_t y_before = (y == 0) ? 1 : y - 1;

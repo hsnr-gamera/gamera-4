@@ -285,5 +285,5 @@ setup(cmdclass=gamera_setup.cmdclass,
       packages=packages,
       scripts=scripts,
       package_data=package_data,
-      data_files=data_files
+      data_files=data_files,
       )

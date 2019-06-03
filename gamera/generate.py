@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+import platform
 
 from .pyplate import *
 from os import path
@@ -104,32 +105,11 @@ template = Template("""
 
   [[# Declare all of the functions - because this is a C++ file we have to #]]
   [[# declare the functions as C functions so that Python can access them #]]
-  extern \"C\" {
 #ifndef _MSC_VER
+  extern \"C\" {
     void init[[module_name]](void);
-#endif
-    [[for function in module.functions]]
-      [[if not function.pure_python]]
-        static PyObject* call_[[function.__name__]](PyObject* self, PyObject* args);
-      [[end]]
-    [[end]]
   }
-
-  [[# Create the list of methods for the module - the name of the function #]]
-  [[# is derived from the name of the class implementing the function - #]]
-  [[# also, the function name is prepended with call_ so that there are no clashes #]]
-  [[# with the real plugin functions #]]
-  static PyMethodDef [[module_name]]_methods[] = {
-    [[for function in module.functions]]
-      [[if not function.pure_python]]
-        { CHAR_PTR_CAST \"[[function.__name__]]\",
-          call_[[function.__name__]], METH_VARARGS,
-          CHAR_PTR_CAST [[function.escape_docstring()]]
-        },
-      [[end]]
-    [[end]]
-    { NULL }
-  };
+#endif
 
   [[# Each module can declare several functions so we loop through and generate wrapping #]]
   [[# code for each function #]]
@@ -260,6 +240,22 @@ template = Template("""
       }
     [[end]]
   [[end]]
+
+  [[# Create the list of methods for the module - the name of the function #]]
+  [[# is derived from the name of the class implementing the function - #]]
+  [[# also, the function name is prepended with call_ so that there are no clashes #]]
+  [[# with the real plugin functions #]]
+  static PyMethodDef [[module_name]]_methods[] = {
+    [[for function in module.functions]]
+      [[if not function.pure_python]]
+        { CHAR_PTR_CAST \"[[function.__name__]]\",
+          call_[[function.__name__]], METH_VARARGS,
+          CHAR_PTR_CAST [[function.escape_docstring()]]
+        },
+      [[end]]
+    [[end]]
+    { NULL }
+  };
   
   static struct PyModuleDef module[[module_name]]Def = {
         PyModuleDef_HEAD_INIT,
@@ -337,6 +333,7 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
   if '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
      if "stdc++" not in extra_libraries:
         extra_libraries.append("stdc++")
+
   return Extension(location + "._" + module_name, cpp_files,
                    include_dirs=include_dirs,
                    library_dirs=plugin_module.module.library_dirs,

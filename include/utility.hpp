@@ -37,7 +37,7 @@ namespace Gamera {
   }
 
   inline void byte_swap32(unsigned char *ptr) {
-    register unsigned char val;
+    unsigned char val;
     
     val = *(ptr);
     *(ptr) = *(ptr+3);
