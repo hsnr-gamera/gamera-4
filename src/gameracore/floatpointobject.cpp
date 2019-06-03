@@ -42,8 +42,7 @@ extern "C" {
 }
 
 static PyTypeObject FloatPointType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyNumberMethods floatpoint_number_methods;

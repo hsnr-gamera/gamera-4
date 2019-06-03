@@ -23,9 +23,7 @@ any other category, like image copying or computing histograms."""
 
 from gamera.plugin import *
 from gamera.gui import has_gui
-from gamera.util import warn_deprecated
 from gamera.args import NoneDefault
-import sys
 import _image_utilities
 
 class image_copy(PluginFunction):

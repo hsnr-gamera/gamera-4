@@ -31,8 +31,7 @@ extern "C" {
 }
 
 static PyTypeObject RegionType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyMethodDef region_methods[] = {

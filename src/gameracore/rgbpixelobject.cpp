@@ -49,8 +49,7 @@ extern "C" {
 }
 
 static PyTypeObject RGBPixelType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 PyTypeObject* get_RGBPixelType() {

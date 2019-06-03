@@ -152,7 +152,7 @@ class WriteXML:
       indent += 1
       for confidence, id in glyph.id_name:
          word_wrap(stream, '<id name="%s" confidence="%f"/>' %
-                   (id, confidence), indent)
+                   (str(id.decode("utf-8") ), confidence), indent)
       indent -= 1
       word_wrap(stream, '</ids>', indent)
       word_wrap(stream, '<data>', indent)
@@ -243,7 +243,7 @@ class LoadXML:
    def parse_string(self, s):
       self._stream_length = len(s)
       stream = io.StringIO(s)
-      return self.parse_stream(stream)
+      return str(self.parse_stream(stream))
 
    def parse_stream(self, stream):
       self._setup_handlers()
@@ -255,8 +255,7 @@ class LoadXML:
       try:
          try:
             self._parser.ParseFile(stream)
-         except Exception as e:
-            print(e)
+         except Exception:
             raise
       finally:
          self._progress.kill()

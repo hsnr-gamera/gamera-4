@@ -29,10 +29,10 @@ def equal_files(filea, fileb, gz=False):
          return False
       if linea != lineb:
          return False
-      if "<feature name=" in linea:
-         while linea and "</feature>" not in linea:
+      if "<feature name=" in str(linea):
+         while linea and "</feature>" not in str(linea):
             linea = a.readline()
-         while lineb and "</feature>" not in lineb:
+         while lineb and "</feature>" not in str(lineb):
             lineb = b.readline()
       linea = a.readline()
       lineb = b.readline()

@@ -100,8 +100,7 @@ extern "C" {
 }
 
 static PyTypeObject ImageType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 PyTypeObject* get_ImageType() {
@@ -109,8 +108,7 @@ PyTypeObject* get_ImageType() {
 }
 
 static PyTypeObject SubImageType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 PyTypeObject* get_SubImageType() {
@@ -118,8 +116,7 @@ PyTypeObject* get_SubImageType() {
 }
 
 static PyTypeObject CCType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 PyTypeObject* get_CCType() {
@@ -1240,8 +1237,7 @@ static PyObject* cc_richcompare(PyObject* a, PyObject* b, int op) {
 }
 
 static PyTypeObject MLCCType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 PyTypeObject* get_MLCCType() {

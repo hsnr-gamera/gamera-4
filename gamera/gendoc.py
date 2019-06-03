@@ -217,7 +217,7 @@ class DocumentationGenerator:
          path, filename = os.path.split(file)
          root, ext = os.path.splitext(filename)
          yield (file, root,
-                codecs.open(file, 'r', 'utf-8'),
+                codecs.open(file, 'rb', 'utf-8'),
                 strftime("%B %d, %Y", localtime(os.stat(file)[ST_MTIME])))
 
    def convert_to_html(self):
@@ -239,7 +239,7 @@ class DocumentationGenerator:
                       footer
                       ] + 
                      lines[3:])
-            fd = io.StringIO((''.join(lines)).encode("utf-8"))
+            fd = io.StringIO(str((''.join(lines)).encode("utf-8")))
             try:
                overrides = {'embed_stylesheet': False,
                             'stylesheet_path': None,

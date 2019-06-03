@@ -48,8 +48,7 @@ using namespace Gamera::kNN;
 namespace Gamera {
 	namespace kNN {
 		static PyTypeObject KnnType = {
-		PyObject_HEAD_INIT(NULL)
-		0,
+		PyVarObject_HEAD_INIT(nullptr, 0)
 		};
 	}
 }

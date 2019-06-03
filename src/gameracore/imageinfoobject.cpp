@@ -41,8 +41,7 @@ extern "C" {
 }
 
 static PyTypeObject ImageInfoType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyGetSetDef imageinfo_getset[] = {

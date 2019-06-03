@@ -24,8 +24,7 @@ extern "C" {
 }
 
 static PyTypeObject IteratorType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 void iterator_dealloc(PyObject* self) {

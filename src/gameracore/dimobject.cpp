@@ -35,8 +35,7 @@ extern "C" {
 }
 
 static PyTypeObject DimType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PyGetSetDef dim_getset[] = {

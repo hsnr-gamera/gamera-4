@@ -33,8 +33,7 @@ extern "C" {
 }
 
 static PyTypeObject RegionMapType = {
-  PyObject_HEAD_INIT(NULL)
-  0,
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 static PySequenceMethods RegionMapSequenceMethods = {

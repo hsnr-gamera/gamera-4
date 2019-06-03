@@ -265,7 +265,7 @@ template = Template("""
         PyModuleDef_HEAD_INIT,
         \"[[module_name]]\",
         nullptr,
-        0,
+        -1,
         [[module_name]]_methods,
         nullptr,
         nullptr,
