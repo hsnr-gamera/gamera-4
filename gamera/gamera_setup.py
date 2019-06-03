@@ -77,7 +77,7 @@ elif sys.platform == "win32":
 # added to the path and generate is imported directly
 sys.path.append("gamera")
 from . import generate
-extras = {'extra_compile_args': ['-Wall']}
+extras = {'extra_compile_args': ['-Wall', '-std=c++11']}
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
    extras['extra_compile_args'] = ['/GR','/EHsc']#, "/Zi"]
 elif sys.platform == 'darwin':
