@@ -108,42 +108,39 @@ bool Graph::is_cyclic() {
 
    bool cyclic = false;
    if(is_directed()) { //similar algorithm to make_acyclic
-      NodeStack node_stack;
-      std::set<Node*> visited;
-      if (get_nedges() != 0) {
-         NodePtrIterator *i = get_nodes();
-         Node* n;
-         while((n = i->next()) != NULL && !cyclic) {
-            if (visited.count(n) == 0) {
-               node_stack.push(n);
-               while (!node_stack.empty() && !cyclic) {
-                  Node* node = node_stack.top();
-                  node_stack.pop();
-                  visited.insert(node);
+	   NodeStack node_stack;
+	   std::set<Node *> visited;
+	   NodePtrIterator *i = get_nodes();
+	   Node *n;
+	   while ((n = i->next()) != NULL && !cyclic) {
+		   if (visited.count(n) == 0) {
+			   node_stack.push(n);
+			   while (!node_stack.empty() && !cyclic) {
+				   Node *node = node_stack.top();
+				   node_stack.pop();
+				   visited.insert(node);
 
-                  EdgePtrIterator *it = node->get_edges();
-                  Edge* e;
-                  while ((e = it->next()) != NULL && !cyclic) {
-                     Node* inner_node = e->traverse(node);
-                     if(inner_node) {
-                        if(visited.count(inner_node) != 0) {
-                           cyclic = true;
-                        }
-                        else  {
-                           node_stack.push(inner_node);
-                           visited.insert(inner_node);
-                        }
-                     }
-                  }
+				   EdgePtrIterator *it = node->get_edges();
+				   Edge *e;
+				   while ((e = it->next()) != NULL && !cyclic) {
+					   Node *inner_node = e->traverse(node);
+					   if (inner_node) {
+						   if (visited.count(inner_node) != 0) {
+							   cyclic = true;
+						   } else {
+							   node_stack.push(inner_node);
+							   visited.insert(inner_node);
+						   }
+					   }
+				   }
 
-                  delete it;
-               }
-            }
-         }
+				   delete it;
+			   }
+		   }
+	   }
 
-         delete i;
-      }
-   }  
+	   delete i;
+   }
    else {
       NodeVector* roots = NULL;
       roots = get_subgraph_roots();

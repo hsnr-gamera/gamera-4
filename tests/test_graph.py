@@ -624,6 +624,7 @@ def _test_graph_copy(flag = gamera.graph.FREE, count = 1000):
          g.add_edge(i, i+1)
 
       g.add_edge(count / 2, count / 2 + 20)
+
       assert g.nedges == count+1
       assert g.is_cyclic()
       h = g.copy(gamera.graph.CHECK_ON_INSERT)
@@ -1121,6 +1122,9 @@ if __name__ == "__main__":
 
 # ------------------------------------------------------------------------------
 def test_textline_reading_order():
+   from gamera.core import load_image, init_gamera
+   init_gamera()
+
    from gamera.plugins.pagesegmentation import textline_reading_order
    correct_orders = {"data/reading_order_2.png": [(42, 40, 1462, 114), (42, 158, 683, 232), (42, 276, 683, 350), (42, 418, 683, 492), (42, 560, 683, 633), (822, 158, 1462, 633), (42, 701, 1462, 775), (42, 843, 494, 917), (562, 843, 1132, 917), (42, 985, 683, 1059), (822, 985, 1132, 1059), (1200, 843, 1462, 1059)],
                      "data/reading_order.png": [(51, 56, 1471, 130), (51, 174, 691, 248), (51, 292, 691, 366), (51, 434, 691, 508), (51, 576, 691, 649), (830, 174, 1471, 508), (830, 576, 1471, 649), (51, 717, 1471, 791), (51, 859, 691, 933), (51, 1001, 691, 1075), (830, 859, 1471, 933), (830, 1001, 1471, 1075)]

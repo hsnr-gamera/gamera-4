@@ -484,13 +484,16 @@ class textline_reading_order(PluginFunction):
                 self.segment = seg
                 self.label = 0
 
+            def __lt__(self, other):
+                return self.segment.offset_y - other.segment.offset_y
+
         #
         # build directed graph of all lines
         #
         G = graph.Graph(graph.FLAG_DAG)
         seg_data = [SegForGraph(s) for s in lineccs]
         # sort by y-position for row over column preference in ambiguities
-        seg_data.sort(lambda s, t: s.segment.offset_y - t.segment.offset_y)
+        seg_data.sort(key=lambda s: s.segment.offset_y)
         G.add_nodes(seg_data)
         for s in seg_data:
             for t in seg_data:

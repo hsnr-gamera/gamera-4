@@ -136,7 +136,7 @@ PyObject* graph_copy(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
-   auto data = new GraphDataPyObject(pyobject);
+	GraphDataPyObject* data = new GraphDataPyObject(pyobject);
    if(so->_graph->add_node(data)) {
 #ifdef __DEBUG_GAPI__
       std::cerr << "Node added" << std::endl;
@@ -157,14 +157,15 @@ PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_add_nodes(PyObject* self, PyObject* pyobject) {
    PyObject* seq = PySequence_Fast(pyobject, "Argument must be an iterable of nodes");
-   if (seq == NULL)
-      return 0;
-   size_t list_size = PySequence_Fast_GET_SIZE(seq);
-   size_t result = 0;
-   for (size_t i = 0; i < list_size; ++i)
+   if (seq == NULL) {
+	   return 0;
+   }
+	Py_ssize_t list_size = PySequence_Fast_GET_SIZE(seq);
+   long result = 0;
+   for (Py_ssize_t i = 0; i < list_size; ++i)
       if (graph_add_node(self, PySequence_Fast_GET_ITEM(seq, i)))
          result++;
-   Py_DECREF(seq);
+   Py_XDECREF(seq);
 
    RETURN_INT(result)
 }
@@ -383,7 +384,7 @@ PyObject* graph_make_undirected(PyObject* self, PyObject* _) {
 // -----------------------------------------------------------------------------  
 PyObject* graph_is_cyclic(PyObject* self, PyObject* _) {
    INIT_SELF_GRAPH();
-   RETURN_BOOL(so->_graph->is_cyclic());
+   RETURN_BOOL(so->_graph->is_cyclic())
 }
 
 
