@@ -598,8 +598,8 @@ def _test_add_nodes(flag = gamera.graph.FREE, count = 2000):
       assert g.has_node(i) == True
       assert g.get_node(i)() == i
 
-   assert g.has_node(1000+count/2) == True
-   assert g.get_node(1000+count/2)() == 1000+count/2
+   assert g.has_node(int(1000+count/2)) == True
+   assert g.get_node(int(1000+count/2))() == int(1000+count/2)
 
    for i in range(1000,1000+count):
       print(i)
