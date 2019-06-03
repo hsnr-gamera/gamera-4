@@ -485,7 +485,22 @@ class textline_reading_order(PluginFunction):
                 self.label = 0
 
             def __lt__(self, other):
-                return self.segment.offset_y - other.segment.offset_y
+                return self.segment.offset_y < other.segment.offset_y
+
+            def __le__(self, other):
+                return self.segment.offset_y <= other.segment.offset_y
+
+            def __ne__(self, other):
+                return self.segment != other.segment
+
+            def __gt__(self, other):
+                return self.segment.offset_y > other.segment.offset_y
+
+            def __ge__(self, other):
+                return self.segment.offset_y >= other.segment.offset_y
+
+            def __eq__(self, other):
+                return self.segment == other.segment
 
         #
         # build directed graph of all lines

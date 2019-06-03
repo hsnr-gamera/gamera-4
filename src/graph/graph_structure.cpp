@@ -172,7 +172,6 @@ bool Graph::has_node(GraphData * value) {
 }
 
 
-
 // -----------------------------------------------------------------------------
 /**
   * a new node is created and added using add_node
