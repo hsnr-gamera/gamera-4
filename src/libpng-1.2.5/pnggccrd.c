@@ -694,16 +694,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
             else /* mmx _not supported - Use modified C routine */
 #endif /* PNG_ASSEMBLER_CODE_SUPPORTED */
             {
-               register png_uint_32 i;
+               png_uint_32 i;
                png_uint_32 initial_val = png_pass_start[png_ptr->pass];
                  /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-               register int stride = png_pass_inc[png_ptr->pass];
+               int stride = png_pass_inc[png_ptr->pass];
                  /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-               register int rep_bytes = png_pass_width[png_ptr->pass];
+               int rep_bytes = png_pass_width[png_ptr->pass];
                  /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
                png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
                int diff = (int) (png_ptr->width & 7); /* amount lost */
-               register png_uint_32 final_val = len;  /* GRR bugfix */
+               png_uint_32 final_val = len;  /* GRR bugfix */
 
                srcptr = png_ptr->row_buf + 1 + initial_val;
                dstptr = row + initial_val;
@@ -848,16 +848,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
             else /* mmx _not supported - Use modified C routine */
 #endif /* PNG_ASSEMBLER_CODE_SUPPORTED */
             {
-               register png_uint_32 i;
+               png_uint_32 i;
                png_uint_32 initial_val = BPP2 * png_pass_start[png_ptr->pass];
                  /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-               register int stride = BPP2 * png_pass_inc[png_ptr->pass];
+               int stride = BPP2 * png_pass_inc[png_ptr->pass];
                  /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-               register int rep_bytes = BPP2 * png_pass_width[png_ptr->pass];
+               int rep_bytes = BPP2 * png_pass_width[png_ptr->pass];
                  /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
                png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
                int diff = (int) (png_ptr->width & 7); /* amount lost */
-               register png_uint_32 final_val = BPP2 * len;   /* GRR bugfix */
+               png_uint_32 final_val = BPP2 * len;   /* GRR bugfix */
 
                srcptr = png_ptr->row_buf + 1 + initial_val;
                dstptr = row + initial_val;
@@ -1016,16 +1016,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
             else /* mmx _not supported - Use modified C routine */
 #endif /* PNG_ASSEMBLER_CODE_SUPPORTED */
             {
-               register png_uint_32 i;
+               png_uint_32 i;
                png_uint_32 initial_val = BPP3 * png_pass_start[png_ptr->pass];
                  /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-               register int stride = BPP3 * png_pass_inc[png_ptr->pass];
+               int stride = BPP3 * png_pass_inc[png_ptr->pass];
                  /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-               register int rep_bytes = BPP3 * png_pass_width[png_ptr->pass];
+               int rep_bytes = BPP3 * png_pass_width[png_ptr->pass];
                  /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
                png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
                int diff = (int) (png_ptr->width & 7); /* amount lost */
-               register png_uint_32 final_val = BPP3 * len;   /* GRR bugfix */
+               png_uint_32 final_val = BPP3 * len;   /* GRR bugfix */
 
                srcptr = png_ptr->row_buf + 1 + initial_val;
                dstptr = row + initial_val;
@@ -1191,16 +1191,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
             else /* mmx _not supported - Use modified C routine */
 #endif /* PNG_ASSEMBLER_CODE_SUPPORTED */
             {
-               register png_uint_32 i;
+               png_uint_32 i;
                png_uint_32 initial_val = BPP4 * png_pass_start[png_ptr->pass];
                  /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-               register int stride = BPP4 * png_pass_inc[png_ptr->pass];
+               int stride = BPP4 * png_pass_inc[png_ptr->pass];
                  /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-               register int rep_bytes = BPP4 * png_pass_width[png_ptr->pass];
+               int rep_bytes = BPP4 * png_pass_width[png_ptr->pass];
                  /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
                png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
                int diff = (int) (png_ptr->width & 7); /* amount lost */
-               register png_uint_32 final_val = BPP4 * len;   /* GRR bugfix */
+               png_uint_32 final_val = BPP4 * len;   /* GRR bugfix */
 
                srcptr = png_ptr->row_buf + 1 + initial_val;
                dstptr = row + initial_val;
@@ -1383,16 +1383,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
             else /* mmx _not supported - Use modified C routine */
 #endif /* PNG_ASSEMBLER_CODE_SUPPORTED */
             {
-               register png_uint_32 i;
+               png_uint_32 i;
                png_uint_32 initial_val = BPP6 * png_pass_start[png_ptr->pass];
                  /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-               register int stride = BPP6 * png_pass_inc[png_ptr->pass];
+               int stride = BPP6 * png_pass_inc[png_ptr->pass];
                  /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-               register int rep_bytes = BPP6 * png_pass_width[png_ptr->pass];
+               int rep_bytes = BPP6 * png_pass_width[png_ptr->pass];
                  /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
                png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
                int diff = (int) (png_ptr->width & 7); /* amount lost */
-               register png_uint_32 final_val = BPP6 * len;   /* GRR bugfix */
+               png_uint_32 final_val = BPP6 * len;   /* GRR bugfix */
 
                srcptr = png_ptr->row_buf + 1 + initial_val;
                dstptr = row + initial_val;
@@ -1424,16 +1424,16 @@ png_combine_row(png_structp png_ptr, png_bytep row, int mask)
          {
             png_bytep srcptr;
             png_bytep dstptr;
-            register png_uint_32 i;
+            png_uint_32 i;
             png_uint_32 initial_val = BPP8 * png_pass_start[png_ptr->pass];
               /* png.c:  png_pass_start[] = {0, 4, 0, 2, 0, 1, 0}; */
-            register int stride = BPP8 * png_pass_inc[png_ptr->pass];
+            int stride = BPP8 * png_pass_inc[png_ptr->pass];
               /* png.c:  png_pass_inc[] = {8, 8, 4, 4, 2, 2, 1}; */
-            register int rep_bytes = BPP8 * png_pass_width[png_ptr->pass];
+            int rep_bytes = BPP8 * png_pass_width[png_ptr->pass];
               /* png.c:  png_pass_width[] = {8, 4, 4, 2, 2, 1, 1}; */
             png_uint_32 len = png_ptr->width &~7;  /* reduce to mult. of 8 */
             int diff = (int) (png_ptr->width & 7); /* amount lost */
-            register png_uint_32 final_val = BPP8 * len;   /* GRR bugfix */
+            png_uint_32 final_val = BPP8 * len;   /* GRR bugfix */
 
             srcptr = png_ptr->row_buf + 1 + initial_val;
             dstptr = row + initial_val;

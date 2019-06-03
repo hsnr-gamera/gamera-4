@@ -375,10 +375,10 @@ end8:
             }
             else /* mmx not supported - use modified C routine */
             {
-               register unsigned int incr1, initial_val, final_val;
+               unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
