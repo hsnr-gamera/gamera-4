@@ -77,7 +77,7 @@ static PyObject* regionmap_add_region(PyObject* self, PyObject* args) {
   RegionMapObject* r = (RegionMapObject*)self;
   Region* region = (Region*)((RectObject*)key)->m_x;
   r->m_x->add_region(*region);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 

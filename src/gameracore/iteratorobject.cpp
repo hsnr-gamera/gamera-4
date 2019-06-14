@@ -32,7 +32,7 @@ void iterator_dealloc(PyObject* self) {
 }
 
 PyObject* iterator_get_iter(PyObject* self) {
-  Py_INCREF(self);
+  Py_XINCREF(self);
   return self;
 }
 

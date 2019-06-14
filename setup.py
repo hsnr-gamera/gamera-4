@@ -229,13 +229,13 @@ if not no_wx:
 
     wx_version_info = wx.__version__.split(".")
     wxversion = "%s.%s" % (wx_version_info[0], wx_version_info[1])
-    description = ("This is the Gamera installer.\n" + \
-                   "\tPlease ensure that Python " + pythonversion + \
-                   " and wxPython " + wxversion + "\n" + \
+    description = ("This is the Gamera installer.\n" +
+                   "\tPlease ensure that Python " + pythonversion +
+                   " and wxPython " + wxversion + "\n" +
                    "\tare installed before proceeding.")
 else:
-    description = ("This is the Gamera installer.\n" + \
-                   "\tPlease ensure that Python " + pythonversion + \
+    description = ("This is the Gamera installer.\n" +
+                   "\tPlease ensure that Python " + pythonversion +
                    "\tare installed before proceeding.")
 
 includes = [(os.path.join(gamera_setup.include_path, path),

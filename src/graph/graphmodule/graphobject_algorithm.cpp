@@ -51,7 +51,7 @@ inline PyObject* pathmap_to_dict(ShortestPathMap *pathmap) {
       }
 
       PyDict_SetItem(pathdict, dynamic_cast<GraphDataPyObject*>(dest_node->_value)->data, pathtuple);
-      Py_DECREF(pathtuple);
+      Py_XDECREF(pathtuple);
 
    }
    return pathdict;
@@ -91,7 +91,7 @@ PyObject* graph_dijkstra_all_pairs_shortest_path(PyObject* self, PyObject* _) {
       PyObject* pypath = pathmap_to_dict(path);
       PyObject* pysource = dynamic_cast<GraphDataPyObject*>(source_node->_value)->data;
       PyDict_SetItem(res, pysource, pypath);
-      Py_DECREF(pypath);
+      Py_XDECREF(pypath);
 
       delete path;
    }
@@ -116,7 +116,7 @@ PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _) {
       PyObject* pypath = pathmap_to_dict(path);
       PyObject* pysource = dynamic_cast<GraphDataPyObject*>(source_node->_value)->data;
       PyDict_SetItem(res, pysource, pypath);
-      Py_DECREF(pypath);
+      Py_XDECREF(pypath);
       delete path;
    }
 
@@ -177,13 +177,13 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       PyObject* mod = PyImport_ImportModule(CHAR_PTR_CAST "gamera.gameracore");
       if (mod == 0) {
          PyErr_SetString(PyExc_RuntimeError, "Unable to load gameracore.\n");
-         Py_DECREF(images_seq);
+         Py_XDECREF(images_seq);
          return 0;
       }
       PyObject* dict = PyModule_GetDict(mod);
       if (dict == 0) {
          PyErr_SetString(PyExc_RuntimeError, "Unable to get module dictionary\n");
-         Py_DECREF(images_seq);
+         Py_XDECREF(images_seq);
          return 0;
       }
       imagebase = (PyTypeObject*)PyDict_GetItemString(dict, "Image");
@@ -193,13 +193,13 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
    if (!PyObject_TypeCheck(uniq_dists, imagebase)
          || get_pixel_type(uniq_dists) != Gamera::FLOAT) {
       PyErr_SetString(PyExc_TypeError, "uniq_dists must be a float image.");
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
    }
    FloatImageView* dists = (FloatImageView*)((RectObject*)uniq_dists)->m_x;
    if (dists->nrows() != dists->ncols()) {
       PyErr_SetString(PyExc_TypeError, "image must be symmetric.");
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
    }
 
@@ -228,7 +228,7 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       nodes[i] = so->_graph->add_node_ptr(obj);
       assert(nodes[i] != nullptr);
    }
-   Py_DECREF(images_seq);
+   Py_XDECREF(images_seq);
 
    // create the mst using kruskal
    i = 0;

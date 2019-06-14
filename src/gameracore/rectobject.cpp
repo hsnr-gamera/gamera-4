@@ -230,8 +230,8 @@ static PyObject* rect_set(PyObject* self, PyObject* args) {
   }
   Rect* other = ((RectObject*)py_other)->m_x;
   x->rect_set(other->origin(), other->dim());
-  Py_DECREF(py_other);
-  Py_INCREF(Py_None);
+  Py_XDECREF(py_other);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -242,7 +242,7 @@ static PyObject* rect_move(PyObject* self, PyObject* args) {
     return 0;
   }
   x->move(xv, y);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -252,10 +252,10 @@ static PyObject* rect_contains_x(PyObject* self, PyObject* args) {
   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "i:contains_x", &xv) <= 0)
     return 0;
   if (x->contains_x(xv)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -266,10 +266,10 @@ static PyObject* rect_contains_y(PyObject* self, PyObject* args) {
   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "i:contains_y", &y) <= 0)
     return 0;
   if (x->contains_y(y)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -281,10 +281,10 @@ static PyObject* rect_contains_point(PyObject* self, PyObject* args) {
     try {
       Point point = coerce_Point(py_point);
       if (x->contains_point(point)) {
-	Py_INCREF(Py_True);
+	Py_XINCREF(Py_True);
 	return Py_True;
       } else {
-	Py_INCREF(Py_False);
+	Py_XINCREF(Py_False);
 	return Py_False;
       }
     } catch (std::invalid_argument e) {
@@ -304,10 +304,10 @@ static PyObject* rect_contains_rect(PyObject* self, PyObject* args) {
     return 0;
   }
   if (x->contains_rect(*((RectObject*)rect)->m_x)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -333,10 +333,10 @@ static PyObject* rect_intersects_x(PyObject* self, PyObject* args) {
     return 0;
   }
   if (x->intersects_x(*((RectObject*)rect)->m_x)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -351,10 +351,10 @@ static PyObject* rect_intersects_y(PyObject* self, PyObject* args) {
     return 0;
   }
   if (x->intersects_y(*((RectObject*)rect)->m_x)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -369,10 +369,10 @@ static PyObject* rect_intersects(PyObject* self, PyObject* args) {
     return 0;
   }
   if (x->intersects(*((RectObject*)rect)->m_x)) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -407,7 +407,7 @@ static PyObject* rect_union_rects(PyObject* _ /* staticmethod */, PyObject* l) {
     }
     vec[i] = ((RectObject *)py_rect)->m_x;
   }
-  Py_DECREF(seq);
+  Py_XDECREF(seq);
   PyTypeObject* pytype = get_RectType();
   RectObject* so = (RectObject*)pytype->tp_alloc(pytype, 0);
   so->m_x = Rect::union_rects(vec);
@@ -424,7 +424,7 @@ static PyObject* rect_union(PyObject* self, PyObject* args) {
     return 0;
   }
   x->union_rect(*((RectObject*)rect)->m_x);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -478,7 +478,7 @@ static PyObject* rect_distance_cy(PyObject* self, PyObject* args) {
 
 static PyObject* rect_richcompare(PyObject* a, PyObject* b, int op) {
   if (!is_RectObject(a) || !is_RectObject(b)) {
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
 
@@ -500,16 +500,16 @@ static PyObject* rect_richcompare(PyObject* a, PyObject* b, int op) {
   case Py_LE:
   case Py_GT:
   case Py_GE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   default:
     return 0; // cannot happen
   }
   if (cmp) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }

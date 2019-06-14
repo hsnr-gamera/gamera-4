@@ -269,16 +269,16 @@ namespace Gamera {
         // beware that PyList_SetItem 'steals' a reference,
         // while PyList_append increases the reference
         entry = PyList_New(2);
-        Py_INCREF(entry1);
+        Py_XINCREF(entry1);
         PyList_SetItem(entry, 0, entry1);
         entry2 = Py_BuildValue("i", (int)*it2);
         //printf(" %i", (int)*it2);
         PyList_SetItem(entry, 1, entry2);
         PyList_Append(retval, entry);
-        Py_DECREF(entry);
+        Py_XDECREF(entry);
       }
       //printf("\n");
-      Py_DECREF(entry1);
+      Py_XDECREF(entry1);
     }
     return retval;
   }
@@ -343,7 +343,7 @@ namespace Gamera {
         PyList_SetItem(entry, 0, label1);
         PyList_SetItem(entry, 1, label2);
         PyList_Append(list, entry);
-        Py_DECREF(entry);
+        Py_XDECREF(entry);
       }
     }
 
@@ -427,7 +427,7 @@ namespace Gamera {
       }
       delete voronoi->data();
       delete voronoi;
-      Py_DECREF(labelpairs);
+      Py_XDECREF(labelpairs);
     }
     else {
       throw std::runtime_error("Unknown method for construction the neighborhood graph");

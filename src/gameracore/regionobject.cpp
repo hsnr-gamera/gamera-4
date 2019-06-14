@@ -92,7 +92,7 @@ static PyObject* region_add(PyObject* self, PyObject* args) {
   RectObject* r = (RectObject*)self;
   Region* region = (Region*)r->m_x;
   region->add(key, value);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 

@@ -86,7 +86,7 @@ inline int image_get_id_name(PyObject* image, char** id_name, int* len) {
       PyErr_SetString(PyExc_TypeError, "knn: could not get string from id_name tuple.");
       return -1;
   }
-  Py_DECREF(tmp);
+  Py_XDECREF(tmp);
   *id_name = PyBytes_AsString(tmp);
   if (*id_name == NULL) {
     PyErr_SetString(PyExc_TypeError, "knn: could not get string from id_name tuple.");

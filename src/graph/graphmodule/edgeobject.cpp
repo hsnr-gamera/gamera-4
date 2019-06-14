@@ -64,7 +64,7 @@ PyObject* edge_deliver(Edge* edge, GraphObject* graph) {
    if(graph->assigned_edgeobjects->find(edge) == graph->assigned_edgeobjects->end()) {
       EdgeObject* so = (EdgeObject*)edge_new(edge);
       if(graph && is_GraphObject((PyObject*)graph)) {
-         Py_INCREF(graph);
+         Py_XINCREF(graph);
          so->_graph = graph;
          graph->assigned_edgeobjects->insert(std::make_pair(edge, so));
       }
@@ -72,7 +72,7 @@ PyObject* edge_deliver(Edge* edge, GraphObject* graph) {
    }
    
    EdgeObject* so = (*graph->assigned_edgeobjects)[edge];
-   Py_INCREF(so);
+   Py_XINCREF(so);
    return (PyObject*)so;
 }
 
@@ -90,7 +90,7 @@ static void edge_dealloc(PyObject* self) {
    INIT_SELF_EDGE();
    if(so->_graph) {
       so->_graph->assigned_edgeobjects->erase(so->_edge);
-      Py_DECREF(so->_graph);
+      Py_XDECREF(so->_graph);
       so->_graph = NULL;
    } 
    self->ob_type->tp_free(self);
@@ -124,9 +124,9 @@ static PyObject* edge___repr__(PyObject* self) {
       dynamic_cast<GraphDataPyObject*>(so->_edge->to_node->_value)->data;
 
    PyObject* weight = PyFloat_FromDouble(so->_edge->weight);
-   Py_INCREF(from_data);
-   Py_INCREF(to_data);
-   Py_INCREF(weight);
+   Py_XINCREF(from_data);
+   Py_XINCREF(to_data);
+   Py_XINCREF(weight);
    char const* a = PyUnicode_AsUTF8(PyObject_Repr(from_data));
    char const* b = PyUnicode_AsUTF8(PyObject_Repr(to_data));
    char const* c = PyUnicode_AsUTF8(PyObject_Repr(weight));
@@ -179,7 +179,7 @@ static int edge_set_cost(PyObject* self, PyObject* object) {
 static PyObject* edge_get_label(PyObject* self) {
    INIT_SELF_EDGE();
    if(so->_edge->label) {
-      Py_INCREF((PyObject*)so->_edge->label);
+      Py_XINCREF((PyObject*)so->_edge->label);
       return (PyObject*)so->_edge->label;
    }
    else {
@@ -193,10 +193,10 @@ static PyObject* edge_get_label(PyObject* self) {
 static int edge_set_label(PyObject* self, PyObject* object) {
    INIT_SELF_EDGE();
    if(so->_edge->label) {
-      Py_DECREF((PyObject*)so->_edge->label);
+      Py_XDECREF((PyObject*)so->_edge->label);
    }
    so->_edge->label = (void*)object;
-   Py_INCREF(object);
+   Py_XINCREF(object);
    return 0;
 }
 

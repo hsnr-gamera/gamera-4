@@ -65,7 +65,7 @@ CREATE_SET_FUNC(height)
 
 static PyObject* size_richcompare(PyObject* a, PyObject* b, int op) {
   if (!is_SizeObject(a) || !is_SizeObject(b)) {
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
 
@@ -78,10 +78,10 @@ static PyObject* size_richcompare(PyObject* a, PyObject* b, int op) {
   bool cmp;
   switch (op) {
   case Py_LT:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   case Py_LE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   case Py_EQ:
     cmp = as == bs;
@@ -90,19 +90,19 @@ static PyObject* size_richcompare(PyObject* a, PyObject* b, int op) {
     cmp = as != bs;
     break;
   case Py_GT:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   case Py_GE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   default:
     return 0; // cannot happen
   }
   if (cmp) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }

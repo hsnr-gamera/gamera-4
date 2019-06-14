@@ -121,7 +121,7 @@ static PyObject* _image_new(PyTypeObject* pytype, const Point& offset, const Dim
       return NULL;
     }
   } catch (std::exception& e) {
-    Py_DECREF(py_data);
+    Py_XDECREF(py_data);
     delete image;
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return NULL;
@@ -320,7 +320,7 @@ static PyObject* _sub_image_new(PyTypeObject* pytype, PyObject* py_src, const Po
   o = (ImageObject*)pytype->tp_alloc(pytype, 0);
   ((RectObject*)o)->m_x = subimage;
   o->m_data = ((ImageObject*)py_src)->m_data;
-  Py_INCREF(o->m_data);
+  Py_XINCREF(o->m_data);
   ((Image*)((RectObject*)o)->m_x)->resolution(((Image*)((RectObject*)py_src)->m_x)->resolution());
   return init_image_members(o);
 }
@@ -450,7 +450,7 @@ static PyObject* _cc_new(PyTypeObject* pytype, PyObject* py_src, int label,
   o = (ImageObject*)pytype->tp_alloc(pytype, 0);
   ((RectObject*)o)->m_x = cc;
   o->m_data = ((ImageObject*)py_src)->m_data;
-  Py_INCREF(o->m_data);
+  Py_XINCREF(o->m_data);
   // set the resolution
   ((Image*)((RectObject*)o)->m_x)->resolution(((Image*)((RectObject*)py_src)->m_x)->resolution());
   return init_image_members(o);
@@ -568,9 +568,9 @@ static void image_dealloc(PyObject* self) {
 
   image_clear(self);
 
-  Py_DECREF(o->m_data);
-  Py_DECREF(o->m_features);
-  Py_DECREF(o->m_classification_state);
+  Py_XDECREF(o->m_data);
+  Py_XDECREF(o->m_features);
+  Py_XDECREF(o->m_classification_state);
 
   delete ((RectObject*)self)->m_x;
 
@@ -716,7 +716,7 @@ static PyObject* image_set(PyObject* self, const Point& point, PyObject* value) 
     ComplexPixel temp(PyComplex_RealAsDouble(value), PyComplex_ImagAsDouble(value));
     ((ComplexImageView*)o->m_x)->set(point, temp);
   }
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -928,15 +928,15 @@ static PyObject* image_len(PyObject* self, PyObject* args) {
 
 #define CREATE_GET_FUNC(name) static PyObject* image_get_##name(PyObject* self) {\
   ImageObject* o = (ImageObject*)self; \
-  Py_INCREF(o->m_##name); \
+  Py_XINCREF(o->m_##name); \
   return o->m_##name; \
 }
 
 #define CREATE_SET_FUNC(name) static int image_set_##name(PyObject* self, PyObject* v) {\
   ImageObject* o = (ImageObject*)self; \
-  Py_DECREF(o->m_##name); \
+  Py_XDECREF(o->m_##name); \
   o->m_##name = v; \
-  Py_INCREF(o->m_##name); \
+  Py_XINCREF(o->m_##name); \
   return 0; \
 }
 
@@ -1000,7 +1000,7 @@ static int cc_set_label(PyObject* self, PyObject* v) {
 
 static PyObject* image_richcompare(PyObject* a, PyObject* b, int op) {
   if (!is_ImageObject(a) || !is_ImageObject(b)) {
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
 
@@ -1022,23 +1022,23 @@ static PyObject* image_richcompare(PyObject* a, PyObject* b, int op) {
   case Py_LE:
   case Py_GT:
   case Py_GE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   default:
     return 0; // cannot happen
   }
   if (cmp) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
 
 static PyObject* cc_richcompare(PyObject* a, PyObject* b, int op) {
   if (!is_ImageObject(a) || !is_ImageObject(b)) {
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
 
@@ -1072,16 +1072,16 @@ static PyObject* cc_richcompare(PyObject* a, PyObject* b, int op) {
   case Py_LE:
   case Py_GT:
   case Py_GE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   default:
     return 0; // cannot happen
   }
   if (cmp) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -1109,7 +1109,7 @@ static PyObject* mlcc_add_neighbors(PyObject* self, PyObject* args){
   RectObject* o = (RectObject*)self;
   ((MlCc*)o->m_x)->add_neighbors(i, j);
   
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -1117,7 +1117,7 @@ static PyObject* mlcc_add_neighbors(PyObject* self, PyObject* args){
 //   RectObject* o = (RectObject*)self;
 //   ((MlCc*)o->m_x)->find_bounding_box();
   
-//   Py_INCREF(Py_None);
+//   Py_XINCREF(Py_None);
 //   return Py_None;
 // }
 
@@ -1131,7 +1131,7 @@ static PyObject* mlcc_remove_label(PyObject* self, PyObject* args){
   RectObject* o = (RectObject*)self;
   ((MlCc*)o->m_x)->remove_label(PyLong_AS_LONG(args));
   
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -1154,7 +1154,7 @@ static PyObject* mlcc_add_label(PyObject* self, PyObject* args){
   RectObject* o = (RectObject*)self;
  ((MlCc*)o->m_x)->add_label(i, *rect);
 
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -1253,10 +1253,10 @@ static PyObject* mlcc_has_label(PyObject* self, PyObject* v){
   }
   
   if(((MlCc*)o->m_x)->has_label(PyLong_AS_LONG(v))){
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }
@@ -1355,8 +1355,8 @@ tidyUp:
       return pyList;
     } else {
       PyObject* retVal=PyList_GetItem(pyList,0);
-      Py_INCREF(retVal);
-      Py_DECREF(pyList);
+      Py_XINCREF(retVal);
+      Py_XDECREF(pyList);
       return retVal;
     }
   }
@@ -1436,7 +1436,7 @@ static PyObject* _mlcc_new(PyTypeObject* pytype, PyObject* py_src, int label, co
   o = (ImageObject*)pytype->tp_alloc(pytype, 0);
   ((RectObject*)o)->m_x = mlcc;
   o->m_data = ((ImageObject*)py_src)->m_data;
-  Py_INCREF(o->m_data);
+  Py_XINCREF(o->m_data);
   // set the resolution
   ((Image*)((RectObject*)o)->m_x)->resolution(((Image*)((RectObject*)py_src)->m_x)->resolution());
   return init_image_members(o);
@@ -1471,7 +1471,7 @@ PyObject* mlcc_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds) {
         RectObject* o_cc=(RectObject*)PyList_GetItem(cclist,n);
         Cc* cc=(Cc*)(o_cc->m_x);
         if(mlcc->data()!=cc->data()){ //check if every Cc has the same image
-          Py_DECREF(py_mlcc); //free memory on error
+          Py_XDECREF(py_mlcc); //free memory on error
           PyErr_SetString(PyExc_TypeError, "All Ccs have to be a part of the same image.");
           return 0;
         }
@@ -1564,7 +1564,7 @@ phase2:
 
 static PyObject* mlcc_richcompare(PyObject* a, PyObject* b, int op) {
   if (!is_ImageObject(a) || !is_ImageObject(b)) {
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
 
@@ -1626,16 +1626,16 @@ static PyObject* mlcc_richcompare(PyObject* a, PyObject* b, int op) {
   case Py_LE:
   case Py_GT:
   case Py_GE:
-    Py_INCREF(Py_NotImplemented);
+    Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   default:
     return 0; // cannot happen
   }
   if (cmp) {
-    Py_INCREF(Py_True);
+    Py_XINCREF(Py_True);
     return Py_True;
   } else {
-    Py_INCREF(Py_False);
+    Py_XINCREF(Py_False);
     return Py_False;
   }
 }

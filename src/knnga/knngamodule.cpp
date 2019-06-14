@@ -1545,14 +1545,14 @@ static PyObject *GAOptimization_new(PyTypeObject *pytype, PyObject *args, PyObje
         return NULL;
     }
 
-    Py_INCREF(classifier);
-    Py_INCREF(baseSetting);
-    Py_INCREF(selection);
-    Py_INCREF(crossover);
-    Py_INCREF(mutation);
-    Py_INCREF(replacement);
-    Py_INCREF(stop);
-    Py_INCREF(parallelization);
+    Py_XINCREF(classifier);
+    Py_XINCREF(baseSetting);
+    Py_XINCREF(selection);
+    Py_XINCREF(crossover);
+    Py_XINCREF(mutation);
+    Py_XINCREF(replacement);
+    Py_XINCREF(stop);
+    Py_XINCREF(parallelization);
 
     return (PyObject*) self;
 }

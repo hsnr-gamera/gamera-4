@@ -537,7 +537,7 @@ PyObject* graph_get_node(PyObject* self, PyObject* pyobject) {
       return NULL;
    }
    PyObject* ret = node_deliver(node, so);
-//   Py_DECREF(pyobject);
+//   Py_XDECREF(pyobject);
    return ret;
 }
 
@@ -547,7 +547,7 @@ PyObject* graph_get_node(PyObject* self, PyObject* pyobject) {
 PyObject* graph_has_node(PyObject* self, PyObject* a) {
    INIT_SELF_GRAPH();
    bool res;
-   Py_INCREF(a);
+   Py_XINCREF(a);
 #ifdef __DEBUG_GAPI__
    std::cout << "graph_has_node\n";
 #endif
@@ -558,7 +558,7 @@ PyObject* graph_has_node(PyObject* self, PyObject* a) {
       GraphDataPyObject obj(a);
       res = so->_graph->has_node(&obj);
    }
-   Py_DECREF(a);
+   Py_XDECREF(a);
    RETURN_BOOL(res); 
 }
 

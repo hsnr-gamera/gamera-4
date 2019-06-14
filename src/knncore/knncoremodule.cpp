@@ -137,7 +137,7 @@ static PyObject* knn_new(PyTypeObject* pytype, PyObject* args,
   o->confidence_types = new std::vector<int>();
   o->confidence_types->push_back(CONFIDENCE_DEFAULT);
 
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return (PyObject*)o;
 }
 
@@ -232,7 +232,7 @@ static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args) {
   int images_size = PySequence_Fast_GET_SIZE(images_seq);
   if (images_size == 0) {
     PyErr_SetString(PyExc_ValueError, "Initial database of a non-interactive kNN classifier must have at least one element.");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
@@ -240,7 +240,7 @@ static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args) {
     Create all of the data
   */
   if (knn_create_feature_data(o, images_size) < 0) {
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
   /*
@@ -301,11 +301,11 @@ static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args) {
     }
   }
 
-  Py_DECREF(images_seq);
-  Py_INCREF(Py_None);
+  Py_XDECREF(images_seq);
+  Py_XINCREF(Py_None);
   return Py_None;
  error:
-  Py_DECREF(images_seq);
+  Py_XDECREF(images_seq);
   return 0;
 }
 
@@ -381,8 +381,8 @@ static PyObject* knn_classify(PyObject* self, PyObject* args) {
     PyObject* o1 = PyLong_FromLong(knn.confidence_types[i]);
     PyObject* o2 = PyFloat_FromDouble(knn.confidence[i]);
     PyDict_SetItem(conf_dict, o1, o2);
-    Py_DECREF(o1);
-    Py_DECREF(o2);
+    Py_XDECREF(o1);
+    Py_XDECREF(o2);
   }
   PyObject* result = PyTuple_New(2);
   PyTuple_SET_ITEM(result, 0, ans_list);
@@ -451,7 +451,7 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
     if (image_get_id_name(cur, &id_name, &len) < 0)
       return 0;
     knn.add(id_name, distance);
-    Py_DECREF(cur);
+    Py_XDECREF(cur);
   }
 
   knn.majority();
@@ -472,8 +472,8 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
       PyObject* o1 = PyLong_FromLong(knn.confidence_types[i]);
       PyObject* o2 = PyFloat_FromDouble(knn.confidence[i]);
       PyDict_SetItem(conf_dict, o1, o2);
-      Py_DECREF(o1);
-      Py_DECREF(o2);
+      Py_XDECREF(o1);
+      Py_XDECREF(o2);
     }
   }
   PyObject* result = PyTuple_New(2);
@@ -531,8 +531,8 @@ static PyObject* knn_distance_from_images(PyObject* self, PyObject* args) {
     if (distance < maximum_distance)
       if (PyList_Append(distance_list, tmp_val) < 0)
         return 0;
-    Py_DECREF(tmp_val);
-    Py_DECREF(cur);
+    Py_XDECREF(tmp_val);
+    Py_XDECREF(cur);
   }
 
   return distance_list;
@@ -582,7 +582,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
   int images_len = PySequence_Fast_GET_SIZE(images_seq);
   if (!(images_len > 1)) {
     PyErr_SetString(PyExc_ValueError, "List must have at least two images.");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
@@ -593,17 +593,17 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
   cur_a = PySequence_Fast_GET_ITEM(images_seq, 0);
   if (!is_ImageObject(cur_a)) {
     PyErr_SetString(PyExc_TypeError, "knn: expected an image");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
   if (image_get_fv(cur_a, &buf_a, &len_a) < 0) {
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
   if (len_a != (int)o->num_features) {
     PyErr_SetString(PyExc_ValueError, "knn: feature vector lengths don't match.");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
@@ -667,10 +667,10 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
   }
   delete[] tmp_a;
   delete[] tmp_b;
-  Py_DECREF(images_seq);
+  Py_XDECREF(images_seq);
   return create_ImageObject(mat);
  mat_error:
-  Py_DECREF(images_seq);
+  Py_XDECREF(images_seq);
   // delete the image
   delete mat; delete data;
   // delete the tmp buffers
@@ -697,7 +697,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
   int images_len = PySequence_Fast_GET_SIZE(images_seq);
   if (!(images_len > 1)) {
     PyErr_SetString(PyExc_ValueError, "List must have at least two images.");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
   // create the 'vector' for the output
@@ -712,17 +712,17 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
   cur_a = PySequence_Fast_GET_ITEM(images_seq, 0);
   if (!is_ImageObject(cur_a)) {
     PyErr_SetString(PyExc_TypeError, "knn: expected an image");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
   if (image_get_fv(cur_a, &buf_a, &len_a) < 0) {
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
   if (len_a != (int)o->num_features) {
     PyErr_SetString(PyExc_ValueError, "knn: feature vector lengths don't match.");
-    Py_DECREF(images_seq);
+    Py_XDECREF(images_seq);
     return 0;
   }
 
@@ -732,15 +732,15 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
     cur_a = PySequence_Fast_GET_ITEM(images_seq, i);
     if (!is_ImageObject(cur_a)) {
       PyErr_SetString(PyExc_TypeError, "knn: expected an image");
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
     }
     if (cur_a == NULL) {
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
     }
     if (image_get_fv(cur_a, &buf_a, &len_a) < 0) {
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
     }
     if (normalize)
@@ -891,7 +891,7 @@ static PyObject* knn_leave_one_out(PyObject* self, PyObject* args) {
     // Make certain that there aren't too many indexes
     if (indexes_size > (int)o->num_features) {
       PyErr_SetString(PyExc_ValueError, "knn: index list too large for data");
-      Py_DECREF(indexes_seq);
+      Py_XDECREF(indexes_seq);
       return 0;
     }
     // copy the indexes into a vector
@@ -900,7 +900,7 @@ static PyObject* knn_leave_one_out(PyObject* self, PyObject* args) {
       PyObject* tmp = PySequence_Fast_GET_ITEM(indexes_seq, i);
       if (!PyLong_Check(tmp)) {
         PyErr_SetString(PyExc_TypeError, "knn: expected indexes to be ints");
-        Py_DECREF(indexes_seq);
+        Py_XDECREF(indexes_seq);
         return 0;
       }
       idx[i] = PyLong_AsLong(tmp);
@@ -909,7 +909,7 @@ static PyObject* knn_leave_one_out(PyObject* self, PyObject* args) {
     for (size_t i = 0; i < idx.size(); ++i) {
       if (idx[i] > (long)(o->num_features - 1)) {
         PyErr_SetString(PyExc_IndexError, "knn: index out of range in index list");
-        Py_DECREF(indexes_seq);
+        Py_XDECREF(indexes_seq);
         return 0;
       }
     }
@@ -1171,7 +1171,7 @@ static PyObject* knn_serialize(PyObject* self, PyObject* args) {
   }
 
   fclose(file);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -1326,7 +1326,7 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
     PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
     return 0;
   }
-  Py_DECREF(arglist);
+  Py_XDECREF(arglist);
 
   PyObject *result;
   for (size_t i = 0; i < o->num_features; ++i) {
@@ -1334,10 +1334,10 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
     if (result == 0) {
       return 0;
     }
-    Py_DECREF(result);
+    Py_XDECREF(result);
   }
 
-  Py_DECREF(arglist);
+  Py_XDECREF(arglist);
 	return array;
 }
 
@@ -1349,15 +1349,15 @@ static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
     PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
     return 0;
   }
-  Py_DECREF(arglist);
+  Py_XDECREF(arglist);
   PyObject* result;
   for (size_t i = 0; i < o->num_features; ++i) {
     result = PyObject_CallMethod(array, (char *)"append", (char *)"f", o->weight_vector[i]);
     if (result == 0)
       return 0;
-    Py_DECREF(result);
+    Py_XDECREF(result);
   }
-  Py_DECREF(arglist);
+  Py_XDECREF(arglist);
   return array;
 }
 
@@ -1396,7 +1396,7 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
     }
   }
 
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -1423,7 +1423,7 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
   for (size_t i = 0; i < o->num_features; ++i) {
     o->weight_vector[i] = weights[i];
   }
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 

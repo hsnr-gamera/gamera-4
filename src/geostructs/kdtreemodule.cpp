@@ -69,14 +69,14 @@ static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
     entry = PyList_GetItem(point,i);
     if (!PyFloat_Check(entry) && !PyLong_Check(entry)) {
       PyErr_SetString(PyExc_RuntimeError, "KdNode: given point must be list of numbers");
-      Py_DECREF(point);
+      Py_XDECREF(point);
       return 0;
     }
   }
   // copy over properties to internal data structure
   self = (KdNodeObject*)(KdNodeType.tp_alloc(&KdNodeType, 0));
   self->point = point;
-  if (data) Py_INCREF(data);
+  if (data) Py_XINCREF(data);
   self->data = data;
   return (PyObject*)self;
 }
@@ -84,26 +84,26 @@ static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
 static void kdnode_dealloc(PyObject* self) {
   PyObject* data = ((KdNodeObject*)self)->data;
   PyObject* point = ((KdNodeObject*)self)->point;
-  Py_DECREF(point);
+  Py_XDECREF(point);
   if (data) {
-    Py_DECREF(data);
+    Py_XDECREF(data);
   }
   self->ob_type->tp_free(self);
 }
 
 static PyObject* kdnode_get_point(PyObject* self) {
   KdNodeObject* so = (KdNodeObject*)self;
-  Py_INCREF(so->point);
+  Py_XINCREF(so->point);
   return so->point;
 }
 
 static PyObject* kdnode_get_data(PyObject* self) {
   KdNodeObject* so = (KdNodeObject*)self;
   if (so->data) {
-    Py_INCREF(so->data);
+    Py_XINCREF(so->data);
       return so->data;
   } else {
-    Py_INCREF(Py_None);
+    Py_XINCREF(Py_None);
     return Py_None;
   }
 }
@@ -187,7 +187,7 @@ static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   // => the following two lines should be guaranteed to work
   obj2 = PyObject_GetAttrString(obj1,"point");
   dimension = PyList_Size(obj2);
-  Py_DECREF(obj2);
+  Py_XDECREF(obj2);
   // prepare nodes for C++ class kdtree
   Kdtree::CoordPoint p(dimension);
   for (i=0; i<n; i++) {
@@ -198,7 +198,7 @@ static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
     }
     obj2 = PyObject_GetAttrString(obj1,"point"); // beware: INCREF
     if (PyList_Size(obj2) != (int)dimension) {
-      Py_DECREF(obj2);
+      Py_XDECREF(obj2);
       PyErr_SetString(PyExc_RuntimeError, "KdTree: all node points must have same dimension");
       return 0;
     }
@@ -207,8 +207,8 @@ static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
     }
     // we store the KdNode object in kdnode.data
     nodes4tree.push_back(Kdtree::KdNode(p,(void*)obj1));
-    Py_INCREF(obj1); // node object
-    Py_DECREF(obj2); // no longer needed point property
+    Py_XINCREF(obj1); // node object
+    Py_XDECREF(obj2); // no longer needed point property
   }
   // copy over parsed stuff to data structure
   self = (KdTreeObject*)(KdTreeType.tp_alloc(&KdTreeType, 0));
@@ -221,7 +221,7 @@ static void kdtree_dealloc(PyObject* self) {
   size_t i;
   Kdtree::KdTree* tree = ((KdTreeObject*)self)->tree;
   for (i=0; i<tree->allnodes.size(); i++) {
-    Py_DECREF((PyObject*)tree->allnodes[i].data);
+    Py_XDECREF((PyObject*)tree->allnodes[i].data);
   }
   delete tree;
   self->ob_type->tp_free(self);
@@ -261,15 +261,15 @@ static PyObject* kdtree_set_distance(PyObject* self, PyObject* args) {
         wvector[i] = (double)PyLong_AsLong(entry);
       } else {
         PyErr_SetString(PyExc_RuntimeError, "KdTree.set_distance: weights must be numeric");
-        Py_DECREF(entry);
+        Py_XDECREF(entry);
         return 0;
       }
-      Py_DECREF(entry);
+      Py_XDECREF(entry);
     }
   }
   // actual C++ function call
   so->tree->set_distance(distance_type, &wvector);
-  Py_INCREF(Py_None);
+  Py_XINCREF(Py_None);
   return Py_None;
 }
 
@@ -278,10 +278,10 @@ struct KdNodePredicate_Py : public Gamera::Kdtree::KdNodePredicate {
   PyObject* pyfunctor;
   KdNodePredicate_Py(PyObject* pf) {
     pyfunctor = pf;
-    Py_INCREF(pf);
+    Py_XINCREF(pf);
   }
   ~KdNodePredicate_Py() {
-    Py_DECREF(pyfunctor);
+    Py_XDECREF(pyfunctor);
   }
   bool operator()(const Gamera::Kdtree::KdNode& kn) const {
     // remember that complete python KdNode object is stored
@@ -292,7 +292,7 @@ struct KdNodePredicate_Py : public Gamera::Kdtree::KdNodePredicate {
     //printf("KdNodePredicate_Py called\n");
     result = PyObject_CallFunctionObjArgs(pyfunctor,(PyObject*)kn.data,NULL);
     retval = PyObject_IsTrue(result);
-    Py_DECREF(result);
+    Py_XDECREF(result);
     return retval;
   }
 };
@@ -330,10 +330,10 @@ static PyObject* kdtree_k_nearest_neighbors(PyObject* self, PyObject* args) {
       point[i] = (double)PyLong_AsLong(entry);
     } else {
       PyErr_SetString(PyExc_RuntimeError, "KdTree.k_nearest_neighbor: point coordinates must be numbers");
-      Py_DECREF(entry);
+      Py_XDECREF(entry);
       return 0;
     }
-    Py_DECREF(entry);
+    Py_XDECREF(entry);
   }
   // actual C++ function call
   if (predicate) {
@@ -346,7 +346,7 @@ static PyObject* kdtree_k_nearest_neighbors(PyObject* self, PyObject* args) {
   list = PyList_New(result.size());
   for (i=0; i<result.size(); i++) {
     entry = (PyObject*)result[i].data;
-    Py_INCREF(entry);
+    Py_XINCREF(entry);
     PyList_SetItem(list, i, entry);
   }
   return list;

@@ -69,11 +69,11 @@ PyObject* node_deliver(Node* n, GraphObject* go) {
    if(nodedata->_node == NULL) {
       nodedata->_node = node_new(n);
       ((NodeObject*)nodedata->_node)->_graph = go;
-      Py_INCREF(go);
-//      Py_INCREF(nodedata->_node);
+      Py_XINCREF(go);
+//      Py_XINCREF(nodedata->_node);
    }
    else {
-      Py_INCREF(nodedata->_node);
+      Py_XINCREF(nodedata->_node);
    }
 
    return nodedata->_node;
@@ -107,7 +107,7 @@ static void node_dealloc(PyObject* self) {
    }
    
    if(so->_graph != NULL && is_GraphObject((PyObject*)so->_graph)) {
-      Py_DECREF(so->_graph);
+      Py_XDECREF(so->_graph);
    }
 
    self->ob_type->tp_free(self);
@@ -158,7 +158,7 @@ static PyObject* node_get_nedges(PyObject* self) {
 static PyObject* node_get_data(PyObject* self) {
    INIT_SELF_NODE();
    PyObject *data = dynamic_cast<GraphDataPyObject*>(so->_node->_value)->data;
-   Py_INCREF(data);
+   Py_XINCREF(data);
    return data;
 }
 
@@ -175,10 +175,10 @@ static PyObject* node___call__(PyObject* self, PyObject* args, PyObject* kwds) {
 static PyObject* node___repr__(PyObject* self) {
    PyObject* data = node_get_data(self);
    PyObject* repr = PyObject_Repr(data);
-   Py_INCREF(repr);
+   Py_XINCREF(repr);
    PyObject* ret = PyUnicode_FromFormat("<Node of %s>", PyUnicode_AsUTF8(repr));
-   Py_DECREF(repr);
-   Py_DECREF(data);
+   Py_XDECREF(repr);
+   Py_XDECREF(data);
    return ret;
 }
 

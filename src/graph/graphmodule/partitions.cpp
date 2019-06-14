@@ -231,14 +231,14 @@ protected:
       size_t j = 0;
       for (std::vector<Node*>::iterator i = node_stack.begin();
          i != node_stack.end(); ++i, ++j) {
-         Py_INCREF(dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
+         Py_XINCREF(dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
          PyList_SET_ITEM(result, j, dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
       }
 
       PyObject* tuple = Py_BuildValue(CHAR_PTR_CAST "(O)", result);
       PyObject* evalobject = PyObject_CallObject(const_cast<PyObject*>(eval_func), tuple);
-      Py_DECREF(tuple);
-      Py_DECREF(result);
+      Py_XDECREF(tuple);
+      Py_XDECREF(result);
 
       double eval;
       if (evalobject == NULL)
@@ -248,7 +248,7 @@ protected:
             eval = PyFloat_AsDouble(evalobject);
          else
             eval = -1.0;
-         Py_DECREF(evalobject);
+         Py_XDECREF(evalobject);
       }
 
       parts.push_back(Part(bits, eval));
@@ -374,7 +374,7 @@ public:
             PyObject* result = PyList_New(subgraph.size());
             for (size_t i = 0; i < subgraph.size(); ++i) {
                PyObject* subresult = PyList_New(1);
-               Py_INCREF(dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
+               Py_XINCREF(dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
                PyList_SET_ITEM(subresult, 0, dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
                PyList_SET_ITEM(result, i, subresult);
             }
@@ -452,7 +452,7 @@ public:
             for (size_t j = 0, l = 0; k < solution_part; ++j, k <<= 1)
                if (solution_part & k) {
                   PyObject* data = dynamic_cast<GraphDataPyObject*>(subgraph[j]->_value)->data;
-                  Py_INCREF(data);
+                  Py_XINCREF(data);
                   PyList_SET_ITEM(subresult, l++, data);
                }
 				

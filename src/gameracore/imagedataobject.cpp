@@ -118,7 +118,7 @@ static PyObject* imagedata_dimensions(PyObject* self, PyObject* args) {
     if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &py_dim)) {
       if (is_DimObject(py_dim)) {
 	x->dim(*(((DimObject*)py_dim)->m_x));
-	Py_INCREF(Py_None);
+	Py_XINCREF(Py_None);
 	return Py_None;
       }
     }

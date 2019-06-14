@@ -198,7 +198,7 @@ PyObject* to_string(T& m) {
   Py_ssize_t length;
   int error = PyBytes_AsStringAndSize(str, &buffer, &length);
   if (error) {
-    Py_DECREF(str);
+    Py_XDECREF(str);
     throw std::exception();
   }
   to_string_impl<typename T::value_type> func;

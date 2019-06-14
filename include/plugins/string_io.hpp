@@ -53,7 +53,7 @@ bool fill_image_from_string(T &image, PyObject* data_string) {
 		return -1;
 	}
 	char* s = PyBytes_AsString(tmp);
-	Py_DECREF(tmp);
+	Py_XDECREF(tmp);
 	if (s == nullptr) {
 		PyErr_SetString(PyExc_TypeError, "could not get string from id_name tuple.");
 		return -1;
