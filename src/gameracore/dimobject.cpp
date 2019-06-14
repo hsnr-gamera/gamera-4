@@ -17,7 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define GAMERACORE_INTERNAL
+#ifndef GAMERACORE_INTERNAL
+   #define GAMERACORE_INTERNAL
+#endif
 #include "gameramodule.hpp"
 
 using namespace Gamera;

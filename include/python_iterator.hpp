@@ -56,7 +56,7 @@ struct IteratorObject {
 };
 
 void init_IteratorType();
-// PyTypeObject* get_IteratorType();
+ PyTypeObject* get_IteratorType();
 
 template<class T>
 T* iterator_new();

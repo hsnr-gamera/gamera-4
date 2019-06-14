@@ -29,11 +29,14 @@ PyObject* _to_raw_string(const T &image) {
   typedef typename T::value_type value_type;
   typename T::const_vec_iterator j = image.vec_begin();
   size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-  PyObject* pystring = PyUnicode_FromStringAndSize((char *)NULL,
+  PyObject* pystring = PyUnicode_FromStringAndSize((char *)nullptr,
 						  (int)image_size);
-  if (pystring == NULL)
-    return NULL;
+  if (pystring == nullptr)
+    return nullptr;
   value_type* i = (value_type*)PyBytes_AsString(pystring);
+  if(i == nullptr){
+  	return nullptr;
+  }
   for (; j != image.vec_end(); ++i, ++j) {
     *i = *j;
   }
@@ -128,9 +131,9 @@ Image* _from_raw_string(Point offset, Dim size,
       return image;
   } else {
     PyErr_SetString(PyExc_ValueError, "Invalid pixel_type or storage_format");
-    return NULL;
+    return nullptr;
   }
-  return NULL;
+  return nullptr;
 }
 
 #endif
