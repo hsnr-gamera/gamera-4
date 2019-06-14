@@ -20,7 +20,6 @@ addons:
       - libnotify-dev
 before_install:
   - sudo apt-get update
-  - sudo apt-get upgrade
 install:
   - pip3 install --upgrade pip
   - pip3 install wxpython pytest docutils pygments
