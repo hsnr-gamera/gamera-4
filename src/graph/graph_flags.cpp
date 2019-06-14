@@ -146,8 +146,8 @@ bool Graph::is_cyclic() {
 	      //tests for cycles in each subgraph
 	      DfsIterator *it = DFS(*rit);
 	      cyclic = it->has_cycles();
-	      delete it;
 	      while (it->next() != nullptr);
+	      delete it;
       }
       delete roots;
    }
