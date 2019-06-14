@@ -18,10 +18,10 @@ addons:
       - freeglut3
       - freeglut3-dev
       - libnotify-dev
-
-install:
+before_install:
   - sudo apt-get update
   - sudo apt-get upgrade
+install:
   - pip3 install --upgrade pip
   - pip3 install wxpython pytest docutils pygments
   - python setup.py install
