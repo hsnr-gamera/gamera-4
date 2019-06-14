@@ -142,17 +142,14 @@ bool Graph::is_cyclic() {
 	   delete i;
    }
    else {
-      NodeVector* roots = NULL;
-      roots = get_subgraph_roots();
+      NodeVector* roots = get_subgraph_roots();
 
-      for(NodeVector::iterator rit = roots->begin(); 
-         rit != roots->end() && !cyclic; rit++) {
-         //tests for cycles in each subgraph
-         DfsIterator *it = DFS(*rit);
-         while(it->next() != NULL)
-            ;
-         cyclic = cyclic || it->has_cycles();
-         delete it;
+      for(auto rit = roots->begin(); rit != roots->end() && !cyclic; rit++) {
+	      //tests for cycles in each subgraph
+	      DfsIterator *it = DFS(*rit);
+	      cyclic = it->has_cycles();
+	      delete it;
+	      while (it->next() != nullptr);
       }
       delete roots;
    }

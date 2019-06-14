@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+import os
+
 import gamera.graph
 import gc
-import os
 
 #gc.set_debug(gc.DEBUG_LEAK)  
 flags = [
@@ -621,15 +622,15 @@ def _test_add_nodes(flag = gamera.graph.FREE, count = 2000):
 
 
 # ----------------------------------------------------------------------------
-def _test_graph_copy(flag = gamera.graph.FREE, count = 1000):
+def _test_graph_copy(flag=gamera.graph.FREE, count=1000):
    if count > 100:
       g = gamera.graph.Graph(flag)
-      for i in range(0,count):
-         g.add_edge(i, i+1)
+      for i in range(0, count):
+         g.add_edge(i, i + 1)
 
       g.add_edge(count / 2, count / 2 + 20)
 
-      assert g.nedges == count+1
+      assert g.nedges == count + 1
       assert g.is_cyclic()
       h = g.copy(gamera.graph.CHECK_ON_INSERT)
       del g

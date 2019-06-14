@@ -79,14 +79,14 @@ Node* DfsIterator::next() {
          it != current->_edges.end(); it++) {
 
       Node* n = (*it)->traverse(current);
-      if(n != NULL && !is_visited(n)) {
+      if(n == nullptr) continue;
+      
+      if(!is_visited(n)) {
          visit(n);
          _stack.push(n);
          _used_edges.insert(*it);
       }
-      else if(!found_cycles && n != NULL &&
-            _used_edges.find(*it) == _used_edges.end()) {
-
+      else if(!found_cycles && _used_edges.find(*it) == _used_edges.end()) {
          found_cycles = true;
       }
    }
