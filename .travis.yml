@@ -25,5 +25,6 @@ install:
   - pip3 install --upgrade pip
   - pip3 install wxpython
   - pip3 install pytest
+  - python setup.py install
 script:
-  - python setup.py build
+  pytest
