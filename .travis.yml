@@ -17,6 +17,7 @@ addons:
       - libsdl1.2-dev
       - libgstreamer-plugins-base0.10-dev
       - freeglut3
+      - libpng16-dev
       - freeglut3-dev
       - libnotify-dev
 
