@@ -618,7 +618,7 @@ def _test_graph_copy(flag=gamera.graph.FREE, count=1000):
         h = g.copy(gamera.graph.CHECK_ON_INSERT)
         del g
         assert h.is_acyclic()
-        assert h.nedges == count + 1
+        assert h.nedges == count
         del h
 
 
