@@ -145,8 +145,8 @@ bool Graph::is_cyclic() {
       for(auto rit = roots->begin(); rit != roots->end() && !cyclic; rit++) {
 	      //tests for cycles in each subgraph
 	      DfsIterator *it = DFS(*rit);
-	      cyclic = it->has_cycles();
 	      while (it->next() != nullptr);
+	      cyclic = it->has_cycles();
 	      delete it;
       }
       delete roots;
@@ -217,9 +217,8 @@ void Graph::make_acyclic() {
          }
       }
 
-      for(EdgeSet::iterator it = edges_to_remove.begin(); 
-            it != edges_to_remove.end(); it++) {
-         remove_edge(*it); 
+      for(auto it : edges_to_remove) {
+         remove_edge(it);
       }
 
       delete i;
