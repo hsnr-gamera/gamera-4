@@ -21,7 +21,7 @@ addons:
 
 install:
   - sudo apt-get update
-  - sudo apt-get dist-upgrade
+  - sudo apt-get upgrade
   - pip3 install --upgrade pip
   - pip3 install wxpython pytest docutils pygments
   - python setup.py install
