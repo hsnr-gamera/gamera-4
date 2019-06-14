@@ -18,8 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import _pagesegmentation
 from math import sqrt
+
+import _pagesegmentation
 
 from gamera.plugin import *
 from gamera.plugins.listutilities import kernel_density, argmax
@@ -485,22 +486,37 @@ class textline_reading_order(PluginFunction):
                 self.label = 0
 
             def __lt__(self, other):
+                if self.segment.offset_y == other.segment.offset_y:
+                    if self.segment.offset_x == other.segment.offset_x:
+                        if self.segment.nrows == other.segment.nrows:
+                            return self.segment.ncols < other.segment.ncols
+
+                        return self.segment.nrows < other.segment.nrows
+
+                    return self.segment.offset_x < other.segment.offset_x
+
                 return self.segment.offset_y < other.segment.offset_y
 
             def __le__(self, other):
+                if self.segment.offset_y <= other.segment.offset_y:
+                    if self.segment.offset_x <= other.segment.offset_x:
+                        if self.segment.nrows <= other.segment.nrows:
+                            return self.segment.ncols <= other.segment.ncols
+
+                        return self.segment.nrows <= other.segment.nrows
+
+                    return self.segment.offset_x <= other.segment.offset_x
+
                 return self.segment.offset_y <= other.segment.offset_y
 
             def __ne__(self, other):
-                return self.segment != other.segment
-
-            def __gt__(self, other):
-                return self.segment.offset_y > other.segment.offset_y
-
-            def __ge__(self, other):
-                return self.segment.offset_y >= other.segment.offset_y
+                return not self.__eq__(other)
 
             def __eq__(self, other):
-                return self.segment == other.segment
+                return self.segment.offset_x == other.segment.offset_x \
+                       and self.segment.offset_y == other.segment.offset_y \
+                       and self.segment.nrows == other.segment.nrows \
+                       and self.segment.ncols == other.segment.ncols
 
         #
         # build directed graph of all lines
