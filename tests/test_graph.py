@@ -546,7 +546,7 @@ def _test_minimum_spanning_tree(flag=gamera.graph.FREE):
       for a in t.get_edges():
          print(a)
       print(str(list()))
-      assert "[<Edge from 15 to 16 (1.0)>, <Edge from 11 to 17 (2.0)>, <Edge from 14 to 15 (2.0)>, <Edge from 11 to 14 (4.0)>, <Edge from 9 to 10 (4.0)>, <Edge from 11 to 12 (7.0)>, <Edge from 9 to 16 (8.0)>, <Edge from 12 to 13 (9.0)>]" == str(
+      assert "[<Edge from 15 to 16 (1.0)>, <Edge from 11 to 17 (2.0)>, <Edge from 14 to 15 (2.0)>, <Edge from 9 to 10 (4.0)>, <Edge from 11 to 14 (4.0)>, <Edge from 11 to 12 (7.0)>, <Edge from 9 to 16 (8.0)>, <Edge from 12 to 13 (9.0)>]" == str(
          list(t.get_edges()))
 
       del t
