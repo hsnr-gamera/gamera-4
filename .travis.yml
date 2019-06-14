@@ -18,8 +18,7 @@ addons:
       - freeglut3
       - freeglut3-dev
       - libnotify-dev
-before_install:
-  - sudo apt-get update
+
 install:
   - pip3 install --upgrade pip
   - pip3 install pathlib2 wxpython pytest docutils pygments
