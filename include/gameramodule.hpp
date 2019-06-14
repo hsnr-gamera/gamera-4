@@ -1154,11 +1154,13 @@ inline PyObject* FloatVector_to_python(FloatVector* cpp) {
     PyObject *array_init = get_ArrayInit();
     if (array_init == 0)
         return 0;
+    PyObject* str = PyUnicode_FromStringAndSize((char*)(&((*cpp)[0])),
+                                                cpp->size() * sizeof(double));
     /*PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
           cpp->size() * sizeof(double));*/
 
-    PyObject *str = Py_BuildValue("s0:d", cpp->front());
-    PyObject *py = PyObject_CallFunction(array_init, "", str);
+    //PyObject *str = Py_BuildValue("d", cpp->front());
+    PyObject *py = PyObject_CallFunction(array_init, "sO", "d", str);
     Py_XDECREF(str);
     return py;
 }
@@ -1177,11 +1179,11 @@ inline PyObject* IntVector_to_python(IntVector* cpp) {
     PyObject *array_init = get_ArrayInit();
     if (array_init == 0)
         return 0;
-    /*PyObject *str = PyString_FromStringAndSize((char *) (&((*cpp)[0])),
-                                               cpp->size() * sizeof(int));*/
-    PyObject *str = Py_BuildValue("s0:i", cpp->front());
+    PyObject *str = PyUnicode_FromStringAndSize((char *) (&((*cpp)[0])),
+                                               cpp->size() * sizeof(int));
+    //PyObject *str = Py_BuildValue("i", cpp->front());
     //TODO check if working
-    PyObject *py = PyObject_CallFunction(array_init,"", str);
+    PyObject *py = PyObject_CallFunction(array_init,"sO", "i", str);
     Py_XDECREF(str);
     return py;
 }

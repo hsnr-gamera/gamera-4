@@ -201,7 +201,7 @@ template = Template("""
                 return 0;
               PyObject* array = PyObject_CallFunction(
                     array_init, (char *)\"sO\", (char *)\"d\", str);
-              Py_DECREF(str);
+              Py_XDECREF(str);
               delete[] feature_buffer;
               return array;
            } else {
@@ -209,7 +209,7 @@ template = Template("""
              return 0;
            }
          } else {
-           Py_INCREF(Py_None);
+           Py_XINCREF(Py_None);
            return Py_None;
          }
       [[else]]
@@ -217,16 +217,16 @@ template = Template("""
           [[arg.delete()]]
         [[end]]
         [[if function.return_type is None]]
-          Py_INCREF(Py_None);
+          Py_XINCREF(Py_None);
           return Py_None;
         [[else]]
           [[if isinstance(function.return_type, (ImageType, Class))]]
-            if ([[function.return_type.symbol]] == NULL) {
-              if (PyErr_Occurred() == NULL) {
-                Py_INCREF(Py_None);
+            if ([[function.return_type.symbol]] == nullptr) {
+              if (PyErr_Occurred() == nullptr) {
+                Py_XINCREF(Py_None);
                 return Py_None;
                } else
-                return NULL;
+                return nullptr;
             } else {
               [[function.return_type.to_python()]]
               return return_pyarg;
@@ -254,7 +254,7 @@ template = Template("""
         },
       [[end]]
     [[end]]
-    { NULL }
+    { nullptr }
   };
   
   static struct PyModuleDef module[[module_name]]Def = {
