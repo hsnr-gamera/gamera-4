@@ -64,8 +64,8 @@ struct Graph {
 
    /// add node variant returns ptr to added node or existing node
    Node* add_node_ptr(GraphData * value);
-   int add_nodes(NodeVector nodes);
-   int add_nodes(ValueVector values);
+   int add_nodes(const NodeVector& nodes);
+   int add_nodes(const ValueVector& values);
 
    Node* get_node(GraphData * value);
    NodePtrIterator* get_nodes();

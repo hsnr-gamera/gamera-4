@@ -72,27 +72,27 @@ Graph::Graph(flag_t flags) {
   * deletes all edges and nodes when deleting the whole graph
   */
 Graph::~Graph() {
-   size_t edgecount=0, nodecount=0;
-   for(EdgeIterator it = _edges.begin(); it != _edges.end(); it++) {
-      delete *it;
-      edgecount++;
-   }
-
-   for(NodeIterator it = _nodes.begin(); it != _nodes.end(); it++) {
-      delete *it;
-      nodecount++;
-   }
-
-   assert(nodecount == _nodes.size());
-   assert(edgecount == _edges.size());
-
-   _edges.clear();
-   _nodes.clear();
-   _valuemap.clear();
-   if(_colors)
-      delete _colors;
-   if(_colorhistogram)
-     delete _colorhistogram;
+	size_t edgecount = 0, nodecount = 0;
+	for (auto & _edge : _edges) {
+		delete _edge;
+		edgecount++;
+	}
+	
+	for (auto & _node : _nodes) {
+		delete _node;
+		nodecount++;
+	}
+	
+	assert(nodecount == _nodes.size());
+	assert(edgecount == _edges.size());
+	
+	_edges.clear();
+	_nodes.clear();
+	_valuemap.clear();
+	
+	delete _colors;
+	
+	delete _colorhistogram;
 }
 
 
@@ -217,7 +217,7 @@ Node* Graph::add_node_ptr(GraphData * value) {
    Node* n = get_node(value);
    if(n == nullptr) {
       n = new Node(value);
-      if(add_node(n) == false) {
+      if(!add_node(n)) {
          delete n;
          n = nullptr;
       }
@@ -232,10 +232,10 @@ Node* Graph::add_node_ptr(GraphData * value) {
    Parameter: NodeVector of nodes which should be added 
    returns count of added nodes
  */
-int Graph::add_nodes(NodeVector nodes) {
+int Graph::add_nodes(const NodeVector& nodes) {
    int count = 0;
-   for(NodeIterator it = nodes.begin(); it != nodes.end(); it++) {
-      if(add_node(*it))
+   for(auto & node : nodes) {
+      if(add_node(node))
          count++;
    }
    return count;
@@ -247,10 +247,10 @@ int Graph::add_nodes(NodeVector nodes) {
 /** Parameter: ValueVector of values which should be added
   returns count of added nodes
   */
-int Graph::add_nodes(ValueVector values) {
+int Graph::add_nodes(const ValueVector& values) {
    int count = 0;
-   for(ValueIterator it = values.begin(); it != values.end(); it++) {
-      if(add_node(*it))
+   for(auto & value : values) {
+      if(add_node(value))
          count++;
    }
    return count;
@@ -424,8 +424,7 @@ void Graph::remove_edge(GraphData * from_value, GraphData * to_value) {
 void Graph::remove_edge(Node* from_node, Node* to_node) {
    unsigned long count = 0;
    EdgeVector to_remove;
-   for(EdgeIterator it = _edges.begin(); it != _edges.end(); it++) {
-      Edge *e = *it;
+   for(auto e : _edges) {
       if(e->to_node == to_node && e->from_node == from_node) {
          to_remove.push_back(e);
       }
@@ -436,8 +435,8 @@ void Graph::remove_edge(Node* from_node, Node* to_node) {
       }
    }
 
-   for(EdgeIterator it = to_remove.begin(); it != to_remove.end(); it++) {
-      remove_edge(*it);
+   for(auto & it : to_remove) {
+      remove_edge(it);
       count++;
    }
 
@@ -462,9 +461,9 @@ void Graph::remove_edge(Edge* edge) {
 void Graph::remove_all_edges() {
    //not calling remove_edge because this would take O ( e*ln(e)*ln(e) )
    //doing it this way takes only O(e * ln(e))
-   for(EdgeIterator it = _edges.begin(); it != _edges.end(); it ++) {
-      (*it)->remove_self();
-      delete *it;
+   for(auto & _edge : _edges) {
+      _edge->remove_self();
+      delete _edge;
    }
    _edges.clear();
 }
