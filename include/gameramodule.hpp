@@ -76,6 +76,17 @@ inline PyObject* get_module_dict(const char* module_name) {
   return dict;
 }
 
+inline void reprint(PyObject *obj) {
+	PyObject* repr = PyObject_Repr(obj);
+	PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
+	const char *bytes = PyBytes_AS_STRING(str);
+	
+	std::cerr << bytes;
+	
+	Py_XDECREF(repr);
+	Py_XDECREF(str);
+}
+
 /*
   Sends a DeprecationWarning
 */

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import gc, os
-
 import gamera.graph
+import gc
+import os
 
 #gc.set_debug(gc.DEBUG_LEAK)  
 flags = [
@@ -526,28 +526,28 @@ def _test_check_insert_restrictions(flag = None):
 
 
 # ------------------------------------------------------------------------------
-def _test_minimum_spanning_tree(flag = gamera.graph.FREE):
+def _test_minimum_spanning_tree(flag=gamera.graph.FREE):
    g = gamera.graph.Graph(flag)
    print(g.add_edges([
-      (9,10,4), (9,16,8), (10,16,11), (10,11,8),
-      (11,17,2), (11,14,4), (11,12,7), (12,13,9),
-      (12,14,14), (13,14,10), (14,15,2), (15,17,6),
-      (15,16,1), (16,17,7)]
+      (9, 10, 4), (9, 16, 8), (10, 16, 11), (10, 11, 8),
+      (11, 17, 2), (11, 14, 4), (11, 12, 7), (12, 13, 9),
+      (12, 14, 14), (13, 14, 10), (14, 15, 2), (15, 17, 6),
+      (15, 16, 1), (16, 17, 7)]
    ))
    assert g.nedges == 14
 
    try:
-#      gamera.graph_util.graphviz_output(g, "mst_before_%d.viz" % flag)
+      #      gamera.graph_util.graphviz_output(g, "mst_before_%d.viz" % flag)
       t = g.create_minimum_spanning_tree()
-
-#      gamera.graph_util.graphviz_output(t, "mst_after_%d.viz" % flag)
+      #      gamera.graph_util.graphviz_output(t, "mst_after_%d.viz" % flag)
       assert t.nnodes == 9
       assert t.nedges == 8
       print(t.get_edges())
       for a in t.get_edges():
          print(a)
       print(str(list()))
-      assert "[<Edge from 15 to 16 (1.0)>, <Edge from 11 to 17 (2.0)>, <Edge from 14 to 15 (2.0)>, <Edge from 11 to 14 (4.0)>, <Edge from 9 to 10 (4.0)>, <Edge from 11 to 12 (7.0)>, <Edge from 9 to 16 (8.0)>, <Edge from 12 to 13 (9.0)>]" == str(list(t.get_edges()))
+      assert "[<Edge from 15 to 16 (1.0)>, <Edge from 11 to 17 (2.0)>, <Edge from 14 to 15 (2.0)>, <Edge from 11 to 14 (4.0)>, <Edge from 9 to 10 (4.0)>, <Edge from 11 to 12 (7.0)>, <Edge from 9 to 16 (8.0)>, <Edge from 12 to 13 (9.0)>]" == str(
+         list(t.get_edges()))
 
       del t
 
