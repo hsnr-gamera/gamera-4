@@ -210,16 +210,18 @@ struct UnrollSquaredNorm<1>
     template <class T1, class T2>  \
     static void NAME(T1 * left, T2 const * right)  \
     {  \
-        (*left) OPER (*right);  \
+        if(left != nullptr) {(*left) OPER (*right);  \
         UnrollLoop<LEVEL-1>::NAME(left+1, right+1); \
+        } \
     }
 
 #define VIGRA_UNROLL_LOOP_SCALAR(NAME, OPER) \
     template <class T1, class T2>  \
     static void NAME(T1 * left, T2 right)  \
     {  \
-        (*left) OPER (right);  \
+        if(left != nullptr) { (*left) OPER (right);  \
         UnrollLoop<LEVEL-1>::NAME(left+1, right); \
+        } \
     }
 
 

@@ -17,9 +17,15 @@ September 2002
 __version__ = 0.3
 __license__ = "FreeBSD"
 
-
-import os, sys, glob, fnmatch, shutil, string, copy, getopt
-from os.path import basename, dirname, join, islink, isdir, isfile
+import copy
+import fnmatch
+import getopt
+import glob
+import os
+import shutil
+import string
+import sys
+from os.path import basename, join, islink, isdir, isfile
 
 Error = "buildpkg.Error"
 
@@ -41,6 +47,7 @@ RequiresReboot
 InstallFat\
 """
 
+
 ######################################################################
 # Helpers
 ######################################################################
@@ -55,7 +62,6 @@ class GlobDirectoryWalker:
         self.pattern = pattern
         self.files = []
         self.index = 0
-
 
     def __getitem__(self, index):
         while 1:
@@ -133,27 +139,24 @@ class PackageMaker:
         'RequiresReboot': 'NO',
         'InstallFat': 'NO'}
 
-
     def __init__(self, title, version, desc):
         "Init. with mandatory title/version/description arguments."
 
         info = {"Title": title, "Version": version, "Description": desc}
         self.packageInfo = copy.deepcopy(self.packageInfoDefaults)
         self.packageInfo.update(info)
-        
+
         # variables set later
-	self.packageContentsFolder = None
+        self.packageContentsFolder = None
         self.packageRootFolder = None
         self.packageResourceFolder = None
         self.sourceFolder = None
         self.resourceFolder = None
 
-
     def _escapeBlanks(self, s):
         "Return a string with escaped blanks."
-        
+
         return s.replace(' ', '\ ')
-                
 
     def build(self, root, resources=None, **options):
         """Create a package for some given root folder.
@@ -172,33 +175,32 @@ class PackageMaker:
             self.resourceFolder = resources
 
         # replace default option settings with user ones if provided
-        fields = list(self. packageInfoDefaults.keys())
+        fields = list(self.packageInfoDefaults.keys())
         for k, v in options.items():
             if k in fields:
                 self.packageInfo[k] = v
             elif not k in ["OutputDir"]:
                 raise Error("Unknown package option: %s" % k)
-        
+
         # Check where we should leave the output. Default is current directory
         outputdir = options.get("OutputDir", os.getcwd())
         packageName = self.packageInfo["Title"]
         self.packageRootFolder = os.path.join(outputdir, packageName + ".pkg")
- 
+
         # do what needs to be done
         self._makeFolders()
-	self._addInfo()
-	self._addArchive()
+        self._addInfo()
+        self._addArchive()
         self._addBom()
         self._addResources()
         self._addSizes()
 
-
     def addResource(self, path):
         "Add arbitrary file or folder to the package resource folder."
-        
+
         # Folder basenames become subfolders of Contents/Resources.
         # This method is made public for those who wknow what they do!
-   
+
         prf = self.packageResourceFolder
         if isfile(path) and not isdir(path):
             shutil.copy(path, prf)
@@ -206,7 +208,6 @@ class PackageMaker:
             path = self._escapeBlanks(path)
             prf = self._escapeBlanks(prf)
             os.system("cp -r %s %s" % (path, prf))
-        
 
     def _makeFolders(self):
         "Create package folder structure."
@@ -221,7 +222,6 @@ class PackageMaker:
         os.mkdir(self.packageContentsFolder)
         os.mkdir(self.packageResourceFolder)
 
-
     def _addInfo(self):
         "Write .info file containing installing options."
 
@@ -235,7 +235,6 @@ class PackageMaker:
         path = join(self.packageResourceFolder, base)
         f = open(path, "w")
         f.write(info)
-
 
     def _addBom(self):
         "Write .bom file containing 'Bill of Materials'."
@@ -252,41 +251,39 @@ class PackageMaker:
         except Exception:
             pass
 
-
     def _addArchive(self):
         "Write .pax.gz file, a compressed archive using pax/gzip."
 
-
-# FIX SYMBOLIC
-	cwd = os.getcwd()
-	os.chdir(self.sourceFolder)
+        # FIX SYMBOLIC
+        cwd = os.getcwd()
+        os.chdir(self.sourceFolder)
         # Pax is the enemy.  Make war.
-	sitepackages = join("System", "Library", "Frameworks", "Python.framework", "Versions", "2.3", "lib", "python2.3", "site-packages")
+        sitepackages = join("System", "Library", "Frameworks", "Python.framework", "Versions", "2.3", "lib",
+                            "python2.3", "site-packages")
 
-	if isdir(join(cwd, self.sourceFolder, sitepackages)):
-	   librarypython23 = join("Library", "Python", "2.3")
-	   if not isdir(librarypython23):
-	   	os.makedirs(librarypython23)
-	   shutil.move(join(cwd, self.sourceFolder, sitepackages), join(cwd, self.sourceFolder, librarypython23))
+        if isdir(join(cwd, self.sourceFolder, sitepackages)):
+            librarypython23 = join("Library", "Python", "2.3")
+            if not isdir(librarypython23):
+                os.makedirs(librarypython23)
+            shutil.move(join(cwd, self.sourceFolder, sitepackages), join(cwd, self.sourceFolder, librarypython23))
 
-# END FIXING OF THE SYMBOLIC LINKS
+        # END FIXING OF THE SYMBOLIC LINKS
 
         # Currently ignores if the 'pax' tool is not available.
 
         # create archive
         base = basename(self.packageInfo["Title"]) + ".pax"
         self.archPath = join(self.packageResourceFolder, base)
-	working = join(cwd, self.archPath)
+        working = join(cwd, self.archPath)
         archPath = self._escapeBlanks(working)
         cmd = "pax -wf %s %s" % (archPath, ".")
-	print(archPath)
+        print(archPath)
         res = os.system(cmd)
-        
+
         # compress archive
         cmd = "gzip %s" % archPath
         res = os.system(cmd)
         os.chdir(cwd)
-
 
     def _addResources(self):
         "Add all files and folders inside a resources folder to the package."
@@ -300,7 +297,6 @@ class PackageMaker:
         files = glob.glob("%s/*" % self.resourceFolder)
         for f in files:
             self.addResource(f)
-        
 
     def _addSizes(self):
         "Write .sizes file with info about number and size of files."
@@ -320,19 +316,20 @@ class PackageMaker:
             installedSize = installedSize + os.lstat(f)[6]
 
         try:
-            zippedSize = os.stat(self.archPath+ ".gz")[6]
-        except OSError: # ignore error 
+            zippedSize = os.stat(self.archPath + ".gz")[6]
+        except OSError:  # ignore error
             pass
         base = self.packageInfo["Title"] + ".sizes"
         f = open(join(self.packageResourceFolder, base), "w")
         format = "NumFiles %d\nInstalledSize %d\nCompressedSize %d\n"
         f.write(format % (numFiles, installedSize, zippedSize))
 
+
 # Shortcut function interface
 
 def buildPackage(*args, **options):
     "A shortcut function for building a package."
-    
+
     o = options
     title, version, desc = o["Title"], o["Version"], o["Description"]
     pm = PackageMaker(title, version, desc)
@@ -370,7 +367,7 @@ def printUsage():
     maxKeyLen = max(list(map(len, optionalKeys)))
     for k in optionalKeys:
         format = "               --%%s:%s %%s"
-        format = format % (" " * (maxKeyLen-len(k)))
+        format = format % (" " * (maxKeyLen - len(k)))
         print(format % (k, repr(pmDefaults[k])))
 
 
@@ -379,7 +376,7 @@ def main():
 
     shortOpts = ""
     keys = list(PackageMaker.packageInfoDefaults.keys())
-    longOpts = [k+"=" for k in keys]
+    longOpts = [k + "=" for k in keys]
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], shortOpts, longOpts)
@@ -395,8 +392,8 @@ def main():
     ok = list(optsDict.keys())
     if not (1 <= len(args) <= 2):
         print("No argument given!")
-    elif not ("Title" in ok and \
-              "Version" in ok and \
+    elif not ("Title" in ok and
+              "Version" in ok and
               "Description" in ok):
         print("Missing mandatory option!")
     else:

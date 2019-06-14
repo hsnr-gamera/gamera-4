@@ -159,7 +159,8 @@ class RuleEngineRunnerPanel(wx.Panel):
       self.Layout()
 
    def open_module(self, filename):
-      import imp
+      from importlib import util
+      import importlib
       try:
          filename = filename.encode('utf8')
       except Exception:
@@ -167,6 +168,7 @@ class RuleEngineRunnerPanel(wx.Panel):
       fd = open(filename, 'r')
       module_name = path.split(filename)[1]
       module_name = module_name[:module_name.rfind('.')]
-      module = imp.load_module(
-        module_name, fd, filename, ('py', 'r', imp.PY_SOURCE))
+      spec = importlib.util.find_spec(module_name)
+      module = importlib.util.module_from_spec(spec)
+      #module = importlib.util._module_to_load(module_name, fd, filename, ('py', 'r', imp.PY_SOURCE))
       self.tree.add_module(module)

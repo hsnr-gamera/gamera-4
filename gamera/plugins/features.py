@@ -18,14 +18,18 @@
 #
 
 import array
-from gamera.plugin import *
+
 import _features
+
+from gamera.plugin import *
+
 
 class Feature(PluginFunction):
     self_type = ImageType([ONEBIT])
     return_type = FloatVector(length=1)
     feature_function = True
     doc_examples = [(ONEBIT,)]
+
 
 class black_area(Feature):
     """
@@ -43,6 +47,7 @@ class black_area(Feature):
     .. warning:: This feature is not scale invariant.
     """
     pass
+
 
 class moments(Feature):
     """
@@ -65,6 +70,7 @@ class moments(Feature):
     """
     return_type = FloatVector(length=9)
 
+
 class nholes(Feature):
     """
     Computes for each row or column the average number of white runs not
@@ -85,6 +91,7 @@ class nholes(Feature):
     +-------+----------+--------+
     """
     return_type = FloatVector(length=2)
+
 
 class nholes_extended(Feature):
     """
@@ -109,6 +116,7 @@ class nholes_extended(Feature):
     """
     return_type = FloatVector(length=8)
 
+
 class volume(Feature):
     """
     The percentage of black pixels within the rectangular bounding box
@@ -124,6 +132,7 @@ class volume(Feature):
     """
     pass
 
+
 class area(Feature):
     """
     The area of the bounding box (i.e. *nrows* * *ncols*).
@@ -137,6 +146,7 @@ class area(Feature):
     +-------+----------+--------+
     """
     pass
+
 
 class aspect_ratio(Feature):
     """
@@ -153,7 +163,8 @@ class aspect_ratio(Feature):
     +-------+----------+--------+
     """
     pass
-    
+
+
 class nrows_feature(Feature):
     """
     Simply the number of rows. As this feature is *not* scale
@@ -170,6 +181,7 @@ class nrows_feature(Feature):
     """
     pass
 
+
 class ncols_feature(Feature):
     """
     Simply the number of cols. As this feature is *not* scale
@@ -185,6 +197,7 @@ class ncols_feature(Feature):
     +-------+----------+--------+
     """
     pass
+
 
 class compactness(Feature):
     """
@@ -212,7 +225,8 @@ class compactness(Feature):
     +-------+----------+--------+
     """
     pass
-    
+
+
 class volume16regions(Feature):
     """
     Divides the image into a 4 x 4 grid of 16 regions and calculates
@@ -228,6 +242,7 @@ class volume16regions(Feature):
     """
     return_type = FloatVector(length=16)
 
+
 class volume64regions(Feature):
     """
     Divides the image into an 8 x 8 grid of 64 regions and calculates
@@ -242,6 +257,7 @@ class volume64regions(Feature):
     +-------+----------+--------+
     """
     return_type = FloatVector(length=64)
+
 
 class zernike_moments(Feature):
     """
@@ -275,6 +291,7 @@ class zernike_moments(Feature):
     author = "Robert Butz, Fabian Schmitt, Christoph Dalitz"
     return_type = FloatVector(length=14)
 
+
 class zernike_moments_plugin(PluginFunction):
     """
     Computes the absolute values of the Normalized Zernike Moments up to
@@ -298,14 +315,17 @@ class zernike_moments_plugin(PluginFunction):
     The moments *A00* and *A11* are not computed because these are constant
     under the used normalization scheme.
     """
-    category="Features"
+    category = "Features"
     author = "Christoph Dalitz, Robert Butz, Fabian Schmitt"
     self_type = ImageType([GREYSCALE])
     args = Args([Int("order", default=6)])
     return_type = FloatVector("zernike_moments")
-    def __call__(image, order = 6):
+
+    def __call__(image, order=6):
         return _features.zernike_moments_plugin(image, order)
+
     __call__ = staticmethod(__call__)
+
 
 class skeleton_features(Feature):
     """
@@ -333,6 +353,7 @@ class skeleton_features(Feature):
     """
     return_type = FloatVector(length=6)
 
+
 class top_bottom(Feature):
     """
     Features useful only for segmentation-free analysis.  Currently,
@@ -348,6 +369,7 @@ class top_bottom(Feature):
     +-------+----------+--------+
     """
     return_type = FloatVector(length=2)
+
 
 class diagonal_projection(Feature):
     """
@@ -390,26 +412,29 @@ class generate_features(PluginFunction):
     args = Args([Class('features', list), Check('force')])
     return_type = None
     cache = {}
+
     def __call__(self, features=None, force=False):
-      if features is None:
-         features = self.get_feature_functions()
-      if self.feature_functions == features and not force:
-         return
-      self.feature_functions = features
-      features, num_features = features
-      if len(self.features) != num_features:
-          if num_features not in generate_features.cache:
-              generate_features.cache[num_features] = [0] * num_features
-          self.features = array.array('d', generate_features.cache[num_features])
-      offset = 0
-      for name, function in features:
-          function.__call__(self, offset)
-          offset += function.return_type.length
+        if features is None:
+            features = self.get_feature_functions()
+        if self.feature_functions == features and not force:
+            return
+        self.feature_functions = features
+        features, num_features = features
+        if len(self.features) != num_features:
+            if num_features not in generate_features.cache:
+                generate_features.cache[num_features] = [0] * num_features
+            self.features = array.array('d', generate_features.cache[num_features])
+        offset = 0
+        for name, function in features:
+            function.__call__(self, offset)
+            offset += function.return_type.length
+
     __call__ = staticmethod(__call__)
+
 
 class FeaturesModule(PluginModule):
     category = "Features"
-    cpp_headers=["features.hpp"]
+    cpp_headers = ["features.hpp"]
     functions = [black_area, moments, nholes,
                  nholes_extended, volume, area,
                  aspect_ratio, nrows_feature, ncols_feature, compactness,
@@ -418,7 +443,10 @@ class FeaturesModule(PluginModule):
                  skeleton_features, top_bottom, diagonal_projection]
     author = "Michael Droettboom and Karl MacMillan"
     url = "http://gamera.sourceforge.net/"
+
+
 module = FeaturesModule()
+
 
 def get_features_length(features):
     """
@@ -430,23 +458,25 @@ def get_features_length(features):
     ff = core.ImageBase.get_feature_functions(features)
     return ff[1]
 
-def generate_features_list(list, features='all'):
-   """
-   Generate features on a list of images.
 
-   *features*
-     Follows the same rules as for generate_features_.
-   """
-   from gamera import core, util
-   ff = core.Image.get_feature_functions(features)
-   progress = util.ProgressFactory("Generating features...", len(list) / 10)
-   try:
-      for i, glyph in enumerate(list):
-         glyph.generate_features(ff)
-         if i % 10 == 0:
-             progress.step()
-   finally:
-       progress.kill()
+def generate_features_list(list, features='all'):
+    """
+    Generate features on a list of images.
+
+    *features*
+      Follows the same rules as for generate_features_.
+    """
+    from gamera import core, util
+    ff = core.Image.get_feature_functions(features)
+    progress = util.ProgressFactory("Generating features...", len(list) / 10)
+    try:
+        for i, glyph in enumerate(list):
+            glyph.generate_features(ff)
+            if i % 10 == 0:
+                progress.step()
+    finally:
+        progress.kill()
+
 
 generate_features = generate_features()
 
