@@ -141,14 +141,14 @@ PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
 #ifdef __DEBUG_GAPI__
       std::cerr << "Node added" << std::endl;
 #endif
-      RETURN_INT(1)
+      RETURN_BOOL(1)
    }
 
 #ifdef __DEBUG_GAPI__
    std::cerr << "Node not added" << std::endl;
 #endif
    delete data;
-   RETURN_INT(0)
+	RETURN_BOOL(0)
  
 }
 
