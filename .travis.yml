@@ -23,13 +23,9 @@ addons:
 install:
   - pip3 install --upgrade pip
   - pip3 install pathlib2 pytest docutils pygments
-  - pip3 install wxpython
-  - wget "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/wxPython-4.0.4-cp37-cp37m-linux_x86_64.whl"
-  - wget "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/wxPython-4.0.4-cp36-cp36m-linux_x86_64.whl"
-  - python3.6 -m pip install wxPython-4.0.4-cp36-cp36m-linux_x86_64.whl
-  - python3.7 -m pip install wxPython-4.0.4-cp37-cp37m-linux_x86_64.whl
-  - python3.6 setup.py install
-  - python3.6 setup.py clean
-  - python3.7 setup.py install
+  - echo "Python version var"
+  - echo $TRAVIS_PYTHON_VERSION
+  - wget "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/wxPython-4.0.4-cp$TRAVIS_PYTHON_VERSION-cp$TRAVIS_PYTHON_VERSIONm-linux_x86_64.whl"
+  - pip install wxPython-4.0.4-cp$TRAVIS_PYTHON_VERSION-cp$TRAVIS_PYTHON_VERSIONm-linux_x86_64.whl
 script:
   pytest
