@@ -22,6 +22,7 @@ addons:
 install:
   - sudo apt-get update
   - sudo apt-get dist-upgrade
+  - pip3 install --upgrade pip
   - pip3 install wxpython
   - pip3 install pytest
 script:
