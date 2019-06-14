@@ -26,8 +26,8 @@ install:
   - echo "Python version var"
   - echo $TRAVIS_PYTHON_VERSION
   - PY_VERSION="${TRAVIS_PYTHON_VERSION//./}"
-  - wget "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/wxPython-4.0.4-cp${PY_VERSION}N-cp${PY_VERSION}Nm-linux_x86_64.whl"
-  - pip install wxPython-4.0.4-cp${PY_VERSION}N-cp${PY_VERSION}Nm-linux_x86_64.whl
+  - wget "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/wxPython-4.0.4-cp${PY_VERSION}-cp${PY_VERSION}m-linux_x86_64.whl"
+  - pip install wxPython-4.0.4-cp${PY_VERSION}-cp${PY_VERSION}m-linux_x86_64.whl
   - python setup.py install
 script:
   pytest
