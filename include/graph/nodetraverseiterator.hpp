@@ -49,7 +49,7 @@ public:
    NodeTraverseIterator(Graph* graph) {
       _graph = graph;
    }
-   virtual ~NodeTraverseIterator() {}
+   virtual ~NodeTraverseIterator() = default;
 
    /// marks the given node as visited
    inline void visit(Node* node) {

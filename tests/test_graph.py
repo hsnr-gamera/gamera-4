@@ -628,7 +628,7 @@ def _test_graph_copy(flag=gamera.graph.FREE, count=1000):
       for i in range(0, count):
          g.add_edge(i, i + 1)
 
-      g.add_edge(count / 2, count / 2 + 20)
+      g.add_edge(int(count / 2), int(count / 2 + 20))
 
       assert g.nedges == count + 1
       assert g.is_cyclic()
