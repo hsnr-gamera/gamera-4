@@ -34,9 +34,6 @@ PyObject* _to_raw_string(const T &image) {
   if (pystring == nullptr)
     return nullptr;
   value_type* i = (value_type*)PyBytes_AsString(pystring);
-  if(i == nullptr){
-  	return nullptr;
-  }
   for (; j != image.vec_end(); ++i, ++j) {
     *i = *j;
   }
