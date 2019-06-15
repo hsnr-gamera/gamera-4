@@ -35,5 +35,10 @@ install:
   - pip3 install pathlib2 pytest docutils pygments
   - pip3 install wxPython
   - python setup.py install
+
+
 script:
   pytest
+
+notifications:
+  email: false
