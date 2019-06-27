@@ -388,7 +388,7 @@ the main id; this must be set separately.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.0, id_name)]
-      elif id_name is not list:
+      elif not isinstance(id_name, list):
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.classification_state = AUTOMATIC
