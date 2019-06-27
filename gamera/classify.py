@@ -683,7 +683,7 @@ Creates a new classifier instance.
          self.generate_features(glyph)
          return self.classify_with_images(self.database, glyph)
       else:
-         return ([(0.0, 'unknown')], {})
+         return [(0.0, 'unknown')], {}
 
    ########################################
    # MANUAL CLASSIFICATION

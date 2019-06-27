@@ -81,18 +81,20 @@ inline int image_get_id_name(PyObject* image, char** id_name, int* len) {
     return -1;
   }
   PyObject* id = PyTuple_GET_ITEM(id_tuple, 1);
-  PyObject* tmp = PyUnicode_AsUTF8String(id);
-  if(tmp == NULL){
+  if(id == nullptr){
       PyErr_SetString(PyExc_TypeError, "knn: could not get string from id_name tuple.");
       return -1;
   }
-  Py_XDECREF(tmp);
-  *id_name = PyBytes_AsString(tmp);
-  if (*id_name == NULL) {
+	Py_ssize_t lenTmp = 0;
+  if(PyBytes_AsStringAndSize(id, id_name, &lenTmp) < 0){
+	  PyErr_SetString(PyExc_TypeError, "knn: could not get string from id_name tuple.");
+	  return -1;
+  }
+  *len = lenTmp;
+  if (*id_name == nullptr) {
     PyErr_SetString(PyExc_TypeError, "knn: could not get string from id_name tuple.");
     return -1;
   }
-  *len = PyUnicode_GetLength(id);
   return 0;
 }
 

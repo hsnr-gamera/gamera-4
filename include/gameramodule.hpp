@@ -82,6 +82,7 @@ inline void reprint(PyObject *obj) {
 	const char *bytes = PyBytes_AS_STRING(str);
 	
 	std::cerr << bytes;
+	std::cerr << std::flush;
 	
 	Py_XDECREF(repr);
 	Py_XDECREF(str);

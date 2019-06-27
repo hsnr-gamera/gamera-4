@@ -405,7 +405,6 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
     PyErr_SetString(PyExc_TypeError, "Known features must be iterable.");
     return 0;
   }
-
   if (!is_ImageObject(unknown)) {
     PyErr_SetString(PyExc_TypeError, "knn: unknown must be an image");
     return 0;
@@ -448,8 +447,9 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
 
     char* id_name;
     int len;
-    if (image_get_id_name(cur, &id_name, &len) < 0)
-      return 0;
+    if (image_get_id_name(cur, &id_name, &len) < 0) {
+	    return 0;
+    }
     knn.add(id_name, distance);
     Py_XDECREF(cur);
   }
@@ -1330,7 +1330,7 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
 
   PyObject *result;
   for (size_t i = 0; i < o->num_features; ++i) {
-    result = PyObject_CallMethod(array, (char *)"append", (char *)"i", o->selection_vector[i]);
+    result = PyObject_CallMethod(array, "append", "i", o->selection_vector[i]);
     if (result == 0) {
       return 0;
     }
@@ -1352,7 +1352,7 @@ static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
   Py_XDECREF(arglist);
   PyObject* result;
   for (size_t i = 0; i < o->num_features; ++i) {
-    result = PyObject_CallMethod(array, (char *)"append", (char *)"f", o->weight_vector[i]);
+    result = PyObject_CallMethod(array, "append", "f", o->weight_vector[i]);
     if (result == 0)
       return 0;
     Py_XDECREF(result);
@@ -1445,8 +1445,8 @@ static int knn_set_num_features(PyObject* self, PyObject* v) {
 
 
 PyMethodDef knn_methods[] = {
-        { (char *)"classify_with_images", knn_classify_with_images, METH_VARARGS,
-                                                                                         (char *) "(id_name, confidencemap) **classify_with_images** (ImageList *glyphs*, Image *glyph*, bool cross_validation_mode=False, bool do_confidence=True )\n"
+        { "classify_with_images", knn_classify_with_images, METH_VARARGS,
+                                                                                          "(id_name, confidencemap) **classify_with_images** (ImageList *glyphs*, Image *glyph*, bool cross_validation_mode=False, bool do_confidence=True )\n"
                                                                                                   "\nClassifies an unknown image using the given list of images as training data.\n"
                                                                                                   "The *glyph* is classified without setting its classification.  The\n"
                                                                                                   "return value is a tuple of the form ``(id_name,confidencemap)``, where\n"
@@ -1456,39 +1456,39 @@ PyMethodDef knn_methods[] = {
                                                                                                   ".. _idname: #id-name\n\n"
                                                                                                   ".. _confidence: #confidence"
         },
-        { (char *)"instantiate_from_images", knn_instantiate_from_images, METH_VARARGS,
-                                                                                         (char *)"Use the list of images for non-interactive classification." },
-        { (char *)"_distance_from_images", knn_distance_from_images, METH_VARARGS, (char *)"" },
-        { (char *)"_distance_between_images", knn_distance_between_images, METH_VARARGS, (char *)"" },
-        { (char *)"_distance_matrix", knn_distance_matrix, METH_VARARGS, (char *)"" },
-        { (char *)"_unique_distances", knn_unique_distances, METH_VARARGS, (char *)"" },
-        { (char *)"set_selections", knn_set_selections, METH_VARARGS,
-                                                                                         (char *)"Set the feature selection used for classification."},
-        { (char *)"get_selections", knn_get_selections, METH_VARARGS,
-                                                                                         (char *)"Get the feature selection used for classification."},
-        { (char *)"set_weights", knn_set_weights, METH_VARARGS,
-                                                                                         (char *)"Set the weights used for classification." },
-        { (char *)"get_weights", knn_get_weights, METH_VARARGS,
-                                                                                         (char *)"Get the weights used for classification." },
-        { (char *)"classify", knn_classify, METH_VARARGS,
-                                                                                         (char *)"" },
-        { (char *)"leave_one_out", knn_leave_one_out, METH_VARARGS, (char *)"" },
-        { (char *)"_knndistance_statistics", knn_knndistance_statistics, METH_VARARGS,
-                                                                                         (char *)"" },
-        { (char *)"serialize", knn_serialize, METH_VARARGS, (char *)"" },
-        { (char *)"unserialize", knn_unserialize, METH_VARARGS, (char *)"" },
+        { "instantiate_from_images", knn_instantiate_from_images, METH_VARARGS,
+                                                                                         "Use the list of images for non-interactive classification." },
+        { "_distance_from_images", knn_distance_from_images, METH_VARARGS, "" },
+        { "_distance_between_images", knn_distance_between_images, METH_VARARGS, "" },
+        { "_distance_matrix", knn_distance_matrix, METH_VARARGS, "" },
+        { "_unique_distances", knn_unique_distances, METH_VARARGS, "" },
+        { "set_selections", knn_set_selections, METH_VARARGS,
+                                                                                         "Set the feature selection used for classification."},
+        { "get_selections", knn_get_selections, METH_VARARGS,
+                                                                                         "Get the feature selection used for classification."},
+        { "set_weights", knn_set_weights, METH_VARARGS,
+                                                                                         "Set the weights used for classification." },
+        { "get_weights", knn_get_weights, METH_VARARGS,
+                                                                                         "Get the weights used for classification." },
+        { "classify", knn_classify, METH_VARARGS,
+                                                                                         "" },
+        { "leave_one_out", knn_leave_one_out, METH_VARARGS, "" },
+        { "_knndistance_statistics", knn_knndistance_statistics, METH_VARARGS,
+                                                                                         "" },
+        { "serialize", knn_serialize, METH_VARARGS, "" },
+        { "unserialize", knn_unserialize, METH_VARARGS, "" },
         { NULL }
 };
 
 PyGetSetDef knn_getset[] = {
-        { (char *)"num_k", (getter)knn_get_num_k, (setter)knn_set_num_k,
-                (char *)"The value of k used for classification.", 0 },
-        { (char *)"distance_type", (getter)knn_get_distance_type, (setter)knn_set_distance_type,
-                (char *)"The type of distance calculation used.", 0 },
-        { (char *)"confidence_types", (getter)knn_get_confidence_types, (setter)knn_set_confidence_types,
-                (char *)"The types of confidences computed during classification.", 0 },
-        { (char *)"num_features", (getter)knn_get_num_features, (setter)knn_set_num_features,
-                (char *)"The current number of features.", 0 },
+        { "num_k", (getter)knn_get_num_k, (setter)knn_set_num_k,
+                "The value of k used for classification.", 0 },
+        { "distance_type", (getter)knn_get_distance_type, (setter)knn_set_distance_type,
+                "The type of distance calculation used.", 0 },
+        { "confidence_types", (getter)knn_get_confidence_types, (setter)knn_set_confidence_types,
+                "The types of confidences computed during classification.", 0 },
+        { "num_features", (getter)knn_get_num_features, (setter)knn_set_num_features,
+                "The current number of features.", 0 },
         { NULL }
 };
 
