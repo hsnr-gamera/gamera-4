@@ -594,10 +594,22 @@ class Image(gameracore.Image, ImageBase):
          self._display.close()
 
    def __eq__(self, other):
-      return ImageBase.__eq__(self, other)
+      return gameracore.Image.__eq__(self, other)
+
+   def __gt__(self, other):
+      return gameracore.Image.__gt__(self, other)
+
+   def __ge__(self, other):
+      return self.__eq__(other) or self.__gt__(other)
+
+   def __lt__(self, other):
+      return not self.__gt__(other)
+
+   def __le__(self, other):
+      return self.__eq__(other) or not self.__gt__(other)
 
    def __hash__(self):
-      return ImageBase.__hash__(self)
+      return gameracore.Image.__hash__(self)
 
 
 ######################################################################
@@ -624,6 +636,24 @@ class Cc(gameracore.Cc, ImageBase):
    def __del__(self):
       if self._display:
          self._display.close()
+
+   def __eq__(self, other):
+      return gameracore.Cc.__eq__(self, other)
+
+   def __gt__(self, other):
+      return gameracore.Cc.__gt__(self, other)
+
+   def __ge__(self, other):
+      return self.__eq__(other) or self.__gt__(other)
+
+   def __lt__(self, other):
+      return not self.__gt__(other)
+
+   def __le__(self, other):
+      return self.__eq__(other) or not self.__gt__(other)
+
+   def __hash__(self):
+      return gameracore.Cc.__hash__(self)
    
    def display_context(self):
       """**display_context** ()

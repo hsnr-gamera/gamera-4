@@ -113,6 +113,14 @@ def test_interactive_classifier():
 
     classifier.from_xml_filename("data/testline.xml")
     assert len(classifier.get_glyphs()) == 66
+    last = None
+    for a in classifier.get_database():
+        last = a
+
+        assert(last == a)
+        assert not (last > a)
+        assert not (last != a)
+
     _test_classification(classifier, ccs)
     _test_training(classifier, ccs)
     length = len(classifier.get_glyphs())
