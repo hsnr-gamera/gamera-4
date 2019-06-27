@@ -593,6 +593,13 @@ class Image(gameracore.Image, ImageBase):
       if self._display:
          self._display.close()
 
+   def __eq__(self, other):
+      return ImageBase.__eq__(self, other)
+
+   def __hash__(self):
+      return ImageBase.__hash__(self)
+
+
 ######################################################################
 
 class SubImage(gameracore.SubImage, ImageBase):

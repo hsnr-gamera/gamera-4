@@ -923,9 +923,31 @@ static PyObject* image_setitem(PyObject* self, PyObject* args) {
   return 0;
 }
 
-static PyObject* image_len(PyObject* self, PyObject* args) {
+static PyObject* image_len(PyObject* self, PyObject* ) {
   Image* image = (Image*)((RectObject*)self)->m_x;
   return Py_BuildValue(CHAR_PTR_CAST "i", (long)(image->nrows() * image->ncols()));
+}
+
+static PyObject* image_eq(PyObject* self, PyObject* args){
+	auto image = (Image*)((RectObject*)self)->m_x;
+	PyObject* other;
+	if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &other)) {
+		auto otherImage = (Image*)((RectObject*)other)->m_x;
+		if(otherImage->features == image->features
+		&& otherImage->features_len == image->features_len){
+			Py_RETURN_FALSE;
+		}
+		Py_RETURN_FALSE;
+	}
+	PyErr_Clear();
+	PyErr_SetString(PyExc_TypeError, "Invalid arguments to __eg__.  Need an image object as first argument");
+	return 0;
+}
+
+static PyObject* image_hash(PyObject* self, PyObject*) {
+	auto image = (Image *) ((RectObject *) self)->m_x;
+	auto hashFunc = PyHash_GetFuncDef();
+	return Py_BuildValue("i", hashFunc->hash(image, sizeof(Image)));
 }
 
 #define CREATE_GET_FUNC(name) static PyObject* image_get_##name(PyObject* self) {\
@@ -1726,6 +1748,8 @@ static PyMethodDef image_methods[] = {
         { (char *)"__getitem__", image_getitem, METH_VARARGS },
         { (char *)"__setitem__", image_setitem, METH_VARARGS },
         { (char *)"__len__", image_len, METH_NOARGS },
+        { (char *)"__eq__", image_eq, METH_NOARGS },
+        { (char *)"__hash__", image_hash, METH_NOARGS },
         // Removed 07/28/04 MGD.  Can't figure out why this is useful.
         // { "sort", image_sort, METH_NOARGS },
         { NULL }
