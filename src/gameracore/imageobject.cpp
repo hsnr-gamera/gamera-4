@@ -1081,9 +1081,11 @@ static PyObject *image_richcompare(PyObject *a, PyObject *b, int op) {
 		case Py_NE:
 			cmp = (ap != bp) || (ap.data() != bp.data());
 			break;
+		case Py_GT:
+			cmp = ap > bp && ap.data() != bp.data();
+			break;
 		case Py_LT:
 		case Py_LE:
-		case Py_GT:
 		case Py_GE:
 			Py_XINCREF(Py_NotImplemented);
 			return Py_NotImplemented;
@@ -1104,6 +1106,7 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 		Py_XINCREF(Py_NotImplemented);
 		return Py_NotImplemented;
 	}
+	//#define DEBUG_COMPARE
 	
 	Image &ap = *(Image *) ((RectObject *) a)->m_x;
 	Image &bp = *(Image *) ((RectObject *) b)->m_x;
@@ -1117,8 +1120,8 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			if (!is_CCObject(a) || !is_CCObject(b))
 				cmp = false;
 			else {
-				Cc &ac = *(Cc *) ((RectObject *) a)->m_x;
-				Cc &bc = *(Cc *) ((RectObject *) b)->m_x;
+				auto ac = *(Cc *) ((RectObject *) a)->m_x;
+				auto bc = *(Cc *) ((RectObject *) b)->m_x;
 				cmp = (ap == bp) && (ap.data() == bp.data()) && ac.label() == bc.label();
 			}
 			break;
@@ -1126,8 +1129,8 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			if (!is_CCObject(a) || !is_CCObject(b))
 				cmp = true;
 			else {
-				Cc &ac = *(Cc *) ((RectObject *) a)->m_x;
-				Cc &bc = *(Cc *) ((RectObject *) b)->m_x;
+				auto ac = *(Cc *) ((RectObject *) a)->m_x;
+				auto bc = *(Cc *) ((RectObject *) b)->m_x;
 				cmp = (ap != bp) || (ap.data() != bp.data()) || ac.label() != bc.label();
 			}
 			break;
@@ -1137,22 +1140,38 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			else {
 				auto ac = *(Cc *) ((RectObject *) a)->m_x;
 				auto bc = *(Cc *) ((RectObject *) b)->m_x;
-				if (ac.label() == bc.label()) {
-					if (ac.data()->offset() == bc.data()->offset()) {
-						if (ac.data()->dim() == bc.data()->dim()) {
-							if (ac.data()->nrows() == bc.data()->nrows()) {
-								cmp = ac.data()->ncols() > bc.data()->ncols();
+				
+				if (ac.origin() == bc.origin()) {
+					if (ac.lr() == bc.lr()) {
+						if (ac.nrows() == bc.nrows()) {
+							if (ac.nrows() == bc.nrows()) {
+								#ifdef DEBUG_COMPARE
+								std::cerr << "size " << std::endl;
+								#endif
+								cmp = ac.size() > bc.size();
 							} else {
-								cmp = ac.data()->nrows() > bc.data()->nrows();
+								#ifdef DEBUG_COMPARE
+								std::cerr << "nrows " << std::endl;
+								#endif
+								cmp = ac.nrows() > bc.nrows();
 							}
 						} else {
-							cmp = ac.data()->dim() > bc.data()->dim();
+							#ifdef DEBUG_COMPARE
+							std::cerr << "nrows" << std::endl;
+							#endif
+							cmp = ac.nrows() > bc.nrows();
 						}
 					} else {
-						cmp = ac.data()->offset() > bc.data()->offset();
+						#ifdef DEBUG_COMPARE
+						std::cerr << "lr " << std::endl;
+						#endif
+						cmp = ac.lr() > bc.lr();
 					}
 				} else {
-					cmp = ac.label() > bc.label();
+					#ifdef DEBUG_COMPARE
+					std::cerr << "origin " << std::endl;
+					#endif
+					cmp = ac.origin() > bc.origin();
 				}
 			}
 			break;
@@ -1164,10 +1183,22 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 		default:
 			return 0; // cannot happen
 	}
+	
 	if (cmp) {
+		
+		#ifdef DEBUG_COMPARE
+		std::cerr << "Compare (" << op << ") = true" << std::endl;
+		reprint(a);
+		reprint(b);
+		#endif
 		Py_XINCREF(Py_True);
 		return Py_True;
 	} else {
+		#ifdef DEBUG_COMPARE
+		std::cerr << "Compare (" << op << ") = false" << std::endl;
+		reprint(a);
+		reprint(b);
+		#endif
 		Py_XINCREF(Py_False);
 		return Py_False;
 	}

@@ -161,22 +161,12 @@ a list of glyphs that is already updated for splitting and grouping."""
    def _pregroup(self, glyphs, function):
       from gamera import graph
       G = graph.Undirected()
-      #G.add_nodes(glyphs)
+      # assert G.add_nodes(glyphs)
+      #  TODO only for testing
       for glyph in glyphs:
+         print(glyph)
          assert G.add_node(glyph)
-         print(glyph)
          assert G.has_node(glyph)
-
-
-      counter = 0
-      print("--------\n")
-      for glyph in G.get_nodes():
-         counter += 1
-         print(glyph)
-
-
-      print("G = " + str(counter))
-      print("glyphs = " + str(len(glyphs)))
 
       progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
       try:
@@ -399,7 +389,7 @@ Saves the training data in XML format to the given stream (which could
 be any object supporting the file protocol, such as a file object or StringIO
 object)."""
       self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs() 
+      glyphs = [g for g in self.get_glyphs()
                 if not g.get_main_id().startswith("_group._part")]
       return gamera_xml.WriteXML(
          glyphs=glyphs, with_features=with_features).write_stream(stream)
@@ -409,7 +399,7 @@ object)."""
 
 Saves the training data in XML format to the given filename."""
       self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs() 
+      glyphs = [g for g in self.get_glyphs()
                 if not g.get_main_id().startswith("_group._part")]
       return gamera_xml.WriteXMLFile(
          glyphs=glyphs).write_filename(filename, with_features)
@@ -464,7 +454,7 @@ existing training data."""
             progress.step()
       finally:
          progress.kill()
-   
+
 class NonInteractiveClassifier(_Classifier):
    def __init__(self, database=[], perform_splits=True):
       """**NonInteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
@@ -545,7 +535,7 @@ Returns ``True`` if classifier is interactive, else ``False``."""
 
 Returns a list of the glyphs in the classifier."""
       return list(self.database)
-      
+
    def set_glyphs(self, glyphs):
       """**set_glyphs** (ImageList *glyphs*)
 
@@ -668,7 +658,7 @@ Creates a new classifier instance.
    # BASIC DATABASE MANIPULATION FUNCTIONS
    def get_glyphs(self):
       return self.database
-      
+
    def set_glyphs(self, glyphs):
       glyphs = util.make_sequence(glyphs)
       self.clear_glyphs()
@@ -767,7 +757,7 @@ connnected components, such as the lower-case *i*.
                   glyph.classify_heuristic('_group._part.' + sub)
                   self.generate_features(glyph)
             added, removed = self.classify_glyph_manual(union, sub)
-            #added.append(union) # this would lead to doublets
+            #added.append(union)  # this would lead to doublets
             return added, removed
          else:
             # grouping a single glyph corrupts the classifier_glyph.xml file
@@ -782,8 +772,8 @@ connnected components, such as the lower-case *i*.
       new_glyphs = []
       for glyph in glyphs:
          # Don't re-insert removed children glyphs
-         if not glyph in removed:
-            if not glyph in self.database:
+         if glyph not in removed:
+            if glyph not in self.database:
                self.generate_features(glyph)
                new_glyphs.append(glyph)
             glyph.classify_manual([(1.0, id)])
