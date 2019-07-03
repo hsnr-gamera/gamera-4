@@ -130,7 +130,6 @@ PyObject* graph_copy(PyObject* self, PyObject* args) {
 }
 
 
-
 // -----------------------------------------------------------------------------  
 /* Python wrapper methods                                                    */
 // -----------------------------------------------------------------------------  
@@ -140,12 +139,14 @@ PyObject* graph_add_node(PyObject* self, PyObject* pyobject) {
    if(so->_graph->add_node(data)) {
 #ifdef __DEBUG_GAPI__
       std::cerr << "Node added" << std::endl;
+      reprint(pyobject);
 #endif
       RETURN_BOOL(1)
    }
 
 #ifdef __DEBUG_GAPI__
    std::cerr << "Node not added" << std::endl;
+	reprint(pyobject);
 #endif
    delete data;
 	RETURN_BOOL(0)
@@ -270,7 +271,7 @@ PyObject* graph_add_edge(PyObject* self, PyObject* args) {
          del_to = false;
 	      Py_XINCREF(so);
       }
-#ifdef __DEBUG_GAPI__ 
+#ifdef __DEBUG_GAPI__
       std::cerr << from << to << std::endl;
 #endif
 
@@ -532,7 +533,6 @@ PyObject* graph_get_node(PyObject* self, PyObject* pyobject) {
    GraphDataPyObject value(pyobject);
    Node *node = so->_graph->get_node(&value);
    if(node == NULL) {
-
       PyErr_SetString(PyExc_ValueError, "There is no node associated with the given value");
       return NULL;
    }
@@ -549,17 +549,17 @@ PyObject* graph_has_node(PyObject* self, PyObject* a) {
    bool res;
    Py_XINCREF(a);
 #ifdef __DEBUG_GAPI__
-   std::cout << "graph_has_node\n";
+   std::cerr << "graph_has_node" << std::endl;
 #endif
    if(is_NodeObject(a)) {
       res = so->_graph->has_node(((NodeObject*)a)->_node);
    }
    else {
-      GraphDataPyObject obj(a);
-      res = so->_graph->has_node(&obj);
+	   GraphDataPyObject obj(a);
+	   res = so->_graph->has_node(&obj);
    }
    Py_XDECREF(a);
-   RETURN_BOOL(res); 
+   RETURN_BOOL(res)
 }
 
 

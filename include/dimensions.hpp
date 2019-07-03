@@ -94,14 +94,21 @@ namespace Gamera {
     bool operator!=(const Point& x) const {
       return (m_x != x.m_x || m_y != x.m_y);
     }
-
-    /// Less Than operator
-    /// (this does not make real sense, but allows Points to be keys in Maps)
-    bool operator<(const Point& x) const {
-      if (m_x < x.m_x)  return true;
-      if (m_y < x.m_y) return true;
-      return false;
-    }
+	
+	  /// Less Than operator
+	  /// (this does not make real sense, but allows Points to be keys in Maps)
+	  bool operator<(const Point& x) const {
+		  if (m_x < x.m_x)  return true;
+		  if (m_y < x.m_y) return true;
+		  return false;
+	  }
+	
+	  /// Gt Than operator
+	  bool operator>(const Point& x) const {
+		  if (m_x > x.m_x)  return true;
+		  if (m_y > x.m_y) return true;
+		  return false;
+	  }
 
     /// Addition
     const Point operator+(const Point& p) const {
@@ -160,13 +167,33 @@ namespace Gamera {
 
     /// Equality operator
     bool operator==(const Size& other) const {
-      if (m_width == other.width() && m_height == other.height())
-        return true;
-      else
-        return false;
+	    if (m_width == other.width() && m_height == other.height())
+		    return true;
+	    else
+		    return false;
     }
-    
-    /// Inequality operator
+	
+	  bool operator<(const Size &rhs) const {
+		  if (m_width < rhs.m_width)
+			  return true;
+		  if (rhs.m_width < m_width)
+			  return false;
+		  return m_height < rhs.m_height;
+	  }
+	
+	  bool operator>(const Size &rhs) const {
+		  return rhs < *this;
+	  }
+	
+	  bool operator<=(const Size &rhs) const {
+		  return !(rhs < *this);
+	  }
+	
+	  bool operator>=(const Size &rhs) const {
+		  return !(*this < rhs);
+	  }
+	
+	  /// Inequality operator
     bool operator!=(const Size& other) const {
       if (m_width != other.width() || m_height != other.height())
         return true;
@@ -205,6 +232,26 @@ namespace Gamera {
       else
         return false;
     }
+	
+	  bool operator<(const Dim &rhs) const {
+		  if (m_ncols < rhs.m_ncols)
+			  return true;
+		  if (rhs.m_ncols < m_ncols)
+			  return false;
+		  return m_nrows < rhs.m_nrows;
+	  }
+	
+	  bool operator>(const Dim &rhs) const {
+		  return rhs < *this;
+	  }
+	
+	  bool operator<=(const Dim &rhs) const {
+		  return !(rhs < *this);
+	  }
+	
+	  bool operator>=(const Dim &rhs) const {
+		  return !(*this < rhs);
+	  }
   };
 
   /*
@@ -390,14 +437,20 @@ namespace Gamera {
       size_t lry = std::min(lr_y(), other.lr_y());
       return Rect(Point(ulx, uly), Point(lrx, lry));
     }
-
-    // Equality
-    bool operator==(const Rect& other) const {
-      if (m_origin == other.m_origin && m_lr == other.m_lr)
-        return true;
-      else
-        return false;
-    }
+	
+	  // Equality
+	  bool operator==(const Rect& other) const {
+		  if (m_origin == other.m_origin && m_lr == other.m_lr)
+			  return true;
+		  else
+			  return false;
+	  }
+	  bool operator>(const Rect& other) const {
+		  if (m_origin > other.m_origin && m_lr > other.m_lr)
+			  return true;
+		  else
+			  return (m_origin == other.m_origin && m_lr > other.m_lr);
+	  }
     bool operator!=(const Rect& other) const {
       if (m_origin != other.m_origin || m_lr != other.m_lr)
         return true;

@@ -35,9 +35,9 @@ struct GraphDataPyObject: public GraphData {
    PyObject* data;
    PyObject* _node;
 
-    explicit GraphDataPyObject(PyObject* d = NULL)  {
+    explicit GraphDataPyObject(PyObject* d = nullptr)  {
       data = d;
-      _node = NULL;
+      _node = nullptr;
       incref();
    }
 
@@ -64,13 +64,12 @@ struct GraphDataPyObject: public GraphData {
    }
 
    int compare(const GraphData& b) const override {
-    	return PyObject_Compare(data, dynamic_cast<const GraphDataPyObject &>(b).data);
+	  return PyObject_Compare(data, dynamic_cast<const GraphDataPyObject &>(b).data);
    }
 
 
     GraphData* copy() override {
-      GraphData *a = new GraphDataPyObject(data);
-      return a;
+      return new GraphDataPyObject(data);
    }
 };
 

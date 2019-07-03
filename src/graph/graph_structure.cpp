@@ -260,7 +260,7 @@ int Graph::add_nodes(const ValueVector& values) {
 
 // -----------------------------------------------------------------------------
 Node* Graph::get_node(GraphData * value) {
-   ValueNodeMap::iterator it = _valuemap.find(value);
+   auto it = _valuemap.find(value);
    if(it == _valuemap.end())
       return nullptr;
    else

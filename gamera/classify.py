@@ -161,7 +161,23 @@ a list of glyphs that is already updated for splitting and grouping."""
    def _pregroup(self, glyphs, function):
       from gamera import graph
       G = graph.Undirected()
-      G.add_nodes(glyphs)
+      #G.add_nodes(glyphs)
+      for glyph in glyphs:
+         assert G.add_node(glyph)
+         print(glyph)
+         assert G.has_node(glyph)
+
+
+      counter = 0
+      print("--------\n")
+      for glyph in G.get_nodes():
+         counter += 1
+         print(glyph)
+
+
+      print("G = " + str(counter))
+      print("glyphs = " + str(len(glyphs)))
+
       progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
       try:
          for i in range(len(glyphs)):
@@ -758,7 +774,7 @@ connnected components, such as the lower-case *i*.
             raise ClassifierError("Grouping of only a single glyph is not allowed.")
 
       added = []
-      removed = util.sets.Set()
+      removed = set()
       for glyph in glyphs:
          for child in glyph.children_images:
             removed.add(child)

@@ -474,26 +474,27 @@ PyObject* graph_optimize_partitions(PyObject* self, PyObject* args) {
    int max_graph_size = 16;
    char* criterion = (char*)"min";
    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO|iis:optimize_partitions", &a, 
-            &eval_func, &max_parts_per_group, &max_graph_size, &criterion) <= 0)
-
-      return 0;
-
+            &eval_func, &max_parts_per_group, &max_graph_size, &criterion) <= 0) {
+	   return 0;
+   }
 
    Node* root;
+   
    if(is_NodeObject(a))
       root = so->_graph->get_node(((NodeObject*)a)->_node->_value);
    else {
       GraphDataPyObject obj(a);
       root = so->_graph->get_node(&obj);
    }
-   if (root == NULL)
-      return 0;
+   if (root == nullptr) {
+	   return nullptr;
+   }
 
    Partitions p;
    PyObject* result = p.optimize_partitions(so, root, eval_func, 
          max_parts_per_group, max_graph_size, criterion);
 
-   assert(result != NULL);
+   assert(result != nullptr);
    return result;
 }
 

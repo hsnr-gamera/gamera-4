@@ -361,7 +361,7 @@ This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(1.0, id_name)]
-      elif type(id_name) != type(list):
+      elif type(id_name) is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -413,7 +413,7 @@ this glyph. This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.5, id_name)]
-      elif id_name is not list:
+      elif type(id_name) is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -596,17 +596,11 @@ class Image(gameracore.Image, ImageBase):
    def __eq__(self, other):
       return gameracore.Image.__eq__(self, other)
 
+   def __ne__(self, other):
+      return gameracore.Image.__ne__(self, other)
+
    def __gt__(self, other):
       return gameracore.Image.__gt__(self, other)
-
-   def __ge__(self, other):
-      return self.__eq__(other) or self.__gt__(other)
-
-   def __lt__(self, other):
-      return not self.__gt__(other)
-
-   def __le__(self, other):
-      return self.__eq__(other) or not self.__gt__(other)
 
    def __hash__(self):
       return gameracore.Image.__hash__(self)
@@ -653,7 +647,7 @@ class Cc(gameracore.Cc, ImageBase):
       return self.__eq__(other) or not self.__gt__(other)
 
    def __hash__(self):
-      return gameracore.Cc.__hash__(self)
+       return gameracore.Cc.__hash__(self)
    
    def display_context(self):
       """**display_context** ()

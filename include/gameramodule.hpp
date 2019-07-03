@@ -82,7 +82,7 @@ inline void reprint(PyObject *obj) {
 	const char *bytes = PyBytes_AS_STRING(str);
 	
 	std::cerr << bytes;
-	std::cerr << std::flush;
+	std::cerr << std::endl << std::flush;
 	
 	Py_XDECREF(repr);
 	Py_XDECREF(str);
@@ -1128,6 +1128,8 @@ inline PyObject* create_ImageInfoObject(ImageInfo* x) {
 
 inline int PyObject_Compare(PyObject* o1,PyObject* o2) {
 	if(!PyObject_TypeCheck(o1, o2->ob_type)){
+		reprint(o1);
+		reprint(o2);
 		return -1;
 	}
 

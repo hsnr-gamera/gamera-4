@@ -90,7 +90,8 @@ namespace Gamera {
     size_t stride() const { return m_stride; }
     size_t ncols() const { return m_stride; }
     size_t nrows() const { return size() / m_stride; }
-    Dim dim() const { return Dim(m_stride, size() / m_stride); }
+	
+	  virtual Dim dim() const { return Dim(m_stride, size() / m_stride); }
     size_t page_offset_x() const { return m_page_offset_x; }
     size_t page_offset_y() const { return m_page_offset_y; }
     Point offset() const { return Point(m_page_offset_x, m_page_offset_y); }
@@ -169,18 +170,16 @@ namespace Gamera {
       Destructor
     */
     virtual ~ImageData() {
-      if (m_data != 0) {
-	delete[] m_data;
-      }
+    	delete[] m_data;
     }
     
     virtual size_t bytes() const { return m_size * sizeof(T); }
     virtual double mbytes() const { return (m_size * sizeof(T)) / 1048576.0; }
     virtual void dimensions(size_t rows, size_t cols) {
       m_stride = cols; do_resize(rows * cols); }
-    virtual void dim(const Dim& dim) {
+      void dim(const Dim& dim) {
       m_stride = dim.ncols(); do_resize(dim.nrows() * dim.ncols()); }
-    virtual Dim dim() const {
+      Dim dim() const {
       return Dim(m_stride, size() / m_stride);      
     }
 
