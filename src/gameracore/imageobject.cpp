@@ -1145,32 +1145,17 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 					if (ac.lr() == bc.lr()) {
 						if (ac.nrows() == bc.nrows()) {
 							if (ac.nrows() == bc.nrows()) {
-								#ifdef DEBUG_COMPARE
-								std::cerr << "size " << std::endl;
-								#endif
 								cmp = ac.size() > bc.size();
 							} else {
-								#ifdef DEBUG_COMPARE
-								std::cerr << "nrows " << std::endl;
-								#endif
 								cmp = ac.nrows() > bc.nrows();
 							}
 						} else {
-							#ifdef DEBUG_COMPARE
-							std::cerr << "nrows" << std::endl;
-							#endif
 							cmp = ac.nrows() > bc.nrows();
 						}
 					} else {
-						#ifdef DEBUG_COMPARE
-						std::cerr << "lr " << std::endl;
-						#endif
 						cmp = ac.lr() > bc.lr();
 					}
 				} else {
-					#ifdef DEBUG_COMPARE
-					std::cerr << "origin " << std::endl;
-					#endif
 					cmp = ac.origin() > bc.origin();
 				}
 			}
