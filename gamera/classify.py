@@ -18,11 +18,13 @@
 #
 
 import sys
-from . import core # grab all of the standard gamera modules
-from . import util, gamera_xml, config
-from .fudge import Fudge
-from gamera.gui import has_gui
+
 from gamera.gameracore import CONFIDENCE_DEFAULT
+
+from gamera.gui import has_gui
+from . import core  # grab all of the standard gamera modules
+from . import util, gamera_xml
+from .fudge import Fudge
 
 """This file defines the Python part of classifiers.  These wrapper classes
 contain a reference to a core classifier class (unusally written in C++).
@@ -400,7 +402,13 @@ object)."""
 Saves the training data in XML format to the given filename."""
       self.is_dirty = False
       glyphs = [g for g in self.get_glyphs()
-                if not g.get_main_id().startswith("_group._part")]
+                if not (type(g.get_main_id()) == str and
+                        g.get_main_id().startswith("_group._part")) or
+                not (
+                        type(g.get_main_id()) == bytes and
+                        g.get_main_id().startswith(b"_group._part")
+                )
+                ]
       return gamera_xml.WriteXMLFile(
          glyphs=glyphs).write_filename(filename, with_features)
 

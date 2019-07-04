@@ -151,8 +151,10 @@ class WriteXML:
          indent)
       indent += 1
       for confidence, id in glyph.id_name:
+         if type(id) == bytes:
+            id = id.decode("utf-8")
          word_wrap(stream, '<id name="%s" confidence="%f"/>' %
-                   (str(id.decode("utf-8") ), confidence), indent)
+                   (id, confidence), indent)
       indent -= 1
       word_wrap(stream, '</ids>', indent)
       word_wrap(stream, '<data>', indent)

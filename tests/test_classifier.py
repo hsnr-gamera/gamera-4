@@ -128,7 +128,12 @@ def test_interactive_classifier():
     # subtract len(group_parts) because to_xml_filename() does
     # not save "_group._part"
     group_parts = [x for x in classifier.get_glyphs()
-                   if x.get_main_id().startswith("_group._part")]
+                   if (type(x.get_main_id()) == str and
+                       x.get_main_id().startswith("_group._part")) or
+                   (
+                           type(x.get_main_id()) == bytes and
+                           x.get_main_id().startswith(b"_group._part")
+                   )]
     length = length - len(group_parts)
 
     classifier.to_xml_filename("tmp/testline_classifier.xml")
