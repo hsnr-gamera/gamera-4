@@ -433,7 +433,7 @@ class CallbackList(list, CallbackObject):
       i = max(i, 0); j = max(j, 0)
       if i < len(self) and j < len(self) + 1:
          self.trigger_callback('remove', self[i:j])
-      list.__delslice__(self, i, j)
+      list.__delitem__(self, slice(i, j))
       self.trigger_callback('length_change', len(self))
 
    def __iadd__(self, other):

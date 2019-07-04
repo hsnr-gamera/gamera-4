@@ -507,7 +507,7 @@ Creates a new classifier instance.
 .. __: writing_plugins.html
 
       """
-      if database is list:
+      if type(database) is list:
          self._database = util.CallbackList(database)
          self.set_glyphs(database)
       elif database[-4:] == ".xml":

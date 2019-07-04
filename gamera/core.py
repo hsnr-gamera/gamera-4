@@ -140,7 +140,7 @@ determined from the extension.
          if os.path.splitext(filename)[1][1:].lower() == ext.lower():
             method.__call__(image, filename)
             return
-              
+
    # For backward compatibility, fall back to tiff if
    # we can't automatically determine the filetype by
    # the extension
@@ -202,7 +202,7 @@ class ImageBase:
          return self.__getitem__(attr)
       def __setattr__(self, attr, value):
          return dict.__setitem__(self, attr, value)
-   
+
    def __init__(self):
       self.name = "Untitled"
       self._display = None
@@ -229,7 +229,7 @@ See `pixel types`_ for more information."""
 
    _storage_format_names = {DENSE:  "Dense",
                             RLE:    "RLE"}
-   
+
    def storage_format_name(self):
       """String **storage_format_name** ()
 
@@ -547,11 +547,11 @@ Changes to subimages will affect all other subimages viewing the same data.
          features.sort()
          functions = []
          for feature in features:
-            found = 0
+            found = False
             for i in all_features:
                if feature == i[0]:
                   functions.append(i)
-                  found = 1
+                  found = True
                   break
             if not found:
                raise ValueError("'%s' is not a known feature function." % feature)
@@ -648,7 +648,7 @@ class Cc(gameracore.Cc, ImageBase):
 
    def __hash__(self):
        return gameracore.Cc.__hash__(self)
-   
+
    def display_context(self):
       """**display_context** ()
 

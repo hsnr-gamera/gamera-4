@@ -1094,13 +1094,13 @@ static PyObject* knn_serialize(PyObject* self, PyObject* args) {
 
   for (size_t i = 0; i < feature_size; ++i) {
     PyObject* cur_string = PyList_GET_ITEM(features, i);
-    unsigned long string_size = PyUnicode_GetSize(cur_string) + 1;
+    unsigned long string_size = PyUnicode_GetLength(cur_string) + 1;
     if (fwrite((const void*)&string_size, sizeof(unsigned long), 1, file) != 1) {
       PyErr_SetString(PyExc_IOError, "knn: problem writing to a file.");
       fclose(file);
       return 0;
     }
-    if (fwrite((const void*)PyUnicode_AsUTF8String(cur_string),
+    if (fwrite((const void*)PyUnicode_AsUTF8(cur_string),
                sizeof(char), string_size, file) != string_size) {
       PyErr_SetString(PyExc_IOError, "knn: problem writing to a file.");
       fclose(file);
@@ -1220,20 +1220,21 @@ static PyObject* knn_unserialize(PyObject* self, PyObject* args) {
   }
   PyObject* feature_names = PyList_New(num_feature_names);
   for (size_t i = 0; i < num_feature_names; ++i) {
-    unsigned long string_size;
-    if (fread((void*)&string_size, sizeof(unsigned long), 1, file) != 1) {
-      PyErr_SetString(PyExc_RuntimeError, "knn: problem reading file.");
-      fclose(file);
-      return 0;
-    }
-    char tmp_string[1024];
-    if (fread((void*)&tmp_string, sizeof(char), string_size, file) != string_size) {
-      PyErr_SetString(PyExc_IOError, "knn: problem reading file.");
-      fclose(file);
-      return 0;
-    }
-    PyList_SET_ITEM(feature_names, i,
-                    PyUnicode_FromStringAndSize((const char*)&tmp_string, string_size - 1));
+	  unsigned long string_size;
+	  if (fread((void *) &string_size, sizeof(unsigned long), 1, file) != 1) {
+		  PyErr_SetString(PyExc_RuntimeError, "knn: problem reading file.");
+		  fclose(file);
+		  return 0;
+	  }
+	  char *tmp_string = (char *) calloc(string_size + 1, sizeof(char));
+	  if (fread((void *) tmp_string, sizeof(char), string_size, file) != string_size) {
+		  PyErr_SetString(PyExc_IOError, "knn: problem reading file.");
+		  fclose(file);
+		  free(tmp_string);
+		  return 0;
+	  }
+	  PyList_SET_ITEM(feature_names, i, PyUnicode_FromStringAndSize(tmp_string, string_size - 1));
+	  free(tmp_string);
   }
 
   knn_delete_feature_data(o);
