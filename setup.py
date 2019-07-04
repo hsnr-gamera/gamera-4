@@ -176,7 +176,7 @@ if has_openmp:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall", "-fopenmp"],
+                      extra_compile_args=["-Wall", "-fopenmp", '-std=c++11'],
                       extra_link_args=["-fopenmp"]
                       )
 else:
@@ -184,7 +184,7 @@ else:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall"]
+                      extra_compile_args=["-Wall", '-std=c++11']
                       )
 
 extensions = [Extension("gamera.gameracore",
