@@ -1173,16 +1173,15 @@ inline PyObject* ComplexVector_to_python(ComplexVector* cpp) {
 }
 
 inline PyObject* IntVector_to_python(IntVector* cpp) {
-    PyObject *array_init = get_ArrayInit();
-    if (array_init == 0)
-        return 0;
-    PyObject *str = PyUnicode_FromStringAndSize((char *) (&((*cpp)[0])),
-                                               cpp->size() * sizeof(int));
-    //PyObject *str = Py_BuildValue("i", cpp->front());
-    //TODO check if working
-    PyObject *py = PyObject_CallFunction(array_init,"sO", "i", str);
-    Py_XDECREF(str);
-    return py;
+	PyObject *array_init = get_ArrayInit();
+	if (array_init == 0)
+		return 0;
+	PyObject *py = PyObject_CallFunction(array_init, "s", "i");
+	//TODO slow
+	for (int i = 0; i < cpp->size(); i++) {
+		PyObject_CallMethod(py, "insert", "ii", i, (*cpp)[0]);
+	}
+	return py;
 }
 
 inline PyObject* PointVector_to_python(PointVector* cpp) {

@@ -47,7 +47,7 @@ def _test_grouping(classifier, ccs):
              ]
 
     for (i, (func, criterion)) in enumerate(cases):
-        if func == None:
+        if func is None:
             added, removed = classifier.group_list_automatic(ccs, criterion=criterion)
         else:
             print(ccs[0] == ccs[0])

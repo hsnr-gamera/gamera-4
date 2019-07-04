@@ -21,6 +21,7 @@ class TestPlugins:
 
 def make_test(tester, method):
     def test(self):
+        import array
         tester.run_example(method, tester.images)
 
     return test
