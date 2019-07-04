@@ -969,14 +969,26 @@ static PyObject *image_gt(PyObject *self, PyObject *args) {
 
 static PyObject *image_hash(PyObject *self, PyObject *) {
 	auto image = (Image *) ((RectObject *) self)->m_x;
-	auto hashFunc = PyHash_GetFuncDef();
-	return Py_BuildValue("i", hashFunc->hash(image, sizeof(Image)));
+	auto origin = image->origin();
+	auto lr = image->lr();
+	return Py_BuildValue("i",  _Py_HashDouble((double)origin.x()) +
+	                           _Py_HashDouble((double)origin.y())+
+	                           _Py_HashDouble((double)lr.x())+
+	                           _Py_HashDouble((double)lr.y())+
+	                           _Py_HashDouble((double)image->nrows())+
+	                           _Py_HashDouble((double)image->ncols()));
 }
 
 static PyObject *cc_hash(PyObject *self, PyObject *) {
-	auto cc = (CCObject *) self;
-	auto hashFunc = PyHash_GetFuncDef();
-	return Py_BuildValue("i", hashFunc->hash(cc, sizeof(CCObject)));
+	auto cc = (Image *) ((RectObject *) self)->m_x;
+	auto origin = cc->origin();
+	auto lr = cc->lr();
+	return Py_BuildValue("i", _Py_HashDouble((double)origin.x()) +
+			_Py_HashDouble((double)origin.y())+
+			_Py_HashDouble((double)lr.x())+
+			_Py_HashDouble((double)lr.y())+
+			_Py_HashDouble((double)cc->nrows())+
+			_Py_HashDouble((double)cc->ncols()));
 }
 
 #define CREATE_GET_FUNC(name) static PyObject* image_get_##name(PyObject* self) {\
@@ -1136,7 +1148,7 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			break;
 		case Py_GT:
 			if (!is_CCObject(a) || !is_CCObject(b))
-				cmp = true;
+				cmp = false;
 			else {
 				auto ac = *(Cc *) ((RectObject *) a)->m_x;
 				auto bc = *(Cc *) ((RectObject *) b)->m_x;
@@ -1163,6 +1175,11 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 		case Py_LT:
 		case Py_LE:
 		case Py_GE:
+			#ifdef DEBUG_COMPARE
+			std::cerr << "Compare (" << op << ") = Py_NotImplemented" << std::endl;
+			reprint(a);
+			reprint(b);
+		#endif
 			Py_XINCREF(Py_NotImplemented);
 			return Py_NotImplemented;
 		default:

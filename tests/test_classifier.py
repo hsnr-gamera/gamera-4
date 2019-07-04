@@ -91,11 +91,13 @@ def _test_training(classifier, ccs):
     assert len(classifier.get_glyphs()) == length + 1
     added, removed = classifier.classify_list_manual(ccs, "dummy")
 
-    assert len(classifier.get_glyphs()) == length + len(ccs) + 1
+    assert len(classifier.get_glyphs()) == length + len(ccs)
     assert added == [] and removed == []
     classifier.classify_and_update_list_manual(ccs, "dummy")
+    print("Print//")
     for glyph in classifier.get_glyphs():
         print(glyph)
+    print("Print//")
 
     assert len(classifier.get_glyphs()) == length + len(ccs)
     classifier.add_to_database(ccs)
