@@ -402,11 +402,11 @@ object)."""
 Saves the training data in XML format to the given filename."""
       self.is_dirty = False
       glyphs = [g for g in self.get_glyphs()
-                if not (type(g.get_main_id()) == str and
-                        g.get_main_id().startswith("_group._part")) or
-                not (
+                if (type(g.get_main_id()) == str and
+                    not g.get_main_id().startswith("_group._part")) or
+                (
                         type(g.get_main_id()) == bytes and
-                        g.get_main_id().startswith(b"_group._part")
+                        not g.get_main_id().startswith(b"_group._part")
                 )
                 ]
       return gamera_xml.WriteXMLFile(
