@@ -84,7 +84,7 @@ class WriteXML:
             "Cannot create a file at '%s'." %
             os.path.split(os.path.abspath(filename))[0])
       if filename.endswith('gz'):
-         fd = gzip.open(filename, 'w')
+         fd = gzip.open(filename, 'wt')
       else:
          fd = open(filename, 'w')
       self.write_stream(fd)
@@ -198,8 +198,7 @@ class WriteXMLFile(WriteXML):
       self.stream = stream
       encoding = config.get("xml_encoding")
       self.stream.write('<?xml version="1.0" encoding="%s"?>\n' % encoding)
-      self.stream.write('<gamera-database version="%s">\n' %
-                        str(GAMERA_XML_FORMAT_VERSION))
+      self.stream.write('<gamera-database version="%s">\n' % GAMERA_XML_FORMAT_VERSION)
       self._write_core(stream, indent=1)
       self.stream.write('</gamera-database>\n')
 
