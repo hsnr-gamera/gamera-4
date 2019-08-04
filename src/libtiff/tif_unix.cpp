@@ -28,7 +28,6 @@
  * TIFF Library UNIX-specific Routines.
  */
 #include "tiffiop.h"
-#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -146,9 +145,9 @@ TIFFOpen(const char* name, const char* mode)
 	int m, fd;
 
 	m = _TIFFgetMode(mode, module);
-	if (m == -1)
-		return ((TIFF*)0);
-
+	if (m == -1) {
+		return nullptr;
+	}
 /* for cygwin */        
 #ifdef O_BINARY
         m |= O_BINARY;
@@ -161,7 +160,7 @@ TIFFOpen(const char* name, const char* mode)
 #endif
 	if (fd < 0) {
 		TIFFError(module, "%s: Cannot open", name);
-		return ((TIFF *)0);
+		return nullptr;
 	}
 	return (TIFFFdOpen(fd, name, mode));
 }
@@ -205,7 +204,7 @@ _TIFFmemcmp(const tdata_t p1, const tdata_t p2, tsize_t c)
 static void
 unixWarningHandler(const char* module, const char* fmt, va_list ap)
 {
-	if (module != NULL)
+	if (module != nullptr)
 		fprintf(stderr, "%s: ", module);
 	fprintf(stderr, "Warning, ");
 	vfprintf(stderr, fmt, ap);
@@ -216,7 +215,7 @@ TIFFErrorHandler _TIFFwarningHandler = unixWarningHandler;
 static void
 unixErrorHandler(const char* module, const char* fmt, va_list ap)
 {
-	if (module != NULL)
+	if (module != nullptr)
 		fprintf(stderr, "%s: ", module);
 	vfprintf(stderr, fmt, ap);
 	fprintf(stderr, ".\n");

@@ -2,6 +2,7 @@ set(TIFF_SOURCE
         fax3sm_winnt.cpp
         tif_aux.cpp
         tif_close.cpp
+        ${GAMERA_SOURCE}/plugins/tiff_support.hpp
         tif_codec.cpp
         tif_compress.cpp
         tif_dir.cpp
@@ -10,7 +11,6 @@ set(TIFF_SOURCE
         tif_dirwrite.cpp
         tif_zip.cpp
         tif_write.cpp
-        tif_win32.cpp
         tif_warning.cpp
         tif_version.cpp
         tif_unix.cpp
@@ -24,8 +24,8 @@ set(TIFF_SOURCE
         tif_packbits.cpp
         )
 
-
 add_library(tiff_support SHARED ${TIFF_SOURCE})
+add_definitions(-DCPP_COMPILE)
 
 set_target_properties(
         tiff_support
