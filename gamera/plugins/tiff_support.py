@@ -19,9 +19,6 @@
 #
 
 import glob
-import sys
-
-import _tiff_support
 
 from gamera.plugin import *
 
@@ -58,15 +55,11 @@ class load_tiff(PluginFunction):
     return_type = ImageType([ONEBIT, GREYSCALE, GREY16, RGB, FLOAT])
 
     def __call__(filename, compression=0):
+        from gamera.plugins import _tiff_support
         return _tiff_support.load_tiff(filename, compression)
 
     __call__ = staticmethod(__call__)
     exts = ["tiff", "tif"]
-
-
-load_tiff_class = load_tiff
-load_tiff = load_tiff()
-
 
 class save_tiff(PluginFunction):
     """
@@ -85,29 +78,30 @@ class TiffSupportModule(PluginModule):
     category = "File"
     cpp_headers = ["tiff_support.hpp"]
     if sys.platform == 'win32':
-        cpp_sources = glob.glob("src/libtiff/*.c")
+        cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
             cpp_sources.remove("src/libtiff\\tif_unix.c")
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
     elif sys.platform == 'cygwin':
-        cpp_sources = glob.glob("src/libtiff/*.c")
+        cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
-            cpp_sources.remove("src/libtiff/tif_win32.c")
+            cpp_sources.remove("src/libtiff/tif_win32.cpp")
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
     elif sys.platform == 'darwin':
-        cpp_sources = glob.glob("src/libtiff/*.c")
+        cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
-            cpp_sources.remove("src/libtiff/tif_win32.c")
+            print(cpp_sources)
+            cpp_sources.remove("src/libtiff/tif_win32.cpp")
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
     else:
         extra_libraries = ["tiff"]
-    functions = [tiff_info, load_tiff_class, save_tiff]
+    functions = [save_tiff, tiff_info, load_tiff]
     cpp_include_dirs = ["src/libtiff"]
     author = "Michael Droettboom and Karl MacMillan"
     url = "http://gamera.sourceforge.net/"
@@ -116,3 +110,4 @@ class TiffSupportModule(PluginModule):
 module = TiffSupportModule()
 
 tiff_info = tiff_info()
+load_tiff = load_tiff()

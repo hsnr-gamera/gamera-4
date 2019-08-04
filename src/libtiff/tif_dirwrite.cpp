@@ -969,7 +969,7 @@ TIFFRewriteDirectory( TIFF *tif )
         tif->tif_header.tiff_diroff = 0;
         tif->tif_diroff = 0;
 
-#define	HDROFF(f)	((toff_t) &(((TIFFHeader*) 0)->f))
+#define	HDROFF(f)	((uintptr_t) &(((TIFFHeader*) 0)->f))
         TIFFSeekFile(tif, HDROFF(tiff_diroff), SEEK_SET);
         if (!WriteOK(tif, &(tif->tif_header.tiff_diroff), 
                      sizeof (tif->tif_diroff))) 
@@ -1060,7 +1060,7 @@ TIFFLinkDirectory(TIFF* tif)
 		 * First directory, overwrite offset in header.
 		 */
 		tif->tif_header.tiff_diroff = tif->tif_diroff;
-#define	HDROFF(f)	((toff_t) &(((TIFFHeader*) 0)->f))
+#define	HDROFF(f)	((uintptr_t) &(((TIFFHeader*) 0)->f))
 		(void) TIFFSeekFile(tif, HDROFF(tiff_diroff), SEEK_SET);
 		if (!WriteOK(tif, &diroff, sizeof (diroff))) {
 			TIFFError(tif->tif_name, "Error writing TIFF header");

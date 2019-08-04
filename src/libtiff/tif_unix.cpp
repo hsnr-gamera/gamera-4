@@ -35,13 +35,13 @@
 static tsize_t
 _tiffReadProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
-	return ((tsize_t) read((int) fd, buf, (size_t) size));
+	return ((tsize_t) read((uintptr_t) fd, buf, (size_t) size));
 }
 
 static tsize_t
 _tiffWriteProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
-	return ((tsize_t) write((int) fd, buf, (size_t) size));
+	return ((tsize_t) write((uintptr_t) fd, buf, (size_t) size));
 }
 
 static toff_t
@@ -50,14 +50,14 @@ _tiffSeekProc(thandle_t fd, toff_t off, int whence)
 #if USE_64BIT_API == 1
 	return ((toff_t) lseek64((int) fd, (off64_t) off, whence));
 #else
-	return ((toff_t) lseek((int) fd, (off_t) off, whence));
+	return ((toff_t) lseek((uintptr_t) fd, (off_t) off, whence));
 #endif
 }
 
 static int
 _tiffCloseProc(thandle_t fd)
 {
-	return (close((int) fd));
+	return (close((uintptr_t) fd));
 }
 
 #include <sys/stat.h>
@@ -74,7 +74,7 @@ _tiffSizeProc(thandle_t fd)
 	return (toff_t) (fstat64((int) fd, &sb) < 0 ? 0 : sb.st_size);
 #else
 	struct stat sb;
-	return (toff_t) (fstat((int) fd, &sb) < 0 ? 0 : sb.st_size);
+	return (toff_t) (fstat((uintptr_t) fd, &sb) < 0 ? 0 : sb.st_size);
 #endif
 #endif
 }
