@@ -67,7 +67,11 @@ class XMLError(Exception):
 ################################################################################
 
 class WriteXML:
-   def __init__(self, glyphs=[], symbol_table=[], with_features=True):
+   def __init__(self, glyphs=None, symbol_table=None, with_features=True):
+      if symbol_table is None:
+         symbol_table = []
+      if glyphs is None:
+         glyphs = []
       self.glyphs = glyphs
       if (not (isinstance(symbol_table, SymbolTable) or
                util.is_string_or_unicode_list(symbol_table))):
@@ -86,7 +90,7 @@ class WriteXML:
       if filename.endswith('gz'):
          fd = gzip.open(filename, 'wt')
       else:
-         fd = open(filename, 'w')
+         fd = open(filename, 'wt')
       self.write_stream(fd)
 
    def string(self):
@@ -125,7 +129,9 @@ class WriteXML:
          word_wrap(stream, '<symbols>', indent)
          indent += 1
          for x in symbols:
-            word_wrap(stream, '<symbol name="%s"/>' % x.encode(encoding), indent)
+            if type(x) is bytes:
+               x = x.encode(encoding)
+            word_wrap(stream, '<symbol name="%s"/>' % x, indent)
          indent -= 1
          word_wrap(stream, '</symbols>', indent)
 
@@ -208,7 +214,9 @@ class WriteXMLFile(WriteXML):
 ################################################################################
 
 class LoadXML:
-   def __init__(self, parts = ['symbol_table', 'glyphs']):
+   def __init__(self, parts=None):
+      if parts is None:
+         parts = ['symbol_table', 'glyphs']
       self._start_elements = {}
       self._end_elements = {}
       self._stream_length = 0
@@ -244,7 +252,7 @@ class LoadXML:
    def parse_string(self, s):
       self._stream_length = len(s)
       stream = io.StringIO(s)
-      return str(self.parse_stream(stream))
+      return self.parse_stream(stream)
 
    def parse_stream(self, stream):
       self._setup_handlers()
@@ -342,7 +350,7 @@ class LoadXML:
       self.remove_start_element_handler('symbol')
    
    def _tag_start_symbol(self, a):
-      self.symbol_table.add(str(a['name']))
+      self.symbol_table.add(a['name'])
       self._update_progress()
 
    def _tag_start_glyphs(self, a):
