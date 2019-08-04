@@ -1,7 +1,8 @@
-/* $Header: /cvs/maptools/cvsroot/libtiff/libtiff/tif_version.c,v 1.3 2010-03-10 18:56:49 bfriesen Exp $ */
+/* $Id: tiffio.hxx,v 1.3 2010-06-08 18:55:15 bfriesen Exp $ */
+
 /*
- * Copyright (c) 1992-1997 Sam Leffler
- * Copyright (c) 1992-1997 Silicon Graphics, Inc.
+ * Copyright (c) 1988-1997 Sam Leffler
+ * Copyright (c) 1991-1997 Silicon Graphics, Inc.
  *
  * Permission to use, copy, modify, distribute, and sell this software and 
  * its documentation for any purpose is hereby granted without fee, provided
@@ -22,18 +23,27 @@
  * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
  * OF THIS SOFTWARE.
  */
-#include "tiffiop.h"
-#include "tiffvers.h"
 
-static const char TIFFVersion[] = TIFFLIB_VERSION_STR;
+#ifndef _TIFFIO_HXX_
+#define    _TIFFIO_HXX_
 
-const char *
-TIFFGetVersion(void) {
-	return (TIFFVersion);
-}
+/*
+ * TIFF I/O library definitions which provide C++ streams API.
+ */
+
+#include <iostream>
+#include "tiff.h"
+
+extern TIFF *TIFFStreamOpen(const char *, std::ostream *);
+
+extern TIFF *TIFFStreamOpen(const char *, std::istream *);
+
+#endif /* _TIFFIO_HXX_ */
+
+/* vim: set ts=8 sts=8 sw=8 noet: */
 /*
  * Local Variables:
- * mode: c
+ * mode: c++
  * c-basic-offset: 8
  * fill-column: 78
  * End:

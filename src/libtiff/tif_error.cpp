@@ -1,4 +1,4 @@
-/* $Header$ */
+/* $Header: /cvs/maptools/cvsroot/libtiff/libtiff/tif_error.c,v 1.6 2017-07-04 12:54:42 erouault Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -29,21 +29,56 @@
  */
 #include "tiffiop.h"
 
+TIFFErrorHandlerExt _TIFFerrorHandlerExt = nullptr;
+
 TIFFErrorHandler
-TIFFSetErrorHandler(TIFFErrorHandler handler)
-{
+TIFFSetErrorHandler(TIFFErrorHandler handler) {
 	TIFFErrorHandler prev = _TIFFerrorHandler;
 	_TIFFerrorHandler = handler;
 	return (prev);
 }
 
+TIFFErrorHandlerExt
+TIFFSetErrorHandlerExt(TIFFErrorHandlerExt handler) {
+	TIFFErrorHandlerExt prev = _TIFFerrorHandlerExt;
+	_TIFFerrorHandlerExt = handler;
+	return (prev);
+}
+
 void
-TIFFError(const char* module, const char* fmt, ...)
-{
+TIFFError(const char *module, const char *fmt, ...) {
+	va_list ap;
 	if (_TIFFerrorHandler) {
-		va_list ap;
 		va_start(ap, fmt);
 		(*_TIFFerrorHandler)(module, fmt, ap);
 		va_end(ap);
 	}
+	if (_TIFFerrorHandlerExt) {
+		va_start(ap, fmt);
+		(*_TIFFerrorHandlerExt)(0, module, fmt, ap);
+		va_end(ap);
+	}
 }
+
+void
+TIFFErrorExt(thandle_t fd, const char *module, const char *fmt, ...) {
+	va_list ap;
+	if (_TIFFerrorHandler) {
+		va_start(ap, fmt);
+		(*_TIFFerrorHandler)(module, fmt, ap);
+		va_end(ap);
+	}
+	if (_TIFFerrorHandlerExt) {
+		va_start(ap, fmt);
+		(*_TIFFerrorHandlerExt)(fd, module, fmt, ap);
+		va_end(ap);
+	}
+}
+
+/*
+ * Local Variables:
+ * mode: c
+ * c-basic-offset: 8
+ * fill-column: 78
+ * End:
+ */

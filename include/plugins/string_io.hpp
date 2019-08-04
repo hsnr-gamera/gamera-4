@@ -32,6 +32,7 @@ PyObject* _to_raw_string(const T &image) {
 	value_type* tmp = (value_type*)calloc(image_size, sizeof(value_type));
 	
 	if (tmp == nullptr) {
+		PyErr_SetString(PyExc_TypeError, "could not allocate enough memory");
 		return nullptr;
 	}
 	for (; j != image.vec_end(); ++tmp, ++j) {

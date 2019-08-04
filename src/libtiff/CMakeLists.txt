@@ -1,5 +1,7 @@
 set(TIFF_SOURCE
-        fax3sm_winnt.cpp
+        mkg3states.cpp
+        tif_extension.cpp
+        tif_fax3sm.cpp
         tif_aux.cpp
         tif_close.cpp
         ${GAMERA_SOURCE}/plugins/tiff_support.hpp

@@ -9,6 +9,8 @@ def test_save_image():
             image = load_image("data/%s_generic.tiff" % name, storage)
             image.save_image("tmp/%s_test.%s" % (name, ext))
             image2 = load_image("tmp/%s_test.%s" % (name, ext))
+            print(image._to_raw_string())
+            print(image2._to_raw_string())
             assert image._to_raw_string() == image2._to_raw_string()
 
     # TODO: Add Grey16
