@@ -384,10 +384,10 @@ TIFFClientOpen(
 bad:
 	tif->tif_mode = O_RDONLY;	/* XXX avoid flush */
 	TIFFClose(tif);
-	return ((TIFF*)0);
+	return nullptr;
 bad2:
 	(void) (*closeproc)(clientdata);
-	return ((TIFF*)0);
+	return nullptr;
 }
 
 /*

@@ -26,22 +26,19 @@ using namespace Gamera;
 
 template<class T>
 PyObject* _to_raw_string(const T &image) {
-  typedef typename T::value_type value_type;
-  typename T::const_vec_iterator j = image.vec_begin();
-  size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-  PyObject* pystring = PyUnicode_FromStringAndSize((char *)nullptr,
-						  (int)image_size);
-  if (pystring == nullptr)
-    return nullptr;
-  value_type* i = (value_type*)PyBytes_AsString(pystring);
-  if(i == nullptr){
-	  return nullptr;
-  }
-  for (; j != image.vec_end(); ++i, ++j) {
-    *i = *j;
-  }
-  return pystring;
-};
+	typedef typename T::value_type value_type;
+	typename T::const_vec_iterator j = image.vec_begin();
+	size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
+	value_type* tmp = (value_type*)calloc(image_size, sizeof(value_type));
+	
+	if (tmp == nullptr) {
+		return nullptr;
+	}
+	for (; j != image.vec_end(); ++tmp, ++j) {
+		*tmp = *j;
+	}
+	return Py_BuildValue("y", tmp);
+}
 
 template <class T>
 bool fill_image_from_string(T &image, PyObject* data_string) {
