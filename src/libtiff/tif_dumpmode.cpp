@@ -27,7 +27,7 @@
 /*
  * TIFF Library.
  *
- * "Null" Compression Algorithm Support.
+ * "nullptr" Compression Algorithm Support.
  */
 #include "tiffiop.h"
 #include <assert.h>

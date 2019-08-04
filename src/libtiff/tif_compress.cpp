@@ -176,7 +176,7 @@ typedef struct _codec {
 	struct _codec*	next;
 	TIFFCodec*	info;
 } codec_t;
-static	codec_t* registeredCODECS = NULL;
+static	codec_t* registeredCODECS = nullptr;
 
 const TIFFCodec*
 TIFFFindCODEC(uint16 scheme)
@@ -199,7 +199,7 @@ TIFFRegisterCODEC(uint16 scheme, const char* name, TIFFInitMethod init)
 	codec_t* cd = (codec_t*)
 	    _TIFFmalloc(sizeof (codec_t) + sizeof (TIFFCodec) + strlen(name)+1);
 
-	if (cd != NULL) {
+	if (cd != nullptr) {
 		cd->info = (TIFFCodec*) ((tidata_t) cd + sizeof (codec_t));
 		cd->info->name = (char*)
 		    ((tidata_t) cd->info + sizeof (TIFFCodec));

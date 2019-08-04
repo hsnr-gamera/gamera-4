@@ -43,7 +43,7 @@
 	(((tif)->tif_flags&TIFF_BEENWRITING) || TIFFWriteCheck((tif),1,module))
 #define	BUFFERCHECK(tif)					\
 	((((tif)->tif_flags & TIFF_BUFFERSETUP) && tif->tif_rawdata) ||	\
-	    TIFFWriteBufferSetup((tif), NULL, (tsize_t) -1))
+	    TIFFWriteBufferSetup((tif), nullptr, (tsize_t) -1))
 
 static	int TIFFGrowStrips(TIFF*, int, const char*);
 static	int TIFFAppendToStrip(TIFF*, tstrip_t, tidata_t, tsize_t);
@@ -449,7 +449,7 @@ TIFFSetupStrips(TIFF* tif)
 	    _TIFFmalloc(td->td_nstrips * sizeof (uint32));
 	td->td_stripbytecount = (uint32 *)
 	    _TIFFmalloc(td->td_nstrips * sizeof (uint32));
-	if (td->td_stripoffset == NULL || td->td_stripbytecount == NULL)
+	if (td->td_stripoffset == nullptr || td->td_stripbytecount == nullptr)
 		return (0);
 	/*
 	 * Place data at the end-of-file
@@ -505,7 +505,7 @@ TIFFWriteCheck(TIFF* tif, int tiles, const char* module)
 		    tif->tif_name);
 		return (0);
 	}
-	if (tif->tif_dir.td_stripoffset == NULL && !TIFFSetupStrips(tif)) {
+	if (tif->tif_dir.td_stripoffset == nullptr && !TIFFSetupStrips(tif)) {
 		tif->tif_dir.td_nstrips = 0;
 		TIFFError(module, "%s: No space for %s arrays",
 		    tif->tif_name, isTiled(tif) ? "tile" : "strip");
@@ -530,7 +530,7 @@ TIFFWriteBufferSetup(TIFF* tif, tdata_t bp, tsize_t size)
 			_TIFFfree(tif->tif_rawdata);
 			tif->tif_flags &= ~TIFF_MYBUFFER;
 		}
-		tif->tif_rawdata = NULL;
+		tif->tif_rawdata = nullptr;
 	}
 	if (size == (tsize_t) -1) {
 		size = (isTiled(tif) ?
@@ -540,11 +540,11 @@ TIFFWriteBufferSetup(TIFF* tif, tdata_t bp, tsize_t size)
 		 */
 		if (size < 8*1024)
 			size = 8*1024;
-		bp = NULL;			/* NB: force malloc */
+		bp = nullptr;			/* NB: force malloc */
 	}
-	if (bp == NULL) {
+	if (bp == nullptr) {
 		bp = _TIFFmalloc(size);
-		if (bp == NULL) {
+		if (bp == nullptr) {
 			TIFFError(module, "%s: No space for output buffer",
 			    tif->tif_name);
 			return (0);
@@ -573,7 +573,7 @@ TIFFGrowStrips(TIFF* tif, int delta, const char* module)
 	    (td->td_nstrips + delta) * sizeof (uint32));
 	td->td_stripbytecount = (uint32*)_TIFFrealloc(td->td_stripbytecount,
 	    (td->td_nstrips + delta) * sizeof (uint32));
-	if (td->td_stripoffset == NULL || td->td_stripbytecount == NULL) {
+	if (td->td_stripoffset == nullptr || td->td_stripbytecount == nullptr) {
 		td->td_nstrips = 0;
 		TIFFError(module, "%s: No space to expand strip arrays",
 		    tif->tif_name);

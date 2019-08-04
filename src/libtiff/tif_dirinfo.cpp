@@ -378,7 +378,7 @@ _TIFFSampleToTagType(TIFF* tif)
 const TIFFFieldInfo*
 _TIFFFindFieldInfo(TIFF* tif, ttag_t tag, TIFFDataType dt)
 {
-	static const TIFFFieldInfo *last = NULL;
+	static const TIFFFieldInfo *last = nullptr;
 	int i, n;
 
 	if (last && last->field_tag == tag &&
@@ -404,7 +404,7 @@ _TIFFFieldWithTag(TIFF* tif, ttag_t tag)
 	if (!fip) {
 		TIFFError("TIFFFieldWithTag",
 		    "Internal error, unknown tag 0x%x", (u_int) tag);
-		assert(fip != NULL);
+		assert(fip != nullptr);
 		/*NOTREACHED*/
 	}
 	return (fip);

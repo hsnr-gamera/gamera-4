@@ -191,7 +191,7 @@ LogL16Decode(TIFF* tif, tidata_t op, tsize_t occ, tsample_t s)
 	int cc, rc;
 
 	assert(s == 0);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	npixels = occ / sp->pixel_size;
 
@@ -246,7 +246,7 @@ LogLuvDecode24(TIFF* tif, tidata_t op, tsize_t occ, tsample_t s)
 	uint32* tp;
 
 	assert(s == 0);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	npixels = occ / sp->pixel_size;
 
@@ -291,7 +291,7 @@ LogLuvDecode32(TIFF* tif, tidata_t op, tsize_t occ, tsample_t s)
 
 	assert(s == 0);
 	sp = DecoderState(tif);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	npixels = occ / sp->pixel_size;
 
@@ -380,7 +380,7 @@ LogL16Encode(TIFF* tif, tidata_t bp, tsize_t cc, tsample_t s)
 	int occ, rc=0, mask, beg;
 
 	assert(s == 0);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	npixels = cc / sp->pixel_size;
 
 	if (sp->user_datafmt == SGILOGDATAFMT_16BIT)
@@ -466,7 +466,7 @@ LogLuvEncode24(TIFF* tif, tidata_t bp, tsize_t cc, tsample_t s)
 	uint32* tp;
 
 	assert(s == 0);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	npixels = cc / sp->pixel_size;
 
 	if (sp->user_datafmt == SGILOGDATAFMT_RAW)
@@ -513,7 +513,7 @@ LogLuvEncode32(TIFF* tif, tidata_t bp, tsize_t cc, tsample_t s)
 	int occ, rc=0, mask, beg;
 
 	assert(s == 0);
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	npixels = cc / sp->pixel_size;
 
@@ -1168,7 +1168,7 @@ LogL16InitState(TIFF* tif)
 	LogLuvState* sp = DecoderState(tif);
 	static const char module[] = "LogL16InitState";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(td->td_photometric == PHOTOMETRIC_LOGL);
 
 	/* for some reason, we can't do this in TIFFInitLogL16 */
@@ -1191,7 +1191,7 @@ LogL16InitState(TIFF* tif)
 	}
 	sp->tbuflen = td->td_imagewidth * td->td_rowsperstrip;
 	sp->tbuf = (tidata_t*) _TIFFmalloc(sp->tbuflen * sizeof (int16));
-	if (sp->tbuf == NULL) {
+	if (sp->tbuf == nullptr) {
 		TIFFError(module, "%s: No space for SGILog translation buffer",
 		    tif->tif_name);
 		return (0);
@@ -1258,7 +1258,7 @@ LogLuvInitState(TIFF* tif)
 	LogLuvState* sp = DecoderState(tif);
 	static const char module[] = "LogLuvInitState";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(td->td_photometric == PHOTOMETRIC_LOGLUV);
 
 	/* for some reason, we can't do this in TIFFInitLogLuv */
@@ -1289,7 +1289,7 @@ LogLuvInitState(TIFF* tif)
 	}
 	sp->tbuflen = td->td_imagewidth * td->td_rowsperstrip;
 	sp->tbuf = (tidata_t*) _TIFFmalloc(sp->tbuflen * sizeof (uint32));
-	if (sp->tbuf == NULL) {
+	if (sp->tbuf == nullptr) {
 		TIFFError(module, "%s: No space for SGILog translation buffer",
 		    tif->tif_name);
 		return (0);
@@ -1453,7 +1453,7 @@ LogLuvCleanup(TIFF* tif)
 		if (sp->tbuf)
 			_TIFFfree(sp->tbuf);
 		_TIFFfree(sp);
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -1548,7 +1548,7 @@ TIFFInitSGILog(TIFF* tif, int scheme)
 	 * Allocate state block so tag methods have storage to record values.
 	 */
 	tif->tif_data = (tidata_t) _TIFFmalloc(sizeof (LogLuvState));
-	if (tif->tif_data == NULL)
+	if (tif->tif_data == nullptr)
 		goto bad;
 	sp = (LogLuvState*) tif->tif_data;
 	_TIFFmemset((tdata_t)sp, 0, sizeof (*sp));

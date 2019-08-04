@@ -30,6 +30,7 @@
 #include "tiffiop.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <iostream>
 
 static tsize_t
 _tiffReadProc(thandle_t fd, tdata_t buf, tsize_t size)
@@ -146,6 +147,7 @@ TIFFOpen(const char* name, const char* mode)
 
 	m = _TIFFgetMode(mode, module);
 	if (m == -1) {
+		std::cout << "Fehler1" << std::endl;
 		return nullptr;
 	}
 /* for cygwin */        
@@ -159,6 +161,7 @@ TIFFOpen(const char* name, const char* mode)
 	fd = open(name, m, 0666);
 #endif
 	if (fd < 0) {
+		std::cout << "Fehler2" << std::endl;
 		TIFFError(module, "%s: Cannot open", name);
 		return nullptr;
 	}

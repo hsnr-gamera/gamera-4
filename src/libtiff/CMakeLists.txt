@@ -22,6 +22,18 @@ set(TIFF_SOURCE
         tif_print.cpp
         tif_predict.cpp
         tif_packbits.cpp
+        tif_error.cpp
+        tif_dumpmode.cpp
+        tif_fax3.cpp
+        tif_flush.cpp
+        tif_getimage.cpp
+        tif_jpeg.cpp
+        tif_luv.cpp
+        tif_lzw.cpp
+        tif_next.cpp
+        tif_ojpeg.cpp
+        tif_pixarlog.cpp
+        tif_open.cpp
         )
 
 add_library(tiff_support SHARED ${TIFF_SOURCE})

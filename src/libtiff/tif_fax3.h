@@ -67,7 +67,7 @@ extern	void _TIFFFax3fillruns(unsigned char*, uint32*, uint32*, uint32);
 
 
 /* finite state machine codes */
-#define S_Null		0
+#define S_nullptr		0
 #define S_Pass		1
 #define S_Horiz		2
 #define S_V0		3
@@ -177,7 +177,7 @@ extern	const TIFFFaxTabEnt TIFFFaxBlackTable[];
 
 #ifdef FAX3_DEBUG
 static const char* StateNames[] = {
-    "Null   ",
+    "nullptr   ",
     "Pass   ",
     "Horiz  ",
     "V0     ",

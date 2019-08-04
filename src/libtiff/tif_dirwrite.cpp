@@ -128,7 +128,7 @@ TIFFWriteDirectory(TIFF* tif)
 	}
 	if ((tif->tif_flags & TIFF_MYBUFFER) && tif->tif_rawdata) {
 		_TIFFfree(tif->tif_rawdata);
-		tif->tif_rawdata = NULL;
+		tif->tif_rawdata = nullptr;
 		tif->tif_rawcc = 0;
                 tif->tif_rawdatasize = 0;
 	}
@@ -146,7 +146,7 @@ TIFFWriteDirectory(TIFF* tif)
 			nfields += (b < FIELD_SUBFILETYPE ? 2 : 1);
 	dirsize = nfields * sizeof (TIFFDirEntry);
 	data = (char*) _TIFFmalloc(dirsize);
-	if (data == NULL) {
+	if (data == nullptr) {
 		TIFFError(tif->tif_name,
 		    "Cannot write directory, out of space");
 		return (0);

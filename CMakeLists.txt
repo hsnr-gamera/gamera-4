@@ -12,6 +12,12 @@ find_package(PythonLibs 3 REQUIRED)
 add_definitions(-D__DEBUG_GAPI__)
 add_definitions(-DGAMERACORE_INTERNAL)
 set(GAMERA_SOURCE ${CMAKE_SOURCE_DIR}/include)
+file(GLOB_RECURSE GAMERA_SOURCES
+        "*.h"
+        "*.hpp"
+        "*.cpp"
+        "*.c"
+        )
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${GAMERA_SOURCE})
@@ -19,6 +25,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src/)
 
 add_subdirectory(src/geostructs)
 add_subdirectory(src/knncore)
+add_subdirectory(src)
 add_subdirectory(src/gameracore)
 add_subdirectory(src/knnga)
 add_subdirectory(src/graph)

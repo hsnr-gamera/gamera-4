@@ -96,10 +96,6 @@ typedef	HFILE thandle_t;	/* client data handle */
 typedef	void* thandle_t;	/* client data handle */
 #endif
 
-#ifndef NULL
-#define	NULL	0
-#endif
-
 /*
  * Flags to pass to TIFFPrintDirectory to control
  * printing of data structures that are potentially

@@ -152,7 +152,7 @@ Fax3PreDecode(TIFF* tif, tsample_t s)
 	Fax3DecodeState* sp = DecoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->bit = 0;			/* force initial read */
 	sp->data = 0;
 	sp->EOLcnt = 0;			/* force initial scan for EOL */
@@ -488,7 +488,7 @@ Fax3SetupState(TIFF* tif)
 		     2*TIFFroundup(rowpixels,32) : rowpixels;
 
 		dsp->runs = (uint32*) _TIFFmalloc((2*nruns+3)*sizeof (uint32));
-		if (dsp->runs == NULL) {
+		if (dsp->runs == nullptr) {
 			TIFFError("Fax3SetupState",
 			    "%s: No space for Group 3/4 run arrays",
 			    tif->tif_name);
@@ -498,7 +498,7 @@ Fax3SetupState(TIFF* tif)
 		if (needsRefLine)
 			dsp->refruns = dsp->runs + (nruns>>1);
 		else
-			dsp->refruns = NULL;
+			dsp->refruns = nullptr;
 		if (is2DEncoding(dsp)) {	/* NB: default is 1D routine */
 			tif->tif_decoderow = Fax3Decode2D;
 			tif->tif_decodestrip = Fax3Decode2D;
@@ -514,14 +514,14 @@ Fax3SetupState(TIFF* tif)
 		 * be initialized to be ``white'' (done elsewhere).
 		 */
 		esp->refline = (u_char*) _TIFFmalloc(rowbytes);
-		if (esp->refline == NULL) {
+		if (esp->refline == nullptr) {
 			TIFFError("Fax3SetupState",
 			    "%s: No space for Group 3/4 reference line",
 			    tif->tif_name);
 			return (0);
 		}
 	} else					/* 1d encoding */
-		EncoderState(tif)->refline = NULL;
+		EncoderState(tif)->refline = nullptr;
 	return (1);
 }
 
@@ -683,7 +683,7 @@ Fax3PreEncode(TIFF* tif, tsample_t s)
 	Fax3EncodeState* sp = EncoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->bit = 8;
 	sp->data = 0;
 	sp->tag = G3_1D;
@@ -1076,7 +1076,7 @@ Fax3Cleanup(TIFF* tif)
 		if (Fax3State(tif)->subaddress)
 			_TIFFfree(Fax3State(tif)->subaddress);
 		_TIFFfree(tif->tif_data);
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -1276,7 +1276,7 @@ InitCCITTFax3(TIFF* tif)
 		tif->tif_data = (tidata_t)
                     _TIFFmalloc(sizeof (Fax3EncodeState));
 
-	if (tif->tif_data == NULL) {
+	if (tif->tif_data == nullptr) {
 		TIFFError("TIFFInitCCITTFax3",
 		    "%s: No space for state block", tif->tif_name);
 		return (0);
@@ -1297,14 +1297,14 @@ InitCCITTFax3(TIFF* tif)
 	tif->tif_printdir = Fax3PrintDir;	/* hook for codec tags */
 	sp->groupoptions = 0;	
 	sp->recvparams = 0;
-	sp->subaddress = NULL;
+	sp->subaddress = nullptr;
 
 	if (sp->rw_mode == O_RDONLY) {
 		tif->tif_flags |= TIFF_NOBITREV;/* decoder does bit reversal */
-		DecoderState(tif)->runs = NULL;
+		DecoderState(tif)->runs = nullptr;
 		TIFFSetField(tif, TIFFTAG_FAXFILLFUNC, _TIFFFax3fillruns);
 	} else
-		EncoderState(tif)->refline = NULL;
+		EncoderState(tif)->refline = nullptr;
 
 	/*
 	 * Install codec methods.

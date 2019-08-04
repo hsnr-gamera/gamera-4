@@ -159,13 +159,13 @@ void
 TIFFRGBAImageEnd(TIFFRGBAImage* img)
 {
     if (img->Map)
-	_TIFFfree(img->Map), img->Map = NULL;
+	_TIFFfree(img->Map), img->Map = nullptr;
     if (img->BWmap)
-	_TIFFfree(img->BWmap), img->BWmap = NULL;
+	_TIFFfree(img->BWmap), img->BWmap = nullptr;
     if (img->PALmap)
-	_TIFFfree(img->PALmap), img->PALmap = NULL;
+	_TIFFfree(img->PALmap), img->PALmap = nullptr;
     if (img->ycbcr)
-	_TIFFfree(img->ycbcr), img->ycbcr = NULL;
+	_TIFFfree(img->ycbcr), img->ycbcr = nullptr;
 
     if( img->redcmap ) {
         _TIFFfree( img->redcmap );
@@ -199,9 +199,9 @@ TIFFRGBAImageBegin(TIFFRGBAImage* img, TIFF* tif, int stop, char emsg[1024])
     /* Initialize to normal values */
     img->row_offset = 0;
     img->col_offset = 0;
-    img->redcmap = NULL;
-    img->greencmap = NULL;
-    img->bluecmap = NULL;
+    img->redcmap = nullptr;
+    img->greencmap = nullptr;
+    img->bluecmap = nullptr;
     
     img->tif = tif;
     img->stoponerr = stop;
@@ -356,10 +356,10 @@ TIFFRGBAImageBegin(TIFFRGBAImage* img, TIFF* tif, int stop, char emsg[1024])
 	    photoTag, img->photometric);
 	return (0);
     }
-    img->Map = NULL;
-    img->BWmap = NULL;
-    img->PALmap = NULL;
-    img->ycbcr = NULL;
+    img->Map = nullptr;
+    img->BWmap = nullptr;
+    img->PALmap = nullptr;
+    img->ycbcr = nullptr;
     TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &img->width);
     TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &img->height);
     TIFFGetFieldDefaulted(tif, TIFFTAG_ORIENTATION, &img->orientation);
@@ -378,11 +378,11 @@ TIFFRGBAImageBegin(TIFFRGBAImage* img, TIFF* tif, int stop, char emsg[1024])
 int
 TIFFRGBAImageGet(TIFFRGBAImage* img, uint32* raster, uint32 w, uint32 h)
 {
-    if (img->get == NULL) {
+    if (img->get == nullptr) {
 	TIFFError(TIFFFileName(img->tif), "No \"get\" routine setup");
 	return (0);
     }
-    if (img->put.any == NULL) {
+    if (img->put.any == nullptr) {
 	TIFFError(TIFFFileName(img->tif),
 	    "No \"put\" routine setupl; probably can not handle image format");
 	return (0);
@@ -1037,7 +1037,7 @@ DECLAREContigPutFunc(putRGBcontig8bitMaptile)
 
 /*
  * 8-bit packed samples => RGBA w/ associated alpha
- * (known to have Map == NULL)
+ * (known to have Map == nullptr)
  */
 DECLAREContigPutFunc(putRGBAAcontig8bittile)
 {
@@ -1056,7 +1056,7 @@ DECLAREContigPutFunc(putRGBAAcontig8bittile)
 
 /*
  * 8-bit packed samples => RGBA w/ unassociated alpha
- * (known to have Map == NULL)
+ * (known to have Map == nullptr)
  */
 DECLAREContigPutFunc(putRGBUAcontig8bittile)
 {
@@ -1101,7 +1101,7 @@ DECLAREContigPutFunc(putRGBcontig16bittile)
 
 /*
  * 16-bit packed samples => RGBA w/ associated alpha
- * (known to have Map == NULL)
+ * (known to have Map == nullptr)
  */
 DECLAREContigPutFunc(putRGBAAcontig16bittile)
 {
@@ -1122,7 +1122,7 @@ DECLAREContigPutFunc(putRGBAAcontig16bittile)
 
 /*
  * 16-bit packed samples => RGBA w/ unassociated alpha
- * (known to have Map == NULL)
+ * (known to have Map == nullptr)
  */
 DECLAREContigPutFunc(putRGBUAcontig16bittile)
 {
@@ -1878,17 +1878,17 @@ initYCbCrConversion(TIFFRGBAImage* img)
 {
     uint16 hs, vs;
 
-    if (img->ycbcr == NULL) {
+    if (img->ycbcr == nullptr) {
 	img->ycbcr = (TIFFYCbCrToRGB*) _TIFFmalloc(
 	      TIFFroundup(sizeof (TIFFYCbCrToRGB), sizeof (long))
 	    + 4*256*sizeof (TIFFRGBValue)
 	    + 2*256*sizeof (int)
 	    + 2*256*sizeof (int32)
 	);
-	if (img->ycbcr == NULL) {
+	if (img->ycbcr == nullptr) {
 	    TIFFError(TIFFFileName(img->tif),
 		"No space for YCbCr->RGB conversion state");
-	    return (NULL);
+	    return (nullptr);
 	}
 	TIFFYCbCrToRGBInit(img->ycbcr, img->tif);
     } else {
@@ -1914,7 +1914,7 @@ initYCbCrConversion(TIFFRGBAImage* img)
     case 0x21: return (putcontig8bitYCbCr21tile);
     case 0x11: return (putcontig8bitYCbCr11tile);
     }
-    return (NULL);
+    return (nullptr);
 }
 
 /*
@@ -1938,7 +1938,7 @@ makebwmap(TIFFRGBAImage* img)
 
     img->BWmap = (uint32**) _TIFFmalloc(
 	256*sizeof (uint32 *)+(256*nsamples*sizeof(uint32)));
-    if (img->BWmap == NULL) {
+    if (img->BWmap == nullptr) {
 	TIFFError(TIFFFileName(img->tif), "No space for B&W mapping table");
 	return (0);
     }
@@ -1995,7 +1995,7 @@ setupMap(TIFFRGBAImage* img)
         range = (int32) 255;
 
     img->Map = (TIFFRGBValue*) _TIFFmalloc((range+1) * sizeof (TIFFRGBValue));
-    if (img->Map == NULL) {
+    if (img->Map == nullptr) {
 	TIFFError(TIFFFileName(img->tif),
 	    "No space for photometric conversion table");
 	return (0);
@@ -2017,7 +2017,7 @@ setupMap(TIFFRGBAImage* img)
 	if (!makebwmap(img))
 	    return (0);
 	/* no longer need Map, free it */
-	_TIFFfree(img->Map), img->Map = NULL;
+	_TIFFfree(img->Map), img->Map = nullptr;
     }
     return (1);
 }
@@ -2073,7 +2073,7 @@ makecmap(TIFFRGBAImage* img)
 
     img->PALmap = (uint32**) _TIFFmalloc(
 	256*sizeof (uint32 *)+(256*nsamples*sizeof(uint32)));
-    if (img->PALmap == NULL) {
+    if (img->PALmap == nullptr) {
 	TIFFError(TIFFFileName(img->tif), "No space for Palette mapping table");
 	return (0);
     }

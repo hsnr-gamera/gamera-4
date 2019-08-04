@@ -74,7 +74,7 @@ setExtraSamples(TIFFDirectory* td, va_list ap, int* v)
 	if ((uint16) *v > td->td_samplesperpixel)
 		return (0);
 	va = va_arg(ap, uint16*);
-	if (*v > 0 && va == NULL)		/* typically missing param */
+	if (*v > 0 && va == nullptr)		/* typically missing param */
 		return (0);
 	for (i = 0; i < *v; i++)
 		if (va[i] > EXTRASAMPLE_UNASSALPHA)
@@ -420,7 +420,7 @@ _TIFFVSetField(TIFF* tif, ttag_t tag, va_list ap)
 			    va_arg(ap, uint16*), 1L<<td->td_bitspersample);
 		break;
 	case TIFFTAG_REFERENCEBLACKWHITE:
-		/* XXX should check for null range */
+		/* XXX should check for nullptr range */
 		_TIFFsetFloatArray(&td->td_refblackwhite, va_arg(ap, float*), 6);
 		break;
 #endif
@@ -429,7 +429,7 @@ _TIFFVSetField(TIFF* tif, ttag_t tag, va_list ap)
 		td->td_inkset = (uint16) va_arg(ap, int);
 		break;
 	case TIFFTAG_DOTRANGE:
-		/* XXX should check for null range */
+		/* XXX should check for nullptr range */
 		td->td_dotrange[0] = (uint16) va_arg(ap, int);
 		td->td_dotrange[1] = (uint16) va_arg(ap, int);
 		break;
@@ -961,7 +961,7 @@ TIFFFreeDirectory(TIFF* tif)
 /*
  * Client Tag extension support (from Niles Ritter).
  */
-static TIFFExtendProc _TIFFextender = (TIFFExtendProc) NULL;
+static TIFFExtendProc _TIFFextender = (TIFFExtendProc) nullptr;
 
 TIFFExtendProc
 TIFFSetTagExtender(TIFFExtendProc extender)
@@ -1025,7 +1025,7 @@ TIFFDefaultDirectory(TIFF* tif)
 	tif->tif_postdecode = _TIFFNoPostDecode;
 	tif->tif_vsetfield = _TIFFVSetField;
 	tif->tif_vgetfield = _TIFFVGetField;
-	tif->tif_printdir = NULL;
+	tif->tif_printdir = nullptr;
 	/*
 	 *  Give client code a chance to install their own
 	 *  tag extensions & methods, prior to compression overloads.
@@ -1071,7 +1071,7 @@ TIFFAdvanceDirectory(TIFF* tif, uint32* nextdir, toff_t* off)
         if (tif->tif_flags & TIFF_SWAB)
             TIFFSwabShort(&dircount);
         poff+=sizeof (uint16)+dircount*sizeof (TIFFDirEntry);
-        if (off != NULL)
+        if (off != nullptr)
             *off = poff;
         if (((toff_t) (poff+sizeof (uint32))) > tif->tif_size)
         {
@@ -1094,7 +1094,7 @@ TIFFAdvanceDirectory(TIFF* tif, uint32* nextdir, toff_t* off)
         }
         if (tif->tif_flags & TIFF_SWAB)
             TIFFSwabShort(&dircount);
-        if (off != NULL)
+        if (off != nullptr)
             *off = TIFFSeekFile(tif,
                                 dircount*sizeof (TIFFDirEntry), SEEK_CUR);
         else
@@ -1120,7 +1120,7 @@ TIFFNumberOfDirectories(TIFF* tif)
     toff_t nextdir = tif->tif_header.tiff_diroff;
     tdir_t n = 0;
     
-    while (nextdir != 0 && TIFFAdvanceDirectory(tif, &nextdir, NULL))
+    while (nextdir != 0 && TIFFAdvanceDirectory(tif, &nextdir, nullptr))
         n++;
     return (n);
 }
@@ -1137,7 +1137,7 @@ TIFFSetDirectory(TIFF* tif, tdir_t dirn)
 
 	nextdir = tif->tif_header.tiff_diroff;
 	for (n = dirn; n > 0 && nextdir != 0; n--)
-		if (!TIFFAdvanceDirectory(tif, &nextdir, NULL))
+		if (!TIFFAdvanceDirectory(tif, &nextdir, nullptr))
 			return (0);
 	tif->tif_nextdiroff = nextdir;
 	/*
@@ -1215,7 +1215,7 @@ TIFFUnlinkDirectory(TIFF* tif, tdir_t dirn)
 	 * Advance to the directory to be unlinked and fetch
 	 * the offset of the directory that follows.
 	 */
-	if (!TIFFAdvanceDirectory(tif, &nextdir, NULL))
+	if (!TIFFAdvanceDirectory(tif, &nextdir, nullptr))
 		return (0);
 	/*
 	 * Go back and patch the link field of the preceding
@@ -1239,7 +1239,7 @@ TIFFUnlinkDirectory(TIFF* tif, tdir_t dirn)
 	(*tif->tif_cleanup)(tif);
 	if ((tif->tif_flags & TIFF_MYBUFFER) && tif->tif_rawdata) {
 		_TIFFfree(tif->tif_rawdata);
-		tif->tif_rawdata = NULL;
+		tif->tif_rawdata = nullptr;
 		tif->tif_rawcc = 0;
 	}
 	tif->tif_flags &= ~(TIFF_BEENWRITING|TIFF_BUFFERSETUP|TIFF_POSTENCODE);

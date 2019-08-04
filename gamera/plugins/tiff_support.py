@@ -70,7 +70,6 @@ class save_tiff(PluginFunction):
     """
     self_type = ImageType([ONEBIT, GREYSCALE, GREY16, RGB])
     args = Args([FileSave("image_file_name", "image.tiff", "*.tiff;*.tif")])
-    return_type = None
     exts = ["tiff", "tif"]
 
 
@@ -81,26 +80,22 @@ class TiffSupportModule(PluginModule):
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
             cpp_sources.remove("src/libtiff\\tif_unix.c")
-        except Exception as ex:
-            print(ex)
-            raise ex
+        except Exception:
+            pass
         extra_compile_args = ['-Dunix']
     elif sys.platform == 'cygwin':
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
             cpp_sources.remove("src/libtiff/tif_win32.cpp")
-        except Exception as ex:
-            print(ex)
-            raise ex
+        except Exception:
+            pass
         extra_compile_args = ['-Dunix']
     elif sys.platform == 'darwin':
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
-            print(cpp_sources)
             cpp_sources.remove("src/libtiff/tif_win32.cpp")
-        except Exception as ex:
-            print(ex)
-            raise ex
+        except Exception:
+            pass
         extra_compile_args = ['-Dunix']
     else:
         extra_libraries = ["tiff"]

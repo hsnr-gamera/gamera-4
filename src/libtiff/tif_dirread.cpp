@@ -65,7 +65,7 @@ static char *
 CheckMalloc(TIFF* tif, tsize_t n, const char* what)
 {
 	char *cp = (char*)_TIFFmalloc(n);
-	if (cp == NULL)
+	if (cp == nullptr)
 		TIFFError(tif->tif_name, "No space %s", what);
 	return (cp);
 }
@@ -116,7 +116,7 @@ TIFFReadDirectory(TIFF* tif)
 			TIFFSwabShort(&dircount);
 		dir = (TIFFDirEntry *)CheckMalloc(tif,
 		    dircount * sizeof (TIFFDirEntry), "to read TIFF directory");
-		if (dir == NULL)
+		if (dir == nullptr)
 			return (0);
 		if (!ReadOK(tif, dir, dircount*sizeof (TIFFDirEntry))) {
 			TIFFError(tif->tif_name, "Can not read TIFF directory");
@@ -140,7 +140,7 @@ TIFFReadDirectory(TIFF* tif)
 			TIFFSwabShort(&dircount);
 		dir = (TIFFDirEntry *)CheckMalloc(tif,
 		    dircount * sizeof (TIFFDirEntry), "to read TIFF directory");
-		if (dir == NULL)
+		if (dir == nullptr)
 			return (0);
 		if (off + dircount*sizeof (TIFFDirEntry) > tif->tif_size) {
 			TIFFError(tif->tif_name, "Can not read TIFF directory");
@@ -247,7 +247,7 @@ TIFFReadDirectory(TIFF* tif)
 			continue;
 		}
 		/*
-		 * Null out old tags that we ignore.
+		 * nullptr out old tags that we ignore.
 		 */
 		if (tif->tif_fieldinfo[fix]->field_bit == FIELD_IGNORE) {
 	ignore:
@@ -428,7 +428,7 @@ TIFFReadDirectory(TIFF* tif)
 			v *= sizeof (uint16);
 			cp = CheckMalloc(tif, dp->tdir_count * sizeof (uint16),
 			    "to read \"TransferFunction\" tag");
-			if (cp != NULL) {
+			if (cp != nullptr) {
 				if (TIFFFetchData(tif, dp, cp)) {
 					/*
 					 * This deals with there being only
@@ -999,7 +999,7 @@ TIFFFetchNormalTag(TIFF* tif, TIFFDirEntry* dp)
 	const TIFFFieldInfo* fip = _TIFFFieldWithTag(tif, dp->tdir_tag);
 
 	if (dp->tdir_count > 1) {		/* array of values */
-		char* cp = NULL;
+		char* cp = nullptr;
 
 		switch (dp->tdir_type) {
 		case TIFF_BYTE:
@@ -1041,7 +1041,7 @@ TIFFFetchNormalTag(TIFF* tif, TIFFDirEntry* dp)
 		case TIFF_UNDEFINED:		/* bit of a cheat... */
 			/*
 			 * Some vendors write strings w/o the trailing
-			 * NULL byte, so always append one just in case.
+			 * nullptr byte, so always append one just in case.
 			 */
 			cp = CheckMalloc(tif, dp->tdir_count+1, mesg);
 			if( (ok = (cp && TIFFFetchString(tif, dp, cp))) != 0 )
@@ -1053,7 +1053,7 @@ TIFFFetchNormalTag(TIFF* tif, TIFFDirEntry* dp)
 			    TIFFSetField(tif, dp->tdir_tag, dp->tdir_count, cp)
 			  : TIFFSetField(tif, dp->tdir_tag, cp));
 		}
-		if (cp != NULL)
+		if (cp != nullptr)
 			_TIFFfree(cp);
 	} else if (CheckDirCount(tif, dp, 1)) {	/* singleton value */
 		switch (dp->tdir_type) {
@@ -1218,9 +1218,9 @@ TIFFFetchStripThing(TIFF* tif, TIFFDirEntry* dir, long nstrips, uint32** lpp)
 	/*
 	 * Allocate space for strip information.
 	 */
-	if (*lpp == NULL &&
+	if (*lpp == nullptr &&
 	    (*lpp = (uint32 *)CheckMalloc(tif,
-	      nstrips * sizeof (uint32), "for strip array")) == NULL)
+	      nstrips * sizeof (uint32), "for strip array")) == nullptr)
 		return (0);
 	lp = *lpp;
 	if (dir->tdir_type == (int)TIFF_SHORT) {
@@ -1229,7 +1229,7 @@ TIFFFetchStripThing(TIFF* tif, TIFFDirEntry* dir, long nstrips, uint32** lpp)
 		 */
 		uint16* dp = (uint16*) CheckMalloc(tif,
 		    dir->tdir_count* sizeof (uint16), "to fetch strip tag");
-		if (dp == NULL)
+		if (dp == nullptr)
 			return (0);
 		if( (status = TIFFFetchShortArray(tif, dir, dp)) != 0 ) {
 			register uint16* wp = dp;
@@ -1287,7 +1287,7 @@ TIFFFetchRefBlackWhite(TIFF* tif, TIFFDirEntry* dir)
 	if( (ok = (cp && TIFFFetchLongArray(tif, dir, (uint32*) cp))) != 0) {
 		float* fp = (float*)
 		    CheckMalloc(tif, dir->tdir_count * sizeof (float), mesg);
-		if( (ok = (fp != NULL)) != 0 ) {
+		if( (ok = (fp != nullptr)) != 0 ) {
 			uint32 i;
 			for (i = 0; i < dir->tdir_count; i++)
 				fp[i] = (float)((uint32*) cp)[i];
@@ -1338,14 +1338,14 @@ ChopUpSingleUncompressedStrip(TIFF* tif)
 				"for chopped \"StripByteCounts\" array");
 	newoffsets = (uint32*) CheckMalloc(tif, nstrips * sizeof (uint32),
 				"for chopped \"StripOffsets\" array");
-	if (newcounts == NULL || newoffsets == NULL) {
+	if (newcounts == nullptr || newoffsets == nullptr) {
 	        /*
 		 * Unable to allocate new strip information, give
 		 * up and use the original one strip information.
 		 */
-		if (newcounts != NULL)
+		if (newcounts != nullptr)
 			_TIFFfree(newcounts);
-		if (newoffsets != NULL)
+		if (newoffsets != nullptr)
 			_TIFFfree(newoffsets);
 		return;
 	}

@@ -111,7 +111,7 @@ typedef	struct {
 	TIFFStripMethod	defsparent;	/* super-class method */
 	TIFFTileMethod	deftparent;	/* super-class method */
 					/* pseudo-tag fields */
-	void*		jpegtables;	/* JPEGTables tag value, or NULL */
+	void*		jpegtables;	/* JPEGTables tag value, or nullptr */
 	uint32		jpegtables_length; /* number of bytes in same */
 	int		jpegquality;	/* Compression quality level */
 	int		jpegcolormode;	/* Auto RGB<=>YCbCr convert? */
@@ -316,7 +316,7 @@ static JSAMPARRAY
 TIFFjpeg_alloc_sarray(JPEGState* sp, int pool_id,
 		      JDIMENSION samplesperrow, JDIMENSION numrows)
 {
-	return CALLJPEG(sp, (JSAMPARRAY) NULL,
+	return CALLJPEG(sp, (JSAMPARRAY) nullptr,
 	    (*sp->cinfo.comm.mem->alloc_sarray)
 		(&sp->cinfo.comm, pool_id, samplesperrow, numrows));
 }
@@ -397,7 +397,7 @@ tables_empty_output_buffer(j_compress_ptr cinfo)
 	/* the entire buffer has been filled; enlarge it by 1000 bytes */
 	newbuf = _TIFFrealloc((tdata_t) sp->jpegtables,
 			      (tsize_t) (sp->jpegtables_length + 1000));
-	if (newbuf == NULL)
+	if (newbuf == nullptr)
 		ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 100);
 	sp->dest.next_output_byte = (JOCTET*) newbuf + sp->jpegtables_length;
 	sp->dest.free_in_buffer = (size_t) 1000;
@@ -427,7 +427,7 @@ TIFFjpeg_tables_dest(JPEGState* sp, TIFF* tif)
 		_TIFFfree(sp->jpegtables);
 	sp->jpegtables_length = 1000;
 	sp->jpegtables = (void*) _TIFFmalloc((tsize_t) sp->jpegtables_length);
-	if (sp->jpegtables == NULL) {
+	if (sp->jpegtables == nullptr) {
 		sp->jpegtables_length = 0;
 		TIFFError("TIFFjpeg_tables_dest", "No space for JPEGTables");
 		return (0);
@@ -508,7 +508,7 @@ TIFFjpeg_data_src(JPEGState* sp, TIFF* tif)
 	sp->src.resync_to_restart = jpeg_resync_to_restart;
 	sp->src.term_source = std_term_source;
 	sp->src.bytes_in_buffer = 0;		/* for safety */
-	sp->src.next_input_byte = NULL;
+	sp->src.next_input_byte = nullptr;
 }
 
 /*
@@ -556,7 +556,7 @@ alloc_downsampled_buffers(TIFF* tif, jpeg_component_info* comp_info,
 		buf = TIFFjpeg_alloc_sarray(sp, JPOOL_IMAGE,
 				compptr->width_in_blocks * DCTSIZE,
 				(JDIMENSION) (compptr->v_samp_factor*DCTSIZE));
-		if (buf == NULL)
+		if (buf == nullptr)
 			return (0);
 		sp->ds_buffer[ci] = buf;
 	}
@@ -575,7 +575,7 @@ JPEGSetupDecode(TIFF* tif)
 	JPEGState* sp = JState(tif);
 	TIFFDirectory *td = &tif->tif_dir;
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(sp->cinfo.comm.is_decompressor);
 
 	/* Read JPEGTables if it is present */
@@ -620,7 +620,7 @@ JPEGPreDecode(TIFF* tif, tsample_t s)
 	int downsampled_output;
 	int ci;
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(sp->cinfo.comm.is_decompressor);
 	/*
 	 * Reset decoder state from any previous strip/tile,
@@ -848,7 +848,7 @@ unsuppress_quant_table (JPEGState* sp, int tblno)
 {
 	JQUANT_TBL* qtbl;
 
-	if ((qtbl = sp->cinfo.c.quant_tbl_ptrs[tblno]) != NULL)
+	if ((qtbl = sp->cinfo.c.quant_tbl_ptrs[tblno]) != nullptr)
 		qtbl->sent_table = FALSE;
 }
 
@@ -857,9 +857,9 @@ unsuppress_huff_table (JPEGState* sp, int tblno)
 {
 	JHUFF_TBL* htbl;
 
-	if ((htbl = sp->cinfo.c.dc_huff_tbl_ptrs[tblno]) != NULL)
+	if ((htbl = sp->cinfo.c.dc_huff_tbl_ptrs[tblno]) != nullptr)
 		htbl->sent_table = FALSE;
-	if ((htbl = sp->cinfo.c.ac_huff_tbl_ptrs[tblno]) != NULL)
+	if ((htbl = sp->cinfo.c.ac_huff_tbl_ptrs[tblno]) != nullptr)
 		htbl->sent_table = FALSE;
 }
 
@@ -902,7 +902,7 @@ JPEGSetupEncode(TIFF* tif)
 	TIFFDirectory *td = &tif->tif_dir;
 	static const char module[] = "JPEGSetupEncode";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(!sp->cinfo.comm.is_decompressor);
 
 	/*
@@ -1020,7 +1020,7 @@ JPEGPreEncode(TIFF* tif, tsample_t s)
 	uint32 segment_width, segment_height;
 	int downsampled_input;
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	assert(!sp->cinfo.comm.is_decompressor);
 	/*
 	 * Set encoding parameters for this strip/tile.
@@ -1140,7 +1140,7 @@ JPEGEncode(TIFF* tif, tidata_t buf, tsize_t cc, tsample_t s)
 	JSAMPROW bufptr[1];
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	/* data is expected to be supplied in multiples of a scanline */
 	nrows = cc / sp->bytesperline;
 	if (cc % sp->bytesperline)
@@ -1174,7 +1174,7 @@ JPEGEncodeRaw(TIFF* tif, tidata_t buf, tsize_t cc, tsample_t s)
 	int samples_per_clump = sp->samplesperclump;
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	/* data is expected to be supplied in multiples of a scanline */
 	nrows = cc / sp->bytesperline;
 	if (cc % sp->bytesperline)
@@ -1282,7 +1282,7 @@ JPEGCleanup(TIFF* tif)
 		if (sp->jpegtables)		/* tag value */
 			_TIFFfree(sp->jpegtables);
 		_TIFFfree(tif->tif_data);	/* release local state */
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -1414,7 +1414,7 @@ TIFFInitJPEG(TIFF* tif, int scheme)
 	 * Allocate state block so tag methods have storage to record values.
 	 */
 	tif->tif_data = (tidata_t) _TIFFmalloc(sizeof (JPEGState));
-	if (tif->tif_data == NULL) {
+	if (tif->tif_data == nullptr) {
 		TIFFError("TIFFInitJPEG", "No space for JPEG state block");
 		return (0);
 	}
@@ -1433,7 +1433,7 @@ TIFFInitJPEG(TIFF* tif, int scheme)
 	tif->tif_printdir = JPEGPrintDir;	/* hook for codec tags */
 
 	/* Default values for codec-specific fields */
-	sp->jpegtables = NULL;
+	sp->jpegtables = nullptr;
 	sp->jpegtables_length = 0;
 	sp->jpegquality = 75;			/* Default IJG quality */
 	sp->jpegcolormode = JPEGCOLORMODE_RAW;

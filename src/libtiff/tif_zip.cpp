@@ -90,7 +90,7 @@ ZIPSetupDecode(TIFF* tif)
 	ZIPState* sp = DecoderState(tif);
 	static const char module[] = "ZIPSetupDecode";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	if (inflateInit(&sp->stream) != Z_OK) {
 		TIFFError(module, "%s: %s", tif->tif_name, sp->stream.msg);
 		return (0);
@@ -109,7 +109,7 @@ ZIPPreDecode(TIFF* tif, tsample_t s)
 	ZIPState* sp = DecoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_in = tif->tif_rawdata;
 	sp->stream.avail_in = tif->tif_rawcc;
 	return (inflateReset(&sp->stream) == Z_OK);
@@ -122,7 +122,7 @@ ZIPDecode(TIFF* tif, tidata_t op, tsize_t occ, tsample_t s)
 	static const char module[] = "ZIPDecode";
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_out = op;
 	sp->stream.avail_out = occ;
 	do {
@@ -158,7 +158,7 @@ ZIPSetupEncode(TIFF* tif)
 	ZIPState* sp = EncoderState(tif);
 	static const char module[] = "ZIPSetupEncode";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	if (deflateInit(&sp->stream, sp->zipquality) != Z_OK) {
 		TIFFError(module, "%s: %s", tif->tif_name, sp->stream.msg);
 		return (0);
@@ -177,7 +177,7 @@ ZIPPreEncode(TIFF* tif, tsample_t s)
 	ZIPState *sp = EncoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_out = tif->tif_rawdata;
 	sp->stream.avail_out = tif->tif_rawdatasize;
 	return (deflateReset(&sp->stream) == Z_OK);
@@ -258,7 +258,7 @@ ZIPCleanup(TIFF* tif)
 				deflateEnd(&sp->stream);
 		}
 		_TIFFfree(sp);
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -318,12 +318,12 @@ TIFFInitZIP(TIFF* tif, int scheme)
 	 * Allocate state block so tag methods have storage to record values.
 	 */
 	tif->tif_data = (tidata_t) _TIFFmalloc(sizeof (ZIPState));
-	if (tif->tif_data == NULL)
+	if (tif->tif_data == nullptr)
 		goto bad;
 	sp = ZState(tif);
-	sp->stream.zalloc = NULL;
-	sp->stream.zfree = NULL;
-	sp->stream.opaque = NULL;
+	sp->stream.zalloc = nullptr;
+	sp->stream.zfree = nullptr;
+	sp->stream.opaque = nullptr;
 	sp->stream.data_type = Z_BINARY;
 
 	/*

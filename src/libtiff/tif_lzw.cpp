@@ -194,10 +194,10 @@ LZWSetupDecode(TIFF* tif)
 	static const char module[] = " LZWSetupDecode";
 	int code;
 
-	assert(sp != NULL);
-	if (sp->dec_codetab == NULL) {
+	assert(sp != nullptr);
+	if (sp->dec_codetab == nullptr) {
 		sp->dec_codetab = (code_t*)_TIFFmalloc(CSIZE*sizeof (code_t));
-		if (sp->dec_codetab == NULL) {
+		if (sp->dec_codetab == nullptr) {
 			TIFFError(module, "No space for LZW code table");
 			return (0);
 		}
@@ -209,7 +209,7 @@ LZWSetupDecode(TIFF* tif)
                     sp->dec_codetab[code].value = code;
                     sp->dec_codetab[code].firstchar = code;
                     sp->dec_codetab[code].length = 1;
-                    sp->dec_codetab[code].next = NULL;
+                    sp->dec_codetab[code].next = nullptr;
                 } while (code--);
 	}
 	return (1);
@@ -224,7 +224,7 @@ LZWPreDecode(TIFF* tif, tsample_t s)
 	LZWDecodeState *sp = DecoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	/*
 	 * Check for old bit-reversed codes.
 	 */
@@ -323,7 +323,7 @@ LZWDecode(TIFF* tif, tidata_t op0, tsize_t occ0, tsample_t s)
 	code_t *codep, *free_entp, *maxcodep, *oldcodep;
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	/*
 	 * Restart interrupted output operation.
 	 */
@@ -503,7 +503,7 @@ LZWDecodeCompat(TIFF* tif, tidata_t op0, tsize_t occ0, tsample_t s)
 	code_t *codep, *free_entp, *maxcodep, *oldcodep;
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	/*
 	 * Restart interrupted output operation.
 	 */
@@ -613,7 +613,7 @@ LZWDecodeCompat(TIFF* tif, tidata_t op0, tsize_t occ0, tsample_t s)
 			tp = op;
 			do {
 				*--tp = codep->value;
-			} while( (codep = codep->next) != NULL);
+			} while( (codep = codep->next) != nullptr);
 		} else
 			*op++ = code, occ--;
 	}
@@ -648,7 +648,7 @@ LZWCleanup(TIFF* tif)
 				_TIFFfree(DecoderState(tif)->dec_codetab);
 		}
 		_TIFFfree(tif->tif_data);
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -670,10 +670,10 @@ TIFFInitLZW(TIFF* tif, int scheme)
 	if (tif->tif_mode == O_RDONLY) 
         {
             tif->tif_data = (tidata_t) _TIFFmalloc(sizeof (LZWDecodeState));
-            if (tif->tif_data == NULL)
+            if (tif->tif_data == nullptr)
                 goto bad;
-            DecoderState(tif)->dec_codetab = NULL;
-            DecoderState(tif)->dec_decode = NULL;
+            DecoderState(tif)->dec_codetab = nullptr;
+            DecoderState(tif)->dec_decode = nullptr;
 	} 
 
 	/*

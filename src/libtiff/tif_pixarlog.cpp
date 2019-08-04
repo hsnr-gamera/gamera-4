@@ -514,20 +514,20 @@ PixarLogMakeTables(PixarLogState *sp)
     ToLinearF = (float *)_TIFFmalloc(TSIZEP1 * sizeof(float));
     ToLinear16 = (uint16 *)_TIFFmalloc(TSIZEP1 * sizeof(uint16));
     ToLinear8 = (unsigned char *)_TIFFmalloc(TSIZEP1 * sizeof(unsigned char));
-    if (FromLT2 == NULL || From14  == NULL || From8   == NULL ||
-	 ToLinearF == NULL || ToLinear16 == NULL || ToLinear8 == NULL) {
+    if (FromLT2 == nullptr || From14  == nullptr || From8   == nullptr ||
+	 ToLinearF == nullptr || ToLinear16 == nullptr || ToLinear8 == nullptr) {
 	if (FromLT2) _TIFFfree(FromLT2);
 	if (From14) _TIFFfree(From14);
 	if (From8) _TIFFfree(From8);
 	if (ToLinearF) _TIFFfree(ToLinearF);
 	if (ToLinear16) _TIFFfree(ToLinear16);
 	if (ToLinear8) _TIFFfree(ToLinear8);
-	sp->FromLT2 = NULL;
-	sp->From14 = NULL;
-	sp->From8 = NULL;
-	sp->ToLinearF = NULL;
-	sp->ToLinear16 = NULL;
-	sp->ToLinear8 = NULL;
+	sp->FromLT2 = nullptr;
+	sp->From14 = nullptr;
+	sp->From8 = nullptr;
+	sp->ToLinearF = nullptr;
+	sp->ToLinear16 = nullptr;
+	sp->ToLinear8 = nullptr;
 	return 0;
     }
 
@@ -639,7 +639,7 @@ PixarLogSetupDecode(TIFF* tif)
 	PixarLogState* sp = DecoderState(tif);
 	static const char module[] = "PixarLogSetupDecode";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	/* Make sure no byte swapping happens on the data
 	 * after decompression. */
@@ -679,7 +679,7 @@ PixarLogPreDecode(TIFF* tif, tsample_t s)
 	PixarLogState* sp = DecoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_in = tif->tif_rawdata;
 	sp->stream.avail_in = tif->tif_rawcc;
 	return (inflateReset(&sp->stream) == Z_OK);
@@ -717,7 +717,7 @@ PixarLogDecode(TIFF* tif, tidata_t op, tsize_t occ, tsample_t s)
 	llen = sp->stride * td->td_imagewidth;
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_out = (unsigned char *) sp->tbuf;
 	sp->stream.avail_out = nsamples * sizeof(uint16);
 	do {
@@ -803,7 +803,7 @@ PixarLogSetupEncode(TIFF* tif)
 	PixarLogState* sp = EncoderState(tif);
 	static const char module[] = "PixarLogSetupEncode";
 
-	assert(sp != NULL);
+	assert(sp != nullptr);
 
 	/* for some reason, we can't do this in TIFFInitPixarLog */
 
@@ -837,7 +837,7 @@ PixarLogPreEncode(TIFF* tif, tsample_t s)
 	PixarLogState *sp = EncoderState(tif);
 
 	(void) s;
-	assert(sp != NULL);
+	assert(sp != nullptr);
 	sp->stream.next_out = tif->tif_rawdata;
 	sp->stream.avail_out = tif->tif_rawdatasize;
 	return (deflateReset(&sp->stream) == Z_OK);
@@ -1156,7 +1156,7 @@ PixarLogCleanup(TIFF* tif)
 		if (sp->tbuf)
 			_TIFFfree(sp->tbuf);
 		_TIFFfree(sp);
-		tif->tif_data = NULL;
+		tif->tif_data = nullptr;
 	}
 }
 
@@ -1256,7 +1256,7 @@ TIFFInitPixarLog(TIFF* tif, int scheme)
 	 * Allocate state block so tag methods have storage to record values.
 	 */
 	tif->tif_data = (tidata_t) _TIFFmalloc(sizeof (PixarLogState));
-	if (tif->tif_data == NULL)
+	if (tif->tif_data == nullptr)
 		goto bad;
 	sp = (PixarLogState*) tif->tif_data;
 	memset(sp, 0, sizeof (*sp));

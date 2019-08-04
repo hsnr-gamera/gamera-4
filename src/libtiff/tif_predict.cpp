@@ -241,9 +241,9 @@ PredictorDecodeRow(TIFF* tif, tidata_t op0, tsize_t occ0, tsample_t s)
 {
 	TIFFPredictorState *sp = PredictorState(tif);
 
-	assert(sp != NULL);
-	assert(sp->coderow != NULL);
-	assert(sp->pfunc != NULL);
+	assert(sp != nullptr);
+	assert(sp->coderow != nullptr);
+	assert(sp->pfunc != nullptr);
 	if ((*sp->coderow)(tif, op0, occ0, s)) {
 		(*sp->pfunc)(tif, op0, occ0);
 		return (1);
@@ -263,12 +263,12 @@ PredictorDecodeTile(TIFF* tif, tidata_t op0, tsize_t occ0, tsample_t s)
 {
 	TIFFPredictorState *sp = PredictorState(tif);
 
-	assert(sp != NULL);
-	assert(sp->codetile != NULL);
+	assert(sp != nullptr);
+	assert(sp->codetile != nullptr);
 	if ((*sp->codetile)(tif, op0, occ0, s)) {
 		tsize_t rowsize = sp->rowsize;
 		assert(rowsize > 0);
-		assert(sp->pfunc != NULL);
+		assert(sp->pfunc != nullptr);
 		while ((long)occ0 > 0) {
 			(*sp->pfunc)(tif, op0, (tsize_t) rowsize);
 			occ0 -= rowsize;
@@ -347,9 +347,9 @@ PredictorEncodeRow(TIFF* tif, tidata_t bp, tsize_t cc, tsample_t s)
 {
 	TIFFPredictorState *sp = PredictorState(tif);
 
-	assert(sp != NULL);
-	assert(sp->pfunc != NULL);
-	assert(sp->coderow != NULL);
+	assert(sp != nullptr);
+	assert(sp->pfunc != nullptr);
+	assert(sp->coderow != nullptr);
 /* XXX horizontal differencing alters user's data XXX */
 	(*sp->pfunc)(tif, bp, cc);
 	return ((*sp->coderow)(tif, bp, cc, s));
@@ -362,9 +362,9 @@ PredictorEncodeTile(TIFF* tif, tidata_t bp0, tsize_t cc0, tsample_t s)
 	tsize_t cc = cc0, rowsize;
 	u_char* bp = bp0;
 
-	assert(sp != NULL);
-	assert(sp->pfunc != NULL);
-	assert(sp->codetile != NULL);
+	assert(sp != nullptr);
+	assert(sp->pfunc != nullptr);
+	assert(sp->codetile != nullptr);
 	rowsize = sp->rowsize;
 	assert(rowsize > 0);
 	while ((long)cc > 0) {
@@ -456,6 +456,6 @@ TIFFPredictorInit(TIFF* tif)
 	tif->tif_setupencode = PredictorSetupEncode;
 
 	sp->predictor = 1;			/* default value */
-	sp->pfunc = NULL;			/* no predictor routine */
+	sp->pfunc = nullptr;			/* no predictor routine */
 	return (1);
 }

@@ -31,6 +31,7 @@
 #include <exception>
 #include <stdexcept>
 #include <bitset>
+#include <iostream>
 
 namespace Gamera {
 
@@ -46,9 +47,11 @@ void save_tiff(const T& matrix, const char* filename);
   This function gets informtion about tiff images and places it in and
   ImageInfo object.  See image_info.hpp for more information.
 */
+
 ImageInfo* tiff_info(const char* filename) {
   TIFFErrorHandler saved_handler = TIFFSetErrorHandler(nullptr);
   TIFF* tif = nullptr;
+		
   tif = TIFFOpen(filename, "r");
   if (tif == nullptr) {
     TIFFSetErrorHandler(saved_handler);

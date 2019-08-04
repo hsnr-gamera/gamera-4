@@ -138,7 +138,7 @@ typedef	struct {
 typedef	enum {
 	TIFF_NOTYPE	= 0,	/* placeholder */
 	TIFF_BYTE	= 1,	/* 8-bit unsigned integer */
-	TIFF_ASCII	= 2,	/* 8-bit bytes w/ last byte null */
+	TIFF_ASCII	= 2,	/* 8-bit bytes w/ last byte nullptr */
 	TIFF_SHORT	= 3,	/* 16-bit unsigned integer */
 	TIFF_LONG	= 4,	/* 32-bit unsigned integer */
 	TIFF_RATIONAL	= 5,	/* 64-bit unsigned fraction */

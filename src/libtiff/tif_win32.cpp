@@ -35,7 +35,7 @@ static tsize_t
 _tiffReadProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
 	DWORD dwSizeRead;
-	if (!ReadFile(fd, buf, size, &dwSizeRead, NULL))
+	if (!ReadFile(fd, buf, size, &dwSizeRead, nullptr))
 		return(0);
 	return ((tsize_t) dwSizeRead);
 }
@@ -44,7 +44,7 @@ static tsize_t
 _tiffWriteProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
 	DWORD dwSizeWritten;
-	if (!WriteFile(fd, buf, size, &dwSizeWritten, NULL))
+	if (!WriteFile(fd, buf, size, &dwSizeWritten, nullptr))
 		return(0);
 	return ((tsize_t) dwSizeWritten);
 }
@@ -87,7 +87,7 @@ _tiffCloseProc(thandle_t fd)
 static toff_t
 _tiffSizeProc(thandle_t fd)
 {
-	return ((toff_t)GetFileSize(fd, NULL));
+	return ((toff_t)GetFileSize(fd, nullptr));
 }
 
 #ifdef __BORLANDC__
@@ -118,12 +118,12 @@ _tiffMapProc(thandle_t fd, tdata_t* pbase, toff_t* psize)
 
 	if ((size = _tiffSizeProc(fd)) == 0xFFFFFFFF)
 		return (0);
-	hMapFile = CreateFileMapping(fd, NULL, PAGE_READONLY, 0, size, NULL);
-	if (hMapFile == NULL)
+	hMapFile = CreateFileMapping(fd, nullptr, PAGE_READONLY, 0, size, nullptr);
+	if (hMapFile == nullptr)
 		return (0);
 	*pbase = MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 0);
 	CloseHandle(hMapFile);
-	if (*pbase == NULL)
+	if (*pbase == nullptr)
 		return (0);
 	*psize = size;
 	return(1);
@@ -199,8 +199,8 @@ TIFFOpen(const char* name, const char* mode)
 		return ((TIFF*)0);
 	}
 	fd = (thandle_t)CreateFile(name, (m == O_RDONLY) ? GENERIC_READ :
-			(GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, NULL, dwMode,
-			(m == O_RDONLY) ? FILE_ATTRIBUTE_READONLY : FILE_ATTRIBUTE_NORMAL, NULL);
+			(GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, nullptr, dwMode,
+			(m == O_RDONLY) ? FILE_ATTRIBUTE_READONLY : FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (fd == INVALID_HANDLE_VALUE) {
 		TIFFError(module, "%s: Cannot open", name);
 		return ((TIFF *)0);
@@ -228,14 +228,14 @@ _TIFFrealloc(tdata_t p, tsize_t s)
   tsize_t old=GlobalSize(p);
   if (old>=s)
     {
-      if ((pvTmp = GlobalAlloc(GMEM_FIXED, s)) != NULL) {
+      if ((pvTmp = GlobalAlloc(GMEM_FIXED, s)) != nullptr) {
 	CopyMemory(pvTmp, p, s);
 	GlobalFree(p);
       }
     }
   else
     {
-      if ((pvTmp = GlobalAlloc(GMEM_FIXED, s)) != NULL) {
+      if ((pvTmp = GlobalAlloc(GMEM_FIXED, s)) != nullptr) {
 	CopyMemory(pvTmp, p, old);
 	GlobalFree(p);
       }
@@ -277,9 +277,9 @@ Win32WarningHandler(const char* module, const char* fmt, va_list ap)
 	LPTSTR szTmp;
 	LPCTSTR szTitleText = "%s Warning";
 	LPCTSTR szDefaultModule = "TIFFLIB";
-	szTmp = (module == NULL) ? (LPTSTR)szDefaultModule : (LPTSTR)module;
+	szTmp = (module == nullptr) ? (LPTSTR)szDefaultModule : (LPTSTR)module;
 	if ((szTitle = (LPTSTR)LocalAlloc(LMEM_FIXED, (lstrlen(szTmp) +
-			lstrlen(szTitleText) + lstrlen(fmt) + 128)*sizeof(TCHAR))) == NULL)
+			lstrlen(szTitleText) + lstrlen(fmt) + 128)*sizeof(TCHAR))) == nullptr)
 		return;
 	wsprintf(szTitle, szTitleText, szTmp);
 	szTmp = szTitle + (lstrlen(szTitle)+2)*sizeof(TCHAR);
@@ -288,7 +288,7 @@ Win32WarningHandler(const char* module, const char* fmt, va_list ap)
 	LocalFree(szTitle);
 	return;
 #else
-	if (module != NULL)
+	if (module != nullptr)
 		fprintf(stderr, "%s: ", module);
 	fprintf(stderr, "Warning, ");
 	vfprintf(stderr, fmt, ap);
@@ -305,9 +305,9 @@ Win32ErrorHandler(const char* module, const char* fmt, va_list ap)
 	LPTSTR szTmp;
 	LPCTSTR szTitleText = "%s Error";
 	LPCTSTR szDefaultModule = "TIFFLIB";
-	szTmp = (module == NULL) ? (LPTSTR)szDefaultModule : (LPTSTR)module;
+	szTmp = (module == nullptr) ? (LPTSTR)szDefaultModule : (LPTSTR)module;
 	if ((szTitle = (LPTSTR)LocalAlloc(LMEM_FIXED, (lstrlen(szTmp) +
-			lstrlen(szTitleText) + lstrlen(fmt) + 128)*sizeof(TCHAR))) == NULL)
+			lstrlen(szTitleText) + lstrlen(fmt) + 128)*sizeof(TCHAR))) == nullptr)
 		return;
 	wsprintf(szTitle, szTitleText, szTmp);
 	szTmp = szTitle + (lstrlen(szTitle)+2)*sizeof(TCHAR);
@@ -316,7 +316,7 @@ Win32ErrorHandler(const char* module, const char* fmt, va_list ap)
 	LocalFree(szTitle);
 	return;
 #else
-	if (module != NULL)
+	if (module != nullptr)
 		fprintf(stderr, "%s: ", module);
 	vfprintf(stderr, fmt, ap);
 	fprintf(stderr, ".\n");
