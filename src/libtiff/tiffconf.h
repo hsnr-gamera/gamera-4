@@ -1,143 +1,161 @@
-/* $Header$ */
 /*
- * Copyright (c) 1988-1997 Sam Leffler
- * Copyright (c) 1991-1997 Silicon Graphics, Inc.
- *
- * Permission to use, copy, modify, distribute, and sell this software and 
- * its documentation for any purpose is hereby granted without fee, provided
- * that (i) the above copyright notices and this permission notice appear in
- * all copies of the software and related documentation, and (ii) the names of
- * Sam Leffler and Silicon Graphics may not be used in any advertising or
- * publicity relating to the software without the specific, prior written
- * permission of Sam Leffler and Silicon Graphics.
- * 
- * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
- * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
- * 
- * IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
- * ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
- * OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
- * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
- * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
- * OF THIS SOFTWARE.
- */
+  Configuration defines for installed libtiff.
+  This file maintained for backward compatibility. Do not use definitions
+  from this file in your programs.
+*/
 
 #ifndef _TIFFCONF_
-#define	_TIFFCONF_
+#define _TIFFCONF_
+
+/* Define to 1 if the system has the type `int16'. */
+/* #undef HAVE_INT16 */
+
+/* Define to 1 if the system has the type `int32'. */
+/* #undef HAVE_INT32 */
+
+/* Define to 1 if the system has the type `int8'. */
+/* #undef HAVE_INT8 */
+
+/* The size of a `int', as computed by sizeof. */
+#define SIZEOF_INT 4
+
+/* Signed 8-bit type */
+#define TIFF_INT8_T signed char
+
+/* Unsigned 8-bit type */
+#define TIFF_UINT8_T unsigned char
+
+/* Signed 16-bit type */
+#define TIFF_INT16_T signed short
+
+/* Unsigned 16-bit type */
+#define TIFF_UINT16_T unsigned short
+
+/* Signed 32-bit type formatter */
+#define TIFF_INT32_FORMAT "%d"
+
+/* Signed 32-bit type */
+#define TIFF_INT32_T signed int
+
+/* Unsigned 32-bit type formatter */
+#define TIFF_UINT32_FORMAT "%u"
+
+/* Unsigned 32-bit type */
+#define TIFF_UINT32_T unsigned int
+
+/* Signed 64-bit type formatter */
+#define TIFF_INT64_FORMAT "%I64d"
+
+/* Signed 64-bit type */
+#define TIFF_INT64_T int64_t
+
+/* Unsigned 64-bit type formatter */
+#define TIFF_UINT64_FORMAT "%I64u"
+
+/* Unsigned 64-bit type */
+#define TIFF_UINT64_T uint64_t
+
+#if _WIN64
 /*
- * Library Configuration Definitions.
- *
- * This file defines the default configuration for the library.
- * If the target system does not have make or a way to specify
- * #defines on the command line, this file can be edited to
- * configure the library.  Otherwise, one can override portability
- * and configuration-related definitions from a Makefile or command
- * line by defining FEATURE_SUPPORT and COMPRESSION_SUPPORT (see below).
- */
+  Windows 64-bit build
+*/
+
+/* Signed size type */
+#  define TIFF_SSIZE_T TIFF_INT64_T
+
+#else
+/*
+  Windows 32-bit build
+*/
+
+/* Signed size type */
+#  define TIFF_SSIZE_T signed int
+
+#endif
+
+/* Compatibility stuff. */
+
+/* Define as 0 or 1 according to the floating point format suported by the
+   machine */
+#define HAVE_IEEEFP 1
+
+/* Set the native cpu bit order (FILLORDER_LSB2MSB or FILLORDER_MSB2LSB) */
+#define HOST_FILLORDER FILLORDER_LSB2MSB
+
+/* Native cpu byte order: 1 if big-endian (Motorola) or 0 if little-endian
+   (Intel) */
+#define HOST_BIGENDIAN 0
+
+/* Support CCITT Group 3 & 4 algorithms */
+#define CCITT_SUPPORT 1
+
+/* Support JPEG compression (requires IJG JPEG library) */
+/* #undef JPEG_SUPPORT */
+
+/* Support JBIG compression (requires JBIG-KIT library) */
+/* #undef JBIG_SUPPORT */
+
+/* Support LogLuv high dynamic range encoding */
+#define LOGLUV_SUPPORT 1
+
+/* Support LZW algorithm */
+#define LZW_SUPPORT 1
+
+/* Support NeXT 2-bit RLE algorithm */
+#define NEXT_SUPPORT 1
+
+/* Support Old JPEG compresson (read contrib/ojpeg/README first! Compilation
+   fails with unpatched IJG JPEG library) */
+/* #undef OJPEG_SUPPORT */
+
+/* Support Macintosh PackBits algorithm */
+#define PACKBITS_SUPPORT 1
+
+/* Support Pixar log-format algorithm (requires Zlib) */
+/* #undef PIXARLOG_SUPPORT */
+
+/* Support ThunderScan 4-bit RLE algorithm */
+#define THUNDER_SUPPORT 1
+
+/* Support Deflate compression */
+/* #undef ZIP_SUPPORT */
+
+/* Support strip chopping (whether or not to convert single-strip uncompressed
+   images to mutiple strips of ~8Kb to reduce memory usage) */
+#define STRIPCHOP_DEFAULT TIFF_STRIPCHOP
+
+/* Enable SubIFD tag (330) support */
+#define SUBIFD_SUPPORT 1
+
+/* Treat extra sample as alpha (default enabled). The RGBA interface will
+   treat a fourth sample with no EXTRASAMPLE_ value as being ASSOCALPHA. Many
+   packages produce RGBA files but don't mark the alpha properly. */
+#define DEFAULT_EXTRASAMPLE_AS_ALPHA 1
+
+/* Pick up YCbCr subsampling info from the JPEG data stream to support files
+   lacking the tag (default enabled). */
+#define CHECK_JPEG_YCBCR_SUBSAMPLING 1
+
+/* Support MS MDI magic number files as TIFF */
+/* #undef MDI_SUPPORT */
 
 /*
- * General portability-related defines:
- *
- * HAVE_IEEEFP		define as 0 or 1 according to the floating point
- *			format suported by the machine
- * BSDTYPES		define this if your system does NOT define the
- *			usual 4BSD typedefs u_int et. al.
- * HAVE_MMAP		enable support for memory mapping read-only files;
- *			this is typically deduced by the configure script
- * HOST_FILLORDER	native cpu bit order: one of FILLORDER_MSB2LSB
- *			or FILLODER_LSB2MSB; this is typically set by the
- *			configure script
- * HOST_BIGENDIAN	native cpu byte order: 1 if big-endian (Motorola)
- *			or 0 if little-endian (Intel); this may be used
- *			in codecs to optimize code
- * USE_64BIT_API	set to 1 if tif_unix.c should use lseek64(),
- *                      fstat64() and stat64 allowing 2-4GB files.
+ * Feature support definitions.
+ * XXX: These macros are obsoleted. Don't use them in your apps!
+ * Macros stays here for backward compatibility and should be always defined.
  */
-#ifndef HAVE_IEEEFP
-#define	HAVE_IEEEFP	1
-#endif
-#ifndef HOST_FILLORDER
-#define	HOST_FILLORDER	FILLORDER_MSB2LSB
-#endif
-#ifndef	HOST_BIGENDIAN
-#define	HOST_BIGENDIAN	1
-#endif
-
-#ifndef USE_64BIT_API
-#  define USE_64BIT_API	0
-#endif
-
-#ifndef FEATURE_SUPPORT
-/*
- * Feature support definitions:
- *
- *    COLORIMETRY_SUPPORT enable support for 6.0 colorimetry tags
- *    YCBCR_SUPPORT	enable support for 6.0 YCbCr tags
- *    CMYK_SUPPORT	enable support for 6.0 CMYK tags
- *    ICC_SUPPORT	enable support for ICC profile tag
- *    PHOTOSHOP_SUPPORT enable support for PHOTOSHOP resource tag
- *    IPTC_SUPPORT  enable support for RichTIFF IPTC tag
- */
-#define	COLORIMETRY_SUPPORT
-#define	YCBCR_SUPPORT
-#define	CMYK_SUPPORT
-#define	ICC_SUPPORT
+#define COLORIMETRY_SUPPORT
+#define YCBCR_SUPPORT
+#define CMYK_SUPPORT
+#define ICC_SUPPORT
 #define PHOTOSHOP_SUPPORT
 #define IPTC_SUPPORT
-#endif /* FEATURE_SUPPORT */
 
-#ifndef COMPRESSION_SUPPORT
-/*
- * Compression support defines:
- *
- *    CCITT_SUPPORT	enable support for CCITT Group 3 & 4 algorithms
- *    PACKBITS_SUPPORT	enable support for Macintosh PackBits algorithm
- *    LZW_SUPPORT	enable support for LZW algorithm
- *    THUNDER_SUPPORT	enable support for ThunderScan 4-bit RLE algorithm
- *    NEXT_SUPPORT	enable support for NeXT 2-bit RLE algorithm
- *    OJPEG_SUPPORT	enable support for 6.0-style JPEG DCT algorithms
- *			(requires IJG software)
- *    JPEG_SUPPORT	enable support for post-6.0-style JPEG DCT algorithms
- *			(requires freely available IJG software, see tif_jpeg.c)
- *    ZIP_SUPPORT	enable support for Deflate algorithm
- *			(requires freely available zlib software, see tif_zip.c)
- *    PIXARLOG_SUPPORT	enable support for Pixar log-format algorithm
- *    LOGLUV_SUPPORT	enable support for LogLuv high dynamic range encoding
- */
-#define	CCITT_SUPPORT
-#define	PACKBITS_SUPPORT
-#define	LZW_SUPPORT
-#define	THUNDER_SUPPORT
-#define	NEXT_SUPPORT
-#define LOGLUV_SUPPORT
-#endif /* COMPRESSION_SUPPORT */
-
-/*
- * If JPEG compression is enabled then we must also include
- * support for the colorimetry and YCbCr-related tags.
- */
-#ifdef JPEG_SUPPORT
-#ifndef YCBCR_SUPPORT
-#define	YCBCR_SUPPORT
-#endif
-#ifndef COLORIMETRY_SUPPORT
-#define	COLORIMETRY_SUPPORT
-#endif
-#endif /* JPEG_SUPPORT */
-
-/*
- * ``Orthogonal Features''
- *
- * STRIPCHOP_DEFAULT	default handling of strip chopping support (whether
- *			or not to convert single-strip uncompressed images
- *			to mutiple strips of ~8Kb--to reduce memory use)
- * SUBIFD_SUPPORT	enable support for SubIFD tag (thumbnails and such)
- */
-#ifndef STRIPCHOP_DEFAULT
-#define	STRIPCHOP_DEFAULT	TIFF_STRIPCHOP	/* default is to enable */
-#endif
-#ifndef SUBIFD_SUPPORT
-#define	SUBIFD_SUPPORT		1	/* enable SubIFD tag (330) support */
-#endif
 #endif /* _TIFFCONF_ */
+/*
+ * Local Variables:
+ * mode: c
+ * c-basic-offset: 8
+ * fill-column: 78
+ * End:
+ */

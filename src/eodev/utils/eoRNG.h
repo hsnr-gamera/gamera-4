@@ -481,8 +481,8 @@ inline void eoRng::initialize(uint32_t seed)
 
 inline uint32_t eoRng::restart()
 {
-    register uint32_t *p0=state, *p2=state+2, *pM=state+M, s0, s1;
-    register int j;
+	uint32_t *p0=state, *p2=state+2, *pM=state+M, s0, s1;
+    int j;
 
     left=N-1, next=state+1;
 

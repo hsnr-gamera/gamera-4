@@ -1886,89 +1886,89 @@ Usage:   lfindwithin(data)     data in |Stat format
 #########################################################
 
 ## CENTRAL TENDENCY:
-geometricmean = Dispatch ( (lgeometricmean, (ListType, TupleType)), )
-harmonicmean = Dispatch ( (lharmonicmean, (ListType, TupleType)), )
-mean = Dispatch ( (lmean, (ListType, TupleType)), )
-median = Dispatch ( (lmedian, (ListType, TupleType)), )
-medianscore = Dispatch ( (lmedianscore, (ListType, TupleType)), )
-mode = Dispatch ( (lmode, (ListType, TupleType)), )
+geometricmean = Dispatch ( (lgeometricmean, (list, tuple)), )
+harmonicmean = Dispatch ( (lharmonicmean, (list, tuple)), )
+mean = Dispatch ( (lmean, (list, tuple)), )
+median = Dispatch ( (lmedian, (list, tuple)), )
+medianscore = Dispatch ( (lmedianscore, (list, tuple)), )
+mode = Dispatch ( (lmode, (list, tuple)), )
 
 ## MOMENTS:
-moment = Dispatch ( (lmoment, (ListType, TupleType)), )
-variation = Dispatch ( (lvariation, (ListType, TupleType)), )
-skew = Dispatch ( (lskew, (ListType, TupleType)), )
-kurtosis = Dispatch ( (lkurtosis, (ListType, TupleType)), )
-describe = Dispatch ( (ldescribe, (ListType, TupleType)), )
+moment = Dispatch ( (lmoment, (list, tuple)), )
+variation = Dispatch ( (lvariation, (list, tuple)), )
+skew = Dispatch ( (lskew, (list, tuple)), )
+kurtosis = Dispatch ( (lkurtosis, (list, tuple)), )
+describe = Dispatch ( (ldescribe, (list, tuple)), )
 
 ## FREQUENCY STATISTICS:
-itemfreq = Dispatch ( (litemfreq, (ListType, TupleType)), )
-scoreatpercentile = Dispatch ( (lscoreatpercentile, (ListType, TupleType)), )
-percentileofscore = Dispatch ( (lpercentileofscore, (ListType, TupleType)), )
-histogram = Dispatch ( (lhistogram, (ListType, TupleType)), )
-cumfreq = Dispatch ( (lcumfreq, (ListType, TupleType)), )
-relfreq = Dispatch ( (lrelfreq, (ListType, TupleType)), )
+itemfreq = Dispatch ( (litemfreq, (list, tuple)), )
+scoreatpercentile = Dispatch ( (lscoreatpercentile, (list, tuple)), )
+percentileofscore = Dispatch ( (lpercentileofscore, (list, tuple)), )
+histogram = Dispatch ( (lhistogram, (list, tuple)), )
+cumfreq = Dispatch ( (lcumfreq, (list, tuple)), )
+relfreq = Dispatch ( (lrelfreq, (list, tuple)), )
 
 ## VARIABILITY:
-obrientransform = Dispatch ( (lobrientransform, (ListType, TupleType)), )
-samplevar = Dispatch ( (lsamplevar, (ListType, TupleType)), )
-samplestdev = Dispatch ( (lsamplestdev, (ListType, TupleType)), )
-var = Dispatch ( (lvar, (ListType, TupleType)), )
-stdev = Dispatch ( (lstdev, (ListType, TupleType)), )
-sterr = Dispatch ( (lsterr, (ListType, TupleType)), )
-sem = Dispatch ( (lsem, (ListType, TupleType)), )
-z = Dispatch ( (lz, (ListType, TupleType)), )
-zs = Dispatch ( (lzs, (ListType, TupleType)), )
+obrientransform = Dispatch ( (lobrientransform, (list, tuple)), )
+samplevar = Dispatch ( (lsamplevar, (list, tuple)), )
+samplestdev = Dispatch ( (lsamplestdev, (list, tuple)), )
+var = Dispatch ( (lvar, (list, tuple)), )
+stdev = Dispatch ( (lstdev, (list, tuple)), )
+sterr = Dispatch ( (lsterr, (list, tuple)), )
+sem = Dispatch ( (lsem, (list, tuple)), )
+z = Dispatch ( (lz, (list, tuple)), )
+zs = Dispatch ( (lzs, (list, tuple)), )
 
 ## TRIMMING FCNS:
-trimboth = Dispatch ( (ltrimboth, (ListType, TupleType)), )
-trim1 = Dispatch ( (ltrim1, (ListType, TupleType)), )
+trimboth = Dispatch ( (ltrimboth, (list, tuple)), )
+trim1 = Dispatch ( (ltrim1, (list, tuple)), )
 
 ## CORRELATION FCNS:
-paired = Dispatch ( (lpaired, (ListType, TupleType)), )
-pearsonr = Dispatch ( (lpearsonr, (ListType, TupleType)), )
-spearmanr = Dispatch ( (lspearmanr, (ListType, TupleType)), )
-pointbiserialr = Dispatch ( (lpointbiserialr, (ListType, TupleType)), )
-kendalltau = Dispatch ( (lkendalltau, (ListType, TupleType)), )
-linregress = Dispatch ( (llinregress, (ListType, TupleType)), )
+paired = Dispatch ( (lpaired, (list, tuple)), )
+pearsonr = Dispatch ( (lpearsonr, (list, tuple)), )
+spearmanr = Dispatch ( (lspearmanr, (list, tuple)), )
+pointbiserialr = Dispatch ( (lpointbiserialr, (list, tuple)), )
+kendalltau = Dispatch ( (lkendalltau, (list, tuple)), )
+linregress = Dispatch ( (llinregress, (list, tuple)), )
 
 ## INFERENTIAL STATS:
-ttest_1samp = Dispatch ( (lttest_1samp, (ListType, TupleType)), )
-ttest_ind = Dispatch ( (lttest_ind, (ListType, TupleType)), )
-ttest_rel = Dispatch ( (lttest_rel, (ListType, TupleType)), )
-chisquare = Dispatch ( (lchisquare, (ListType, TupleType)), )
-ks_2samp = Dispatch ( (lks_2samp, (ListType, TupleType)), )
-mannwhitneyu = Dispatch ( (lmannwhitneyu, (ListType, TupleType)), )
-ranksums = Dispatch ( (lranksums, (ListType, TupleType)), )
-tiecorrect = Dispatch ( (ltiecorrect, (ListType, TupleType)), )
-wilcoxont = Dispatch ( (lwilcoxont, (ListType, TupleType)), )
-kruskalwallish = Dispatch ( (lkruskalwallish, (ListType, TupleType)), )
-friedmanchisquare = Dispatch ( (lfriedmanchisquare, (ListType, TupleType)), )
+ttest_1samp = Dispatch ( (lttest_1samp, (list, tuple)), )
+ttest_ind = Dispatch ( (lttest_ind, (list, tuple)), )
+ttest_rel = Dispatch ( (lttest_rel, (list, tuple)), )
+chisquare = Dispatch ( (lchisquare, (list, tuple)), )
+ks_2samp = Dispatch ( (lks_2samp, (list, tuple)), )
+mannwhitneyu = Dispatch ( (lmannwhitneyu, (list, tuple)), )
+ranksums = Dispatch ( (lranksums, (list, tuple)), )
+tiecorrect = Dispatch ( (ltiecorrect, (list, tuple)), )
+wilcoxont = Dispatch ( (lwilcoxont, (list, tuple)), )
+kruskalwallish = Dispatch ( (lkruskalwallish, (list, tuple)), )
+friedmanchisquare = Dispatch ( (lfriedmanchisquare, (list, tuple)), )
 
 ## PROBABILITY CALCS:
-chisqprob = Dispatch ( (lchisqprob, (IntType, FloatType)), )
-zprob = Dispatch ( (lzprob, (IntType, FloatType)), )
-ksprob = Dispatch ( (lksprob, (IntType, FloatType)), )
-fprob = Dispatch ( (lfprob, (IntType, FloatType)), )
-betacf = Dispatch ( (lbetacf, (IntType, FloatType)), )
-betai = Dispatch ( (lbetai, (IntType, FloatType)), )
-erfcc = Dispatch ( (lerfcc, (IntType, FloatType)), )
-gammln = Dispatch ( (lgammln, (IntType, FloatType)), )
+chisqprob = Dispatch ( (lchisqprob, (int, float)), )
+zprob = Dispatch ( (lzprob, (int, float)), )
+ksprob = Dispatch ( (lksprob, (int, float)), )
+fprob = Dispatch ( (lfprob, (int, float)), )
+betacf = Dispatch ( (lbetacf, (int, float)), )
+betai = Dispatch ( (lbetai, (int, float)), )
+erfcc = Dispatch ( (lerfcc, (int, float)), )
+gammln = Dispatch ( (lgammln, (int, float)), )
 
 ## ANOVA FUNCTIONS:
-F_oneway = Dispatch ( (lF_oneway, (ListType, TupleType)), )
-F_value = Dispatch ( (lF_value, (ListType, TupleType)), )
+F_oneway = Dispatch ( (lF_oneway, (list, tuple)), )
+F_value = Dispatch ( (lF_value, (list, tuple)), )
 
 ## SUPPORT FUNCTIONS:
-incr = Dispatch ( (lincr, (ListType, TupleType)), )
-sum = Dispatch ( (lsum, (ListType, TupleType)), )
-cumsum = Dispatch ( (lcumsum, (ListType, TupleType)), )
-ss = Dispatch ( (lss, (ListType, TupleType)), )
-summult = Dispatch ( (lsummult, (ListType, TupleType)), )
-square_of_sums = Dispatch ( (lsquare_of_sums, (ListType, TupleType)), )
-sumdiffsquared = Dispatch ( (lsumdiffsquared, (ListType, TupleType)), )
-shellsort = Dispatch ( (lshellsort, (ListType, TupleType)), )
-rankdata = Dispatch ( (lrankdata, (ListType, TupleType)), )
-findwithin = Dispatch ( (lfindwithin, (ListType, TupleType)), )
+incr = Dispatch ( (lincr, (list, tuple)), )
+sum = Dispatch ( (lsum, (list, tuple)), )
+cumsum = Dispatch ( (lcumsum, (list, tuple)), )
+ss = Dispatch ( (lss, (list, tuple)), )
+summult = Dispatch ( (lsummult, (list, tuple)), )
+square_of_sums = Dispatch ( (lsquare_of_sums, (list, tuple)), )
+sumdiffsquared = Dispatch ( (lsumdiffsquared, (list, tuple)), )
+shellsort = Dispatch ( (lshellsort, (list, tuple)), )
+rankdata = Dispatch ( (lrankdata, (list, tuple)), )
+findwithin = Dispatch ( (lfindwithin, (list, tuple)), )
 
 
 #=============  THE ARRAY-VERSION OF THE STATS FUNCTIONS  ===============
@@ -2019,7 +2019,7 @@ Returns: geometric mean computed over dim(s) listed in dimension
         size = len(inarray)
         mult = N.power(inarray,1.0/size)
         mult = N.multiply.reduce(mult)
-    elif type(dimension) in [IntType,FloatType]:
+    elif type(dimension) in [int,float]:
         size = inarray.shape[dimension]
         mult = N.power(inarray,1.0/size)
         mult = N.multiply.reduce(mult,dimension)
@@ -2061,7 +2061,7 @@ Returns: harmonic mean computed over dim(s) in dimension
         inarray = N.ravel(inarray)
         size = len(inarray)
         s = N.add.reduce(1.0 / inarray)
-    elif type(dimension) in [IntType,FloatType]:
+    elif type(dimension) in [int,float]:
         size = float(inarray.shape[dimension])
         s = N.add.reduce(1.0/inarray, dimension)
         if keepdims == 1:
@@ -2116,7 +2116,7 @@ Returns: arithematic mean calculated over dim(s) in dimension
         inarray = N.ravel(inarray)
         sum = N.add.reduce(inarray)
         denom = float(len(inarray))
-    elif type(dimension) in [IntType,FloatType]:
+    elif type(dimension) in [int,float]:
         sum = asum(inarray,dimension)
         denom = float(inarray.shape[dimension])
         if keepdims == 1:
@@ -4116,9 +4116,9 @@ Returns an F-statistic given the following:
         dfF = degrees of freedom associated with the Restricted model
 where ER and EF are matrices from a multivariate F calculation.
 """
-     if type(ER) in [IntType, FloatType]:
+     if type(ER) in [int, float]:
          ER = N.array([[ER]])
-     if type(EF) in [IntType, FloatType]:
+     if type(EF) in [int, float]:
          EF = N.array([[EF]])
      n_um = (LA.det(ER) - LA.det(EF)) / float(dfnum)
      d_en = LA.det(EF) / float(dfden)
@@ -4158,7 +4158,7 @@ Returns: array summed along 'dimension'(s), same _number_ of dims if keepdims=1
          a = a.astype(N.float_)
      if dimension is None:
          s = N.sum(N.ravel(a))
-     elif type(dimension) in [IntType,FloatType]:
+     elif type(dimension) in [int,float]:
          s = N.add.reduce(a, dimension)
          if keepdims == 1:
              shp = list(a.shape)
@@ -4191,7 +4191,7 @@ Usage:   acumsum(a,dimension=None)
     if dimension is None:
         a = N.ravel(a)
         dimension = 0
-    if type(dimension) in [ListType, TupleType, N.ndarray]:
+    if type(dimension) in [list, tuple, N.ndarray]:
         dimension = list(dimension)
         dimension.sort()
         dimension.reverse()
@@ -4350,17 +4350,17 @@ Usage:   afindwithin(data)     data in |Stat format
  #########################################################
 
 ## CENTRAL TENDENCY:
- geometricmean = Dispatch ( (lgeometricmean, (ListType, TupleType)),
+ geometricmean = Dispatch ( (lgeometricmean, (list, tuple)),
                             (ageometricmean, (N.ndarray,)) )
- harmonicmean = Dispatch ( (lharmonicmean, (ListType, TupleType)),
+ harmonicmean = Dispatch ( (lharmonicmean, (list, tuple)),
                            (aharmonicmean, (N.ndarray,)) )
- mean = Dispatch ( (lmean, (ListType, TupleType)),
+ mean = Dispatch ( (lmean, (list, tuple)),
                    (amean, (N.ndarray,)) )
- median = Dispatch ( (lmedian, (ListType, TupleType)),
+ median = Dispatch ( (lmedian, (list, tuple)),
                      (amedian, (N.ndarray,)) )
- medianscore = Dispatch ( (lmedianscore, (ListType, TupleType)),
+ medianscore = Dispatch ( (lmedianscore, (list, tuple)),
                           (amedianscore, (N.ndarray,)) )
- mode = Dispatch ( (lmode, (ListType, TupleType)),
+ mode = Dispatch ( (lmode, (list, tuple)),
                    (amode, (N.ndarray,)) )
  tmean = Dispatch ( (atmean, (N.ndarray,)) )
  tvar = Dispatch ( (atvar, (N.ndarray,)) )
@@ -4368,151 +4368,151 @@ Usage:   afindwithin(data)     data in |Stat format
  tsem = Dispatch ( (atsem, (N.ndarray,)) )
 
 ## VARIATION:
- moment = Dispatch ( (lmoment, (ListType, TupleType)),
+ moment = Dispatch ( (lmoment, (list, tuple)),
                      (amoment, (N.ndarray,)) )
- variation = Dispatch ( (lvariation, (ListType, TupleType)),
+ variation = Dispatch ( (lvariation, (list, tuple)),
                         (avariation, (N.ndarray,)) )
- skew = Dispatch ( (lskew, (ListType, TupleType)),
+ skew = Dispatch ( (lskew, (list, tuple)),
                    (askew, (N.ndarray,)) )
- kurtosis = Dispatch ( (lkurtosis, (ListType, TupleType)),
+ kurtosis = Dispatch ( (lkurtosis, (list, tuple)),
                        (akurtosis, (N.ndarray,)) )
- describe = Dispatch ( (ldescribe, (ListType, TupleType)),
+ describe = Dispatch ( (ldescribe, (list, tuple)),
                        (adescribe, (N.ndarray,)) )
 
 ## DISTRIBUTION TESTS
 
- skewtest = Dispatch ( (askewtest, (ListType, TupleType)),
+ skewtest = Dispatch ( (askewtest, (list, tuple)),
                        (askewtest, (N.ndarray,)) )
- kurtosistest = Dispatch ( (akurtosistest, (ListType, TupleType)),
+ kurtosistest = Dispatch ( (akurtosistest, (list, tuple)),
                            (akurtosistest, (N.ndarray,)) )
- normaltest = Dispatch ( (anormaltest, (ListType, TupleType)),
+ normaltest = Dispatch ( (anormaltest, (list, tuple)),
                          (anormaltest, (N.ndarray,)) )
 
 ## FREQUENCY STATS:
- itemfreq = Dispatch ( (litemfreq, (ListType, TupleType)),
+ itemfreq = Dispatch ( (litemfreq, (list, tuple)),
                        (aitemfreq, (N.ndarray,)) )
- scoreatpercentile = Dispatch ( (lscoreatpercentile, (ListType, TupleType)),
+ scoreatpercentile = Dispatch ( (lscoreatpercentile, (list, tuple)),
                                 (ascoreatpercentile, (N.ndarray,)) )
- percentileofscore = Dispatch ( (lpercentileofscore, (ListType, TupleType)),
+ percentileofscore = Dispatch ( (lpercentileofscore, (list, tuple)),
                                  (apercentileofscore, (N.ndarray,)) )
- histogram = Dispatch ( (lhistogram, (ListType, TupleType)),
+ histogram = Dispatch ( (lhistogram, (list, tuple)),
                         (ahistogram, (N.ndarray,)) )
- cumfreq = Dispatch ( (lcumfreq, (ListType, TupleType)),
+ cumfreq = Dispatch ( (lcumfreq, (list, tuple)),
                       (acumfreq, (N.ndarray,)) )
- relfreq = Dispatch ( (lrelfreq, (ListType, TupleType)),
+ relfreq = Dispatch ( (lrelfreq, (list, tuple)),
                       (arelfreq, (N.ndarray,)) )
  
 ## VARIABILITY:
- obrientransform = Dispatch ( (lobrientransform, (ListType, TupleType)),
+ obrientransform = Dispatch ( (lobrientransform, (list, tuple)),
                               (aobrientransform, (N.ndarray,)) )
- samplevar = Dispatch ( (lsamplevar, (ListType, TupleType)),
+ samplevar = Dispatch ( (lsamplevar, (list, tuple)),
                         (asamplevar, (N.ndarray,)) )
- samplestdev = Dispatch ( (lsamplestdev, (ListType, TupleType)),
+ samplestdev = Dispatch ( (lsamplestdev, (list, tuple)),
                           (asamplestdev, (N.ndarray,)) )
  signaltonoise = Dispatch( (asignaltonoise, (N.ndarray,)),)
- var = Dispatch ( (lvar, (ListType, TupleType)),
+ var = Dispatch ( (lvar, (list, tuple)),
                   (avar, (N.ndarray,)) )
- stdev = Dispatch ( (lstdev, (ListType, TupleType)),
+ stdev = Dispatch ( (lstdev, (list, tuple)),
                     (astdev, (N.ndarray,)) )
- sterr = Dispatch ( (lsterr, (ListType, TupleType)),
+ sterr = Dispatch ( (lsterr, (list, tuple)),
                     (asterr, (N.ndarray,)) )
- sem = Dispatch ( (lsem, (ListType, TupleType)),
+ sem = Dispatch ( (lsem, (list, tuple)),
                   (asem, (N.ndarray,)) )
- z = Dispatch ( (lz, (ListType, TupleType)),
+ z = Dispatch ( (lz, (list, tuple)),
                 (az, (N.ndarray,)) )
- zs = Dispatch ( (lzs, (ListType, TupleType)),
+ zs = Dispatch ( (lzs, (list, tuple)),
                  (azs, (N.ndarray,)) )
  
 ## TRIMMING FCNS:
  threshold = Dispatch( (athreshold, (N.ndarray,)),)
- trimboth = Dispatch ( (ltrimboth, (ListType, TupleType)),
+ trimboth = Dispatch ( (ltrimboth, (list, tuple)),
                        (atrimboth, (N.ndarray,)) )
- trim1 = Dispatch ( (ltrim1, (ListType, TupleType)),
+ trim1 = Dispatch ( (ltrim1, (list, tuple)),
                     (atrim1, (N.ndarray,)) )
  
 ## CORRELATION FCNS:
- paired = Dispatch ( (lpaired, (ListType, TupleType)),
+ paired = Dispatch ( (lpaired, (list, tuple)),
                      (apaired, (N.ndarray,)) )
- lincc = Dispatch ( (llincc, (ListType, TupleType)),
+ lincc = Dispatch ( (llincc, (list, tuple)),
                        (alincc, (N.ndarray,)) )
- pearsonr = Dispatch ( (lpearsonr, (ListType, TupleType)),
+ pearsonr = Dispatch ( (lpearsonr, (list, tuple)),
                        (apearsonr, (N.ndarray,)) )
- spearmanr = Dispatch ( (lspearmanr, (ListType, TupleType)),
+ spearmanr = Dispatch ( (lspearmanr, (list, tuple)),
                         (aspearmanr, (N.ndarray,)) )
- pointbiserialr = Dispatch ( (lpointbiserialr, (ListType, TupleType)),
+ pointbiserialr = Dispatch ( (lpointbiserialr, (list, tuple)),
                              (apointbiserialr, (N.ndarray,)) )
- kendalltau = Dispatch ( (lkendalltau, (ListType, TupleType)),
+ kendalltau = Dispatch ( (lkendalltau, (list, tuple)),
                          (akendalltau, (N.ndarray,)) )
- linregress = Dispatch ( (llinregress, (ListType, TupleType)),
+ linregress = Dispatch ( (llinregress, (list, tuple)),
                          (alinregress, (N.ndarray,)) )
  
 ## INFERENTIAL STATS:
- ttest_1samp = Dispatch ( (lttest_1samp, (ListType, TupleType)),
+ ttest_1samp = Dispatch ( (lttest_1samp, (list, tuple)),
                           (attest_1samp, (N.ndarray,)) )
- ttest_ind = Dispatch ( (lttest_ind, (ListType, TupleType)),
+ ttest_ind = Dispatch ( (lttest_ind, (list, tuple)),
                         (attest_ind, (N.ndarray,)) )
- ttest_rel = Dispatch ( (lttest_rel, (ListType, TupleType)),
+ ttest_rel = Dispatch ( (lttest_rel, (list, tuple)),
                         (attest_rel, (N.ndarray,)) )
- chisquare = Dispatch ( (lchisquare, (ListType, TupleType)),
+ chisquare = Dispatch ( (lchisquare, (list, tuple)),
                         (achisquare, (N.ndarray,)) )
- ks_2samp = Dispatch ( (lks_2samp, (ListType, TupleType)),
+ ks_2samp = Dispatch ( (lks_2samp, (list, tuple)),
                        (aks_2samp, (N.ndarray,)) )
- mannwhitneyu = Dispatch ( (lmannwhitneyu, (ListType, TupleType)),
+ mannwhitneyu = Dispatch ( (lmannwhitneyu, (list, tuple)),
                            (amannwhitneyu, (N.ndarray,)) )
- tiecorrect = Dispatch ( (ltiecorrect, (ListType, TupleType)),
+ tiecorrect = Dispatch ( (ltiecorrect, (list, tuple)),
                          (atiecorrect, (N.ndarray,)) )
- ranksums = Dispatch ( (lranksums, (ListType, TupleType)),
+ ranksums = Dispatch ( (lranksums, (list, tuple)),
                        (aranksums, (N.ndarray,)) )
- wilcoxont = Dispatch ( (lwilcoxont, (ListType, TupleType)),
+ wilcoxont = Dispatch ( (lwilcoxont, (list, tuple)),
                         (awilcoxont, (N.ndarray,)) )
- kruskalwallish = Dispatch ( (lkruskalwallish, (ListType, TupleType)),
+ kruskalwallish = Dispatch ( (lkruskalwallish, (list, tuple)),
                              (akruskalwallish, (N.ndarray,)) )
- friedmanchisquare = Dispatch ( (lfriedmanchisquare, (ListType, TupleType)),
+ friedmanchisquare = Dispatch ( (lfriedmanchisquare, (list, tuple)),
                                 (afriedmanchisquare, (N.ndarray,)) )
  
 ## PROBABILITY CALCS:
- chisqprob = Dispatch ( (lchisqprob, (IntType, FloatType)),
+ chisqprob = Dispatch ( (lchisqprob, (int, float)),
                         (achisqprob, (N.ndarray,)) )
- zprob = Dispatch ( (lzprob, (IntType, FloatType)),
+ zprob = Dispatch ( (lzprob, (int, float)),
                     (azprob, (N.ndarray,)) )
- ksprob = Dispatch ( (lksprob, (IntType, FloatType)),
+ ksprob = Dispatch ( (lksprob, (int, float)),
                      (aksprob, (N.ndarray,)) )
- fprob = Dispatch ( (lfprob, (IntType, FloatType)),
+ fprob = Dispatch ( (lfprob, (int, float)),
                     (afprob, (N.ndarray,)) )
- betacf = Dispatch ( (lbetacf, (IntType, FloatType)),
+ betacf = Dispatch ( (lbetacf, (int, float)),
                      (abetacf, (N.ndarray,)) )
- betai = Dispatch ( (lbetai, (IntType, FloatType)),
+ betai = Dispatch ( (lbetai, (int, float)),
                     (abetai, (N.ndarray,)) )
- erfcc = Dispatch ( (lerfcc, (IntType, FloatType)),
+ erfcc = Dispatch ( (lerfcc, (int, float)),
                     (aerfcc, (N.ndarray,)) )
- gammln = Dispatch ( (lgammln, (IntType, FloatType)),
+ gammln = Dispatch ( (lgammln, (int, float)),
                      (agammln, (N.ndarray,)) )
  
 ## ANOVA FUNCTIONS:
- F_oneway = Dispatch ( (lF_oneway, (ListType, TupleType)),
+ F_oneway = Dispatch ( (lF_oneway, (list, tuple)),
                        (aF_oneway, (N.ndarray,)) )
- F_value = Dispatch ( (lF_value, (ListType, TupleType)),
+ F_value = Dispatch ( (lF_value, (list, tuple)),
                       (aF_value, (N.ndarray,)) )
 
 ## SUPPORT FUNCTIONS:
- incr = Dispatch ( (lincr, (ListType, TupleType, N.ndarray)), )
- sum = Dispatch ( (lsum, (ListType, TupleType)),
+ incr = Dispatch ( (lincr, (list, tuple, N.ndarray)), )
+ sum = Dispatch ( (lsum, (list, tuple)),
                   (asum, (N.ndarray,)) )
- cumsum = Dispatch ( (lcumsum, (ListType, TupleType)),
+ cumsum = Dispatch ( (lcumsum, (list, tuple)),
                      (acumsum, (N.ndarray,)) )
- ss = Dispatch ( (lss, (ListType, TupleType)),
+ ss = Dispatch ( (lss, (list, tuple)),
                  (ass, (N.ndarray,)) )
- summult = Dispatch ( (lsummult, (ListType, TupleType)),
+ summult = Dispatch ( (lsummult, (list, tuple)),
                       (asummult, (N.ndarray,)) )
- square_of_sums = Dispatch ( (lsquare_of_sums, (ListType, TupleType)),
+ square_of_sums = Dispatch ( (lsquare_of_sums, (list, tuple)),
                              (asquare_of_sums, (N.ndarray,)) )
- sumdiffsquared = Dispatch ( (lsumdiffsquared, (ListType, TupleType)),
+ sumdiffsquared = Dispatch ( (lsumdiffsquared, (list, tuple)),
                              (asumdiffsquared, (N.ndarray,)) )
- shellsort = Dispatch ( (lshellsort, (ListType, TupleType)),
+ shellsort = Dispatch ( (lshellsort, (list, tuple)),
                         (ashellsort, (N.ndarray,)) )
- rankdata = Dispatch ( (lrankdata, (ListType, TupleType)),
+ rankdata = Dispatch ( (lrankdata, (list, tuple)),
                        (arankdata, (N.ndarray,)) )
- findwithin = Dispatch ( (lfindwithin, (ListType, TupleType)),
+ findwithin = Dispatch ( (lfindwithin, (list, tuple)),
                          (afindwithin, (N.ndarray,)) )
 
 ######################  END OF NUMERIC FUNCTION BLOCK  #####################

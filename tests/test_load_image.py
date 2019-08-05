@@ -71,6 +71,8 @@ def test_load_image_rgb():
     assert rgb2.ncols == 228
     assert rgb.storage_format_name == "Dense"
 
+    print(rgb2.to_string())
+    print(rgb.to_string())
     assert rgb.to_string() == rgb2.to_string()
 
 
