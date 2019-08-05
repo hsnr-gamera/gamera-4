@@ -165,7 +165,7 @@ static int TIFFReadAndRealloc(TIFF *tif, tmsize_t size,
 static int
 TIFFFillStripPartial(TIFF *tif, int strip, tmsize_t read_ahead, int restart) {
 	static const char module[] = "TIFFFillStripPartial";
-	register TIFFDirectory *td = &tif->tif_dir;
+	 TIFFDirectory *td = &tif->tif_dir;
 	tmsize_t unused_data;
 	uint64 read_offset;
 	tmsize_t to_read;
@@ -304,7 +304,7 @@ TIFFFillStripPartial(TIFF *tif, int strip, tmsize_t read_ahead, int restart) {
  */
 static int
 TIFFSeek(TIFF *tif, uint32 row, uint16 sample) {
-	register TIFFDirectory *td = &tif->tif_dir;
+	 TIFFDirectory *td = &tif->tif_dir;
 	uint32 strip;
 	int whole_strip;
 	tmsize_t read_ahead = 0;

@@ -1151,7 +1151,7 @@ inline PyObject* FloatVector_to_python(FloatVector* cpp) {
     PyObject *array_init = get_ArrayInit();
     if (array_init == 0)
         return 0;
-    PyObject* str = PyUnicode_FromStringAndSize((char*)(&((*cpp)[0])),
+    PyObject* str = PyBytes_FromStringAndSize((char*)(&((*cpp)[0])),
                                                 cpp->size() * sizeof(double));
     /*PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
           cpp->size() * sizeof(double));*/

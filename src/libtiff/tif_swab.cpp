@@ -35,7 +35,7 @@
 
 void
 TIFFSwabShort(uint16 *wp) {
-	register unsigned char *cp = (unsigned char *) wp;
+	unsigned char *cp = (unsigned char *) wp;
 	unsigned char t;
 	assert(sizeof(uint16) == 2);
 	t = cp[1];
@@ -49,7 +49,7 @@ TIFFSwabShort(uint16 *wp) {
 
 void
 TIFFSwabLong(uint32 *lp) {
-	register unsigned char *cp = (unsigned char *) lp;
+	unsigned char *cp = (unsigned char *) lp;
 	unsigned char t;
 	assert(sizeof(uint32) == 4);
 	t = cp[3];
@@ -66,7 +66,7 @@ TIFFSwabLong(uint32 *lp) {
 
 void
 TIFFSwabLong8(uint64 *lp) {
-	register unsigned char *cp = (unsigned char *) lp;
+	unsigned char *cp = (unsigned char *) lp;
 	unsigned char t;
 	assert(sizeof(uint64) == 8);
 	t = cp[7];
@@ -88,9 +88,9 @@ TIFFSwabLong8(uint64 *lp) {
 #if defined(DISABLE_CHECK_TIFFSWABMACROS) || !defined(TIFFSwabArrayOfShort)
 
 void
-TIFFSwabArrayOfShort(register uint16 *wp, tmsize_t n) {
-	register unsigned char *cp;
-	register unsigned char t;
+TIFFSwabArrayOfShort( uint16 *wp, tmsize_t n) {
+	 unsigned char *cp;
+	 unsigned char t;
 	assert(sizeof(uint16) == 2);
 	/* XXX unroll loop some */
 	while (n-- > 0) {
@@ -107,7 +107,7 @@ TIFFSwabArrayOfShort(register uint16 *wp, tmsize_t n) {
 #if defined(DISABLE_CHECK_TIFFSWABMACROS) || !defined(TIFFSwabArrayOfTriples)
 
 void
-TIFFSwabArrayOfTriples(register uint8 *tp, tmsize_t n) {
+TIFFSwabArrayOfTriples( uint8 *tp, tmsize_t n) {
 	unsigned char *cp;
 	unsigned char t;
 
@@ -126,9 +126,9 @@ TIFFSwabArrayOfTriples(register uint8 *tp, tmsize_t n) {
 #if defined(DISABLE_CHECK_TIFFSWABMACROS) || !defined(TIFFSwabArrayOfLong)
 
 void
-TIFFSwabArrayOfLong(register uint32 *lp, tmsize_t n) {
-	register unsigned char *cp;
-	register unsigned char t;
+TIFFSwabArrayOfLong( uint32 *lp, tmsize_t n) {
+	 unsigned char *cp;
+	 unsigned char t;
 	assert(sizeof(uint32) == 4);
 	/* XXX unroll loop some */
 	while (n-- > 0) {
@@ -148,9 +148,9 @@ TIFFSwabArrayOfLong(register uint32 *lp, tmsize_t n) {
 #if defined(DISABLE_CHECK_TIFFSWABMACROS) || !defined(TIFFSwabArrayOfLong8)
 
 void
-TIFFSwabArrayOfLong8(register uint64 *lp, tmsize_t n) {
-	register unsigned char *cp;
-	register unsigned char t;
+TIFFSwabArrayOfLong8( uint64 *lp, tmsize_t n) {
+	 unsigned char *cp;
+	 unsigned char t;
 	assert(sizeof(uint64) == 8);
 	/* XXX unroll loop some */
 	while (n-- > 0) {
@@ -177,7 +177,7 @@ TIFFSwabArrayOfLong8(register uint64 *lp, tmsize_t n) {
 
 void
 TIFFSwabFloat(float *fp) {
-	register unsigned char *cp = (unsigned char *) fp;
+	unsigned char *cp = (unsigned char *) fp;
 	unsigned char t;
 	assert(sizeof(float) == 4);
 	t = cp[3];
@@ -193,9 +193,9 @@ TIFFSwabFloat(float *fp) {
 #if defined(DISABLE_CHECK_TIFFSWABMACROS) || !defined(TIFFSwabArrayOfFloat)
 
 void
-TIFFSwabArrayOfFloat(register float *fp, tmsize_t n) {
-	register unsigned char *cp;
-	register unsigned char t;
+TIFFSwabArrayOfFloat( float *fp, tmsize_t n) {
+	 unsigned char *cp;
+	 unsigned char t;
 	assert(sizeof(float) == 4);
 	/* XXX unroll loop some */
 	while (n-- > 0) {
@@ -216,7 +216,7 @@ TIFFSwabArrayOfFloat(register float *fp, tmsize_t n) {
 
 void
 TIFFSwabDouble(double *dp) {
-	register unsigned char *cp = (unsigned char *) dp;
+	 unsigned char *cp = (unsigned char *) dp;
 	unsigned char t;
 	assert(sizeof(double) == 8);
 	t = cp[7];
@@ -239,8 +239,8 @@ TIFFSwabDouble(double *dp) {
 
 void
 TIFFSwabArrayOfDouble(double *dp, tmsize_t n) {
-	register unsigned char *cp;
-	register unsigned char t;
+	 unsigned char *cp;
+	 unsigned char t;
 	assert(sizeof(double) == 8);
 	/* XXX unroll loop some */
 	while (n-- > 0) {

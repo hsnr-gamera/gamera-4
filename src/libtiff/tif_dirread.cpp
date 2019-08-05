@@ -5157,7 +5157,7 @@ TIFFFetchSubjectDistance(TIFF *tif, TIFFDirEntry *dir) {
  */
 static void
 ChopUpSingleUncompressedStrip(TIFF *tif) {
-	register TIFFDirectory *td = &tif->tif_dir;
+	TIFFDirectory *td = &tif->tif_dir;
 	uint64 bytecount;
 	uint64 offset;
 	uint32 rowblock;
@@ -5253,7 +5253,7 @@ int _TIFFFillStriles(TIFF *tif) {
 
 static int _TIFFFillStrilesInternal(TIFF *tif, int loadStripByteCount) {
 #if defined(DEFER_STRILE_LOAD)
-																															register TIFFDirectory *td = &tif->tif_dir;
+	TIFFDirectory *td = &tif->tif_dir;
         int return_value = 1;
 
         if( td->td_stripoffset != nullptr )
