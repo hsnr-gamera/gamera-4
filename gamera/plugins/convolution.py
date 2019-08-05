@@ -93,7 +93,7 @@ class convolve(PluginFunction):
 
     def __call__(self, kernel, border_treatment=3):
         from gamera.gameracore import FLOAT
-        if kernel is list:
+        if type(kernel) is list:
             kernel = image_utilities.nested_list_to_image(kernel, FLOAT)
         return _convolution.convolve(self, kernel, border_treatment)
     __call__ = staticmethod(__call__)
