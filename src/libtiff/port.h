@@ -93,4 +93,6 @@ typedef double dblparam_t;
 #ifdef __cplusplus
 }
 #endif
+
+#define MDI_SUPPORT 1
 #endif

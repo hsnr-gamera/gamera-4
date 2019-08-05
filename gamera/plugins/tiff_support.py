@@ -96,7 +96,6 @@ class TiffSupportModule(PluginModule):
             cpp_sources.remove("src/libtiff/tif_win32.cpp")
         except Exception:
             pass
-
         extra_compile_args = ['-Dunix']
     else:
         extra_libraries = ["tiff"]

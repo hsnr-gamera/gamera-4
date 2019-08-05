@@ -28,7 +28,7 @@
  * TIFF Library.
  */
 #include "tiffiop.h"
-
+#include <iostream>
 /*
  * Dummy functions to fill the omitted client procedures.
  */
@@ -360,6 +360,9 @@ TIFFClientOpen(
 		#endif
 		             tif->tif_header.common.tiff_magic,
 		             tif->tif_header.common.tiff_magic);
+		
+		std::cerr << "Fehler 3, tiff magic = " << tif->tif_header.common.tiff_magic << std::endl;
+		
 		goto bad;
 	}
 	if (tif->tif_header.common.tiff_magic == TIFF_BIGENDIAN) {
