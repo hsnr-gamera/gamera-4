@@ -71,7 +71,7 @@ class Process:
          return default
       elif step is str and step in self.steps:
          return self.steps.index(step)
-      elif type(step) == IntType and step < len(self.steps):
+      elif type(step) == int and step < len(self.steps):
          return step
       raise KeyError("%s does not identify a step in the process." % step)
 

@@ -47,7 +47,7 @@ def get_color(number):
          return wx.Colour(*tuple(number))
       else:
          number = None
-   if type(number) != IntType:
+   if type(number) != int:
       number = color_number
       color_number += 1
    return colors[number & 0x7] # mod 8

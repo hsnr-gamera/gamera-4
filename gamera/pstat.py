@@ -622,17 +622,17 @@ Returns: remapped version of listoflists
 def roundlist (inlist,digits):
     """
 Goes through each element in a 1D or 2D inlist, and applies the following
-function to all elements of FloatType ... round(element,digits).
+function to all elements of float ... round(element,digits).
 
 Usage:   roundlist(inlist,digits)
 Returns: list with rounded floats
 """
-    if type(inlist[0]) in [IntType, FloatType]:
+    if type(inlist[0]) in [int, float]:
         inlist = [inlist]
     l = inlist*1
     for i in range(len(l)):
         for j in range(len(l[i])):
-            if type(l[i][j])==FloatType:
+            if type(l[i][j])==float:
                 l[i][j] = round(l[i][j],digits)
     return l
 
