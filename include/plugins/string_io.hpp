@@ -28,17 +28,15 @@ template<class T>
 PyObject* _to_raw_string(const T &image) {
 	typedef typename T::value_type value_type;
 	typename T::const_vec_iterator j = image.vec_begin();
-	size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-	value_type* tmp = (value_type*)calloc(image_size, sizeof(value_type));
+	std::stringstream stream;
+	for (; j != image.vec_end(); ++j) {
+		stream << *j;
+	}
+	std::string str = stream.str();
+	PyObject* pystring = PyByteArray_FromStringAndSize(str.c_str(),
+	                              str.length());
 	
-	if (tmp == nullptr) {
-		PyErr_SetString(PyExc_TypeError, "could not allocate enough memory");
-		return nullptr;
-	}
-	for (; j != image.vec_end(); ++tmp, ++j) {
-		*tmp = *j;
-	}
-	return Py_BuildValue("y", tmp);
+	return pystring;
 }
 
 template <class T>
