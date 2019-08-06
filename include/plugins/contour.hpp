@@ -68,6 +68,7 @@ FloatVector* contour_bottom(const T& m) {
             (*output)[c] = result;
         }
     } catch (std::exception e) {
+    	std::cerr << e.what() << std::endl;
         delete output;
         throw;
     }

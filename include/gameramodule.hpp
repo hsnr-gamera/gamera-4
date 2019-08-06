@@ -1147,7 +1147,7 @@ inline PyObject* FloatVector_to_python(FloatVector* cpp) {
     PyObject *py = PyObject_CallFunction(array_init, "s", "d");
     PyObject* function = PyObject_GetAttrString(py, "frombytes");
     
-    PyObject_CallFunctionObjArgs(function, str);
+    PyObject_CallFunction(function,"y", str);
     
 	Py_XDECREF(str);
 	Py_XDECREF(function);
