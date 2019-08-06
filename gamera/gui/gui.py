@@ -26,8 +26,6 @@ except ImportError:
    aui = None
    
 import inspect
-import sys, io
-
 from gamera.core import *
 from gamera.config import config
    
