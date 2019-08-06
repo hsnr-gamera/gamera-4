@@ -332,7 +332,7 @@ PyObject *sub_image_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	PyObject *image;
 	if (num_args == 3) {
 		PyObject *a, *b;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OOO", &image, &a, &b)) {
+		if (PyArg_ParseTuple(args,  "OOO", &image, &a, &b)) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
@@ -379,7 +379,7 @@ PyObject *sub_image_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	
 	if (num_args == 2) {
 		PyObject *pyrect;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO", &image, &pyrect)) {
+		if (PyArg_ParseTuple(args,  "OO", &image, &pyrect)) {
 			if (is_RectObject(pyrect)) {
 				Rect *rect = ((RectObject *) pyrect)->m_x;
 				return _sub_image_new(pytype, image, rect->origin(), rect->dim());
@@ -465,7 +465,7 @@ PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	if (num_args == 4) {
 		PyObject *a, *b;
 		int label;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OiOO", &image, &label, &a, &b)) {
+		if (PyArg_ParseTuple(args,  "OiOO", &image, &label, &a, &b)) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
@@ -513,7 +513,7 @@ PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	if (num_args == 3) {
 		int label;
 		PyObject *pyrect;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OiO", &image, &label, &pyrect)) {
+		if (PyArg_ParseTuple(args,  "OiO", &image, &label, &pyrect)) {
 			if (is_RectObject(pyrect)) {
 				Rect *rect = ((RectObject *) pyrect)->m_x;
 				return _cc_new(pytype, image, label, rect->origin(), rect->dim());
@@ -727,13 +727,13 @@ static PyObject *image_get(PyObject *self, PyObject *args) {
 	int num_args = PyTuple_GET_SIZE(args);
 	if (num_args == 1) {
 		PyObject *py_point;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &py_point)) {
+		if (PyArg_ParseTuple(args,  "O", &py_point)) {
 			try {
 				return image_get(self, coerce_Point(py_point));
 			} catch (std::invalid_argument e) {
 				PyErr_Clear();
 				int i;
-				if (PyArg_ParseTuple(args, CHAR_PTR_CAST "i", &i)) {
+				if (PyArg_ParseTuple(args,  "i", &i)) {
 					Rect *image = (Image *) ((RectObject *) self)->m_x;
 					return image_get(self, Point(i % image->ncols(), i / image->ncols()));
 				}
@@ -767,13 +767,13 @@ static PyObject *image_set(PyObject *self, PyObject *args) {
 	PyObject *value;
 	if (num_args == 2) {
 		PyObject *py_point;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO", &py_point, &value)) {
+		if (PyArg_ParseTuple(args,  "OO", &py_point, &value)) {
 			try {
 				return image_set(self, coerce_Point(py_point), value);
 			} catch (std::invalid_argument e) {
 				PyErr_Clear();
 				int i;
-				if (PyArg_ParseTuple(args, CHAR_PTR_CAST "iO", &i, &value)) {
+				if (PyArg_ParseTuple(args,  "iO", &i, &value)) {
 					Rect *image = ((RectObject *) self)->m_x;
 					return image_set(self, Point(i % image->ncols(), i / image->ncols()), value);
 				}
@@ -904,7 +904,7 @@ static PyObject *image_setitem(PyObject *self, PyObject *args) {
 	PyObject *value;
 	PyObject *arg;
 	Point point;
-	if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO", &arg, &value) <= 0)
+	if (PyArg_ParseTuple(args,  "OO", &arg, &value) <= 0)
 		return 0;
 	if (PyLong_Check(arg)) {
 		size_t i;
@@ -924,14 +924,14 @@ static PyObject *image_setitem(PyObject *self, PyObject *args) {
 
 static PyObject *image_len(PyObject *self, PyObject *) {
 	Image *image = (Image *) ((RectObject *) self)->m_x;
-	return Py_BuildValue(CHAR_PTR_CAST "i", (long) (image->nrows() * image->ncols()));
+	return Py_BuildValue( "i", (long) (image->nrows() * image->ncols()));
 }
 
 static PyObject *image_eq(PyObject *self, PyObject *args) {
 	auto image = (Image *) ((RectObject *) self)->m_x;
 	PyObject *other;
 	
-	if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &other)) {
+	if (PyArg_ParseTuple(args,  "O", &other)) {
 		if (!is_ImageObject(other)) Py_RETURN_FALSE;
 		
 		auto otherImage = (Image *) ((RectObject *) other)->m_x;
@@ -948,7 +948,7 @@ static PyObject *image_eq(PyObject *self, PyObject *args) {
 static PyObject *image_gt(PyObject *self, PyObject *args) {
 	auto image = (Image *) ((RectObject *) self)->m_x;
 	PyObject *other;
-	if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &other)) {
+	if (PyArg_ParseTuple(args,  "O", &other)) {
 		if (!is_ImageObject(other)) Py_RETURN_FALSE;
 		
 		auto otherImage = (Image *) ((RectObject *) other)->m_x;
@@ -1030,7 +1030,7 @@ CREATE_SET_FUNC(classification_state)
 
 static PyObject *image_get_scaling(PyObject *self) {
 	RectObject *o = (RectObject *) self;
-	return Py_BuildValue(CHAR_PTR_CAST "f", ((Image *) o->m_x)->scaling());
+	return Py_BuildValue( "f", ((Image *) o->m_x)->scaling());
 }
 
 static int image_set_scaling(PyObject *self, PyObject *v) {
@@ -1045,7 +1045,7 @@ static int image_set_scaling(PyObject *self, PyObject *v) {
 
 static PyObject *image_get_resolution(PyObject *self) {
 	RectObject *o = (RectObject *) self;
-	return Py_BuildValue(CHAR_PTR_CAST "f", ((Image *) o->m_x)->resolution());
+	return Py_BuildValue( "f", ((Image *) o->m_x)->resolution());
 }
 
 static int image_set_resolution(PyObject *self, PyObject *v) {
@@ -1060,7 +1060,7 @@ static int image_set_resolution(PyObject *self, PyObject *v) {
 
 static PyObject *cc_get_label(PyObject *self) {
 	RectObject *o = (RectObject *) self;
-	return Py_BuildValue(CHAR_PTR_CAST "i", ((Cc *) o->m_x)->label());
+	return Py_BuildValue( "i", ((Cc *) o->m_x)->label());
 }
 
 static int cc_set_label(PyObject *self, PyObject *v) {
@@ -1303,7 +1303,7 @@ static PyObject *mlcc_copy(PyObject *self, PyObject *args) {
 	
 	if (num_args == 2) {
 		PyObject *a, *b;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO", &a, &b)) {
+		if (PyArg_ParseTuple(args,  "OO", &a, &b)) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
@@ -1335,7 +1335,7 @@ static PyObject *mlcc_copy(PyObject *self, PyObject *args) {
 	
 	if (num_args == 3) {
 		PyObject *pyrect;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &pyrect)) {
+		if (PyArg_ParseTuple(args,  "O", &pyrect)) {
 			if (is_RectObject(pyrect)) {
 				Rect *rect = ((RectObject *) pyrect)->m_x;
 				return _mlcc_copy(mlcc, rect->origin(), rect->dim());
@@ -1571,7 +1571,7 @@ PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 		// create MLCC from list of CCs
 		PyObject *cclist;
 		size_t n, N;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O", &cclist)) {
+		if (PyArg_ParseTuple(args,  "O", &cclist)) {
 			if (!PyList_Check(cclist)) {
 				PyErr_SetString(PyExc_TypeError, "MlCc objects must be constructed from a Cc list.");
 				return 0;
@@ -1605,7 +1605,7 @@ PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	if (num_args == 4) {
 		PyObject *a, *b;
 		int label;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OiOO", &image, &label, &a, &b)) {
+		if (PyArg_ParseTuple(args,  "OiOO", &image, &label, &a, &b)) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
@@ -1653,7 +1653,7 @@ PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	if (num_args == 3) {
 		int label;
 		PyObject *pyrect;
-		if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OiO", &image, &label, &pyrect)) {
+		if (PyArg_ParseTuple(args,  "OiO", &image, &label, &pyrect)) {
 			if (is_RectObject(pyrect)) {
 				Rect *rect = ((RectObject *) pyrect)->m_x;
 				return _mlcc_new(pytype, image, label, rect->origin(), rect->dim());
@@ -1925,7 +1925,7 @@ static PyMethodDef mlcc_methods[] = {
 
 void init_ImageType(PyObject *module_dict) {
 	Py_TYPE(&ImageType) = &PyType_Type;
-	ImageType.tp_name = CHAR_PTR_CAST "gameracore.Image";
+	ImageType.tp_name =  "gameracore.Image";
 	ImageType.tp_basicsize = sizeof(ImageObject);
 	ImageType.tp_dealloc = image_dealloc;
 	ImageType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
@@ -1943,7 +1943,7 @@ void init_ImageType(PyObject *module_dict) {
 	ImageType.tp_traverse = image_traverse;
 	ImageType.tp_clear = image_clear;
 	ImageType.tp_repr = image_repr;
-	ImageType.tp_doc = CHAR_PTR_CAST
+	ImageType.tp_doc =
 			"The Image constructor creates a new image with newly allocated underlying data.\n\n"
 			"There are multiple ways to create an Image:\n\n"
 			"  - **Image** (Point *upper_left*, Point *lower_right*, Choice *pixel_type* = ONEBIT, Choice *format* = DENSE)\n\n"
@@ -1969,7 +1969,7 @@ void init_ImageType(PyObject *module_dict) {
 	PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType);
 	
 	Py_TYPE(&SubImageType) = &PyType_Type;
-	SubImageType.tp_name = CHAR_PTR_CAST "gameracore.SubImage";
+	SubImageType.tp_name =  "gameracore.SubImage";
 	SubImageType.tp_basicsize = sizeof(SubImageObject);
 	SubImageType.tp_dealloc = image_dealloc;
 	SubImageType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
@@ -1980,7 +1980,7 @@ void init_ImageType(PyObject *module_dict) {
 	SubImageType.tp_getattro = PyObject_GenericGetAttr;
 	SubImageType.tp_alloc = NULL; // PyType_GenericAlloc;
 	SubImageType.tp_free = NULL; // _PyObject_Del;
-	SubImageType.tp_doc = CHAR_PTR_CAST
+	SubImageType.tp_doc =
 			"Creates a new view on existing data.\n\nThere are a number of ways to create a subimage:\n\n"
 			"  - **SubImage** (Image *image*, Point *upper_left*, Point *lower_right*)\n\n"
 			"  - **SubImage** (Image *image*, Point *upper_left*, Size *size*)\n\n"
@@ -1998,7 +1998,7 @@ void init_ImageType(PyObject *module_dict) {
 	PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType);
 	
 	Py_TYPE(&CCType) = &PyType_Type;
-	CCType.tp_name = CHAR_PTR_CAST "gameracore.Cc";
+	CCType.tp_name =  "gameracore.Cc";
 	CCType.tp_basicsize = sizeof(CCObject);
 	CCType.tp_dealloc = image_dealloc;
 	CCType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
@@ -2012,7 +2012,7 @@ void init_ImageType(PyObject *module_dict) {
 	CCType.tp_alloc = NULL;
 	CCType.tp_richcompare = cc_richcompare;
 	CCType.tp_free = NULL; //_PyObject_Del;
-	CCType.tp_doc = CHAR_PTR_CAST
+	CCType.tp_doc =
 			"Creates a connected component representing part of a OneBit image.\n\n"
 			"It is rare to create one of these objects directly: most often you "
 			"will just use cc_analysis to create connected components.\n\n"
@@ -2029,7 +2029,7 @@ void init_ImageType(PyObject *module_dict) {
 	PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType);
 	
 	Py_TYPE(&MLCCType) = &PyType_Type;
-	MLCCType.tp_name = CHAR_PTR_CAST "gameracore.MlCc";
+	MLCCType.tp_name =  "gameracore.MlCc";
 	MLCCType.tp_basicsize = sizeof(MLCCObject);
 	MLCCType.tp_dealloc = image_dealloc;
 	MLCCType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
@@ -2042,7 +2042,7 @@ void init_ImageType(PyObject *module_dict) {
 	MLCCType.tp_alloc = NULL;
 	MLCCType.tp_richcompare = mlcc_richcompare;
 	MLCCType.tp_free = NULL; //_PyObject_Del;
-	MLCCType.tp_doc = CHAR_PTR_CAST
+	MLCCType.tp_doc =
 			"Creates a multi label connected component (MultiLabelCC) representing part of a OneBit image.\n\n"
 			"Most often you will create a MultiLabelCCs from a list of Cc's.\n\n"
 			"There are a number of ways to create a MultiLabelCC:\n\n"
@@ -2061,27 +2061,27 @@ void init_ImageType(PyObject *module_dict) {
 	//-------------------------------
 	// classification states
 	PyDict_SetItemString(module_dict, "UNCLASSIFIED",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", UNCLASSIFIED));
+	                     Py_BuildValue( "i", UNCLASSIFIED));
 	PyDict_SetItemString(module_dict, "AUTOMATIC",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", AUTOMATIC));
+	                     Py_BuildValue( "i", AUTOMATIC));
 	PyDict_SetItemString(module_dict, "HEURISTIC",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", HEURISTIC));
+	                     Py_BuildValue( "i", HEURISTIC));
 	PyDict_SetItemString(module_dict, "MANUAL",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", MANUAL));
+	                     Py_BuildValue( "i", MANUAL));
 	// confidence types
 	PyDict_SetItemString(module_dict, "CONFIDENCE_DEFAULT",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_DEFAULT));
+	                     Py_BuildValue( "i", CONFIDENCE_DEFAULT));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_KNNFRACTION",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_KNNFRACTION));
+	                     Py_BuildValue( "i", CONFIDENCE_KNNFRACTION));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_INVERSEWEIGHT",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_INVERSEWEIGHT));
+	                     Py_BuildValue( "i", CONFIDENCE_INVERSEWEIGHT));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_LINEARWEIGHT",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_LINEARWEIGHT));
+	                     Py_BuildValue( "i", CONFIDENCE_LINEARWEIGHT));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_NUN",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_NUN));
+	                     Py_BuildValue( "i", CONFIDENCE_NUN));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_NNDISTANCE",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_NNDISTANCE));
+	                     Py_BuildValue( "i", CONFIDENCE_NNDISTANCE));
 	PyDict_SetItemString(module_dict, "CONFIDENCE_AVGDISTANCE",
-	                     Py_BuildValue(CHAR_PTR_CAST "i", CONFIDENCE_AVGDISTANCE));
+	                     Py_BuildValue( "i", CONFIDENCE_AVGDISTANCE));
 }
 

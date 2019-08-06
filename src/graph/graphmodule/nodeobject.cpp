@@ -185,15 +185,15 @@ static PyObject* node___repr__(PyObject* self) {
 
 // -----------------------------------------------------------------------------
 PyGetSetDef node_getset[] = {
-        { CHAR_PTR_CAST "data", (getter)node_get_data, NULL,
-                CHAR_PTR_CAST "The value the identified with this node. (get/set)", NULL },
-        { CHAR_PTR_CAST "edges", (getter)node_get_edges, NULL,
-                CHAR_PTR_CAST "An iterator over edges pointing in/out from node (get)", NULL },
-        { CHAR_PTR_CAST "nodes", (getter)node_get_nodes, NULL,
-                CHAR_PTR_CAST "An iterator over nodes that can be reached directly "
+        {  "data", (getter)node_get_data, NULL,
+                 "The value the identified with this node. (get/set)", NULL },
+        {  "edges", (getter)node_get_edges, NULL,
+                 "An iterator over edges pointing in/out from node (get)", NULL },
+        {  "nodes", (getter)node_get_nodes, NULL,
+                 "An iterator over nodes that can be reached directly "
                               "(through a single edge) from this node (get)", NULL },
-        { CHAR_PTR_CAST "nedges", (getter)node_get_nedges, NULL,
-                CHAR_PTR_CAST "The number of edges pointing in/out of this node (get)", NULL },
+        {  "nedges", (getter)node_get_nedges, NULL,
+                 "The number of edges pointing in/out of this node (get)", NULL },
         { NULL }
 };
 
@@ -202,7 +202,7 @@ PyGetSetDef node_getset[] = {
 // -----------------------------------------------------------------------------
 void init_NodeType() {
     Py_TYPE(&NodeType) = &PyType_Type;
-    NodeType.tp_name = CHAR_PTR_CAST "gamera.graph.Node";
+    NodeType.tp_name =  "gamera.graph.Node";
     NodeType.tp_basicsize = sizeof(NodeObject);
     NodeType.tp_dealloc = node_dealloc;
     NodeType.tp_repr = node___repr__;

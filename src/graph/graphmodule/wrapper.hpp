@@ -27,12 +27,6 @@
 #include "gameramodule.hpp"
 //##include "graphdata_pyobject.hpp"
 
-
-#ifdef CHAR_PTR_CAST
-#undef CHAR_PTR_CAST
-#endif
-
-#define CHAR_PTR_CAST (char*)
 #include "graph_common.hpp"
 #include "graphdatapyobject.hpp"
 #ifdef __DEBUG_GAPI__

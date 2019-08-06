@@ -174,7 +174,7 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
 
    static PyTypeObject* imagebase = 0;
    if (imagebase == 0) {
-      PyObject* mod = PyImport_ImportModule(CHAR_PTR_CAST "gamera.gameracore");
+      PyObject* mod = PyImport_ImportModule( "gamera.gameracore");
       if (mod == 0) {
          PyErr_SetString(PyExc_RuntimeError, "Unable to load gameracore.\n");
          Py_XDECREF(images_seq);
@@ -253,7 +253,7 @@ PyObject* graph_create_minimum_spanning_tree(PyObject* self, PyObject* args) {
 	
 	PyObject *images = nullptr;
 	PyObject *uniq_dists = nullptr;
-	if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|OO:create_minimum_spanning_tree",
+	if (PyArg_ParseTuple(args,  "|OO:create_minimum_spanning_tree",
 	                     &images, &uniq_dists) <= 0)
 		return nullptr;
 	

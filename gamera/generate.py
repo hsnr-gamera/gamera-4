@@ -145,11 +145,11 @@ template = Template("""
       [[# the argument tuple. #]]
       [[if function.feature_function]]
          int offset = -1;
-         if (PyArg_ParseTuple(args, CHAR_PTR_CAST \"O|i:[[function.__name__]]\",&[[function.self_type.pysymbol]], &offset) <= 0)
+         if (PyArg_ParseTuple(args,  \"O|i:[[function.__name__]]\",&[[function.self_type.pysymbol]], &offset) <= 0)
            return 0;
       [[else]]
          [[if pyarg_format != '']]
-           if (PyArg_ParseTuple(args, CHAR_PTR_CAST \"[[pyarg_format]]:[[function.__name__]]\"
+           if (PyArg_ParseTuple(args,  \"[[pyarg_format]]:[[function.__name__]]\"
            [[for arg in args]]
              ,
              &[[arg.pysymbol]]
@@ -248,9 +248,9 @@ template = Template("""
   static PyMethodDef [[module_name]]_methods[] = {
     [[for function in module.functions]]
       [[if not function.pure_python]]
-        { CHAR_PTR_CAST \"[[function.__name__]]\",
+        {  \"[[function.__name__]]\",
           call_[[function.__name__]], METH_VARARGS,
-          CHAR_PTR_CAST [[function.escape_docstring()]]
+           [[function.escape_docstring()]]
         },
       [[end]]
     [[end]]

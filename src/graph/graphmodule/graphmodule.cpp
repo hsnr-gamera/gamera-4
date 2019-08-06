@@ -26,7 +26,7 @@
 template<flag_t F>
 static PyObject* Factory(PyObject* self, PyObject* args) {
   PyObject *a = NULL;
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|O", &a) <= 0)
+  if (PyArg_ParseTuple(args,  "|O", &a) <= 0)
     return 0;
   if (a == NULL)
     return (PyObject*)graph_new(F);
@@ -40,16 +40,16 @@ static PyObject* Factory(PyObject* self, PyObject* args) {
 
 // defines some convenience wrappers for creating graphs easier.
 PyMethodDef graph_module_methods[] = {
-  { CHAR_PTR_CAST "Tree", Factory<FLAG_TREE>, METH_VARARGS,
-    CHAR_PTR_CAST "Create a new Tree" },
-  { CHAR_PTR_CAST "FreeGraph", Factory<FLAG_FREE>, METH_VARARGS,
-    CHAR_PTR_CAST "Create a new freeform Graph" },
-  { CHAR_PTR_CAST "Free", Factory<FLAG_FREE>, METH_VARARGS,
-    CHAR_PTR_CAST "Create a new freeform Graph" },
-  { CHAR_PTR_CAST "DAG", Factory<FLAG_DAG>, METH_VARARGS,
-    CHAR_PTR_CAST "Create a new directed acyclic graph" },
-  { CHAR_PTR_CAST "Undirected", Factory<FLAG_UNDIRECTED>, METH_VARARGS,
-    CHAR_PTR_CAST "Create a new undirected (cyclic) graph" },
+  {  "Tree", Factory<FLAG_TREE>, METH_VARARGS,
+     "Create a new Tree" },
+  {  "FreeGraph", Factory<FLAG_FREE>, METH_VARARGS,
+     "Create a new freeform Graph" },
+  {  "Free", Factory<FLAG_FREE>, METH_VARARGS,
+     "Create a new freeform Graph" },
+  {  "DAG", Factory<FLAG_DAG>, METH_VARARGS,
+     "Create a new directed acyclic graph" },
+  {  "Undirected", Factory<FLAG_UNDIRECTED>, METH_VARARGS,
+     "Create a new undirected (cyclic) graph" },
   {NULL}
 };
 

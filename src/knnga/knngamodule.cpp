@@ -45,7 +45,7 @@ static PyObject *GABaseSetting_new(PyTypeObject *pytype, PyObject *args, PyObjec
     double cRate = 0.95;
     double mRate = 0.05;
 
-    if (!PyArg_ParseTuple(args, CHAR_PTR_CAST "|iIdd", &opMode, &pSize, &cRate, &mRate)) {
+    if (!PyArg_ParseTuple(args,  "|iIdd", &opMode, &pSize, &cRate, &mRate)) {
         PyErr_SetString(PyExc_RuntimeError, "GABaseSetting: argument parse error");
         return NULL;
     }
@@ -82,7 +82,7 @@ static PyObject* getOpMode(PyObject* object) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
     try {
-        return Py_BuildValue(CHAR_PTR_CAST "i", self->baseSetting->getOpMode());
+        return Py_BuildValue( "i", self->baseSetting->getOpMode());
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         Py_RETURN_NONE;
@@ -93,7 +93,7 @@ static PyObject* getPopSize(PyObject* object) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
     try {
-        return Py_BuildValue(CHAR_PTR_CAST "I", self->baseSetting->getPopSize());
+        return Py_BuildValue( "I", self->baseSetting->getPopSize());
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         Py_RETURN_NONE;
@@ -104,7 +104,7 @@ static PyObject* getCrossRate(PyObject* object) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
     try {
-        return Py_BuildValue(CHAR_PTR_CAST "d", self->baseSetting->getCrossRate());
+        return Py_BuildValue( "d", self->baseSetting->getCrossRate());
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         Py_RETURN_NONE;
@@ -115,7 +115,7 @@ static PyObject* getMutRate(PyObject* object) {
     GABaseSettingObject *self = (GABaseSettingObject*) object;
 
     try {
-        return Py_BuildValue(CHAR_PTR_CAST "d", self->baseSetting->getMutRate());
+        return Py_BuildValue( "d", self->baseSetting->getMutRate());
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         Py_RETURN_NONE;
@@ -223,7 +223,7 @@ PyGetSetDef GABaseSetting_getset[] = {
 
 void init_GABaseSettingType(PyObject *d) {
     Py_TYPE(&GABaseSettingType) = &PyType_Type;
-    GABaseSettingType.tp_name = CHAR_PTR_CAST "gamera.knnga.GABaseSetting";
+    GABaseSettingType.tp_name =  "gamera.knnga.GABaseSetting";
     GABaseSettingType.tp_basicsize = sizeof(GABaseSettingObject);
     GABaseSettingType.tp_dealloc = GABaseSetting_dealloc;
     GABaseSettingType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -233,7 +233,7 @@ void init_GABaseSettingType(PyObject *d) {
     GABaseSettingType.tp_free = NULL;
     GABaseSettingType.tp_methods = GABaseSetting_methods;
     GABaseSettingType.tp_getset = GABaseSetting_getset;
-    GABaseSettingType.tp_doc = CHAR_PTR_CAST
+    GABaseSettingType.tp_doc =
         "**GABaseSetting** (*opMode* = ``GA_SELECTION``,"
         " int *popSize* = ``75``,"
         " double *crossRate* = ``0.95``,"
@@ -316,7 +316,7 @@ static PyObject* setRoulettWheelScaled(PyObject* object, PyObject* args) {
     GASelectionObject *self = (GASelectionObject*) object;
     double preasure = 2.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|d", &preasure) <= 0) {
+    if (PyArg_ParseTuple(args,  "|d", &preasure) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GASelection.setRoulettWheelScaled: argument parse error");
         return NULL;
     }
@@ -351,7 +351,7 @@ static PyObject* setRankSelection(PyObject* object, PyObject* args) {
     double preasure = 2.0;
     double exponent = 1.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|dd", &preasure, &exponent) <= 0) {
+    if (PyArg_ParseTuple(args,  "|dd", &preasure, &exponent) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GASelection.setRankSelection: argument parse error");
         return NULL;
     }
@@ -371,7 +371,7 @@ static PyObject* setTournamentSelection(PyObject* object, PyObject* args) {
     GASelectionObject *self = (GASelectionObject*) object;
     unsigned int tSize = 3;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|I", &tSize) <= 0) {
+    if (PyArg_ParseTuple(args,  "|I", &tSize) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GASelection.setTournamentSelection: argument parse error");
         return NULL;
     }
@@ -455,7 +455,7 @@ PyGetSetDef GASelection_getset[] = {
 
 void init_GASelectionType(PyObject *d) {
     Py_TYPE(&GASelectionType) = &PyType_Type;
-    GASelectionType.tp_name = CHAR_PTR_CAST "gamera.knnga.GASelection";
+    GASelectionType.tp_name =  "gamera.knnga.GASelection";
     GASelectionType.tp_basicsize = sizeof(GASelectionObject);
     GASelectionType.tp_dealloc = GASelection_dealloc;
     GASelectionType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -465,7 +465,7 @@ void init_GASelectionType(PyObject *d) {
     GASelectionType.tp_free = NULL;
     GASelectionType.tp_methods = GASelection_methods;
     GASelectionType.tp_getset = GASelection_getset;
-    GASelectionType.tp_doc = CHAR_PTR_CAST "**GASelection** ()\n\n"
+    GASelectionType.tp_doc =  "**GASelection** ()\n\n"
         "The ``GASelection`` constructor creates a new settings object "
         "for the GA-optimization which specifies the used individuals selection method. "
         "This object can later be used in an ``GAOptimization``-object. \n\n"
@@ -524,7 +524,7 @@ static PyObject* setNPointCrossover(PyObject* object, PyObject* args) {
     GACrossoverObject *self = (GACrossoverObject*) object;
     unsigned int n = 1;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|I", &n) <= 0) {
+    if (PyArg_ParseTuple(args,  "|I", &n) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GACrossover.setNPointCrossover: argument parse error");
         return NULL;
     }
@@ -544,7 +544,7 @@ static PyObject* setUniformCrossover(PyObject* object, PyObject* args) {
     GACrossoverObject *self = (GACrossoverObject*) object;
     double preference = 0.5;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|d", &preference) <= 0) {
+    if (PyArg_ParseTuple(args,  "|d", &preference) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GACrossover.setUniformCrossover: argument parse error");
         return NULL;
     }
@@ -566,7 +566,7 @@ static PyObject* setSBXcrossover(PyObject* object, PyObject* args) {
     double min = 0.0, max = 1.0;
     double eta = 1.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "I|ddd", &numFeatures, &min, &max, &eta) <= 0) {
+    if (PyArg_ParseTuple(args,  "I|ddd", &numFeatures, &min, &max, &eta) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GACrossover.setSBXcrossover: argument parse error");
         return NULL;
     }
@@ -587,7 +587,7 @@ static PyObject* setSegmentCrossover(PyObject* object, PyObject* args) {
     double min = 0.0, max = 1.0;
     double alpha = 0.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "I|ddd", &numFeatures, &min, &max, &alpha) <= 0) {
+    if (PyArg_ParseTuple(args,  "I|ddd", &numFeatures, &min, &max, &alpha) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GACrossover.setSegmentCrossover: argument parse error");
         return NULL;
     }
@@ -608,7 +608,7 @@ static PyObject* setHypercubeCrossover(PyObject* object, PyObject* args) {
     double min = 0.0, max = 1.0;
     double alpha = 0.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "I|ddd", &numFeatures, &min, &max, &alpha) <= 0) {
+    if (PyArg_ParseTuple(args,  "I|ddd", &numFeatures, &min, &max, &alpha) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GACrossover.setHypercubeCrossover: argument parse error");
         return NULL;
     }
@@ -701,7 +701,7 @@ PyGetSetDef GACrossover_getset[] = {
 
 void init_GACrossoverType(PyObject *d) {
     Py_TYPE(&GACrossoverType) = &PyType_Type;
-    GACrossoverType.tp_name = CHAR_PTR_CAST "gamera.knnga.GACrossover";
+    GACrossoverType.tp_name =  "gamera.knnga.GACrossover";
     GACrossoverType.tp_basicsize = sizeof(GACrossoverObject);
     GACrossoverType.tp_dealloc = GACrossover_dealloc;
     GACrossoverType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -711,7 +711,7 @@ void init_GACrossoverType(PyObject *d) {
     GACrossoverType.tp_free = NULL;
     GACrossoverType.tp_methods = GACrossover_methods;
     GACrossoverType.tp_getset = GACrossover_getset;
-    GACrossoverType.tp_doc = CHAR_PTR_CAST "**GACrossover** ()\n\n"
+    GACrossoverType.tp_doc =  "**GACrossover** ()\n\n"
         "The ``GACrossover`` constructor creates a new settings object "
         "for the GA-optimization which specifies the selected "
         "crossover-operators. This object can later be used in an "
@@ -813,7 +813,7 @@ static PyObject* setBinaryMutation(PyObject* object, PyObject* args) {
     bool norm = false;
 
     PyObject *normalize = NULL;
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|dO", &rate, &normalize) <= 0) {
+    if (PyArg_ParseTuple(args,  "|dO", &rate, &normalize) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAMutation.setBinaryMutation: argument parse error");
         return NULL;
     }
@@ -843,7 +843,7 @@ static PyObject* setGaussMutation(PyObject* object, PyObject* args) {
     double min, max;
     double sigma, pChange;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "Idddd", &numFeatures, &min, &max, &sigma, &pChange) <= 0) {
+    if (PyArg_ParseTuple(args,  "Idddd", &numFeatures, &min, &max, &sigma, &pChange) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAMutation.setGaussMutation: argument parse error");
         return NULL;
     }
@@ -915,7 +915,7 @@ PyGetSetDef GAMutation_getset[] = {
 
 void init_GAMutationType(PyObject *d) {
     Py_TYPE(&GAMutationType) = &PyType_Type;
-    GAMutationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAMutation";
+    GAMutationType.tp_name =  "gamera.knnga.GAMutation";
     GAMutationType.tp_basicsize = sizeof(GAMutationObject);
     GAMutationType.tp_dealloc = GAMutation_dealloc;
     GAMutationType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -925,7 +925,7 @@ void init_GAMutationType(PyObject *d) {
     GAMutationType.tp_free = NULL;
     GAMutationType.tp_methods = GAMutation_methods;
     GAMutationType.tp_getset = GAMutation_getset;
-    GAMutationType.tp_doc = CHAR_PTR_CAST "**GAMutation** ()\n\n"
+    GAMutationType.tp_doc =  "**GAMutation** ()\n\n"
         "The ``GAMutation`` constructor creates a new settings object "
         "for the GA-optimization which specifies the selected "
         "mutation-operators. This object can later be used in an "
@@ -1016,7 +1016,7 @@ static PyObject* setSSGAdetTournament(PyObject* object, PyObject* args) {
     GAReplacementObject *self = (GAReplacementObject*) object;
     unsigned int tSize = 3;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|I", &tSize) <= 0) {
+    if (PyArg_ParseTuple(args,  "|I", &tSize) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAReplacement.setSSGAdetTournament: argument parse error");
         return NULL;
     }
@@ -1063,7 +1063,7 @@ PyGetSetDef GAReplacement_getset[] = {
 
 void init_GAReplacementType(PyObject *d) {
     Py_TYPE(&GAReplacementType) = &PyType_Type;
-    GAReplacementType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAReplacement";
+    GAReplacementType.tp_name =  "gamera.knnga.GAReplacement";
     GAReplacementType.tp_basicsize = sizeof(GAReplacementObject);
     GAReplacementType.tp_dealloc = GAReplacement_dealloc;
     GAReplacementType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -1073,7 +1073,7 @@ void init_GAReplacementType(PyObject *d) {
     GAReplacementType.tp_free = NULL;
     GAReplacementType.tp_methods = GAReplacement_methods;
     GAReplacementType.tp_getset = GAReplacement_getset;
-    GAReplacementType.tp_doc = CHAR_PTR_CAST "**GAReplacement** ()\n\n"
+    GAReplacementType.tp_doc =  "**GAReplacement** ()\n\n"
         "The ``GAReplacement`` constructor creates a new settings object "
         "for the GA-optimization which specifies the used replacement method. "
         "This object can later be used in an ``GAOptimization``-object. \n\n"
@@ -1130,7 +1130,7 @@ static PyObject* setBestFitnessStop(PyObject* object, PyObject* args) {
     GAStopCriteriaObject *self = (GAStopCriteriaObject*) object;
     double optimum = 1.0;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|d", &optimum) <= 0) {
+    if (PyArg_ParseTuple(args,  "|d", &optimum) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAStopCriteria.setBestFitnessStop: argument parse error");
         return NULL;
     }
@@ -1150,7 +1150,7 @@ static PyObject* setMaxGenerations(PyObject* object, PyObject* args) {
     GAStopCriteriaObject *self = (GAStopCriteriaObject*) object;
     unsigned int n = 100;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|I", &n) <= 0) {
+    if (PyArg_ParseTuple(args,  "|I", &n) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAStopCriteria.setMaxGenerations: argument parse error");
         return NULL;
     }
@@ -1170,7 +1170,7 @@ static PyObject* setMaxFitnessEvals(PyObject* object, PyObject* args) {
     GAStopCriteriaObject *self = (GAStopCriteriaObject*) object;
     unsigned int n = 5000;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|I", &n) <= 0) {
+    if (PyArg_ParseTuple(args,  "|I", &n) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAStopCriteria.setMaxFitnessEvals: argument parse error");
         return NULL;
     }
@@ -1191,7 +1191,7 @@ static PyObject* setSteadyStateStop(PyObject* object, PyObject* args) {
     unsigned int minGens = 40;
     unsigned int noChangeGens = 10;
 
-    if (PyArg_ParseTuple(args, CHAR_PTR_CAST "|II", &minGens, &noChangeGens) <= 0) {
+    if (PyArg_ParseTuple(args,  "|II", &minGens, &noChangeGens) <= 0) {
         PyErr_SetString(PyExc_RuntimeError, "GAStopCriteria.setSteadyStateStop: argument parse error");
         return NULL;
     }
@@ -1250,7 +1250,7 @@ PyGetSetDef GAStopCriteria_getset[] = {
 
 void init_GAStopCriteriaType(PyObject *d) {
     Py_TYPE(&GAStopCriteriaType) = &PyType_Type;
-    GAStopCriteriaType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAStopCriteria";
+    GAStopCriteriaType.tp_name =  "gamera.knnga.GAStopCriteria";
     GAStopCriteriaType.tp_basicsize = sizeof(GAStopCriteriaObject);
     GAStopCriteriaType.tp_dealloc = GAStopCriteria_dealloc;
     GAStopCriteriaType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -1260,7 +1260,7 @@ void init_GAStopCriteriaType(PyObject *d) {
     GAStopCriteriaType.tp_free = NULL;
     GAStopCriteriaType.tp_methods = GAStopCriteria_methods;
     GAStopCriteriaType.tp_getset = GAStopCriteria_getset;
-    GAStopCriteriaType.tp_doc = CHAR_PTR_CAST "**GAStopCriteria** ()\n\n"
+    GAStopCriteriaType.tp_doc =  "**GAStopCriteria** ()\n\n"
         "The ``GAStopCriteria`` constructor creates a new settings object "
         "for the GA-optimization which specified the termination condition "
         "of the optimization progress. This object can later be used in an "
@@ -1293,7 +1293,7 @@ static PyObject *GAParallelization_new(PyTypeObject *pytype, PyObject *args, PyO
     bool mode = true;
     unsigned int threadNum = 2;
 
-    if (!PyArg_ParseTuple(args, CHAR_PTR_CAST "|OI", &enabled, &threadNum)) {
+    if (!PyArg_ParseTuple(args,  "|OI", &enabled, &threadNum)) {
         PyErr_SetString(PyExc_RuntimeError, "GAParallelization: argument parse error");
         return NULL;
     }
@@ -1352,7 +1352,7 @@ static PyObject* getThreadNum(PyObject* object) {
     GAParallelizationObject *self = (GAParallelizationObject*) object;
 
     try {
-        return Py_BuildValue(CHAR_PTR_CAST "I", self->parallel->getThreadNum());
+        return Py_BuildValue( "I", self->parallel->getThreadNum());
     } catch (std::exception &e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
         Py_RETURN_NONE;
@@ -1411,7 +1411,7 @@ PyGetSetDef GAParallelization_getset[] = {
 
 void init_GAParallelizationType(PyObject *d) {
     Py_TYPE(&GAParallelizationType) = &PyType_Type;
-    GAParallelizationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAParallelization";
+    GAParallelizationType.tp_name =  "gamera.knnga.GAParallelization";
     GAParallelizationType.tp_basicsize = sizeof(GAParallelizationObject);
     GAParallelizationType.tp_dealloc = GAParallelization_dealloc;
     GAParallelizationType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -1421,7 +1421,7 @@ void init_GAParallelizationType(PyObject *d) {
     GAParallelizationType.tp_free = NULL;
     GAParallelizationType.tp_methods = GAParallelization_methods;
     GAParallelizationType.tp_getset = GAParallelization_getset;
-    GAParallelizationType.tp_doc = CHAR_PTR_CAST "**GAParallelization** (*mode* = ``True``, *threads* = 2)\n\n"
+    GAParallelizationType.tp_doc =  "**GAParallelization** (*mode* = ``True``, *threads* = 2)\n\n"
         "The ``GAParallelization`` constructor creates a new settings object "
         "which controls the parallelization within the GA-progress. It is used "
         "later within an ``GAOptimization``-object.\n\n"
@@ -1461,7 +1461,7 @@ static PyObject *GAOptimization_new(PyTypeObject *pytype, PyObject *args, PyObje
     PyObject *stop = NULL;
     PyObject *parallelization = NULL;
 
-    if (!PyArg_ParseTuple(args, CHAR_PTR_CAST "OOOOOOOO", &classifier, &baseSetting,
+    if (!PyArg_ParseTuple(args,  "OOOOOOOO", &classifier, &baseSetting,
         &selection, &crossover, &mutation, &replacement, &stop, &parallelization)) {
 
         PyErr_SetString(PyExc_RuntimeError, "GAOptimization: argument parse error");
@@ -1694,9 +1694,9 @@ static PyObject* getGenerationCount(PyObject* object) {
 
     try {
         if ( self->selection != NULL && self->weighting == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "I", self->selection->getGenerationCount());
+            return Py_BuildValue( "I", self->selection->getGenerationCount());
         } else if ( self->weighting != NULL && self->selection == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "I", self->weighting->getGenerationCount());
+            return Py_BuildValue( "I", self->weighting->getGenerationCount());
         } else {
             PyErr_SetString(PyExc_RuntimeError, "GAOptimization.getGenerationCount: invalid configuration settings");
             return NULL;
@@ -1712,9 +1712,9 @@ static PyObject* getBestFitnessValue(PyObject* object) {
 
     try {
         if ( self->selection != NULL && self->weighting == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "d", self->selection->getBestFitnessValue());
+            return Py_BuildValue( "d", self->selection->getBestFitnessValue());
         } else if ( self->weighting != NULL && self->selection == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "d", self->weighting->getBestFitnessValue());
+            return Py_BuildValue( "d", self->weighting->getBestFitnessValue());
         } else {
             PyErr_SetString(PyExc_RuntimeError, "GAOptimization.getBestFitnessValue: invalid configuration settings");
             return NULL;
@@ -1730,9 +1730,9 @@ static PyObject* getMonitorString(PyObject* object) {
 
     try {
         if ( self->selection != NULL && self->weighting == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "s", self->selection->getMonitorString().c_str());
+            return Py_BuildValue( "s", self->selection->getMonitorString().c_str());
         } else if ( self->weighting != NULL && self->selection == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "s", self->weighting->getMonitorString().c_str());
+            return Py_BuildValue( "s", self->weighting->getMonitorString().c_str());
         } else {
             PyErr_SetString(PyExc_RuntimeError, "GAOptimization.getMonitorString: invalid configuration settings");
             return NULL;
@@ -1748,9 +1748,9 @@ static PyObject* getBestIndiString(PyObject* object) {
 
     try {
         if ( self->selection != NULL && self->weighting == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "s", self->selection->getBestIndiString().c_str());
+            return Py_BuildValue( "s", self->selection->getBestIndiString().c_str());
         } else if ( self->weighting != NULL && self->selection == NULL) {
-            return Py_BuildValue(CHAR_PTR_CAST "s", self->weighting->getBestIndiString().c_str());
+            return Py_BuildValue( "s", self->weighting->getBestIndiString().c_str());
         } else {
             PyErr_SetString(PyExc_RuntimeError, "GAOptimization.getBestIndiString: invalid configuration settings");
             return NULL;
@@ -1801,7 +1801,7 @@ PyGetSetDef GAOptimization_getset[] = {
 
 void init_GAOptimizationType(PyObject *d) {
     Py_TYPE(&GAOptimizationType) = &PyType_Type;
-    GAOptimizationType.tp_name = CHAR_PTR_CAST "gamera.knnga.GAOptimization";
+    GAOptimizationType.tp_name =  "gamera.knnga.GAOptimization";
     GAOptimizationType.tp_basicsize = sizeof(GAOptimizationObject);
     GAOptimizationType.tp_dealloc = GAOptimization_dealloc;
     GAOptimizationType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -1811,7 +1811,7 @@ void init_GAOptimizationType(PyObject *d) {
     GAOptimizationType.tp_free = NULL;
     GAOptimizationType.tp_methods = GAOptimization_methods;
     GAOptimizationType.tp_getset = GAOptimization_getset;
-    GAOptimizationType.tp_doc = CHAR_PTR_CAST "**GAOptimization** (*KnnObject* classifier,"
+    GAOptimizationType.tp_doc =  "**GAOptimization** (*KnnObject* classifier,"
         " *GABaseSetting* base,"
         " *GASelection* selection,"
         " *GACrossover* crossover,"
@@ -1883,9 +1883,9 @@ PyMODINIT_FUNC PyInit_knnga(void) {
 
     // enum constants
     PyDict_SetItemString(d, "GA_SELECTION",
-        Py_BuildValue(CHAR_PTR_CAST "i", GA_SELECTION));
+        Py_BuildValue( "i", GA_SELECTION));
     PyDict_SetItemString(d, "GA_WEIGHTING",
-        Py_BuildValue(CHAR_PTR_CAST "i", GA_WEIGHTING));
+        Py_BuildValue( "i", GA_WEIGHTING));
 
     return m;
 }

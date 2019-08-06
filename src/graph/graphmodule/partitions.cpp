@@ -235,7 +235,7 @@ protected:
          PyList_SET_ITEM(result, j, dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
       }
 
-      PyObject* tuple = Py_BuildValue(CHAR_PTR_CAST "(O)", result);
+      PyObject* tuple = Py_BuildValue( "(O)", result);
       PyObject* evalobject = PyObject_CallObject(const_cast<PyObject*>(eval_func), tuple);
       Py_XDECREF(tuple);
       Py_XDECREF(result);
@@ -473,7 +473,7 @@ PyObject* graph_optimize_partitions(PyObject* self, PyObject* args) {
    int max_parts_per_group = 5;
    int max_graph_size = 16;
    char* criterion = (char*)"min";
-   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO|iis:optimize_partitions", &a, 
+   if (PyArg_ParseTuple(args,  "OO|iis:optimize_partitions", &a,
             &eval_func, &max_parts_per_group, &max_graph_size, &criterion) <= 0) {
 	   return 0;
    }

@@ -53,7 +53,7 @@ static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   PyObject* sequence;
   PyObject* entry;
   // do some plausibility checks
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O|O:kdnode_new", &sequence, &data) <= 0)
+  if (PyArg_ParseTuple(args,  "O|O:kdnode_new", &sequence, &data) <= 0)
     return 0;
   if(!PySequence_Check(sequence)) {
     PyErr_SetString(PyExc_RuntimeError, "KdNode: given point must be sequence of numbers");
@@ -122,7 +122,7 @@ PyGetSetDef kdnode_getset[] = {
 
 void init_KdNodeType(PyObject* d) {
     Py_TYPE(&KdNodeType) = &PyType_Type;
-    KdNodeType.tp_name = CHAR_PTR_CAST "gamera.kdtree.KdNode";
+    KdNodeType.tp_name =  "gamera.kdtree.KdNode";
     KdNodeType.tp_basicsize = sizeof(KdNodeObject);
     KdNodeType.tp_dealloc = kdnode_dealloc;
     KdNodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -133,7 +133,7 @@ void init_KdNodeType(PyObject* d) {
     KdNodeType.tp_methods = kdnode_methods;
     KdNodeType.tp_getset = kdnode_getset;
     KdNodeType.tp_weaklistoffset = 0;
-    KdNodeType.tp_doc = CHAR_PTR_CAST
+    KdNodeType.tp_doc =
             "**KdNode** (*point*, *data* = ``None``)\n\n"        \
     "The ``KdNode`` constructor creates a new node for use in a kd-tree.\n\n" \
     "*point* must not be of the Gamera data type ``Point``, but a sequence of numerical values. The optional parameter *data* can be used to store arbitrary additional information connected to the location *point*.";
@@ -167,7 +167,7 @@ static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   PyObject *obj1,*obj2;
   Kdtree::KdNodeVector nodes4tree;
   // do some plausibility checks and extract basic properties
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "O|i:kdtree_new", &list, &distance_type) <= 0)
+  if (PyArg_ParseTuple(args,  "O|i:kdtree_new", &list, &distance_type) <= 0)
     return 0;
   if(!PyList_Check(list)) {
     PyErr_SetString(PyExc_RuntimeError, "KdTree: given nodes must be list of KdNode's");
@@ -238,7 +238,7 @@ static PyObject* kdtree_set_distance(PyObject* self, PyObject* args) {
   size_t n,i;
   PyObject* weights = NULL;
   PyObject* entry;
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "i|O", &distance_type, &weights) <= 0) {
+  if (PyArg_ParseTuple(args,  "i|O", &distance_type, &weights) <= 0) {
     return 0;
   }
   Kdtree::DoubleVector wvector(so->dimension, 1.0);
@@ -305,7 +305,7 @@ static PyObject* kdtree_k_nearest_neighbors(PyObject* self, PyObject* args) {
   int k;
   size_t i,n;
   Kdtree::KdNodeVector result;
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "Oi|O", &list, &k, &predicate) <= 0) {
+  if (PyArg_ParseTuple(args,  "Oi|O", &list, &k, &predicate) <= 0) {
     return 0;
   }
   if (predicate && !PyCallable_Check(predicate)) {
@@ -369,7 +369,7 @@ PyGetSetDef kdtree_getset[] = {
 
 void init_KdTreeType(PyObject* d) {
   Py_TYPE(&KdTreeType) = &PyType_Type;
-  KdTreeType.tp_name = CHAR_PTR_CAST "gamera.kdtree.KdTree";
+  KdTreeType.tp_name =  "gamera.kdtree.KdTree";
   KdTreeType.tp_basicsize = sizeof(KdTreeObject);
   KdTreeType.tp_dealloc = kdtree_dealloc;
   KdTreeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -380,7 +380,7 @@ void init_KdTreeType(PyObject* d) {
   KdTreeType.tp_methods = kdtree_methods;
   KdTreeType.tp_getset = kdtree_getset;
   KdTreeType.tp_weaklistoffset = 0;
-  KdTreeType.tp_doc = CHAR_PTR_CAST
+  KdTreeType.tp_doc =
     "**KdTree** (*nodes*, *distance_type* = 2)\n\n"        \
     "The ``KdTree`` constructor creates a new kd tree in *O(n*log(n))* time from the given list of nodes.\n\n" \
     "The nodes in the list *nodes* must be of type ``KdNode``. The dimension of the tree is automatically taken from the length of *nodes[0].point*.\n\n"
@@ -413,7 +413,7 @@ static struct PyModuleDef moduledef = {
 
 PyMODINIT_FUNC PyInit_kdtree(void) {
     PyObject *m = PyModule_Create(&moduledef);
-    //PyObject *m = Py_InitModule(CHAR_PTR_CAST "gamera.kdtree", kdtree_module_methods);
+    //PyObject *m = Py_InitModule( "gamera.kdtree", kdtree_module_methods);
     PyObject *d = PyModule_GetDict(m);
 
     init_KdNodeType(d);

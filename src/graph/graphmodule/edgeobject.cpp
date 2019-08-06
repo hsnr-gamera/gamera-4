@@ -205,8 +205,8 @@ static int edge_set_label(PyObject* self, PyObject* object) {
 
 // -----------------------------------------------------------------------------
 PyMethodDef edge_methods[] = {
-		{ CHAR_PTR_CAST "traverse", edge_traverse, METH_O,
-				CHAR_PTR_CAST "**traverse** (*node*)\n\n"
+		{  "traverse", edge_traverse, METH_O,
+				 "**traverse** (*node*)\n\n"
 				              "Get the other node in an edge"},
 		{NULL}
 };
@@ -215,7 +215,7 @@ PyMethodDef edge_methods[] = {
 // -----------------------------------------------------------------------------
 static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
 	PyObject* data = NULL;
-	if(PyArg_ParseTuple(args, CHAR_PTR_CAST "|O:Edge.__call__", &data) <= 0)
+	if(PyArg_ParseTuple(args,  "|O:Edge.__call__", &data) <= 0)
 		return NULL;
 	if (data == NULL)
 		return edge_get_cost(self);
@@ -226,14 +226,14 @@ static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
 
 // -----------------------------------------------------------------------------
 PyGetSetDef edge_getset[] = {
-		{ CHAR_PTR_CAST "from_node", (getter)edge_get_from_node, 0,
-				CHAR_PTR_CAST "node this edge starts from (get)", 0},
-		{ CHAR_PTR_CAST "to_node", (getter)edge_get_to_node, 0,
-				CHAR_PTR_CAST "node this edge points to (get)", 0},
-		{ CHAR_PTR_CAST "cost", (getter)edge_get_cost, (setter)edge_set_cost,
-				CHAR_PTR_CAST "cost assigned to this edge (get/set)", 0},
-		{ CHAR_PTR_CAST "label", (getter)edge_get_label, (setter)edge_set_label,
-				CHAR_PTR_CAST "label assigned to this edge (get/set)", 0},
+		{  "from_node", (getter)edge_get_from_node, 0,
+				 "node this edge starts from (get)", 0},
+		{  "to_node", (getter)edge_get_to_node, 0,
+				 "node this edge points to (get)", 0},
+		{  "cost", (getter)edge_get_cost, (setter)edge_set_cost,
+				 "cost assigned to this edge (get/set)", 0},
+		{  "label", (getter)edge_get_label, (setter)edge_set_label,
+				 "label assigned to this edge (get/set)", 0},
 		{ NULL }
 };
 
@@ -242,7 +242,7 @@ PyGetSetDef edge_getset[] = {
 // -----------------------------------------------------------------------------
 void init_EdgeType() {
 	Py_TYPE(&EdgeType) = &PyType_Type;
-	EdgeType.tp_name = CHAR_PTR_CAST "gamera.graph.Edge";
+	EdgeType.tp_name =  "gamera.graph.Edge";
 	EdgeType.tp_basicsize = sizeof(EdgeObject);
 	EdgeType.tp_dealloc = edge_dealloc;
 	EdgeType.tp_repr = edge___repr__;

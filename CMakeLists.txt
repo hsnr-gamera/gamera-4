@@ -10,7 +10,6 @@ find_package(PythonInterp 3 REQUIRED)
 # This goes after, since it uses PythonInterp as hint
 find_package(PythonLibs 3 REQUIRED)
 add_definitions(-D__DEBUG_GAPI__)
-add_definitions(-DGAMERACORE_INTERNAL)
 set(GAMERA_SOURCE ${CMAKE_SOURCE_DIR}/include)
 file(GLOB_RECURSE GAMERA_SOURCES
         "*.h"

@@ -44,24 +44,24 @@ void init_ListUtilities(PyObject* module_dict);
 void init_IteratorType(PyObject* module_dict);
 
 PyMethodDef gamera_module_methods[] = {
-  {NULL, NULL },
+  {nullptr, nullptr },
 };
 
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.gameracore",
-        NULL,
+        nullptr,
         -1,
         gamera_module_methods,
-        NULL,
-        NULL,
-        NULL,
-        NULL
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
 };
 
 PyMODINIT_FUNC PyInit_gameracore(void) {
     PyObject *m = PyModule_Create(&moduledef);
-    //PyObject* m = Py_InitModule(CHAR_PTR_CAST "gameracore", gamera_module_methods);
+    //PyObject* m = Py_InitModule( "gameracore", gamera_module_methods);
     PyObject *d = PyModule_GetDict(m);
 
     init_SizeType(d);

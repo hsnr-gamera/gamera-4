@@ -988,7 +988,7 @@ namespace Gamera {
     PyObject *retval, *entry;
     retval = PyList_New(lines.size());    
     for(unsigned int i=0; i<lines.size(); i++) {
-      entry = Py_BuildValue(CHAR_PTR_CAST "fff", lines[i].first, lines[i].second.first * 180 / M_PI, lines[i].second.second);
+      entry = Py_BuildValue( "fff", lines[i].first, lines[i].second.first * 180 / M_PI, lines[i].second.second);
       PyList_SetItem(retval, i, entry);
     }
     return retval;

@@ -34,7 +34,7 @@ PyTypeObject* get_DimType() {
 static PyObject* dim_new(PyTypeObject* pytype, PyObject* args,
 			  PyObject* kwds) {
   int x, y;
-  if (PyArg_ParseTuple(args, CHAR_PTR_CAST "ii:Dim.__init__", &x, &y) <= 0)
+  if (PyArg_ParseTuple(args,  "ii:Dim.__init__", &x, &y) <= 0)
     return 0;
   DimObject* so;
   so = (DimObject*)pytype->tp_alloc(pytype, 0);
@@ -125,7 +125,7 @@ static PyGetSetDef dim_getset[] = {
 
 void init_DimType(PyObject* module_dict) {
   Py_TYPE(&DimType) = &PyType_Type;
-  DimType.tp_name = CHAR_PTR_CAST "gameracore.Dim";
+  DimType.tp_name =  "gameracore.Dim";
   DimType.tp_basicsize = sizeof(DimObject);
   DimType.tp_dealloc = dim_dealloc;
   DimType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
@@ -136,7 +136,7 @@ void init_DimType(PyObject* module_dict) {
   DimType.tp_getset = dim_getset;
   DimType.tp_free = NULL; // _PyObject_Del;
   DimType.tp_repr = dim_repr;
-  DimType.tp_doc = CHAR_PTR_CAST
+  DimType.tp_doc =
 "__init__(Int *ncols*, Int *nrows*)\n\n"
 "Dim stores a dimension (*ncols*, *nrows*)\n\n";
   PyType_Ready(&DimType);
