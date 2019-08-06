@@ -1144,10 +1144,10 @@ inline PyObject* FloatVector_to_python(FloatVector* cpp) {
           cpp->size() * sizeof(double));*/
 
     //PyObject *str = Py_BuildValue("d", cpp->front());
-    PyObject *py = PyObject_CallFunction(array_init, "s", "d");
-    for (int i = 0; i < cpp->size(); i++) {
+    PyObject *py = PyObject_CallFunction(array_init, "sO", "d", str);
+    /*for (int i = 0; i < cpp->size(); i++) {
 		PyObject_CallMethod(py, "insert", "id", i, (*cpp)[0]);
-	}
+	}*/
     
 	Py_XDECREF(str);
     return py;
@@ -1167,11 +1167,15 @@ inline PyObject* IntVector_to_python(IntVector* cpp) {
 	PyObject *array_init = get_ArrayInit();
 	if (array_init == 0)
 		return 0;
-	PyObject *py = PyObject_CallFunction(array_init, "s", "i");
+	
+    PyObject* str = PyBytes_FromStringAndSize((char*)(&((*cpp)[0])),
+                                                cpp->size() * sizeof(double));
+	PyObject *py = PyObject_CallFunction(array_init, "sO", "i", str);
 	//TODO slow
-	for (int i = 0; i < cpp->size(); i++) {
+	/*for (int i = 0; i < cpp->size(); i++) {
 		PyObject_CallMethod(py, "insert", "ii", i, (*cpp)[0]);
-	}
+	}*/
+	Py_XDECREF(str);
 	return py;
 }
 
