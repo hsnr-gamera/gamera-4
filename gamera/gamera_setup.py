@@ -92,8 +92,8 @@ elif '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
 
 # Check that we are running a recent enough version of Python.
 # This depends on the platform.
-default_required_version = 222
-required_versions = {'linux2': 222, 'win32':  231, 'darwin': 230, 'cygwin': 222}
+default_required_version = 350
+required_versions = {'linux2': 350, 'win32':  350, 'darwin': 350, 'cygwin': 350}
 version = float(''.join([str(x) for x in sys.version_info[0:3]]))
 required_version = required_versions.setdefault(sys.platform, default_required_version)
 if version < required_version:
