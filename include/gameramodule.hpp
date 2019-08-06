@@ -1145,12 +1145,11 @@ inline PyObject* FloatVector_to_python(FloatVector* cpp) {
 
     //PyObject *str = Py_BuildValue("d", cpp->front());
     PyObject *py = PyObject_CallFunction(array_init, "s", "d");
-    PyObject* function = PyObject_GetAttrString(py, "frombytes");
-    
-    PyObject_CallFunction(function,"y", str);
+    for (int i = 0; i < cpp->size(); i++) {
+		PyObject_CallMethod(py, "insert", "id", i, (*cpp)[0]);
+	}
     
 	Py_XDECREF(str);
-	Py_XDECREF(function);
     return py;
 }
 
