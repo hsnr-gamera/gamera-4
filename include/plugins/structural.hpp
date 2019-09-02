@@ -296,7 +296,7 @@ namespace Gamera {
   PyObject* least_squares_fit(const PointVector* points) {
     double a, b, q;
     least_squares_fit(*points, a, b, q);
-    return Py_BuildValue(CHAR_PTR_CAST "fff", b, a, q);
+    return Py_BuildValue( "fff", b, a, q);
   }
 
   PyObject* least_squares_fit_xy(const PointVector* points) {
@@ -325,7 +325,7 @@ namespace Gamera {
       x_of_y = 1;
     }
 
-    return Py_BuildValue(CHAR_PTR_CAST "fffi", b, a, q, x_of_y);
+    return Py_BuildValue( "fffi", b, a, q, x_of_y);
   }
 
   // straightforward implementation of Wagner and Fischer's algorithm from 1974

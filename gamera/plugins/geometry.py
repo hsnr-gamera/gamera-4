@@ -30,7 +30,7 @@ except Exception:
 
 
 class voronoi_from_labeled_image(PluginFunction):
-  u"""
+  """
   Computes the area Voronoi tesselation from an image containing labeled
   Cc's. In the returned onebit image, every pixel is labeled with the
   label value of the closest Cc in the input image.
@@ -72,7 +72,7 @@ class voronoi_from_labeled_image(PluginFunction):
     voronoi_cells.highlight(voronoi_edges, RGBPixel(255,255,255))
     return [image, voronoi_cells]
   doc_examples = [__doc_example1__]
-  author = u"Christoph Dalitz, based on code by Ullrich K\u00f6the"
+  author = "Christoph Dalitz, based on code by Ullrich K\u00f6the"
 
 class voronoi_from_points(PluginFunction):
   """
@@ -286,7 +286,7 @@ class graph_color_ccs(PluginFunction):
     return_type = ImageType([RGB])
 
     def __call__(image, ccs, colors=None, method=1, unique=False):
-      if colors == None:
+      if colors is None:
         from gamera.core import RGBPixel
         colors = [ RGBPixel(150, 0, 0),
                    RGBPixel(0, 250, 0),

@@ -269,16 +269,16 @@ namespace Gamera {
         // beware that PyList_SetItem 'steals' a reference,
         // while PyList_append increases the reference
         entry = PyList_New(2);
-        Py_INCREF(entry1);
+        Py_XINCREF(entry1);
         PyList_SetItem(entry, 0, entry1);
         entry2 = Py_BuildValue("i", (int)*it2);
         //printf(" %i", (int)*it2);
         PyList_SetItem(entry, 1, entry2);
         PyList_Append(retval, entry);
-        Py_DECREF(entry);
+        Py_XDECREF(entry);
       }
       //printf("\n");
-      Py_DECREF(entry1);
+      Py_XDECREF(entry1);
     }
     return retval;
   }
@@ -343,7 +343,7 @@ namespace Gamera {
         PyList_SetItem(entry, 0, label1);
         PyList_SetItem(entry, 1, label2);
         PyList_Append(list, entry);
-        Py_DECREF(entry);
+        Py_XDECREF(entry);
       }
     }
 
@@ -415,8 +415,8 @@ namespace Gamera {
         PyObject *adj_list = PyList_GetItem(labelpairs, i);
         PyObject *region1 = PyList_GetItem(adj_list, 0);
         PyObject *region2 = PyList_GetItem(adj_list, 1);
-        GraphDataLong* a_p = new GraphDataLong(PyInt_AsLong(region1));
-        GraphDataLong* b_p = new GraphDataLong(PyInt_AsLong(region2));
+        GraphDataLong* a_p = new GraphDataLong(PyLong_AsLong(region1));
+        GraphDataLong* b_p = new GraphDataLong(PyLong_AsLong(region2));
         bool del_a = !graph->add_node(a_p);
         bool del_b = !graph->add_node(b_p);
         graph->add_edge(a_p, b_p); 
@@ -427,7 +427,7 @@ namespace Gamera {
       }
       delete voronoi->data();
       delete voronoi;
-      Py_DECREF(labelpairs);
+      Py_XDECREF(labelpairs);
     }
     else {
       throw std::runtime_error("Unknown method for construction the neighborhood graph");
@@ -988,7 +988,7 @@ namespace Gamera {
     PyObject *retval, *entry;
     retval = PyList_New(lines.size());    
     for(unsigned int i=0; i<lines.size(); i++) {
-      entry = Py_BuildValue(CHAR_PTR_CAST "fff", lines[i].first, lines[i].second.first * 180 / M_PI, lines[i].second.second);
+      entry = Py_BuildValue( "fff", lines[i].first, lines[i].second.first * 180 / M_PI, lines[i].second.second);
       PyList_SetItem(retval, i, entry);
     }
     return retval;

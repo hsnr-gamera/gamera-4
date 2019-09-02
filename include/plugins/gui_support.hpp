@@ -189,19 +189,23 @@ namespace {
 
 template<class T>
 PyObject* to_string(T& m) {
-  PyObject* str = PyString_FromStringAndSize(NULL, m.nrows() * m.ncols() * 3);
-  if (!str)
-    throw std::exception();
-  char* buffer;
-  Py_ssize_t length;
-  int error = PyString_AsStringAndSize(str, &buffer, &length);
-  if (error) {
-    Py_DECREF(str);
-    throw std::exception();
-  }
-  to_string_impl<typename T::value_type> func;
-  func(m, buffer);
-  return str;
+	//PyObject* str = PyString_FromStringAndSize(NULL, m.nrows() * m.ncols() * 3);
+	PyObject *str = PyBytes_FromStringAndSize(nullptr, m.nrows() * m.ncols() * 3);
+	if (!str) {
+		PyErr_Print();
+		throw std::exception();
+	}
+	char *buffer;
+	Py_ssize_t length;
+	int error = PyBytes_AsStringAndSize(str, &buffer, &length);
+	if (error) {
+		Py_XDECREF(str);
+		PyErr_Print();
+		throw std::exception();
+	}
+	to_string_impl<typename T::value_type> func;
+	func(m, buffer);
+	return str;
 }
 
 static char *get_writable_buffer(PyObject *py_buffer, size_t nrows, size_t ncols) {

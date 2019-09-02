@@ -47,11 +47,11 @@ struct NTIteratorObject: IteratorObject {
       _iterator = it; 
       _graph = graph;
       if(_graph)
-         Py_INCREF(_graph);
+         Py_XINCREF(_graph);
    };
    static PyObject* next(IteratorObject* self) {
-      if(self == NULL || ((NTIteratorObject*)self)->_iterator == NULL) 
-        return NULL; 
+      if(self == NULL || ((NTIteratorObject*)self)->_iterator == NULL)
+        return NULL;
       Node *n = ((NTIteratorObject*)self)->_iterator->next();
       if (n == NULL)
          return NULL;
@@ -59,7 +59,7 @@ struct NTIteratorObject: IteratorObject {
    }
    static void dealloc(IteratorObject* self) {
       if(((NTIteratorObject*)self)->_graph) {
-         Py_DECREF(((NTIteratorObject*)self)->_graph);
+         Py_XDECREF(((NTIteratorObject*)self)->_graph);
       }
       delete (itertype*)((NTIteratorObject*)self)->_iterator;
    }
@@ -77,7 +77,7 @@ struct ETIteratorObject: IteratorObject {
       _iterator = it;
       _graph = graph;
       if(_graph)
-         Py_INCREF(_graph);
+         Py_XINCREF(_graph);
    }
    static PyObject* next(IteratorObject* self) {
       if(self == NULL || ((ETIteratorObject*)self)->_iterator == NULL || ((ETIteratorObject*)self)->_graph == NULL)
@@ -90,7 +90,7 @@ struct ETIteratorObject: IteratorObject {
    }
    static void dealloc(IteratorObject* self) {
       if(((ETIteratorObject*)self)->_graph) {
-         Py_DECREF(((ETIteratorObject*)self)->_graph);
+         Py_XDECREF(((ETIteratorObject*)self)->_graph);
       }
       delete (itertype*)((ETIteratorObject*)self)->_iterator;
    }

@@ -247,7 +247,7 @@ Reference: P.E. Hart: 'The Condensed Nearest Neighbor rule'. *IEEE Transactions 
         if randomize:
             elem = _randomSetElement(classifier.get_glyphs())
         else:
-            elem = classifier.get_glyphs().__iter__().next()
+            elem = next(classifier.get_glyphs().__iter__())
         
         aGlyphs = [elem]
         a = kNNInteractive(aGlyphs, classifier.features, 

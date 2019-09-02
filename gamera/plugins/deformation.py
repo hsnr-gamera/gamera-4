@@ -51,8 +51,8 @@ class wave(PluginFunction):
                  Float('turbulence', default=0.0),
                  Int('random_seed', default=-1)
                 ])
-    args.list[0].rng = (0,sys.maxint)
-    args.list[1].rng = (0,sys.maxint)
+    args.list[0].rng = (0,sys.maxsize)
+    args.list[1].rng = (0,sys.maxsize)
     def __call__(self, amplitude, period, direction, waveform_type=0, offset=0, turbulence=0.0, random_seed=0):
         return _deformation.wave(self, amplitude, period, direction, waveform_type,
                                  offset, turbulence, random_seed)

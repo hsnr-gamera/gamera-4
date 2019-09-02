@@ -93,7 +93,7 @@ class ExtendedMultiImageDisplay(MultiImageDisplay):
          images = self.GetSelectedItems()
          for x in images:
             id = x.get_main_id()
-            if not ids.has_key(id):
+            if id not in ids:
                ids[id] = 1
             else:
                ids[id] += 1
@@ -275,7 +275,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
       list = self.sorted_glyphs
       for i in range(image_no + 1, len(list)):
          image = list[i]
-         if (image != None and
+         if (image is not None and
              not hasattr(image, 'dead') and
              image.classification_state in state):
             found = i
@@ -322,7 +322,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
       if x1 == x2 or y1 == y2:
          point = Point(x1, y1)
          for i, g in enumerate(self.sorted_glyphs):
-            if g != None and g.contains_point(Point(x1, y1)):
+            if g is not None and g.contains_point(Point(x1, y1)):
                for x, y in self._search_order:
                   if (g.contains_point(Point(x1 + x, y1 + y)) and
                       (g.get((x1 + x - g.ul_x, y1 + y - g.ul_y)) != 0)):
@@ -332,7 +332,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
          r = Rect((x1, y1), (x2, y2))
          for i in range(len(self.sorted_glyphs)):
             g = self.sorted_glyphs[i]
-            if g != None and r.contains_rect(g):
+            if g is not None and r.contains_rect(g):
                   matches.add(i)
       first = True
       if shift:
@@ -453,7 +453,7 @@ class ClassifierImageWindow(ImageWindow):
       dlg = Args([Class("Image for context display", ImageBase)])
       image = dlg.show(self, image_menu.shell.locals,
                        docstring="""Choose an image to display in the context (bottom) pane.""")
-      if image != None:
+      if image is not None:
          self.id.set_image(image[0])
 
    def get_display(self):
@@ -718,7 +718,7 @@ class ClassifierFrame(ImageFrameBase):
          wx.EndBusyCursor()
 
    def set_single_image(self, image=None, weak=False):
-      if image == None:
+      if image is None:
          if not aui:
             if self.splitterhr0.IsSplit():
                self.splitterhr0.Unsplit()
@@ -837,7 +837,7 @@ class ClassifierFrame(ImageFrameBase):
       if len(selection):
          try:
             added, removed = self._classifier.classify_list_manual(selection, id)
-         except ClassifierError, e:
+         except ClassifierError as e:
             cursorbusy = False
             if wx.IsBusy():
                cursorbusy = True
@@ -919,11 +919,11 @@ class ClassifierFrame(ImageFrameBase):
              When checked, load the source image from the directory
              into the context pane.
            """)
-      if results == None:
+      if results is None:
          return
       self._save_state_dialog = results
       settings, page, classifier, symbols, source, directory = results
-      if directory == None:
+      if directory is None:
          gui_util.message("You must provide a directory to load.")
          return
       if settings:
@@ -950,7 +950,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self.set_single_image(
                load_image(os.path.join(directory, "source_image.tiff")), False)
-         except Exception, e:
+         except Exception as e:
             gui_util.message("Loading image: " + str(e))
 
    def _OnSaveAll(self, event):
@@ -989,11 +989,11 @@ class ClassifierFrame(ImageFrameBase):
            *Source image*
              When checked, save the source image.
            """)
-      if results == None:
+      if results is None:
          return
       self._save_state_dialog = results
       settings, page, classifier, symbols, source, with_features, directory = results
-      if directory == None:
+      if directory is None:
          gui_util.message("You must provide a directory to load.")
          return
       error_messages = util.sets.Set()
@@ -1001,7 +1001,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self._SaveClassifierSettings(
                os.path.join(directory, "classifier_settings.xml"))
-         except Exception, e:
+         except Exception as e:
             error_messages.add(str(e))
       if page:
          try:
@@ -1026,7 +1026,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self.single_iw.id.image.save_tiff(
                os.path.join(directory, "source_image.tiff"))
-         except Exception, e:
+         except Exception as e:
             gui_util.message("Saving image: " + str(e))
       if len(error_messages):
          gui_util.message("There were errors during the save.\n\n" +
@@ -1103,7 +1103,7 @@ class ClassifierFrame(ImageFrameBase):
 
       # One big filtering list comprehension
       glyphs = [x for x in glyphs
-                if ((x != None and not hasattr(x, 'dead')) and
+                if ((x is not None and not hasattr(x, 'dead')) and
                     ((x.classification_state == UNCLASSIFIED and un) or
                      (x.classification_state == AUTOMATIC and auto) or
                      (x.classification_state == HEURISTIC and heur) or
@@ -1116,7 +1116,7 @@ class ClassifierFrame(ImageFrameBase):
                glyphs=glyphs,
                symbol_table=self._symbol_table,
                with_features=with_features).write_filename(filename)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Saving by criteria: " + str(e))
 
    def _OnOpenClassifierCollection(self, event):
@@ -1141,7 +1141,7 @@ class ClassifierFrame(ImageFrameBase):
          if len(filenames) > 1:
             for f in filenames[1:]:
                self._classifier.merge_from_xml_filename(f)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening classifier glyphs: " + str(e))
          return
       self.update_symbol_table()
@@ -1155,13 +1155,13 @@ class ClassifierFrame(ImageFrameBase):
          try:
             for f in filenames:
                self._classifier.merge_from_xml_filename(f)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Merging classifier glyphs: " + str(e))
             return
          self.update_symbol_table()
 
    def _OnSaveClassifierCollection(self, event):
-      if self.classifier_collection_filename == None:
+      if self.classifier_collection_filename is None:
          self._OnSaveClassifierCollectionAs(event)
       else:
          if gui_util.are_you_sure_dialog(
@@ -1188,7 +1188,7 @@ class ClassifierFrame(ImageFrameBase):
    def _SaveClassifierCollection(self, filename, with_features=True):
       try:
          self._classifier.to_xml_filename(filename, with_features=with_features)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving classifier glyphs: " + str(e))
 
    def _OnClearClassifierCollection(self, event):
@@ -1221,7 +1221,7 @@ class ClassifierFrame(ImageFrameBase):
          if len(filenames) > 1:
             for f in filenames[1:]:
                glyphs.extend(gamera_xml.LoadXML().parse_filename(f).glyphs)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening page glyphs: " + str(e))
          return
       self.set_multi_image(glyphs)
@@ -1235,14 +1235,14 @@ class ClassifierFrame(ImageFrameBase):
          try:
             for f in filenames:
                glyphs.extend(gamera_xml.LoadXML().parse_filename(f).glyphs)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Merging page glyphs: " + str(e))
             return
          self.multi_iw.id.append_glyphs(glyphs)
 
    def _OnSavePageCollection(self, event):
       glyphs = self.multi_iw.id.GetAllItems()
-      if self.page_collection_filename == None:
+      if self.page_collection_filename is None:
          self._OnSavePageCollectionAs(event)
       else:
          if gui_util.are_you_sure_dialog(
@@ -1277,7 +1277,7 @@ class ClassifierFrame(ImageFrameBase):
             glyphs=glyphs,
             symbol_table=self._symbol_table,
             with_features=with_features).write_filename(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving page glyphs: " + str(e))
 
    def _OnSaveSelectedGlyphs(self, event):
@@ -1296,7 +1296,7 @@ class ClassifierFrame(ImageFrameBase):
                   glyphs=glyphs,
                   symbol_table=self._symbol_table).write_filename(
                   filename)
-            except gamera_xml.XMLError, e:
+            except gamera_xml.XMLError as e:
                gui_util.message("Saving selected glyphs: " + str(e))
 
    def _OnImportSymbolTable(self, event):
@@ -1310,10 +1310,10 @@ class ClassifierFrame(ImageFrameBase):
          try:
             symbol_table = gamera_xml.LoadXML(
                parts=['symbol_table']).parse_filename(filename).symbol_table
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Importing symbol table: " + str(e))
             return
-         for symbol in symbol_table.symbols.keys():
+         for symbol in list(symbol_table.symbols.keys()):
             self._symbol_table.add(symbol)
       finally:
          wx.EndBusyCursor()
@@ -1329,7 +1329,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             gamera_xml.WriteXMLFile(
                symbol_table=self._symbol_table).write_filename(filename)
-         except gamera_xml.XMLError, e:
+         except gamera_xml.XMLError as e:
             gui_util.message("Exporting symbol table: " + str(e))
       finally:
          wx.EndBusyCursor()
@@ -1358,7 +1358,7 @@ class ClassifierFrame(ImageFrameBase):
             return
          filename, segmenter = results
          self.default_segmenter = segmenter
-         if filename == None:
+         if filename is None:
             gui_util.message("You must provide a filename to load.")
 
       wx.BeginBusyCursor()
@@ -1366,7 +1366,7 @@ class ClassifierFrame(ImageFrameBase):
          image = load_image(filename)
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return
@@ -1394,7 +1394,7 @@ class ClassifierFrame(ImageFrameBase):
       try:
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return
@@ -1486,7 +1486,7 @@ class ClassifierFrame(ImageFrameBase):
    def _OnGuess(self, list):
       try:
          added, removed = self._classifier.classify_list_automatic(list)
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
       else:
          self._AdjustAfterGuess(added, removed)
@@ -1536,7 +1536,7 @@ class ClassifierFrame(ImageFrameBase):
 
          finally:
             wx.EndBusyCursor()
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
       else:
          self._AdjustAfterGuess(added, removed)
@@ -1584,7 +1584,7 @@ class ClassifierFrame(ImageFrameBase):
                 x.classification_state == AUTOMATIC):
                try:
                   self._classifier.classify_glyph_manual(x, x.get_main_id())
-               except ClassifierError, e:
+               except ClassifierError as e:
                   gui_util.message(str(e))
                   return
       finally:
@@ -1625,7 +1625,7 @@ class ClassifierFrame(ImageFrameBase):
                result = dialog.get_args()
                dialog.window.Destroy()
                break
-         except Exception, e:
+         except Exception as e:
             gui_util.message(str(e))
          else:
             break
@@ -1665,7 +1665,7 @@ class ClassifierFrame(ImageFrameBase):
    def _OpenClassifierSettings(self, filename):
       try:
          self._classifier.load_settings(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Opening classifier settings: " + str(e))
 
    def _OnClassifierSettingsSave(self, event):
@@ -1676,7 +1676,7 @@ class ClassifierFrame(ImageFrameBase):
    def _SaveClassifierSettings(self, filename):
       try:
          self._classifier.save_settings(filename)
-      except gamera_xml.XMLError, e:
+      except gamera_xml.XMLError as e:
          gui_util.message("Saving classifier settings: " + str(e))
 
    def _OnCreateNoninteractiveCopy(self, event):
@@ -1687,7 +1687,7 @@ class ClassifierFrame(ImageFrameBase):
          result = self._classifier.noninteractive_copy()
          image_menu.shell.locals[name] = result
          image_menu.shell.update()
-      except ClassifierError, e:
+      except ClassifierError as e:
          gui_util.message(str(e))
 
    def _OnCreateEditedClassifier(self, event):
@@ -1727,7 +1727,7 @@ class ClassifierFrame(ImageFrameBase):
       wx.BeginBusyCursor()
       try:
          classifier_stats.make_stat_pages(self._classifier, result[-1], pages)
-      except Exception, e:
+      except Exception as e:
          wx.EndBusyCursor()
          gui_util.message(e)
       else:
@@ -1899,7 +1899,7 @@ class SymbolTreeCtrl(wx.TreeCtrl):
 
    def _OnActivated(self, event):
       symbol = compat_wx.get_tree_item_data(self, event.GetItem())
-      if symbol != None:
+      if symbol is not None:
          self.toplevel.toplevel.classify_manual(symbol)
 
    def _OnChanged(self, event):
@@ -1910,7 +1910,7 @@ class SymbolTreeCtrl(wx.TreeCtrl):
          event.Skip()
          return
       text = self.toplevel.text.GetValue()
-      if data != None and text != data and text and text[-1] != ".":
+      if data is not None and text != data and text and text[-1] != ".":
          self.toplevel.text.SetValue(data)
          self.toplevel.text.SetInsertionPointEnd()
       event.Skip()

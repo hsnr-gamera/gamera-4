@@ -33,8 +33,18 @@ typedef std::set<Edge*> EdgeSet;
 
 class SpanningTree {
    struct mst_compare_func {
-      bool operator() (Edge* const& a, Edge* const& b) const {
-         return a->weight > b->weight;
+      bool operator() (const Edge*  a,const Edge* b) const {
+	
+	      if(a->weight > b->weight) {
+	        return true;
+	      }
+         if(a->weight == b->weight){
+	         if(*a->from_node->_value > *b->from_node->_value){
+	         	return true;
+	         }
+         }
+         
+         return false;
       }
    };
 

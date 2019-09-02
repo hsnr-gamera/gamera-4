@@ -3,8 +3,13 @@ build/
 gamera/__compiletime_config__.py
 gamera/__version__.py
 gamera/plugins/*.cpp
-
+tests/tmp/*.*
 gamera_gui
 
 # IDEs
 .idea/
+gamera/__pycache__/
+gamera/backport/__pycache__/
+gamera/gui/__pycache__/
+gamera/mac/__pycache__/
+gamera/plugins/__pycache__/

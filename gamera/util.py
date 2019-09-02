@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 
 import string, sys, traceback, re, warnings   ## Python standard
 from types import *
@@ -27,7 +27,6 @@ from math import pow
 from gamera.enums import *
 from gamera.gui import has_gui
 from gamera.config import config
-from gamera.backport import sets, textwrap
 
 config.add_option(
    "-p", "--progress-bar", action="store_true",
@@ -53,7 +52,7 @@ def is_image_list(l):
    return True
 
 def is_string_or_unicode(s):
-   return type(s) in (StringType, UnicodeType)
+   return type(s) in [type(""), type(u"")]
 
 def is_homogeneous_image_list(l):
    "Determines if a list contains only images of the same pixel type"
@@ -76,7 +75,7 @@ def is_homogenous_list(l, t):
    return True
 
 def is_string_or_unicode_list(l):
-   return is_homogenous_list(l, (StringType, UnicodeType))
+   return is_homogenous_list(l, (type(""), type(u"")))
 
 def replace_prefix(s, a, b):
    "replaces the prefix a in s with b"
@@ -145,16 +144,16 @@ class Set(list):
       self._dict = {}
       self.extend(list)
    def append(self, item):
-      if not self._dict.has_key(item):
+      if item not in self._dict:
          list.append(self, item)
          self._dict[item] = None
    def insert(self, i, item):
-      if not self._dict.has_key(item):
+      if item not in self._dict:
          list.insert(self, i, item)
          self._dict[item] = None
    def extend(self, other):
       for item in other:
-         if not self._dict.has_key(item):
+         if item not in self._dict:
             list.append(self, item)
             self._dict[item] = None
 
@@ -179,7 +178,7 @@ if float(sys.version[0:3]) < 2.3:
       i = 0
       it = iter(collection)
       while 1:
-         yield(i, it.next())
+         yield(i, next(it))
          i += 1
    __builtins__['enumerate'] = enumerate
    __builtins__['True'] = 1
@@ -330,7 +329,7 @@ class ProgressText:
             sys.stdout.flush()
 
 def ProgressFactory(message, length=1, numsteps=0):
-   if has_gui.gui != None:
+   if has_gui.gui is not None:
       return has_gui.gui.ProgressBox(message, length, numsteps)
    elif config.get("progress_bar"):
       return ProgressText(message, length)
@@ -434,7 +433,7 @@ class CallbackList(list, CallbackObject):
       i = max(i, 0); j = max(j, 0)
       if i < len(self) and j < len(self) + 1:
          self.trigger_callback('remove', self[i:j])
-      list.__delslice__(self, i, j)
+      list.__delitem__(self, slice(i, j))
       self.trigger_callback('length_change', len(self))
 
    def __iadd__(self, other):
@@ -470,9 +469,9 @@ class CallbackList(list, CallbackObject):
       list.extend(self, other)
       self.trigger_callback('length_change', len(self))
 
-class CallbackSet(sets.Set, CallbackObject):
-   def __init__(self, initset=None):
-      sets.Set.__init__(self, initset)
+class CallbackSet(set, CallbackObject):
+   def __init__(self, initset=[]):
+      set.__init__(self, initset)
       CallbackObject.__init__(self)
 
    def __del__(self):
@@ -488,7 +487,7 @@ class CallbackSet(sets.Set, CallbackObject):
 
    def add(self, element):
       alert = element not in self
-      sets.Set.add(self, element)
+      set.add(self, element)
       if alert:
          self.trigger_callback('add', [element])
          self.trigger_callback('length_change', len(self))
@@ -496,25 +495,25 @@ class CallbackSet(sets.Set, CallbackObject):
 
    def remove(self, element):
       alert = element in self
-      sets.Set.remove(self, element)
+      set.remove(self, element)
       if alert:
          self.trigger_callback('remove', [element])
          self.trigger_callback('length_change', len(self))
 
    def discard(self, element):
       if element in self:
-         sets.Set.remove(self, element)
+         set.remove(self, element)
          self.trigger_callback('remove', [element])
          self.trigger_callback('length_change', len(self))
 
    def pop(self):
-      result = sets.Set.pop(self)
+      result = set.pop(self)
       self.trigger_callback('remove', [result])
       self.trigger_callback('length_change', len(self))
 
    def clear(self):
       self.trigger_callback('remove', self)
-      sets.Set.clear(self)
+      set.clear(self)
       self.trigger_callback('length_change', len(self))
 
    def update(self, iterable):
@@ -523,7 +522,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if i not in self:
                yield i
       self.trigger_callback('add', iter())
-      sets.Set.update(self, iterable)
+      set.update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def difference_update(self, iterable):
@@ -532,7 +531,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if i in self:
                yield i
       self.trigger_callback('remove', iter())
-      sets.Set.difference_update(self, iterable)
+      set.difference_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def symmetric_difference_update(self, iterable):
@@ -546,7 +545,7 @@ class CallbackSet(sets.Set, CallbackObject):
                yield i
       self.trigger_callback('remove', remove_iter())
       self.trigger_callback('add', add_iter())
-      sets.Set.symmetric_difference_update(self, iterable)
+      set.symmetric_difference_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def intersection_update(self, iterable):
@@ -555,7 +554,7 @@ class CallbackSet(sets.Set, CallbackObject):
             if not i in iterable:
                yield i
       self.trigger_callback('remove', iter())
-      sets.Set.intersection_update(self, iterable)
+      set.intersection_update(self, iterable)
       self.trigger_callback('length_change', len(self))
 
    def union_update(self, other):
@@ -566,20 +565,19 @@ class CallbackSet(sets.Set, CallbackObject):
    def __setstate__(self, data):
       CallbackObject.__init__(self)
       self.trigger_callback('remove', self)
-      sets.Set.__setstate__(self, data)
+      set.__setstate__(self, data)
       self.trigger_callback('add', self)
       self.trigger_callback('length_change', len(self))
 
 def get_file_extensions(mode):
    from gamera import plugin
    import os.path
-   from gamera.backport import sets
    methods = plugin.methods_flat_category("File")
    methods = [y for x, y in methods if x.startswith(mode) and not x.endswith("image")]
 
    if len(methods) == 0:
       raise RuntimeError("There don't seem to be any imported plugins that can %s files.  Try running init_gamera() or explictly loading file i/o plugins such as tiff_support and png_support." % mode)
-   extensions = sets.Set()
+   extensions = set()
    types = []
    for method in methods:
       wildcards = ";".join(["*.%s;*.%s" %
@@ -587,8 +585,8 @@ def get_file_extensions(mode):
       type = "%s Files (%s)|%s" % (method.exts[0].upper(), wildcards, wildcards)
       types.append(type)
       # We have to cast the lists to sets here to make Python 2.3.0 happy.
-      extensions.update(sets.Set(method.exts))
-      extensions.update(sets.Set([x.upper() for x in method.exts]))
+      extensions.update(set(method.exts))
+      extensions.update(set([x.upper() for x in method.exts]))
    all_extensions = ";".join(["*.%s" % x for x in extensions])
    types.insert(0, "All images (%s)|%s" % (all_extensions, all_extensions))
    types.append("All files (*.*)|*.*")
@@ -616,7 +614,7 @@ def __warn_deprecated__(message, other_filename=None, other_lineno=None,
    if filename.endswith("code.py"):
       filename = "<shell>"
       lineno = 0
-   if not _warnings_history.has_key(key):
+   if key not in _warnings_history:
       _warnings_history[key] = None
       warnings.warn_explicit("\n" + message,
                              DeprecationWarning, filename, lineno)

@@ -18,11 +18,13 @@
 #
 
 import sys
-import core # grab all of the standard gamera modules
-import util, gamera_xml, config
-from fudge import Fudge
-from gamera.gui import has_gui
+
 from gamera.gameracore import CONFIDENCE_DEFAULT
+
+from gamera.gui import has_gui
+from . import core  # grab all of the standard gamera modules
+from . import util, gamera_xml
+from .fudge import Fudge
 
 """This file defines the Python part of classifiers.  These wrapper classes
 contain a reference to a core classifier class (unusally written in C++).
@@ -161,7 +163,13 @@ a list of glyphs that is already updated for splitting and grouping."""
    def _pregroup(self, glyphs, function):
       from gamera import graph
       G = graph.Undirected()
-      G.add_nodes(glyphs)
+      # assert G.add_nodes(glyphs)
+      #  TODO only for testing
+      for glyph in glyphs:
+         print(glyph)
+         assert G.add_node(glyph)
+         assert G.has_node(glyph)
+
       progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
       try:
          for i in range(len(glyphs)):
@@ -277,7 +285,7 @@ page."""
                for child in glyph.children_images:
                   removed[child] = None
          for glyph in glyphs:
-            if not removed.has_key(glyph):
+            if glyph not in removed:
                self.generate_features(glyph)
                if (glyph.classification_state in
                    (core.UNCLASSIFIED, core.AUTOMATIC)):
@@ -297,7 +305,7 @@ page."""
       finally:
          if recursion_level == 0:
             progress.kill()
-      return added, removed.keys()
+      return added, list(removed.keys())
 
    def classify_list_automatic(self, glyphs, max_recursion=10, progress=None):
       """**classify_list_automatic** (ImageList *glyphs*, int *max_recursion* = 10)
@@ -383,7 +391,7 @@ Saves the training data in XML format to the given stream (which could
 be any object supporting the file protocol, such as a file object or StringIO
 object)."""
       self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs() 
+      glyphs = [g for g in self.get_glyphs()
                 if not g.get_main_id().startswith("_group._part")]
       return gamera_xml.WriteXML(
          glyphs=glyphs, with_features=with_features).write_stream(stream)
@@ -393,8 +401,14 @@ object)."""
 
 Saves the training data in XML format to the given filename."""
       self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs() 
-                if not g.get_main_id().startswith("_group._part")]
+      glyphs = [g for g in self.get_glyphs()
+                if (type(g.get_main_id()) == str and
+                    not g.get_main_id().startswith("_group._part")) or
+                (
+                        type(g.get_main_id()) == bytes and
+                        not g.get_main_id().startswith(b"_group._part")
+                )
+                ]
       return gamera_xml.WriteXMLFile(
          glyphs=glyphs).write_filename(filename, with_features)
 
@@ -448,7 +462,7 @@ existing training data."""
             progress.step()
       finally:
          progress.kill()
-   
+
 class NonInteractiveClassifier(_Classifier):
    def __init__(self, database=[], perform_splits=True):
       """**NonInteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
@@ -493,7 +507,7 @@ Creates a new classifier instance.
 .. __: writing_plugins.html
 
       """
-      if type(database) == list:
+      if type(database) is list:
          self._database = util.CallbackList(database)
          self.set_glyphs(database)
       elif database[-4:] == ".xml":
@@ -529,7 +543,7 @@ Returns ``True`` if classifier is interactive, else ``False``."""
 
 Returns a list of the glyphs in the classifier."""
       return list(self.database)
-      
+
    def set_glyphs(self, glyphs):
       """**set_glyphs** (ImageList *glyphs*)
 
@@ -652,7 +666,7 @@ Creates a new classifier instance.
    # BASIC DATABASE MANIPULATION FUNCTIONS
    def get_glyphs(self):
       return self.database
-      
+
    def set_glyphs(self, glyphs):
       glyphs = util.make_sequence(glyphs)
       self.clear_glyphs()
@@ -683,7 +697,7 @@ Creates a new classifier instance.
          self.generate_features(glyph)
          return self.classify_with_images(self.database, glyph)
       else:
-         return ([(0.0, 'unknown')], {})
+         return [(0.0, 'unknown')], {}
 
    ########################################
    # MANUAL CLASSIFICATION
@@ -717,7 +731,7 @@ end user definitively knows the identity of the glyph.
       glyph.classify_manual([(1.0, id)])
       self.generate_features(glyph)
       self.database.append(glyph)
-      return self._do_splits(self, glyph), removed.keys()
+      return self._do_splits(self, glyph), list(removed.keys())
 
    def classify_list_manual(self, glyphs, id):
       """**classify_list_manual** (ImageList *glyphs*, String *id*)
@@ -751,14 +765,14 @@ connnected components, such as the lower-case *i*.
                   glyph.classify_heuristic('_group._part.' + sub)
                   self.generate_features(glyph)
             added, removed = self.classify_glyph_manual(union, sub)
-            #added.append(union) # this would lead to doublets
+            #added.append(union)  # this would lead to doublets
             return added, removed
          else:
             # grouping a single glyph corrupts the classifier_glyph.xml file
             raise ClassifierError("Grouping of only a single glyph is not allowed.")
 
       added = []
-      removed = util.sets.Set()
+      removed = set()
       for glyph in glyphs:
          for child in glyph.children_images:
             removed.add(child)
@@ -766,8 +780,8 @@ connnected components, such as the lower-case *i*.
       new_glyphs = []
       for glyph in glyphs:
          # Don't re-insert removed children glyphs
-         if not glyph in removed:
-            if not glyph in self.database:
+         if glyph not in removed:
+            if glyph not in self.database:
                self.generate_features(glyph)
                new_glyphs.append(glyph)
             glyph.classify_manual([(1.0, id)])

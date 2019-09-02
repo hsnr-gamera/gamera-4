@@ -48,26 +48,26 @@ from types import *
 
 # import the classification states
 try:
-   from gameracore import UNCLASSIFIED, AUTOMATIC, HEURISTIC, MANUAL
+   from gamera.gameracore import UNCLASSIFIED, AUTOMATIC, HEURISTIC, MANUAL
 except ImportError:
    raise ImportError("Couldn't import the core of Gamera.  Are you trying to start the GUI from the root of the Gamera source tree?  This confuses the Python module loading mechanism.")
 # import the pixel types
-from gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
-from enums import ALL, NONIMAGE
+from gamera.gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
+from .enums import ALL, NONIMAGE
 # import the storage types
-from gameracore import DENSE, RLE
+from gamera.gameracore import DENSE, RLE
 # import some of the basic types
-from gameracore import ImageData, Size, Dim, Point, \
+from gamera.gameracore import ImageData, Size, Dim, Point, \
      FloatPoint, Rect, Region, RegionMap, ImageInfo, RGBPixel
 # import confidence types
-from gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
+from gamera.gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
 # import gamera.gameracore for subclassing
-import gameracore
+import gamera.gameracore as gameracore
 from gamera.gui import has_gui
 
 # from gamera.classify import *
-import paths, util    # Gamera-specific
-from config import config
+from . import paths, util    # Gamera-specific
+from .config import config
 
 class SegmentationError(Exception):
    pass
@@ -93,7 +93,7 @@ supported.
       raise RuntimeError("There don't seem to be any imported plugins that can load files.  Try running init_gamera(), or explicitly loading the plugins that support file loading, such as tiff_support and png_support.")
 
    try:
-      filename = filename.encode('utf8')
+      filename = str(filename)
    except Exception:
       pass
    # First, try being smart by loading by extension
@@ -111,7 +111,7 @@ supported.
    for method in methods:
       try:
          image = method.__call__(filename, compression)
-      except Exception:
+      except Exception :
          pass
       else:
          return image
@@ -137,7 +137,7 @@ determined from the extension.
          if os.path.splitext(filename)[1][1:].lower() == ext.lower():
             method.__call__(image, filename)
             return
-              
+
    # For backward compatibility, fall back to tiff if
    # we can't automatically determine the filetype by
    # the extension
@@ -199,7 +199,7 @@ class ImageBase:
          return self.__getitem__(attr)
       def __setattr__(self, attr, value):
          return dict.__setitem__(self, attr, value)
-   
+
    def __init__(self):
       self.name = "Untitled"
       self._display = None
@@ -226,7 +226,7 @@ See `pixel types`_ for more information."""
 
    _storage_format_names = {DENSE:  "Dense",
                             RLE:    "RLE"}
-   
+
    def storage_format_name(self):
       """String **storage_format_name** ()
 
@@ -280,7 +280,7 @@ process is not running, this method has no effect.
       if self._display:
          self._display.set_image(self, conversion)
       else:
-         if title == None:
+         if title is None:
             self.set_display(
                has_gui.gui.ShowImage(self, self.name, conversion,
                                      owner=self))
@@ -358,7 +358,7 @@ This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(1.0, id_name)]
-      elif type(id_name) != ListType:
+      elif type(id_name) is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -385,7 +385,7 @@ the main id; this must be set separately.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.0, id_name)]
-      elif type(id_name) != ListType:
+      elif not isinstance(id_name, list):
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.classification_state = AUTOMATIC
@@ -410,7 +410,7 @@ this glyph. This method also unsets the *confidence* map.
          A ``.``-delimited class name."""
       if util.is_string_or_unicode(id_name):
          id_name = [(0.5, id_name)]
-      elif type(id_name) != ListType:
+      elif type(id_name) is not list:
          raise TypeError("id_name must be a string or a list")
       self.id_name = id_name
       self.confidence = {}
@@ -453,7 +453,7 @@ For details about the confidence computation in Gamera, see
       if not confidence_type:
          return self.id_name[0][0]
       else:
-         if self.confidence.has_key(confidence_type):
+         if confidence_type in self.confidence:
             return self.confidence[confidence_type]
          else:
             raise ValueError("Given confidence %i not stored in confidence map of image" % confidence_type)
@@ -521,15 +521,15 @@ Changes to subimages will affect all other subimages viewing the same data.
             all_strings = False
             break
       if not all_strings:
-         import plugin
+         from . import plugin
          all_functions = False
-         if (type(features) == tuple and
+         if (features is tuple and
              len(features) == 2 and
-             type(features[0]) == list and
+             features[0] is list and
              type(features[1]) == int):
             all_functions = True
             for feature in features[0]:
-               if not (type(feature) == tuple and
+               if not (feature is tuple and
                        util.is_string_or_unicode(feature[0]) and
                        issubclass(feature[1], plugin.PluginFunction)):
                   all_functions = False
@@ -544,11 +544,11 @@ Changes to subimages will affect all other subimages viewing the same data.
          features.sort()
          functions = []
          for feature in features:
-            found = 0
+            found = False
             for i in all_features:
                if feature == i[0]:
                   functions.append(i)
-                  found = 1
+                  found = True
                   break
             if not found:
                raise ValueError("'%s' is not a known feature function." % feature)
@@ -561,7 +561,7 @@ Changes to subimages will affect all other subimages viewing the same data.
       Returns a string containing the Gamera XML representation of the image.
       (See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
       """
-      import gamera_xml
+      from . import gamera_xml
       return gamera_xml.WriteXML(glyphs=[self]).write_stream(stream)
 
    def to_xml_filename(self, filename):
@@ -569,7 +569,7 @@ Changes to subimages will affect all other subimages viewing the same data.
       Saves the Gamera XML representation of the image to the given *filename*.
       (See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
       """
-      import gamera_xml
+      from . import gamera_xml
       return gamera_xml.WriteXML(glyphs=[self]).write_filename(filename)
 
    def set_property(self, name, value):
@@ -589,6 +589,19 @@ class Image(gameracore.Image, ImageBase):
    def __del__(self):
       if self._display:
          self._display.close()
+
+   def __eq__(self, other):
+      return gameracore.Image.__eq__(self, other)
+
+   def __ne__(self, other):
+      return gameracore.Image.__ne__(self, other)
+
+   def __gt__(self, other):
+      return gameracore.Image.__gt__(self, other)
+
+   def __hash__(self):
+      return gameracore.Image.__hash__(self)
+
 
 ######################################################################
 
@@ -614,7 +627,25 @@ class Cc(gameracore.Cc, ImageBase):
    def __del__(self):
       if self._display:
          self._display.close()
-   
+
+   def __eq__(self, other):
+      return gameracore.Cc.__eq__(self, other)
+
+   def __gt__(self, other):
+      return gameracore.Cc.__gt__(self, other)
+
+   def __ge__(self, other):
+      return self.__eq__(other) or self.__gt__(other)
+
+   def __lt__(self, other):
+      return not self.__gt__(other)
+
+   def __le__(self, other):
+      return self.__eq__(other) or not self.__gt__(other)
+
+   def __hash__(self):
+       return gameracore.Cc.__hash__(self)
+
    def display_context(self):
       """**display_context** ()
 
@@ -651,7 +682,7 @@ def _init_gamera():
    if _gamera_initialised:
       return
    _gamera_initialised = True
-   import plugin, gamera_xml, sys
+   from gamera import plugin, gamera_xml
    from gamera.args import NoneDefault
    # Create the default functions for the menupl
    for method in (
@@ -719,16 +750,16 @@ if sys.platform == 'win32':
    def init_gamera():
       try:
          _init_gamera()
-      except Exception, e:
-         print type(e)
+      except Exception as e:
+         print(type(e))
          if not isinstance(e, SystemExit):
             import traceback
-            print "Gamera made a fatal error:"
-            print
+            print("Gamera made a fatal error:")
+            print()
             traceback.print_exc()
-            print
-            print "Press <ENTER> to exit."
-            x = raw_input()
+            print()
+            print("Press <ENTER> to exit.")
+            x = input()
             sys.exit(1)
 else:
    init_gamera = _init_gamera

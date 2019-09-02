@@ -30,4 +30,4 @@ class NullGui:
    def __getattr__(self, attr):
       return self.NullMethod()
    
-gui = NullGui()
+gui = None

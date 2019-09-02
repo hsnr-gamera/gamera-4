@@ -35,7 +35,7 @@ public:
    BfsIterator(Graph* graph, Node* start): NodeTraverseIterator(graph) {
       init(start);
    };
-   Node* next();
+   Node* next() override ;
 };
 
 
@@ -46,14 +46,14 @@ public:
 class DfsIterator: public NodeTraverseIterator {
    NodeStack _stack;
    std::set<Edge*> _used_edges;
-   bool found_cycles;
+   bool found_cycles = false;
    void init(Node* start);
 
 public:
    DfsIterator(Graph* graph, Node* start): NodeTraverseIterator(graph) {
       init(start);  
    }
-   Node* next();
+   Node* next()override ;
 
    bool has_cycles() {
       return found_cycles;

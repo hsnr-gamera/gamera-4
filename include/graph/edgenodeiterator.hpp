@@ -118,7 +118,7 @@ class NodePtrEdgeIterator: public EdgePtrIterator {
    Node* _from_node_node;
 public:
    NodePtrEdgeIterator(Graph* graph, EdgeIterator begin, EdgeIterator end, 
-         Node* from_node = NULL): 
+         Node* from_node = NULL):
       EdgePtrIterator(graph, begin, end, NULL) {
         _from_node_node = from_node; 
       }

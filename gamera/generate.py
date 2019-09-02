@@ -18,8 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+import platform
 
-from pyplate import *
+from .pyplate import *
 from os import path
 import os
 import sys
@@ -38,8 +39,8 @@ global plugins_to_ignore
 # magic_import_setup. generate_plugin uses this to prevent
 # the loading of C++ modules that may not exist yet during
 # the build process.
-def magic_import(name, globals_={}, locals_={}, fromlist=[], level=-1):
-   if fromlist != None and "core" in fromlist:
+def magic_import(name, globals_={}, locals_={}, fromlist=[], level=0):
+   if fromlist is not None and "core" in fromlist:
       fromlist = list(fromlist)
       fromlist.remove("core")
 
@@ -104,32 +105,11 @@ template = Template("""
 
   [[# Declare all of the functions - because this is a C++ file we have to #]]
   [[# declare the functions as C functions so that Python can access them #]]
-  extern \"C\" {
 #ifndef _MSC_VER
+  extern \"C\" {
     void init[[module_name]](void);
-#endif
-    [[for function in module.functions]]
-      [[if not function.pure_python]]
-        static PyObject* call_[[function.__name__]](PyObject* self, PyObject* args);
-      [[end]]
-    [[end]]
   }
-
-  [[# Create the list of methods for the module - the name of the function #]]
-  [[# is derived from the name of the class implementing the function - #]]
-  [[# also, the function name is prepended with call_ so that there are no clashes #]]
-  [[# with the real plugin functions #]]
-  static PyMethodDef [[module_name]]_methods[] = {
-    [[for function in module.functions]]
-      [[if not function.pure_python]]
-        { CHAR_PTR_CAST \"[[function.__name__]]\",
-          call_[[function.__name__]], METH_VARARGS,
-          CHAR_PTR_CAST [[function.escape_docstring()]]
-        },
-      [[end]]
-    [[end]]
-    { NULL }
-  };
+#endif
 
   [[# Each module can declare several functions so we loop through and generate wrapping #]]
   [[# code for each function #]]
@@ -140,7 +120,7 @@ template = Template("""
       [[# be Null because this functions is not actually bound to an object #]]
 
       PyErr_Clear();
-      [[if function.self_type == None]]
+      [[if function.self_type is None]]
         [[exec args = function.args.list]]
       [[else]]
         [[exec args = [function.self_type] + function.args.list]]
@@ -148,7 +128,7 @@ template = Template("""
       [[end]]
       [[# for each argument insert the appropriate conversion code into the string that will #]]
       [[# be passed to PyArg_ParseTuple and create a variable to hold the result. #]]
-      [[if function.return_type != None]]
+      [[if function.return_type is not None]]
         [[exec function.return_type.name = 'return']]
         [[exec function.return_type.convert_from_PyObject = True]]
         [[if not function.feature_function]]
@@ -165,11 +145,11 @@ template = Template("""
       [[# the argument tuple. #]]
       [[if function.feature_function]]
          int offset = -1;
-         if (PyArg_ParseTuple(args, CHAR_PTR_CAST \"O|i:[[function.__name__]]\",&[[function.self_type.pysymbol]], &offset) <= 0)
+         if (PyArg_ParseTuple(args,  \"O|i:[[function.__name__]]\",&[[function.self_type.pysymbol]], &offset) <= 0)
            return 0;
       [[else]]
          [[if pyarg_format != '']]
-           if (PyArg_ParseTuple(args, CHAR_PTR_CAST \"[[pyarg_format]]:[[function.__name__]]\"
+           if (PyArg_ParseTuple(args,  \"[[pyarg_format]]:[[function.__name__]]\"
            [[for arg in args]]
              ,
              &[[arg.pysymbol]]
@@ -200,7 +180,7 @@ template = Template("""
           [[if len(args)]]
             [[args[0].call(function, args[1:], [])]]
           [[else]]
-            [[if function.return_type != None]]
+            [[if function.return_type is not None]]
               [[function.return_type.symbol]] =
             [[end]]
             [[function.__name__]]([[if function.progress_bar]]ProgressBar("[[function.progress_bar]]")[[else]][[end]]);
@@ -213,7 +193,7 @@ template = Template("""
 
       [[if function.feature_function]]
          if (offset < 0) {
-           PyObject* str = PyString_FromStringAndSize((char*)feature_buffer, [[function.return_type.length]] * sizeof(feature_t));
+           PyObject* str = PyBytes_FromStringAndSize((char*)feature_buffer, [[function.return_type.length]] * sizeof(feature_t));
            if (str != 0) {
               [[# This is pretty expensive, but simple #]]
               PyObject* array_init = get_ArrayInit();
@@ -221,7 +201,7 @@ template = Template("""
                 return 0;
               PyObject* array = PyObject_CallFunction(
                     array_init, (char *)\"sO\", (char *)\"d\", str);
-              Py_DECREF(str);
+              Py_XDECREF(str);
               delete[] feature_buffer;
               return array;
            } else {
@@ -229,24 +209,24 @@ template = Template("""
              return 0;
            }
          } else {
-           Py_INCREF(Py_None);
+           Py_XINCREF(Py_None);
            return Py_None;
          }
       [[else]]
         [[for arg in function.args]]
           [[arg.delete()]]
         [[end]]
-        [[if function.return_type == None]]
-          Py_INCREF(Py_None);
+        [[if function.return_type is None]]
+          Py_XINCREF(Py_None);
           return Py_None;
         [[else]]
           [[if isinstance(function.return_type, (ImageType, Class))]]
-            if ([[function.return_type.symbol]] == NULL) {
-              if (PyErr_Occurred() == NULL) {
-                Py_INCREF(Py_None);
+            if ([[function.return_type.symbol]] == nullptr) {
+              if (PyErr_Occurred() == nullptr) {
+                Py_XINCREF(Py_None);
                 return Py_None;
                } else
-                return NULL;
+                return nullptr;
             } else {
               [[function.return_type.to_python()]]
               return return_pyarg;
@@ -261,8 +241,37 @@ template = Template("""
     [[end]]
   [[end]]
 
-  DL_EXPORT(void) init[[module_name]](void) {
-    Py_InitModule(CHAR_PTR_CAST \"[[module_name]]\", [[module_name]]_methods);
+  [[# Create the list of methods for the module - the name of the function #]]
+  [[# is derived from the name of the class implementing the function - #]]
+  [[# also, the function name is prepended with call_ so that there are no clashes #]]
+  [[# with the real plugin functions #]]
+  static PyMethodDef [[module_name]]_methods[] = {
+    [[for function in module.functions]]
+      [[if not function.pure_python]]
+        {  \"[[function.__name__]]\",
+          call_[[function.__name__]], METH_VARARGS,
+           [[function.escape_docstring()]]
+        },
+      [[end]]
+    [[end]]
+    { nullptr }
+  };
+  
+  static struct PyModuleDef module[[module_name]]Def = {
+        PyModuleDef_HEAD_INIT,
+        \"[[module_name]]\",
+        nullptr,
+        -1,
+        [[module_name]]_methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+  };
+
+
+  PyMODINIT_FUNC PyInit_[[module_name]](void) {
+    return PyModule_Create(&module[[module_name]]Def);
   }
   """)
 
@@ -309,10 +318,10 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
         break
 
   if regenerate:
-    print "generating wrappers for", module_name, "plugin"
+    print("generating wrappers for", module_name, "plugin")
     template.execute_file(cpp_filename, plugin_module.__dict__)
   else:
-    print "skipping wrapper generation for", module_name, "plugin (output up-to-date)"
+    print("skipping wrapper generation for", module_name, "plugin (output up-to-date)")
 
   # make the a distutils extension class for this plugin
   cpp_files = [cpp_filename]
@@ -324,6 +333,7 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
   if '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
      if "stdc++" not in extra_libraries:
         extra_libraries.append("stdc++")
+
   return Extension(location + "._" + module_name, cpp_files,
                    include_dirs=include_dirs,
                    library_dirs=plugin_module.module.library_dirs,

@@ -20,13 +20,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 
 import wx
 import wx.grid as gridlib
 
 from math import sqrt, ceil, log, floor # Python standard library
-from sys import maxint
+from sys import maxsize
 import sys, string, weakref
 import warnings
 
@@ -118,9 +118,9 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
 
    # Refreshes the image by recalling the to_string function
    def reload_image(self, *args):
-      if self.view_function != None and self.original_image != None:
+      if self.view_function is not None and self.original_image is not None:
          self.image = getattr(self.original_image, self.view_function)()
-      if self.image != None:
+      if self.image is not None:
          self.scale()
          return (self.image.width, self.image.height)
 
@@ -145,7 +145,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
             box = args[0]
          else:
             raise TypeError("Wrong number of arguments. See core.Rect for possible arguments.")
-      except Exception, e:
+      except Exception as e:
          errmsg = "("+e.__class__.__name__+") "+e.message
       if not isinstance(box, Rect):
          raise TypeError("Could not construct a core.Rect object from arguments."
@@ -159,7 +159,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
       self.RefreshAll()
 
    def draw_box(self, box, dc=None):
-      if dc == None:
+      if dc is None:
          dc = wx.ClientDC(self)
       scaling = self.scaling
       origin = [x * self.scroll_amount for x in self.GetViewStart()]
@@ -217,7 +217,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
          # If the highlight is in the old highlights, use the old
          # color if the color is unspecified.
          # This is really just for "color stability."
-         if color == None:
+         if color is None:
             use_color = None
             for old_cc, old_color in old_highlights:
                if old_cc == cc:
@@ -353,7 +353,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
       if new_scale < old_scale:
          # self.Clear()
          self.RefreshAll()
-      if new_scale == None or new_scale <= 0:
+      if new_scale is None or new_scale <= 0:
          new_scale = old_scale
 
       # Clamp scaling to a reasonable range
@@ -410,7 +410,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
       rubber_w = self.image.ncols
       rubber_h = self.image.nrows
       x = y = x2 = y2 = 0
-      if self.rubber_origin_x != None:
+      if self.rubber_origin_x is not None:
          x = min(self.rubber_origin_x, self.rubber_x2)
          y = min(self.rubber_origin_y, self.rubber_y2)
          x2 = max(self.rubber_origin_x, self.rubber_x2)
@@ -436,7 +436,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
    # RUBBER BAND
    #
    def draw_rubber(self, dc=None, clear=False):
-      if self.rubber_origin_x == None:
+      if self.rubber_origin_x is None:
          return
       scaling = self.scaling
       origin = [x * self.scroll_amount for x in self.GetViewStart()]
@@ -481,7 +481,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
    def _OnMakeView(self, *args):
       name = var_name.get("view", image_menu.shell.locals)
       if name:
-         if self.rubber_origin_x == None:
+         if self.rubber_origin_x is None:
             subimage = self.original_image.subimage(
                (0,0), 
                Size(self.original_image.ncols-1, self.original_image.nrows-1))
@@ -497,7 +497,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
    def _OnMakeCopy(self, *args):
       name = var_name.get("copy", image_menu.shell.locals)
       if name:
-         if self.rubber_origin_x == None: 
+         if self.rubber_origin_x is None: 
             copy = self.original_image.image_copy()
          else:
             copy = self.original_image.subimage(
@@ -667,7 +667,7 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
    def _OnLeftDown(self, event):
       if not self.image:
          return
-      if self.rubber_origin_x == None:
+      if self.rubber_origin_x is None:
          self.rubber_origin_x = 0
       self.CaptureMouse()
       self.rubber_on = 1
@@ -1155,8 +1155,8 @@ class MultiImageDisplay(gridlib.Grid):
             self.DeleteRows(0, orig_rows - rows)
          elif rows > orig_rows:
             self.AppendRows(rows - orig_rows)
-            for row in xrange(rows - 1, -1, -1):
-               for col in xrange(cols):
+            for row in range(rows - 1, -1, -1):
+               for col in range(cols):
                   self.SetCellRenderer(row, col, self.get_renderer())
                   self.SetReadOnly(row, col, True)
          self.rows = rows
@@ -1328,7 +1328,7 @@ class MultiImageDisplay(gridlib.Grid):
       self.display_row_labels = not function
       try:
          orig_len = len(self.sorted_glyphs)
-         if function != None:
+         if function is not None:
             self.sort_function = function
             self.sort_order = order
 
@@ -1341,11 +1341,11 @@ class MultiImageDisplay(gridlib.Grid):
             for image in self.glyphs:
                try:
                   image.sort_cache = eval("x." + sort_string, {'x': image})
-               except Exception, e:
+               except Exception as e:
                   error_messages[str(e)] = None
                   image.sort_cache = None
             if len(error_messages):
-               message = '\n\n'.join(error_messages.keys())
+               message = '\n\n'.join(list(error_messages.keys()))
                gui_util.message(message)
                for item in self.glyphs:
                   del item.sort_cache
@@ -1375,7 +1375,7 @@ class MultiImageDisplay(gridlib.Grid):
          except IndexError:
             self.SetRowLabelValue(i, "")
          else:
-            if image == None or image.classification_state == UNCLASSIFIED:
+            if image is None or image.classification_state == UNCLASSIFIED:
                self.SetRowLabelValue(i, "")
             elif self.display_row_labels:
                label = self.get_label(image)
@@ -1400,10 +1400,10 @@ class MultiImageDisplay(gridlib.Grid):
          self.ClearSelection()
          for i in range(len(self.sorted_glyphs)):
             x = self.sorted_glyphs[i]
-            if x != None:
+            if x is not None:
                try:
                   result = function(x)
-               except Exception, err:
+               except Exception as err:
                   gui_util.message(str(err))
                   return
                if result:
@@ -1525,7 +1525,7 @@ class MultiImageDisplay(gridlib.Grid):
       row = event.GetRow()
       col = event.GetCol()
       images = self.GetSelectedItems(row, col)
-      if images != None:
+      if images is not None:
          position = event.GetPosition()
          image_menu.ImageMenu(self, position.x, position.y,
                               images, mode=0)
@@ -1533,7 +1533,7 @@ class MultiImageDisplay(gridlib.Grid):
 
    def _OnLeftDoubleClick(self, event):
       bitmap_no = self.get_image_no(event.GetRow(), event.GetCol())
-      if bitmap_no != None and self.sorted_glyphs[bitmap_no] != None:
+      if bitmap_no is not None and self.sorted_glyphs[bitmap_no] is not None:
          self.sorted_glyphs[bitmap_no].display()
 
    def get_label(self, glyph):
@@ -1584,12 +1584,12 @@ class MultiImageDisplay(gridlib.Grid):
       row = self.YToRow(event.GetY() + origin[1] * units[1])
       col = self.XToCol(event.GetX() + origin[0] * units[0])
       image_no = self.get_image_no(row, col)
-      if image_no == None or image_no >= len(self.sorted_glyphs) or image_no < 0:
+      if image_no is None or image_no >= len(self.sorted_glyphs) or image_no < 0:
          image = None
       else:
          image = self.sorted_glyphs[image_no]
 
-      if image == None:
+      if image is None:
          if self.last_tooltip != "":
             self.tooltip.Show(False)
             self.last_tooltip = ""
@@ -1751,7 +1751,7 @@ class MultiImageWindow(wx.Panel):
       try:
          select_func = eval("lambda x: (" + select_string + ")", globals(),
                             image_menu.shell.locals)
-      except Exception, e:
+      except Exception as e:
          gui_util.message(str(e))
          return
       if select_string not in self.select_choices:
@@ -1806,7 +1806,7 @@ class ImageFrameBase:
                             wx.DefaultPosition, (600, 400),
                             style=wx.DEFAULT_FRAME_STYLE|wx.CLIP_CHILDREN|
                             wx.NO_FULL_REPAINT_ON_RESIZE)
-      if (owner != None):
+      if (owner is not None):
          self.owner = weakref.proxy(owner)
       else:
          self.owner = None
@@ -2133,7 +2133,7 @@ class GameraPrintout(wx.Printout):
       scale = min([float(vw) / float(self.image.width), float(vh) / float(self.image.height)])
 
       from sys import stderr
-      print >>stderr, "Printing at (%d, %d) resolution" % (ppw, pph)
+      print("Printing at (%d, %d) resolution" % (ppw, pph), file=stderr)
 
       if self.image.pixel_type_name == "OneBit":
          self.image = self.image.to_greyscale()

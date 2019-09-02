@@ -590,7 +590,7 @@ namespace Gamera {
         throw std::runtime_error("Argument must be a nested Python iterable of pixels.");
       int nrows = PySequence_Fast_GET_SIZE(seq);
       if (nrows == 0) {
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
         throw std::runtime_error("Nested list must have at least one row.");
       }
       int ncols = -1;
@@ -602,15 +602,15 @@ namespace Gamera {
           if (row_seq == NULL) {
             pixel_from_python<T>::convert(row);
             row_seq = seq;
-            Py_INCREF(row_seq);
+            Py_XINCREF(row_seq);
             nrows = 1;
           }
           int this_ncols = PySequence_Fast_GET_SIZE(row_seq);
           if (ncols == -1) {
             ncols = this_ncols;
             if (ncols == 0) {
-              Py_DECREF(seq);
-              Py_DECREF(row_seq);
+              Py_XDECREF(seq);
+              Py_XDECREF(row_seq);
               throw std::runtime_error
                 ("The rows must be at least one column wide.");
             }
@@ -620,8 +620,8 @@ namespace Gamera {
             if (ncols != this_ncols) {
               delete image;
               delete data;
-              Py_DECREF(row_seq);
-              Py_DECREF(seq);
+              Py_XDECREF(row_seq);
+              Py_XDECREF(seq);
               throw std::runtime_error
                 ("Each row of the nested list must be the same length.");
             }
@@ -631,9 +631,9 @@ namespace Gamera {
             T px = pixel_from_python<T>::convert(item);
             image->set(Point(c, r), px);
           }
-          Py_DECREF(row_seq);
+          Py_XDECREF(row_seq);
         }
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
       } catch (std::exception e) {
         if (image)
           delete image;
@@ -652,7 +652,7 @@ namespace Gamera {
       if (seq == NULL)
         throw std::runtime_error("Must be a nested Python list of pixels.");
       if (PySequence_Fast_GET_SIZE(seq) == 0) {
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
         throw std::runtime_error("Nested list must have at least one row.");
       }
       PyObject* row = PySequence_Fast_GET_ITEM(seq, 0);
@@ -662,15 +662,15 @@ namespace Gamera {
         pixel = row;
       } else {
         if (PySequence_Fast_GET_SIZE(row_seq) == 0) {
-          Py_DECREF(seq);
-          Py_DECREF(row_seq);
+          Py_XDECREF(seq);
+          Py_XDECREF(row_seq);
           throw std::runtime_error("The rows must be at least one column wide.");
         }
         pixel = PySequence_Fast_GET_ITEM(row_seq, 0);
       }
-      Py_DECREF(seq);
-      Py_DECREF(row_seq);
-      if (PyInt_Check(pixel))
+      Py_XDECREF(seq);
+      Py_XDECREF(row_seq);
+      if (PyLong_Check(pixel))
         pixel_type = GREYSCALE;
       else if (PyFloat_Check(pixel))
         pixel_type = FLOAT;

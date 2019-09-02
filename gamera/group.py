@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import generators
+
 from gamera import util
 import sys, re
 
@@ -149,7 +149,7 @@ class GridIndexWithKeys(GridIndex):
          ci = c + col
          if ri < 0 or ri >= cell_nrows or ci < 0 or ci >= cell_ncols:
             continue
-         for mapping in self.grid[ri * cell_ncols + ci].values():
+         for mapping in list(self.grid[ri * cell_ncols + ci].values()):
             for glyph in mapping:
                yield glyph
 

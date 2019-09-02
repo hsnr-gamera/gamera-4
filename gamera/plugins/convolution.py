@@ -35,7 +35,7 @@ CONVOLUTION_TYPES = [GREYSCALE, GREY16, FLOAT, RGB, COMPLEX]
 # Convolution methods
 
 class convolve(PluginFunction):
-    u"""
+    """
     Convolves an image with a given kernel.
 
     Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
@@ -93,13 +93,13 @@ class convolve(PluginFunction):
 
     def __call__(self, kernel, border_treatment=3):
         from gamera.gameracore import FLOAT
-        if type(kernel) == list:
+        if type(kernel) is list:
             kernel = image_utilities.nested_list_to_image(kernel, FLOAT)
         return _convolution.convolve(self, kernel, border_treatment)
     __call__ = staticmethod(__call__)
 
 class convolve_xy(PluginFunction):
-    u"""
+    """
     Convolves an image in both X and Y directions with 1D kernels.
     This is equivalent to what the Vigra library calls "Separable
     Convolution".
@@ -136,19 +136,19 @@ class convolve_xy(PluginFunction):
         if kernel_y is None:
             kernel_y = kernel_x
         if kernel_y == kernel_x:
-            if type(kernel_y) == list:
+            if kernel_y is list:
                 kernel_x = kernel_y = image_utilities.nested_list_to_image(kernel_y, FLOAT)
         else:
-            if type(kernel_y) == list:
+            if kernel_y is list:
                 kernel_y = image_utilities.nested_list_to_image(kernel_y, FLOAT)
-            if type(kernel_x) == list:
+            if kernel_x is list:
                 kernel_x = image_utilities.nested_list_to_image(kernel_x, FLOAT)
         result = _convolution.convolve_x(self, kernel_x, border_treatment)
         return _convolution.convolve_y(result, kernel_y, border_treatment)
     __call__ = staticmethod(__call__)
 
 class convolve_x(PluginFunction):
-    u"""
+    """
     Convolves an image in the X directions with a 1D kernel.  This is
     equivalent to what the Vigra library calls "Separable
     Convolution".
@@ -175,13 +175,13 @@ class convolve_x(PluginFunction):
 
     def __call__(self, kernel, border_treatment=1):
         from gamera.gameracore import FLOAT
-        if type(kernel) == list:
+        if kernel is list:
             kernel = image_utilities.nested_list_to_image(kernel, FLOAT)
         return _convolution.convolve_x(self, kernel, border_treatment)
     __call__ = staticmethod(__call__)
 
 class convolve_y(PluginFunction):
-    u"""
+    """
     Convolves an image in the X directions with a 1D kernel.  This is
     equivalent to what the Vigra library calls "Separable Convolution".
 
@@ -207,7 +207,7 @@ class convolve_y(PluginFunction):
 
     def __call__(self, kernel, border_treatment=1):
         from gamera.gameracore import FLOAT
-        if type(kernel) == list:
+        if kernel is list:
             kernel = image_utilities.nested_list_to_image(kernel, FLOAT)
         return _convolution.convolve_y(self, kernel, border_treatment)
     __call__ = staticmethod(__call__)
@@ -429,7 +429,7 @@ class ConvolutionModule(PluginModule):
                  gaussian_smoothing, simple_sharpen,
                  gaussian_gradient, laplacian_of_gaussian,
                  hessian_matrix_of_gaussian, sobel_edge_detection]
-    author = u"Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
+    author = "Michael Droettboom (With code from VIGRA by Ullrich K\u00f6the)"
     url = "http://gamera.sourceforge.net/"
 module = ConvolutionModule()
 

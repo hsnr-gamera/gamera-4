@@ -63,7 +63,7 @@ namespace Gamera {
       delete v;
       return Py_BuildValue("f",m);
     }
-    else if (PyInt_Check(entry)) {
+    else if (PyLong_Check(entry)) {
       IntVector* v = IntVector_from_python(list);
       if (!v)
         throw std::runtime_error("median: Cannot convert list to int type. Is the list inhomogeneous?");
@@ -85,7 +85,7 @@ namespace Gamera {
       std::nth_element(v->begin(), v->begin() + n/2, v->end());
       retval = (v->begin() + n/2)->value;
       delete v;
-      Py_INCREF(retval);
+      Py_XINCREF(retval);
       return retval;
     }
   }
@@ -136,7 +136,7 @@ namespace Gamera {
 
     int n = PySequence_Fast_GET_SIZE(a);
     if (k < 0 || k > n) {
-      Py_DECREF(a);
+      Py_XDECREF(a);
       throw std::runtime_error("k must be between 0 and len(a)");
     }
 
@@ -161,14 +161,14 @@ namespace Gamera {
       PyObject* subset = PyList_New(k);
       for (int j = 0; j < k; ++j) {
         PyObject* item = PySequence_Fast_GET_ITEM(a, indices[j] - 1);
-        Py_INCREF(item);
+        Py_XINCREF(item);
         PyList_SetItem(subset, j, item);
       }
       PyList_Append(result, subset);
-      Py_DECREF(subset);
+      Py_XDECREF(subset);
     } while (indices[0] != n - k + 1);
   
-    Py_DECREF(a);
+    Py_XDECREF(a);
     return result;
   }
 

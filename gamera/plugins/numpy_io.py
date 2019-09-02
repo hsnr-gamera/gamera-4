@@ -29,20 +29,21 @@ except ImportError:
     except Exception:
         verbose = 0
     if verbose:
-        print ('Info: numpy could not be imported.')
+        print('Info: numpy could not be imported.')
 else:
-    _typecodes = {RGB       : n.dtype('uint8'),
-                  GREYSCALE : n.dtype('uint8'),
-                  GREY16    : n.dtype('uint32'),
-                  ONEBIT    : n.dtype('uint16'),
-                  FLOAT     : n.dtype('float64'),
-                  COMPLEX   : n.dtype('complex128') }
-    _inverse_typecodes = { n.dtype('uint8')     : GREYSCALE,
-                           n.dtype('uint32')    : GREY16,
-                           n.dtype('uint16')    : ONEBIT,
-                           n.dtype('float64')   : FLOAT,
-                           n.dtype('complex128') : COMPLEX } 
-        
+    _typecodes = {RGB: n.dtype('uint8'),
+                  GREYSCALE: n.dtype('uint8'),
+                  GREY16: n.dtype('uint32'),
+                  ONEBIT: n.dtype('uint16'),
+                  FLOAT: n.dtype('float64'),
+                  COMPLEX: n.dtype('complex128')}
+    _inverse_typecodes = {n.dtype('uint8'): GREYSCALE,
+                          n.dtype('uint32'): GREY16,
+                          n.dtype('uint16'): ONEBIT,
+                          n.dtype('float64'): FLOAT,
+                          n.dtype('complex128'): COMPLEX}
+
+
     class from_numpy(PluginFunction):
         """
         Instantiates a Gamera image from a Numeric multi-dimensional
@@ -83,6 +84,7 @@ else:
         args = Args([Class("array")])
         return_type = ImageType(ALL)
         pure_python = True
+
         def __call__(array, offset=(0, 0)):
             from gamera.plugins import _string_io
             from gamera.core import Dim
@@ -92,6 +94,7 @@ else:
                 Dim(array.shape[1], array.shape[0]),
                 pixel_type, DENSE,
                 array.tostring())
+
         __call__ = staticmethod(__call__)
 
         def _check_input(array):
@@ -101,10 +104,13 @@ else:
             if len(shape) == 3 and shape[2] == 3 and typecode == n.dtype('uint8'):
                 return RGB
             elif len(shape) == 2:
-                if _inverse_typecodes.has_key(typecode):
+                if typecode in _inverse_typecodes:
                     return _inverse_typecodes[typecode]
-            raise ValueError('Array is not one of the acceptable types (uint8 * 3, uint8, uint16, uint32, float64, complex128)')
+            raise ValueError(
+                'Array is not one of the acceptable types (uint8 * 3, uint8, uint16, uint32, float64, complex128)')
+
         _check_input = staticmethod(_check_input)
+
 
     class to_numpy(PluginFunction):
         """
@@ -148,15 +154,20 @@ else:
         self_type = ImageType(ALL)
         return_type = Class("array")
         pure_python = True
+
         def __call__(image):
             from gamera.plugins import _string_io
             pixel_type = image.data.pixel_type
             shape = (image.nrows, image.ncols)
             typecode = _typecodes[pixel_type]
+            tmp = _string_io._to_raw_string(image)
+            typecode.newbyteorder('>')
             if pixel_type == RGB:
                 shape += (3,)
-            array = n.fromstring(_string_io._to_raw_string(image), typecode)
+
+            array = n.frombuffer(tmp, typecode, 3)
             return n.resize(array, shape)
+
         __call__ = staticmethod(__call__)
 
         def __doc_example1__(images):
@@ -164,39 +175,47 @@ else:
             array = image.to_numpy()
             image0 = from_numpy(array)
             return [image, image0]
+
         def __doc_example2__(images):
             image = images[GREYSCALE]
             array = image.to_numpy()
             image0 = from_numpy(array)
             return [image, image0]
+
         def __doc_example4__(images):
             image = images[ONEBIT]
             array = image.to_numpy()
             image0 = from_numpy(array)
             return [image, image0]
+
         def __doc_example5__(images):
             image = images[FLOAT]
             array = image.to_numpy()
             image0 = from_numpy(array)
             return [image, image0]
+
         def __doc_example6__(images):
             image = images[COMPLEX]
             array = image.to_numpy()
             image0 = from_numpy(array)
             return [image, image0]
+
         doc_examples = [__doc_example1__,
                         __doc_example2__,
                         __doc_example4__,
                         __doc_example5__,
                         __doc_example6__]
 
+
     class NumpyModule(PluginModule):
         category = "ExternalLibraries/Numpy"
         author = "Robert Butz based on code by Alex Cobb"
         functions = [from_numpy, to_numpy]
         pure_python = True
-        #url = ('http://www.oeb.harvard.edu/faculty/holbrook/'
+        # url = ('http://www.oeb.harvard.edu/faculty/holbrook/'
         #       'people/alex/Website/alex.htm')
+
+
     module = NumpyModule()
 
     from_numpy = from_numpy()

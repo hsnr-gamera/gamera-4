@@ -231,14 +231,14 @@ protected:
       size_t j = 0;
       for (std::vector<Node*>::iterator i = node_stack.begin();
          i != node_stack.end(); ++i, ++j) {
-         Py_INCREF(dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
+         Py_XINCREF(dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
          PyList_SET_ITEM(result, j, dynamic_cast<GraphDataPyObject*>((*i)->_value)->data);
       }
 
-      PyObject* tuple = Py_BuildValue(CHAR_PTR_CAST "(O)", result);
+      PyObject* tuple = Py_BuildValue( "(O)", result);
       PyObject* evalobject = PyObject_CallObject(const_cast<PyObject*>(eval_func), tuple);
-      Py_DECREF(tuple);
-      Py_DECREF(result);
+      Py_XDECREF(tuple);
+      Py_XDECREF(result);
 
       double eval;
       if (evalobject == NULL)
@@ -248,7 +248,7 @@ protected:
             eval = PyFloat_AsDouble(evalobject);
          else
             eval = -1.0;
-         Py_DECREF(evalobject);
+         Py_XDECREF(evalobject);
       }
 
       parts.push_back(Part(bits, eval));
@@ -374,7 +374,7 @@ public:
             PyObject* result = PyList_New(subgraph.size());
             for (size_t i = 0; i < subgraph.size(); ++i) {
                PyObject* subresult = PyList_New(1);
-               Py_INCREF(dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
+               Py_XINCREF(dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
                PyList_SET_ITEM(subresult, 0, dynamic_cast<GraphDataPyObject*>(subgraph[i]->_value)->data);
                PyList_SET_ITEM(result, i, subresult);
             }
@@ -452,7 +452,7 @@ public:
             for (size_t j = 0, l = 0; k < solution_part; ++j, k <<= 1)
                if (solution_part & k) {
                   PyObject* data = dynamic_cast<GraphDataPyObject*>(subgraph[j]->_value)->data;
-                  Py_INCREF(data);
+                  Py_XINCREF(data);
                   PyList_SET_ITEM(subresult, l++, data);
                }
 				
@@ -473,27 +473,28 @@ PyObject* graph_optimize_partitions(PyObject* self, PyObject* args) {
    int max_parts_per_group = 5;
    int max_graph_size = 16;
    char* criterion = (char*)"min";
-   if (PyArg_ParseTuple(args, CHAR_PTR_CAST "OO|iis:optimize_partitions", &a, 
-            &eval_func, &max_parts_per_group, &max_graph_size, &criterion) <= 0)
-
-      return 0;
-
+   if (PyArg_ParseTuple(args,  "OO|iis:optimize_partitions", &a,
+            &eval_func, &max_parts_per_group, &max_graph_size, &criterion) <= 0) {
+	   return 0;
+   }
 
    Node* root;
+   
    if(is_NodeObject(a))
       root = so->_graph->get_node(((NodeObject*)a)->_node->_value);
    else {
       GraphDataPyObject obj(a);
       root = so->_graph->get_node(&obj);
    }
-   if (root == NULL)
-      return 0;
+   if (root == nullptr) {
+	   return nullptr;
+   }
 
    Partitions p;
    PyObject* result = p.optimize_partitions(so, root, eval_func, 
          max_parts_per_group, max_graph_size, criterion);
 
-   assert(result != NULL);
+   assert(result != nullptr);
    return result;
 }
 

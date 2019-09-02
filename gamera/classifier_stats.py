@@ -38,7 +38,7 @@ class ClassifierStat:
       self.example_glyphs = {}
       for glyph in self.classifier.get_glyphs():
          for conf, id in glyph.id_name:
-            if not self.example_glyphs.has_key(id):
+            if id not in self.example_glyphs:
                self.example_glyphs[id] = glyph
 
    def make_grid(self, rows, cols):
@@ -85,7 +85,7 @@ class ClassifierStat:
       def convert(x):
          if isinstance(x, ImageBase):
             return x.get_main_id()
-         elif x == None:
+         elif x is None:
             return ""
          else:
             return str(x)
@@ -102,9 +102,9 @@ class ConfusionMatrix(ClassifierStat):
    def make_result(self):
       self.make_example_glyphs()
       result = {}
-      for id0 in self.example_glyphs.keys():
+      for id0 in list(self.example_glyphs.keys()):
          leaf = {}
-         for id1 in self.example_glyphs.keys():
+         for id1 in list(self.example_glyphs.keys()):
             leaf[id1] = 0
          result[id0] = leaf
          
@@ -120,7 +120,7 @@ class ConfusionMatrix(ClassifierStat):
       finally:
          progress.kill()
 
-      ids = result.keys()
+      ids = list(result.keys())
       ids.sort()
       grid = self.make_grid(len(ids) + 1, len(ids) + 1)
       for i, id in enumerate(ids):
@@ -129,7 +129,7 @@ class ConfusionMatrix(ClassifierStat):
       for i, id0 in enumerate(ids):
          res = result[id0]
          sum = 0
-         for val in res.values():
+         for val in list(res.values()):
             sum += val
          for j, id0 in enumerate(ids):
             grid[i+1][j+1] = str(int((float(res[id0]) / sum) * 100.0)) + "%"
@@ -141,7 +141,7 @@ class ClassNameHistogram(ClassifierStat):
    def make_result(self):
       self.make_example_glyphs()
       result = {}
-      for id0 in self.example_glyphs.keys():
+      for id0 in list(self.example_glyphs.keys()):
          result[id0] = 0
 
       for glyph in self.classifier.get_glyphs():
@@ -152,7 +152,7 @@ class ClassNameHistogram(ClassifierStat):
       result.sort()
       result.reverse()
 
-      grid = self.make_grid(len(self.example_glyphs.keys()), 2)
+      grid = self.make_grid(len(list(self.example_glyphs.keys())), 2)
       for i, (val, key) in enumerate(result):
          grid[i][0] = self.example_glyphs[key]
          grid[i][1] = val

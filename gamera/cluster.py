@@ -25,7 +25,7 @@ def get_lengths(node, depth, lengths, cur_depth=0, path = {}):
    if cur_depth >= depth:
       return
    for edge in node.edges:
-      if path.has_key(edge):
+      if edge in path:
          continue
       path[edge] = None
       lengths.append(edge.cost)
@@ -36,7 +36,7 @@ def label(graph, node, label_start, label):
       node().classify_automatic(label_start + str(label))
                         
 def make_subtrees_stddev(graph, ratio, distance, relabel=1, lab="cluster."):
-   import stats
+   from . import stats
    cur_label = 0
    remove = []
    i = 0
@@ -93,12 +93,12 @@ def cluster2(glyphs):
    gc = knn.glyphs_by_category(cluster(glyphs, k=ko))
    small = []
    large = []
-   for x in gc.itervalues():
+   for x in gc.values():
       if len(x) < 10:
          small.extend(x)
       else:
          large.append(x)
-   print len(small)
+   print(len(small))
    output = cluster(small, 1, 1, label="cluster_small.", k=ko)
    cur_label = 0
    for x in large:

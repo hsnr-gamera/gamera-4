@@ -22,10 +22,10 @@
 # Mixin classes to add wrapper-generation support for arguments list
 
 import re
-from enums import *
-import util
+from .enums import *
+from . import util
 
-class Arg:
+class Arg(object):
    arg_format = 'O'
    convert_from_PyObject = False
    multiple = False
@@ -50,7 +50,7 @@ class Arg:
    pysymbol = property(_get_pysymbol)
 
    def declare(self):
-      if self.name == None:
+      if self.name is None:
          self.name = "_%08d" % Arg.uid
          Arg.uid += 1
       if self.name == 'return' and hasattr(self, 'return_type'):
@@ -70,7 +70,7 @@ class Arg:
       if function.feature_function:
          return "%s(%s, feature_buffer);" % (function.__name__, ", ".join(output_args))
       else:
-         if function.return_type != None:
+         if function.return_type is not None:
             lhs = function.return_type.symbol + " = "
          else:
             lhs = ""
@@ -96,7 +96,7 @@ class Int(Arg):
    c_type = 'int'
 
    def to_python(self):
-      return '%(pysymbol)s = PyInt_FromLong((long)%(symbol)s);' % self
+      return '%(pysymbol)s = PyLong_FromLong((long)%(symbol)s);' % self
 
 Choice = Check = Int
 
@@ -124,7 +124,7 @@ class String(Arg):
    return_type = 'std::string'
 
    def to_python(self):
-      return "%(pysymbol)s = PyString_FromStringAndSize(%(symbol)s.data(), %(symbol)s.size());" % self
+      return "%(pysymbol)s = PyUnicode_FromStringAndSize(%(symbol)s.data(), %(symbol)s.size());" % self
 
 FileOpen = FileSave = Directory = ChoiceString = String
 
@@ -180,8 +180,7 @@ class ImageType(Arg):
 
    def _get_choices(self):
       result = []
-      pixel_types = list(self.pixel_types[:])
-      pixel_types.sort()
+      pixel_types = sorted(self.pixel_types[:])
       for type in pixel_types:
          result.extend(self._get_choices_for_pixel_type(type))
       return result
@@ -430,7 +429,7 @@ class PointVector(Arg):
       """ % self
 
 class ImageInfo(Arg):
-   arg_format = "O";
+   arg_format = "O"
    c_type = 'ImageInfo*'
    convert_from_PyObject = True
 

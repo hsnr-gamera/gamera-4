@@ -27,12 +27,6 @@
 #include "gameramodule.hpp"
 //##include "graphdata_pyobject.hpp"
 
-
-#ifdef CHAR_PTR_CAST
-#undef CHAR_PTR_CAST
-#endif
-
-#define CHAR_PTR_CAST (char*)
 #include "graph_common.hpp"
 #include "graphdatapyobject.hpp"
 #ifdef __DEBUG_GAPI__
@@ -51,8 +45,8 @@ struct NodeObject;
 #define INIT_SELF_EDGE() EdgeObject* so = ((EdgeObject*)self)
 #define INIT_SELF_NODE() NodeObject* so = ((NodeObject*)self)
 #define RETURN_BOOL(a) {PyObject *_ret_ = PyBool_FromLong((long)(a)); return _ret_;}
-#define RETURN_INT(a) {return PyInt_FromLong((long)(a));}
-#define RETURN_VOID() {PyObject *_ret_ = Py_None; Py_INCREF(_ret_); return _ret_;}
+#define RETURN_INT(a) {return PyLong_FromLong((long)(a));}
+#define RETURN_VOID() {PyObject *_ret_ = Py_None; Py_XINCREF(_ret_); return _ret_;}
 #define RETURN_DOUBLE(a) {return PyFloat_FromDouble((a));}
 
 #endif /* _WRAPPER_HPP_940FFAA9288997 */

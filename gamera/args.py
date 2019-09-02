@@ -20,15 +20,18 @@
 #
 
 from gamera.gui import has_gui
-from new import instancemethod
 import sys, os.path   # Python standard library
 from types import *
-import util, paths            # Gamera specific
+from . import util, paths            # Gamera specific
 
 # the maximum default number (int, float) in argument boxes
 # necessary because sys.maxint is not accepted by some wxPython widgets
 DEFAULT_MAX_ARG_NUMBER = 1048576    # 2^20
-
+from functools import wraps
+def method_wraper(f):
+   def wrapper(*args, **kwargs):
+      return f(*args, **kwargs)
+   return wraps(f)(wrapper)
 ######################################################################
 
 # This is a "self-generating" dialog box
@@ -116,7 +119,7 @@ class Int(Arg):
       if name:
          result += " *%s*" % self.name
          if self.has_default:
-            if isinstance(self.default,CNoneDefault) or isinstance(self.default, NoneType):
+            if isinstance(self.default,CNoneDefault) or isinstance(self.default, type(None)):
                 result += " = %s" % str(self.default)
             else:
                 result += " = %d" % self.default
@@ -219,7 +222,10 @@ class Class(Arg):
 
 class ImageType(Arg):
    def __init__(self, pixel_types, name=None, list_of=False, default=None):
-      import core
+      try:
+         from . import core
+      except ImportError:
+         core = None
       Arg.__init__(self, name)
       if not util.is_sequence(pixel_types):
          pixel_types = (pixel_types,)
@@ -252,12 +258,17 @@ class ImageType(Arg):
 
    def register(self, plug, func):
       from gamera import core
-      func = instancemethod(func, None, core.gameracore.Image)
-      setattr(core.ImageBase, plug.__name__, func)
+      if hasattr(func, "__get__"):
+         setattr(core.ImageBase, plug.__name__, func.__get__(None, core.gameracore.Image))
+      else:
+         setattr(core.ImageBase, plug.__name__, method_wraper(func))
 
 class Rect(Arg):
    def __init__(self, name=None, list_of=False):
-      import core
+      try:
+         from gamera import core
+      except:
+         core = None
       Arg.__init__(self, name)
       if not core is None:
          self.klass = core.Rect
@@ -305,7 +316,7 @@ class ChoiceString(Arg):
          self.has_default = False
          self.default = choices[0]
       else:
-         if type(default) != str:
+         if default is not str:
             raise TypeError("'default' must be a string")
          if default not in choices:
             raise ValueError("Given 'default' must be in available 'choices'")
@@ -476,7 +487,7 @@ class Wizard:
    def show(self, dialog):
       dialog_history = ['start', dialog]
       next_dialog = dialog
-      while next_dialog != None:
+      while next_dialog is not None:
          if next_dialog == 'start':
             return
          result = next_dialog.show(self.parent, self.locals, wizard=1)
@@ -495,6 +506,9 @@ ___mixin_locals = locals()
 def mixin(module, name):
    for cls_name in __all__ + ["Arg"]:
       cls = ___mixin_locals[cls_name]
-      if module.has_key(cls_name):
-         cls.__bases__ = tuple([module[cls_name]] + list(cls.__bases__))
+      if cls_name in module:
+         try:
+            cls.__bases__ = tuple([module[cls_name]] + list(cls.__bases__))
+         except TypeError:
+            pass
    sys.stdout.write("\n")

@@ -18,11 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from gamera.plugin import *
-from gamera.gui import has_gui
-from gamera import util
-import _projections
 from math import pi
+
+import _projections
+
+from gamera.plugin import *
+
 
 class projection_rows(PluginFunction):
     """
@@ -33,6 +34,7 @@ class projection_rows(PluginFunction):
     return_type = IntVector()
     doc_examples = [(ONEBIT,)]
 
+
 class projection_cols(PluginFunction):
     """
     Compute the vertical projections of an image.  This computes the
@@ -41,6 +43,7 @@ class projection_cols(PluginFunction):
     self_type = ImageType([ONEBIT])
     return_type = IntVector()
     doc_examples = [(ONEBIT,)]
+
 
 class projections(PluginFunction):
     """
@@ -57,14 +60,17 @@ class projections(PluginFunction):
     self_type = ImageType([ONEBIT])
     return_type = Class()
     pure_python = 1
+
     def __call__(image):
         rows = _projections.projection_rows(image)
         cols = _projections.projection_cols(image)
         gui = has_gui.gui
         if gui:
             gui.ShowProjections(rows, cols, image)
-        return (rows, cols)
+        return rows, cols
+
     __call__ = staticmethod(__call__)
+
 
 class projection_skewed_cols(PluginFunction):
     """
@@ -106,8 +112,10 @@ class projection_skewed_cols(PluginFunction):
             return _projections.projection_skewed_cols(self, [angles])[0]
         else:
             return _projections.projection_skewed_cols(self, angles)
+
     __call__ = staticmethod(__call__)
     doc_examples = [(ONEBIT, 15.0)]
+
 
 class projection_skewed_rows(PluginFunction):
     """
@@ -131,8 +139,10 @@ class projection_skewed_rows(PluginFunction):
             return _projections.projection_skewed_rows(self, [angles])[0]
         else:
             return _projections.projection_skewed_rows(self, angles)
+
     __call__ = staticmethod(__call__)
     doc_examples = [(ONEBIT, 15.0)]
+
 
 class rotation_angle_projections(PluginFunction):
     """
@@ -180,19 +190,19 @@ class rotation_angle_projections(PluginFunction):
     author = "Christoph Dalitz"
     pure_python = 1
 
-    def __call__(self, minangle = -2.5, maxangle = 2.5, accuracy = 0):
+    def __call__(self, minangle=-2.5, maxangle=2.5, accuracy=0):
 
         # l2norm: compute L2-Norm of derivative of vec
         def l2norm(vec):
             var = 0
-            for i in range(0,len(vec)-1):
-                var += (vec[i] - vec[i+1])**2
+            for i in range(0, len(vec) - 1):
+                var += (vec[i] - vec[i + 1]) ** 2
             return var
 
         # some arguments checking
-        if (accuracy == 0):
+        if accuracy == 0:
             accuracy = 180 * 0.5 / (self.ncols * pi)
-        if (maxangle <= minangle):
+        if maxangle <= minangle:
             raise RuntimeError("maxangle %f must be greater than minangle %f\n" \
                                % (maxangle, minangle))
 
@@ -201,50 +211,60 @@ class rotation_angle_projections(PluginFunction):
         # necessary because l2norm has many local maxima
         #
         roughacc = 0.5
-        if ((maxangle - minangle)/4.0) < roughacc:
+        if ((maxangle - minangle) / 4.0) < roughacc:
             # at least five trial points
             roughacc = (maxangle - minangle) / 4.0
         else:
-            roughacc = (maxangle-minangle) / round((maxangle-minangle)/roughacc)
-        angle = [(minangle + x*roughacc) for x in \
-                    range(0,int(round((maxangle - minangle)/roughacc))+1)]
+            roughacc = (maxangle - minangle) / round((maxangle - minangle) / roughacc)
+        angle = [(minangle + x * roughacc) for x in \
+                 range(0, int(round((maxangle - minangle) / roughacc)) + 1)]
         alist = [l2norm(x) for x in self.projection_skewed_rows(angle)]
         # find maximum in list
-        fb = alist[0]; bi = 0
-        for i in range(1,len(alist)):
+        fb = alist[0]
+        bi = 0
+        for i in range(1, len(alist)):
             if alist[i] > fb:
-                fb = alist[i]; bi = i
+                fb = alist[i]
+                bi = i
         b = angle[bi]
 
         #
         # initialize values for golden section search
         #
-        if (bi == 0):
+        if bi == 0:
             # maximum on lower iterval end: check neighborhood
-            c = b + 1.5*accuracy;
+            c = b + 1.5 * accuracy
             fc = l2norm(self.projection_skewed_rows(c))
-            if (fc > fb) and (c < angle[bi+1]):
-                a = b; fa = fb;
-                b = c; fb = fc;
-                c = angle[bi+1]; fc = alist[bi+1];
+            if (fc > fb) and (c < angle[bi + 1]):
+                a = b
+                fa = fb
+                b = c
+                fb = fc
+                c = angle[bi + 1]
+                fc = alist[bi + 1]
             else:
-                raise RuntimeError("maximum found on interval end %f\n" \
+                raise RuntimeError("maximum found on interval end %f\n"
                                    % angle[bi])
-        elif (bi == len(angle)-1):
+        elif bi == len(angle) - 1:
             # maximum on upper iterval end: check neighborhood
-            a = b - 1.5*accuracy;
+            a = b - 1.5 * accuracy
             fa = l2norm(self.projection_skewed_rows(a))
-            if (fa > fb) and (a > angle[bi-1]):
-                c = b; fc = fb;
-                b = a; fb = fa;
-                a = angle[bi-1]; fa = alist[bi-1];
+            if (fa > fb) and (a > angle[bi - 1]):
+                c = b
+                fc = fb
+                b = a
+                fb = fa
+                a = angle[bi - 1]
+                fa = alist[bi - 1]
             else:
-                raise RuntimeError("maximum found on interval end %f\n" \
+                raise RuntimeError("maximum found on interval end %f\n"
                                    % angle[bi])
         else:
             # the normal case: maximum somewhere in the middle
-            a = angle[bi-1]; fa = alist[bi-1];
-            c = angle[bi+1]; fc = alist[bi+1];
+            a = angle[bi - 1]
+            fa = alist[bi - 1]
+            c = angle[bi + 1]
+            fc = alist[bi + 1]
 
         #
         # fine tuning with golden section search
@@ -252,33 +272,39 @@ class rotation_angle_projections(PluginFunction):
         # Cambridge University Press (1986)
         #
         golden = 0.38197  # (3 - sqrt(2)) / 2
-        x = 500   # dummy value for recognition of first iteration
-        while (c-b > accuracy) or (b-a > accuracy):
-            if (x == 500):
+        x = 500  # dummy value for recognition of first iteration
+        while (c - b > accuracy) or (b - a > accuracy):
+            if x == 500:
                 # special case first iteration
-                if (fc > fa):
+                if fc > fa:
                     x = b + golden * (c - b)
                 else:
                     x = b - golden * (b - a)
             else:
                 # ordinary situation
-                if (c-b > b-a):
+                if c - b > b - a:
                     x = b + golden * (c - b)
                 else:
                     x = b - golden * (b - a)
             fx = l2norm(self.projection_skewed_rows(x))
-            if (x > b):
-                if (fx < fb):
-                    c = x; fc = fx
+            if x > b:
+                if fx < fb:
+                    c = x
+                    fc = fx
                 else:
-                    a = b; fa = fb;
-                    b = x; fb = fx;
+                    a = b
+                    fa = fb
+                    b = x
+                    fb = fx
             else:
-                if (fx < fb):
-                    a = x; fa = fx
+                if fx < fb:
+                    a = x
+                    fa = fx
                 else:
-                    c = b; fc = fb;
-                    b = x; fb = fx;
+                    c = b
+                    fc = fb
+                    b = x
+                    fb = fx
         return [b, accuracy]
 
     __call__ = staticmethod(__call__)
@@ -296,6 +322,7 @@ class diagonal_projections(PluginFunction):
     self_type = ImageType([ONEBIT])
     return_type = Class()
     pure_python = 1
+
     def __call__(image):
         rotated_image = image.rotate(45, None, 1)
         rows = _projections.projection_rows(rotated_image)
@@ -303,17 +330,19 @@ class diagonal_projections(PluginFunction):
         gui = has_gui.gui
         if gui:
             gui.ShowProjections(rows, cols, rotated_image)
-        return (rows, cols)
+        return rows, cols
+
     __call__ = staticmethod(__call__)
 
 
 class ProjectionsModule(PluginModule):
-    cpp_headers=["projections.hpp"]
+    cpp_headers = ["projections.hpp"]
     category = "Analysis"
     functions = [projection_rows, projection_cols, projections,
                  projection_skewed_rows, projection_skewed_cols,
                  rotation_angle_projections, diagonal_projections]
     author = "Michael Droettboom and Karl MacMillan"
     url = "http://gamera.sourceforge.net/"
-module = ProjectionsModule()
 
+
+module = ProjectionsModule()

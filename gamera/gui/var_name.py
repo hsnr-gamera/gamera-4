@@ -36,7 +36,7 @@ def get(default='untitled', dict={}):
    number = 0
    while 1:
       name = '%s%d' % (default, number)
-      while dict.has_key(name):
+      while name in dict:
          number = number + 1
          name = '%s%d' % (default, number)
          if number > 1000:

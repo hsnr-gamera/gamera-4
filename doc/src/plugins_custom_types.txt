@@ -92,7 +92,7 @@ When you have a ``PyObject*`` as an input argument of a plugin function,
 you can convert it to C++ data types with the conversion functions from
 the `Python C API`__. These are
 
- * ``PyInt_AsLong`` and colleagues for ordinary scalar data types
+ * ``PyLong_AsLong`` and colleagues for ordinary scalar data types
 
  * ``PyArg_ParseTuple`` for tuples
 

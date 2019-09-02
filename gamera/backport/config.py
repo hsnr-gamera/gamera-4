@@ -19,7 +19,7 @@ Copyright (C) 2001-2005 Michael Droettboom
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from optparse import OptionParser, make_option, OptionConflictError
-import ConfigParser
+import configparser
 
 from os.path import isfile, expanduser, split, join
 from sys import platform
@@ -49,14 +49,14 @@ class ConfigOptionParser(OptionParser):
       if self._cache is None:
          options, args = OptionParser.parse_args(self, args)
          files = self.get_config_files()
-         config_parser = ConfigParser.RawConfigParser()
+         config_parser = configparser.RawConfigParser()
          config_parser.read(files)
          for section in config_parser.sections():
             for key, val in config_parser.items(section):
                if self.has_option("--" + key):
                   option = self.get_option("--" + key)
                   if (option.help.startswith("[%s]" % section) and
-                      getattr(options, option.dest) == None):
+                      getattr(options, option.dest) is None):
                      option.process("", val, self.values, self)
          self._cache = (options, args)
       return self._cache

@@ -234,7 +234,7 @@ namespace Gamera {
       n = (long)runs->size();
     PyObject* result = PyList_New(n);
     for (long i = 0; i < n; ++i) {
-      PyObject* tuple = Py_BuildValue(CHAR_PTR_CAST "ii", (*runs)[i].first, (*runs)[i].second);
+      PyObject* tuple = Py_BuildValue( "ii", (*runs)[i].first, (*runs)[i].second);
       PyList_SET_ITEM(result, i, tuple);
     }
     delete runs;

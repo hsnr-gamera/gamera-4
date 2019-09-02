@@ -1,7 +1,7 @@
 /*
  * Warning, this file was automatically created by the TIFF configure script
  * VERSION:	 v3.5.7
- * RELEASE:   
+ * RELEASE:
  * DATE:	 Thu Oct 24 16:52:27 2002
  * TARGET:	 i686-pc-cygwin
  * CCOMPILER:	 /usr/bin/gcc-2.95.3-5 (cygwin special)
@@ -76,7 +76,7 @@ extern void free(void*);
 #if defined(__APPLE__)
 #include <sys/types.h>
 #define HOST_FILLORDER FILLORDER_MSB2LSB
-#define HOST_BIGENDIAN	1
+#define HOST_BIGENDIAN    1
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -86,11 +86,13 @@ typedef double dblparam_t;
 #ifdef __STRICT_ANSI__
 #define	INLINE	__inline__
 #else
-#define	INLINE	inline
+#define    INLINE    inline
 #endif
-#define GLOBALDATA(TYPE,NAME)	extern TYPE NAME
+#define GLOBALDATA(TYPE, NAME)    extern TYPE NAME
 #endif
 #ifdef __cplusplus
 }
 #endif
+
+#define MDI_SUPPORT 1
 #endif

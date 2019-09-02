@@ -39,15 +39,14 @@ void Graph::make_directed() {
    Edge* e;
    GRAPH_SET_FLAG(this, FLAG_DIRECTED);
    EdgeVector edges;
-   while((e = it->next()) != NULL) {
+   while((e = it->next()) != nullptr) {
       e->is_directed = true;
       edges.push_back(e);
    }
 
    delete it;
-   for(EdgeIterator it = edges.begin(); it != edges.end(); it++) {
-      Edge* e = *it;
-      add_edge(e->to_node, e->from_node, e->weight, true, e->label);
+   for(Edge* _e : edges) {
+      add_edge(_e->to_node, _e->from_node, _e->weight, true, _e->label);
    }
 }
 
@@ -73,7 +72,7 @@ void Graph::make_undirected() {
    {
       EdgePtrIterator *it = get_edges();
       Edge* e;
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          Node* from = e->from_node;
          Node* to = e->to_node;
          e->is_directed = false;
@@ -84,15 +83,14 @@ void Graph::make_undirected() {
 
       delete it;
    }
-   for(std::vector<smallEdge*>::iterator it = remove.begin(); 
-         it != remove.end(); it++) {
+   for(smallEdge* it : remove) {
       try {
-         remove_edge((*it)->_from, (*it)->_to);
+         remove_edge(it->_from, it->_to);
       }
-      catch (std::runtime_error) {
+      catch (...) {
          std::cerr << "somthing went wrong" << std::endl;
       }
-      delete *it;
+      delete it;
    }
    GRAPH_UNSET_FLAG(this, FLAG_DIRECTED);
 }
@@ -108,54 +106,48 @@ bool Graph::is_cyclic() {
 
    bool cyclic = false;
    if(is_directed()) { //similar algorithm to make_acyclic
-      NodeStack node_stack;
-      std::set<Node*> visited;
-      if (get_nedges() != 0) {
-         NodePtrIterator *i = get_nodes();
-         Node* n;
-         while((n = i->next()) != NULL && !cyclic) {
-            if (visited.count(n) == 0) {
-               node_stack.push(n);
-               while (!node_stack.empty() && !cyclic) {
-                  Node* node = node_stack.top();
-                  node_stack.pop();
-                  visited.insert(node);
+	   NodeStack node_stack;
+	   std::set<Node *> visited;
+	   NodePtrIterator *i = get_nodes();
+	   Node *n;
+	   while ((n = i->next()) != nullptr && !cyclic) {
+		   if (visited.count(n) == 0) {
+			   node_stack.push(n);
+			   while (!node_stack.empty() && !cyclic) {
+				   Node *node = node_stack.top();
+				   node_stack.pop();
+				   visited.insert(node);
 
-                  EdgePtrIterator *it = node->get_edges();
-                  Edge* e;
-                  while ((e = it->next()) != NULL && !cyclic) {
-                     Node* inner_node = e->traverse(node);
-                     if(inner_node) {
-                        if(visited.count(inner_node) != 0) {
-                           cyclic = true;
-                        }
-                        else  {
-                           node_stack.push(inner_node);
-                           visited.insert(inner_node);
-                        }
-                     }
-                  }
+				   EdgePtrIterator *it = node->get_edges();
+				   Edge *e;
+				   while ((e = it->next()) != nullptr && !cyclic) {
+					   Node *inner_node = e->traverse(node);
+					   if (inner_node) {
+						   if (visited.count(inner_node) != 0) {
+							   cyclic = true;
+						   } else {
+							   node_stack.push(inner_node);
+							   visited.insert(inner_node);
+						   }
+					   }
+				   }
 
-                  delete it;
-               }
-            }
-         }
+				   delete it;
+			   }
+		   }
+	   }
 
-         delete i;
-      }
-   }  
+	   delete i;
+   }
    else {
-      NodeVector* roots = NULL;
-      roots = get_subgraph_roots();
+      NodeVector* roots = get_subgraph_roots();
 
-      for(NodeVector::iterator rit = roots->begin(); 
-         rit != roots->end() && !cyclic; rit++) {
-         //tests for cycles in each subgraph
-         DfsIterator *it = DFS(*rit);
-         while(it->next() != NULL)
-            ;
-         cyclic = cyclic || it->has_cycles();
-         delete it;
+      for(NodeVector::iterator rit = roots->begin(); rit != roots->end() && !cyclic; rit++) {
+	      //tests for cycles in each subgraph
+	      DfsIterator *it = DFS(*rit);
+	      while (it->next() != nullptr);
+	      cyclic = it->has_cycles();
+	      delete it;
       }
       delete roots;
    }
@@ -193,7 +185,7 @@ void Graph::make_acyclic() {
    if (get_nedges() != 0) {
       NodePtrIterator *i = get_nodes();
       Node* n;
-      while((n = i->next()) != NULL) {
+      while((n = i->next()) != nullptr) {
          if (visited.count(n) == 0) {
             if (node_stack.size())
                throw std::runtime_error("Error in graph_make_acyclic. "
@@ -207,7 +199,7 @@ void Graph::make_acyclic() {
 
                EdgePtrIterator *it = node->get_edges();
                Edge* e;
-               while ((e = it->next()) != NULL) {
+               while ((e = it->next()) != nullptr) {
                   Node* inner_node = e->traverse(node);
                   if(inner_node) {
                      if(visited.count(inner_node) != 0) {
@@ -225,9 +217,8 @@ void Graph::make_acyclic() {
          }
       }
 
-      for(EdgeSet::iterator it = edges_to_remove.begin(); 
-            it != edges_to_remove.end(); it++) {
-         remove_edge(*it); 
+      for(Edge* it : edges_to_remove) {
+         remove_edge(it);
       }
 
       delete i;
@@ -264,7 +255,7 @@ void Graph::make_singly_connected() {
    EdgePtrIterator* it = get_edges();
    Edge* e;
    if(is_directed()) {
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          edgepair ep(e->from_node, e->to_node);
          if(edgeset.count(ep) > 0)
             to_remove.push_back(e);
@@ -273,7 +264,7 @@ void Graph::make_singly_connected() {
       }
    }
    else {
-      while((e = it->next()) != NULL) {  
+      while((e = it->next()) != nullptr) {
          edgepair ep(std::min(e->from_node, e->to_node), 
                      std::max(e->from_node, e->to_node));
          if(edgeset.count(ep) > 0)
@@ -308,7 +299,7 @@ void Graph::make_not_self_connected() {
    {
       EdgePtrIterator *it = get_edges();
       Edge* e;
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          Node* from = e->from_node;
          Node* to = e->to_node;
          if(to == from) {
@@ -349,12 +340,12 @@ bool Graph::is_multi_connected() {
    EdgePtrIterator* it = get_edges();
    Edge* e;
    if(is_directed()) {
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          edgeset.insert(std::pair<Node*,Node*>(e->from_node, e->to_node));
       }
    }
    else {
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          edgeset.insert(std::pair<Node*,Node*>(
                   std::min(e->from_node, e->to_node), 
                   std::max(e->from_node, e->to_node)
@@ -373,7 +364,7 @@ bool Graph::is_self_connected() {
    bool selfconnections = false;
    EdgePtrIterator* it = get_edges();
    Edge* e;
-   while((e = it->next()) != NULL && !selfconnections) {
+   while((e = it->next()) != nullptr && !selfconnections) {
       if( *e->from_node->_value == *e->to_node->_value) {
          selfconnections = true;
       }

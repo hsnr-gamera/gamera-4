@@ -217,7 +217,7 @@ class ImageMenu:
 
    def get_result_name(self, function, dict):
       if function.return_type not in ('', None):
-         if function.return_type.name != None:
+         if function.return_type.name is not None:
             name = function.return_type.name
          else:
             name = function.__name__
@@ -232,7 +232,7 @@ class ImageMenu:
             sh.run("help('" + function.__name__ + "')")
          elif self.mode == EXECUTE_MODE:
             func_call = self.get_function_call(sh, function)
-            if func_call == None:  # User pressed cancel, so bail
+            if func_call is None:  # User pressed cancel, so bail
                return
             result_name = self.get_result_name(function, sh.locals)
             if result_name is None: return

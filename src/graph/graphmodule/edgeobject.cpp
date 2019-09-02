@@ -21,78 +21,12 @@
 #include "edgeobject.hpp"
 #include "nodeobject.hpp"
 
-
-
-extern "C" {
-   static void edge_dealloc(PyObject* self);
-   static PyObject* edge_traverse(PyObject* self, PyObject* pyobject);
-
-   static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds);
-   static PyObject* edge___repr__(PyObject* self);
-   static PyObject* edge_get_from_node(PyObject* self);   
-   static PyObject* edge_get_to_node(PyObject* self);
-   static PyObject* edge_get_cost(PyObject* self);
-   static int edge_set_cost(PyObject* self, PyObject* object);
-   static PyObject* edge_get_label(PyObject* self);
-   static int edge_set_label(PyObject* self, PyObject* object);
-}
-
-
-
 // -----------------------------------------------------------------------------
 /* Python Type Definition                                                    */
 // -----------------------------------------------------------------------------
 static PyTypeObject EdgeType = {
-   PyObject_HEAD_INIT(NULL)
-   0,
+   PyVarObject_HEAD_INIT(nullptr, 0)
 };
-
-
-
-// -----------------------------------------------------------------------------
-PyMethodDef edge_methods[] = {
-   { CHAR_PTR_CAST "traverse", edge_traverse, METH_O, 
-      CHAR_PTR_CAST "**traverse** (*node*)\n\n"
-         "Get the other node in an edge"},
-   {NULL}
-};
-
-
-
-// -----------------------------------------------------------------------------
-PyGetSetDef edge_getset[] = {
-   { CHAR_PTR_CAST "from_node", (getter)edge_get_from_node, 0,
-      CHAR_PTR_CAST "node this edge starts from (get)", 0},
-   { CHAR_PTR_CAST "to_node", (getter)edge_get_to_node, 0,
-      CHAR_PTR_CAST "node this edge points to (get)", 0},
-   { CHAR_PTR_CAST "cost", (getter)edge_get_cost, (setter)edge_set_cost,
-      CHAR_PTR_CAST "cost assigned to this edge (get/set)", 0},
-   { CHAR_PTR_CAST "label", (getter)edge_get_label, (setter)edge_set_label,
-      CHAR_PTR_CAST "label assigned to this edge (get/set)", 0},
-   { NULL }
-};
-
-
-
-// -----------------------------------------------------------------------------
-void init_EdgeType() {
-   EdgeType.ob_type = &PyType_Type;
-   EdgeType.tp_name = CHAR_PTR_CAST "gamera.graph.Edge";
-   EdgeType.tp_basicsize = sizeof(EdgeObject);
-   EdgeType.tp_dealloc = edge_dealloc;
-   EdgeType.tp_repr = edge___repr__;
-   EdgeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
-   EdgeType.tp_getattro = PyObject_GenericGetAttr;
-   EdgeType.tp_alloc = NULL; // PyType_GenericAlloc;
-   EdgeType.tp_free = NULL; // _PyObject_Del;
-   EdgeType.tp_call = edge___call__;
-   EdgeType.tp_methods = edge_methods;
-   EdgeType.tp_getset = edge_getset;
-   EdgeType.tp_weaklistoffset = 0;
-   PyType_Ready(&EdgeType);
-}
-
-
 
 // -----------------------------------------------------------------------------
 /* Wrapper Methods                                                           */
@@ -130,7 +64,7 @@ PyObject* edge_deliver(Edge* edge, GraphObject* graph) {
    if(graph->assigned_edgeobjects->find(edge) == graph->assigned_edgeobjects->end()) {
       EdgeObject* so = (EdgeObject*)edge_new(edge);
       if(graph && is_GraphObject((PyObject*)graph)) {
-         Py_INCREF(graph);
+         Py_XINCREF(graph);
          so->_graph = graph;
          graph->assigned_edgeobjects->insert(std::make_pair(edge, so));
       }
@@ -138,7 +72,7 @@ PyObject* edge_deliver(Edge* edge, GraphObject* graph) {
    }
    
    EdgeObject* so = (*graph->assigned_edgeobjects)[edge];
-   Py_INCREF(so);
+   Py_XINCREF(so);
    return (PyObject*)so;
 }
 
@@ -156,7 +90,7 @@ static void edge_dealloc(PyObject* self) {
    INIT_SELF_EDGE();
    if(so->_graph) {
       so->_graph->assigned_edgeobjects->erase(so->_edge);
-      Py_DECREF(so->_graph);
+      Py_XDECREF(so->_graph);
       so->_graph = NULL;
    } 
    self->ob_type->tp_free(self);
@@ -179,22 +113,6 @@ static PyObject* edge_traverse(PyObject* self, PyObject* pyobject) {
    return node_new(other_node);
 }
 
- 
-
-
-// -----------------------------------------------------------------------------
-static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
-   PyObject* data = NULL;
-   if(PyArg_ParseTuple(args, CHAR_PTR_CAST "|O:Edge.__call__", &data) <= 0)
-      return NULL;
-   if (data == NULL)
-      return edge_get_cost(self);
-
-   edge_set_cost(self, data);
-   RETURN_VOID();
-}
- 
-
 
 // -----------------------------------------------------------------------------
 static PyObject* edge___repr__(PyObject* self) {
@@ -206,14 +124,14 @@ static PyObject* edge___repr__(PyObject* self) {
       dynamic_cast<GraphDataPyObject*>(so->_edge->to_node->_value)->data;
 
    PyObject* weight = PyFloat_FromDouble(so->_edge->weight);
-   Py_INCREF(from_data);
-   Py_INCREF(to_data);
-   Py_INCREF(weight);
-   char* a = PyString_AsString(PyObject_Repr(from_data));
-   char* b = PyString_AsString(PyObject_Repr(to_data));
-   char* c = PyString_AsString(PyObject_Repr(weight));
+   Py_XINCREF(from_data);
+   Py_XINCREF(to_data);
+   Py_XINCREF(weight);
+   char const* a = PyUnicode_AsUTF8(PyObject_Repr(from_data));
+   char const* b = PyUnicode_AsUTF8(PyObject_Repr(to_data));
+   char const* c = PyUnicode_AsUTF8(PyObject_Repr(weight));
 
-   PyObject* ret = PyString_FromFormat("<Edge from %s to %s (%s)>", a,b,c);
+   PyObject* ret = PyUnicode_FromFormat("<Edge from %s to %s (%s)>", a,b,c);
    return ret;
 }
  
@@ -261,11 +179,11 @@ static int edge_set_cost(PyObject* self, PyObject* object) {
 static PyObject* edge_get_label(PyObject* self) {
    INIT_SELF_EDGE();
    if(so->_edge->label) {
-      Py_INCREF((PyObject*)so->_edge->label);
+      Py_XINCREF((PyObject*)so->_edge->label);
       return (PyObject*)so->_edge->label;
    }
    else {
-      RETURN_VOID();
+      RETURN_VOID()
    }
 }
  
@@ -275,10 +193,68 @@ static PyObject* edge_get_label(PyObject* self) {
 static int edge_set_label(PyObject* self, PyObject* object) {
    INIT_SELF_EDGE();
    if(so->_edge->label) {
-      Py_DECREF((PyObject*)so->_edge->label);
+      Py_XDECREF((PyObject*)so->_edge->label);
    }
    so->_edge->label = (void*)object;
-   Py_INCREF(object);
+   Py_XINCREF(object);
    return 0;
 }
+
+
+
+
+// -----------------------------------------------------------------------------
+PyMethodDef edge_methods[] = {
+		{  "traverse", edge_traverse, METH_O,
+				 "**traverse** (*node*)\n\n"
+				              "Get the other node in an edge"},
+		{NULL}
+};
+
+
+// -----------------------------------------------------------------------------
+static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
+	PyObject* data = NULL;
+	if(PyArg_ParseTuple(args,  "|O:Edge.__call__", &data) <= 0)
+		return NULL;
+	if (data == NULL)
+		return edge_get_cost(self);
+	
+	edge_set_cost(self, data);
+	RETURN_VOID()
+}
+
+// -----------------------------------------------------------------------------
+PyGetSetDef edge_getset[] = {
+		{  "from_node", (getter)edge_get_from_node, 0,
+				 "node this edge starts from (get)", 0},
+		{  "to_node", (getter)edge_get_to_node, 0,
+				 "node this edge points to (get)", 0},
+		{  "cost", (getter)edge_get_cost, (setter)edge_set_cost,
+				 "cost assigned to this edge (get/set)", 0},
+		{  "label", (getter)edge_get_label, (setter)edge_set_label,
+				 "label assigned to this edge (get/set)", 0},
+		{ NULL }
+};
+
+
+
+// -----------------------------------------------------------------------------
+void init_EdgeType() {
+	Py_TYPE(&EdgeType) = &PyType_Type;
+	EdgeType.tp_name =  "gamera.graph.Edge";
+	EdgeType.tp_basicsize = sizeof(EdgeObject);
+	EdgeType.tp_dealloc = edge_dealloc;
+	EdgeType.tp_repr = edge___repr__;
+	EdgeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
+	EdgeType.tp_getattro = PyObject_GenericGetAttr;
+	EdgeType.tp_alloc = NULL; // PyType_GenericAlloc;
+	EdgeType.tp_free = NULL; // _PyObject_Del;
+	EdgeType.tp_call = edge___call__;
+	EdgeType.tp_methods = edge_methods;
+	EdgeType.tp_getset = edge_getset;
+	EdgeType.tp_weaklistoffset = 0;
+	PyType_Ready(&EdgeType);
+}
+
 

@@ -53,8 +53,8 @@ PyPlate defines the following directives:
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from __future__ import nested_scopes
-import sys, string, re, util, cStringIO, codecs
+
+import sys, string, re, gamera.util as util, io, codecs
 
 re_directive = re.compile("\[\[(.*?)\]\]")
 re_for_loop = re.compile("for (.*) in (.*)")
@@ -75,7 +75,7 @@ class ParserException(Exception):
 
 class Template:
    def __init__(self, filename=None):
-      if filename != None:
+      if filename is not None:
          try:
             self.parse_file(filename)
          except Exception:
@@ -87,7 +87,7 @@ class Template:
       file.close()
 
    def parse_string(self, template):
-      file = cStringIO.StringIO(template)
+      file = io.StringIO(template)
       self.parse(file)
       file.close()
 
@@ -109,7 +109,7 @@ class Template:
 
    def parser_exception(self, s, e=None):
       import traceback
-      if e != None:
+      if e is not None:
          traceback.print_exc()
       raise ParserException(self.lineno, s)
 
@@ -123,7 +123,7 @@ class Template:
    def execute_string(self, data={}):
       data_copy = {}
       data_copy.update(data)
-      s = cStringIO.StringIO()
+      s = io.StringIO()
       self.execute(s, data_copy)
       s.write("\n")
       return s.getvalue()
@@ -156,7 +156,7 @@ class TemplateNode:
    def add_node(self, node):
       if node == 'end':
          return 1
-      elif node != None:
+      elif node is not None:
          self.node_list.append(node)
       else:
          raise self.parent.parser_exception(
@@ -178,7 +178,7 @@ class TopLevelTemplateNode(TemplateNode):
       TemplateNode.__init__(self, parent, '')
 
    def add_node(self, node):
-      if node != None:
+      if node is not None:
          self.node_list.append(node)
       else:
          return 1
@@ -187,7 +187,7 @@ class ForTemplateNode(TemplateNode):
    def __init__(self, parent, s):
       TemplateNode.__init__(self, parent, s)
       match = re_for_loop.match(s)
-      if match == None:
+      if match is None:
          raise self.parent.parser_exception(
            "[[%s]] is not a valid for-loop expression" % self.s)
       else:
@@ -200,11 +200,11 @@ class ForTemplateNode(TemplateNode):
    def execute(self, stream, data):
       remember_vars = {}
       for var in self.vars:
-         if data.has_key(var):
+         if var in data:
             remember_vars[var] = data[var]
       try:
          x = eval(self.expression, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.expression, e)
       for list in x:
          if util.is_sequence(list):
@@ -227,7 +227,7 @@ class IfTemplateNode(TemplateNode):
       self.else_node = None
       TemplateNode.__init__(self, parent, s)
       match = re_if.match(s)
-      if match == None:
+      if match is None:
          raise self.parent.parser_exception(
            "[[%s]] is not a valid if expression" % self.s)
       else:
@@ -242,7 +242,7 @@ class IfTemplateNode(TemplateNode):
       elif isinstance(node, ElifTemplateNode):
          self.else_node = node
          return 1
-      elif node != None:
+      elif node is not None:
          self.node_list.append(node)
       else:
          raise self.parent.parser_exception(
@@ -251,11 +251,11 @@ class IfTemplateNode(TemplateNode):
    def execute(self, stream, data):
       try:
          x = eval(self.expression, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.expression, e)
       if x:
          TemplateNode.execute(self, stream, data)
-      elif self.else_node != None:
+      elif self.else_node is not None:
          self.else_node.execute(stream, data)
 
 class ElifTemplateNode(IfTemplateNode):
@@ -263,7 +263,7 @@ class ElifTemplateNode(IfTemplateNode):
       self.else_node = None
       TemplateNode.__init__(self, parent, s)
       match = re_elif.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid elif expression" % self.s)
       else:
@@ -276,7 +276,7 @@ class FunctionTemplateNode(TemplateNode):
    def __init__(self, parent, s):
       TemplateNode.__init__(self, parent, s)
       match = re_def.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid function definition" % self.s)
       self.function_name = match.group(1)
@@ -292,7 +292,7 @@ class FunctionTemplateNode(TemplateNode):
    def call(self, args, stream, data):
       remember_vars = {}
       for index, var in util.enumerate(self.vars):
-         if data.has_key(var):
+         if var in data:
             remember_vars[var] = data[var]
          data[var] = args[index]
       TemplateNode.execute(self, stream, data)
@@ -317,15 +317,17 @@ class CommentTemplateNode(LeafTemplateNode):
 class ExpressionTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
-         stream.write(unicode(eval(self.s, globals(), data)).encode("utf-8"))
-      except Exception, e:
+         tmp = str(eval(self.s, globals(), data))
+         tmp = u"" + tmp
+         stream.write(tmp)
+      except Exception as e:
          self.parent.parser_exception(self.s, e)
 
 class ExecTemplateNode(LeafTemplateNode):
    def __init__(self, parent, s):
       LeafTemplateNode.__init__(self, parent, s)
       match = re_exec.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid statement" % self.s)
       self.s = match.group(1)
@@ -333,14 +335,14 @@ class ExecTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
          exec(self.s, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.s, e)
 
 class CallTemplateNode(LeafTemplateNode):
    def __init__(self, parent, s):
       LeafTemplateNode.__init__(self, parent, s)
       match = re_call.match(s)
-      if match == None:
+      if match is None:
          self.parent.parser_exception(
            "[[%s]] is not a valid function call" % self.s)
       self.function_name = match.group(1)
@@ -349,7 +351,7 @@ class CallTemplateNode(LeafTemplateNode):
    def execute(self, stream, data):
       try:
          x = eval(self.vars, globals(), data)
-      except Exception, e:
+      except Exception as e:
          self.parent.parser_exception(self.vars, e)
       self.parent.functions[self.function_name].call(
         x, stream, data)
@@ -365,15 +367,15 @@ template_factory_type_map = {
   'def'  : FunctionTemplateNode,
   'call' : CallTemplateNode,
   'exec' : ExecTemplateNode }
-template_factory_types = template_factory_type_map.keys()
+template_factory_types = list(template_factory_type_map.keys())
 
 def TemplateNodeFactory(parent):
    src = parent.parser_get()
 
-   if src == None:
+   if src is None:
       return None
    match = re_directive.search(src)
-   if match == None:
+   if match is None:
       parent.parser_eat(len(src))
       return LeafTemplateNode(parent, src)
    elif src == '' or match.start() != 0:

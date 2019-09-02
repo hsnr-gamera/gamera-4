@@ -73,7 +73,7 @@ else:
             typecode = image.mode
             if offset is None:
                 offset = Point(0, 0)
-            if _inverse_modes.has_key(typecode):
+            if typecode in _inverse_modes:
                 pixel_type = _inverse_modes[typecode]
             else:
                 raise ValueError("Only RGB and 8-bit Greyscale 'L' PIL image modes are supported.")
@@ -105,7 +105,7 @@ else:
         def __call__(image):
             from gamera.plugins import _string_io
             pixel_type = image.data.pixel_type
-            if _modes.has_key(pixel_type):
+            if pixel_type in _modes:
                 mode = _modes[pixel_type]
             else:
                 raise ValueError("Only RGB and GREYSCALE Images are supported.")

@@ -35,8 +35,8 @@ extern "C" {
 
 // -----------------------------------------------------------------------------
 #define PARTITIONS_METHODS \
-   { CHAR_PTR_CAST "optimize_partitions", graph_optimize_partitions, METH_VARARGS, \
-      CHAR_PTR_CAST "**optimize_partitions** (*root_node*, *fittness_func*, "\
+   {  "optimize_partitions", graph_optimize_partitions, METH_VARARGS, \
+       "**optimize_partitions** (*root_node*, *fittness_func*, "\
       "*max_parts_per_group* = 5, *max_subgraph_size* = 16, criterion = \"min\")\n\n" \
       "A partition is defined as a way to divide a subgraph into groups.  This "\
       "algorithm finds an optimal\n" \

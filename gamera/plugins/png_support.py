@@ -119,6 +119,8 @@ class PngSupportModule(PluginModule):
     functions = [save_PNG, PNG_info, load_PNG]
     author = "Michael Droettboom and Albert Bzreckzo"
     url = "http://gamera.sourceforge.net/"
+
+
 module = PngSupportModule()
 
 PNG_info = PNG_info()

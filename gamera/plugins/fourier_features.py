@@ -17,10 +17,10 @@
 #
 
 from gamera.plugin import *
-import _fourier_features
+
 
 class fourier_broken(PluginFunction):
-	"""Fourier descriptor for arbitrary (not necessarily connected) shapes
+    """Fourier descriptor for arbitrary (not necessarily connected) shapes
 according to equations (18) and (19) in 
 
   C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:
@@ -41,19 +41,21 @@ returned.
 
 .. __: http://dx.doi.org/10.1186/1687-6180-2013-161
 """
-	category = "Features"
-	self_type = ImageType([ONEBIT])
-	return_type = FloatVector(length=48)
-	feature_function = True
-        doc_examples = [(ONEBIT,)]
+    category = "Features"
+    self_type = ImageType([ONEBIT])
+    return_type = FloatVector(length=48)
+    feature_function = True
+    doc_examples = [(ONEBIT,)]
+
 
 class FourierFeaturesModule(PluginModule):
-	cpp_headers = ["fourier_features.hpp"]
-	category = "Features"
-	functions = [fourier_broken]
-	cpp_sources = ["src/geostructs/kdtree.cpp", "src/geostructs/delaunaytree.cpp"]
-	extra_compile_args = ["-DFDLENGTH=48"]
-	author = "Christian Brandt and Christoph Dalitz"
-	url = "http://gamera.sourceforge.net/"
+    cpp_headers = ["fourier_features.hpp"]
+    category = "Features"
+    functions = [fourier_broken]
+    cpp_sources = ["src/geostructs/kdtree.cpp", "src/geostructs/delaunaytree.cpp"]
+    extra_compile_args = ["-DFDLENGTH=48"]
+    author = "Christian Brandt and Christoph Dalitz"
+    url = "http://gamera.sourceforge.net/"
+
 
 module = FourierFeaturesModule()

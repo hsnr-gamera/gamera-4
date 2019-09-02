@@ -34,7 +34,7 @@ class ResultPanel(wx.ScrolledWindow):
     #---------------------------------------------------------------------------
     def initResultsWidgets(self):
     #---------------------------------------------------------------------------
-        if self.frame.classifier == None:
+        if self.frame.classifier is None:
             raise ValueError("ResultPanel.initResultsWidgets: no valid classifier given")
 
         for child in self.GetChildren():
@@ -89,10 +89,10 @@ class ResultPanel(wx.ScrolledWindow):
     #---------------------------------------------------------------------------
     def UpdateResultWidgets(self):
     #---------------------------------------------------------------------------
-        if self.frame.classifier == None:
+        if self.frame.classifier is None:
             return
 
-        if self.bars == None:
+        if self.bars is None:
             self.bars = {}
             self.initResultsWidgets()
 
@@ -107,11 +107,11 @@ class ResultPanel(wx.ScrolledWindow):
         else:
             raise ValueError("ResultPanel.UpdateResultWidgets: unknown mode of operation")
 
-        if len([x for x in self.bars.keys() if x not in feature_names]) != 0:
+        if len([x for x in list(self.bars.keys()) if x not in feature_names]) != 0:
             self.initResultsWidgets()
             return
 
-        if len([x for x in feature_names if x not in self.bars.keys()]) != 0:
+        if len([x for x in feature_names if x not in list(self.bars.keys())]) != 0:
             self.initResultsWidgets()
             return
 

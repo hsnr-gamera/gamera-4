@@ -36,7 +36,7 @@ Node::Node(GraphData * value, Graph* graph) {
 // -----------------------------------------------------------------------------
 Node::~Node() {
 #ifdef __DEBUG_GAPI__
-//   std::cout << "~Node\n";  
+   std::cerr << "~Node\n";  
 #endif
 }
 
@@ -88,7 +88,7 @@ bool Node::has_edge_to(Node* node) {
    Edge* e;
    bool ret = false;
    EdgePtrIterator* it = get_edges();
-   while((e = it->next()) != NULL && ret==false) {
+   while((e = it->next()) != NULL && !ret) {
       if (e->to_node == node)
          ret = true;
    }
@@ -173,7 +173,7 @@ void Node::remove_self(bool glue) {
             e->from_node->_edges.remove(e);
      
          e->to_node = NULL;
-         e->from_node = NULL; 
+         e->from_node = NULL;
          _graph->_edges.remove(e);
          e->weight = 2000;
          delete e;

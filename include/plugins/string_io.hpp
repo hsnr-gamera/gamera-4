@@ -26,29 +26,31 @@ using namespace Gamera;
 
 template<class T>
 PyObject* _to_raw_string(const T &image) {
-  typedef typename T::value_type value_type;
-  typename T::const_vec_iterator j = image.vec_begin();
-  size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-  PyObject* pystring = PyString_FromStringAndSize((char *)NULL,
-						  (int)image_size);
-  if (pystring == NULL)
-    return NULL;
-  value_type* i = (value_type*)PyString_AS_STRING(pystring);
-  for (; j != image.vec_end(); ++i, ++j) {
-    *i = *j;
-  }
-  return pystring;
-};
+	typedef typename T::value_type value_type;
+	typename T::const_vec_iterator j = image.vec_begin();
+	std::stringstream stream;
+	for (; j != image.vec_end(); ++j) {
+		stream << *j;
+	}
+	std::string str = stream.str();
+	PyObject* pystring = PyBytes_FromStringAndSize(str.c_str(),
+	                              str.length());
+	
+	return pystring;
+}
 
 template <class T>
 bool fill_image_from_string(T &image, PyObject* data_string) {
-  if (!PyString_CheckExact(data_string)) {
-    PyErr_SetString(PyExc_TypeError,
-		    "data_string must be a Python string");
-    return false;
-  }
-  char* s = PyString_AS_STRING(data_string);
-  size_t length = PyString_GET_SIZE(data_string);
+ 
+	char* s = PyBytes_AsString(data_string);
+	Py_XDECREF(data_string);
+	if (s == nullptr) {
+		PyErr_SetString(PyExc_TypeError, "could not get string from id_name tuple.");
+		return -1;
+	}
+	size_t length = PyBytes_GET_SIZE(data_string);
+  //char* s = PyString_AS_STRING(data_string);
+  //size_t length = PyString_GET_SIZE(data_string);
   typedef typename T::value_type value_type;
   size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
   if (length != image_size) {
@@ -116,9 +118,9 @@ Image* _from_raw_string(Point offset, Dim size,
       return image;
   } else {
     PyErr_SetString(PyExc_ValueError, "Invalid pixel_type or storage_format");
-    return NULL;
+    return nullptr;
   }
-  return NULL;
+  return nullptr;
 }
 
 #endif

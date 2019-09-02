@@ -22,19 +22,6 @@
 #define KWM06292002_imagemodule
 
 #include <Python.h>
-
-#if PY_VERSION_HEX < 0x02050000 && !defined(PY_SSIZE_T_MIN)
-typedef int Py_ssize_t;
-#define PY_SSIZE_T_MAX INT_MAX
-#define PY_SSIZE_T_MIN INT_MIN
-#endif
-
-#if PY_VERSION_HEX < 0x02050000
-#define CHAR_PTR_CAST (char *)
-#else
-#define CHAR_PTR_CAST
-#endif
-
 #include "gamera.hpp"
 
 /*
@@ -64,7 +51,7 @@ typedef int Py_ssize_t;
   on success of NULL on failure with the error set.
 */
 inline PyObject* get_module_dict(const char* module_name) {
-  PyObject* mod = PyImport_ImportModule(CHAR_PTR_CAST module_name);
+  PyObject* mod = PyImport_ImportModule( module_name);
   if (mod == 0)
     return PyErr_Format(PyExc_ImportError, "Unable to load module '%s'.\n", module_name);
   PyObject* dict = PyModule_GetDict(mod);
@@ -72,8 +59,20 @@ inline PyObject* get_module_dict(const char* module_name) {
     return PyErr_Format(PyExc_RuntimeError,
                         "Unable to get dict for module '%s'.\n",
                         module_name);
-  Py_DECREF(mod);
+  Py_XDECREF(mod);
   return dict;
+}
+
+inline void reprint(PyObject *obj) {
+	PyObject* repr = PyObject_Repr(obj);
+	PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
+	const char *bytes = PyBytes_AS_STRING(str);
+	
+	std::cerr << bytes;
+	std::cerr << std::endl << std::flush;
+	
+	Py_XDECREF(repr);
+	Py_XDECREF(str);
 }
 
 /*
@@ -89,7 +88,7 @@ inline int send_deprecation_warning(const char* message, const char* filename, i
   PyObject* result = PyObject_CallFunction(py_warning_func, (char *)"ssii", message, filename, lineno, 1);
   if (result == 0)
     return 0;
-  Py_DECREF(result);
+  Py_XDECREF(result);
   return 1;
 }
 
@@ -108,7 +107,7 @@ inline PyObject* get_gameracore_dict() {
 inline PyObject* get_ArrayInit() {
   static PyObject* t = 0;
   if (t == 0) {
-    PyObject* array_module = PyImport_ImportModule(CHAR_PTR_CAST "array");
+    PyObject* array_module = PyImport_ImportModule( "array");
     if (array_module == 0) {
       PyErr_SetString(PyExc_ImportError,
                       "Unable to get 'array' module.\n");
@@ -126,7 +125,7 @@ inline PyObject* get_ArrayInit() {
                       "Unable to get 'array' object.\n");
       return 0;
     }
-    Py_DECREF(array_module);
+    Py_XDECREF(array_module);
   }
   return t;
 }
@@ -137,7 +136,7 @@ inline PyObject* get_ArrayAppend() {
     PyObject* array_init = get_ArrayInit();
     if (array_init == 0)
       return 0;
-    t = PyObject_GetAttrString(array_init, CHAR_PTR_CAST "append");
+    t = PyObject_GetAttrString(array_init,  "append");
     if (t == 0) {
       PyErr_SetString(PyExc_RuntimeError,
                       "Unable to get 'array' append method.\n");
@@ -338,28 +337,28 @@ inline Point coerce_Point(PyObject* obj) {
     if (PySequence_Length(obj) == 2) {
       py_x0 = PySequence_GetItem(obj, 0);
       if (!PyNumber_Check(py_x0)) {
-        Py_DECREF(py_x0);
+        Py_XDECREF(py_x0);
         PyErr_Clear();
         PyErr_SetString(PyExc_TypeError, "First list entry in Point is not a number");
         throw std::invalid_argument("First list entry in Point is not a number");
       }
-      py_x1 = PyNumber_Int(py_x0);
-      Py_DECREF(py_x0);
+      py_x1 = PyNumber_Long(py_x0);
+      Py_XDECREF(py_x0);
       if (py_x1 != NULL) {
-        long x = PyInt_AsLong(py_x1);
-        Py_DECREF(py_x1);
+        long x = PyLong_AsLong(py_x1);
+        Py_XDECREF(py_x1);
         py_y0 = PySequence_GetItem(obj, 1);
         if (!PyNumber_Check(py_y0)) {
-          Py_DECREF(py_y0);
+          Py_XDECREF(py_y0);
           PyErr_Clear();
           PyErr_SetString(PyExc_TypeError, "Second list entry in Point is not a number");
           throw std::invalid_argument("Second list entry in Point is not a number");
         }
-        py_y1 = PyNumber_Int(py_y0);
-        Py_DECREF(py_y0);
+        py_y1 = PyNumber_Long(py_y0);
+        Py_XDECREF(py_y0);
         if (py_y1 != NULL) {
-          long y = PyInt_AsLong(py_y1);
-          Py_DECREF(py_y1);
+          long y = PyLong_AsLong(py_y1);
+          Py_XDECREF(py_y1);
           return Point((size_t)x, (size_t)y);
         }
       }
@@ -406,12 +405,12 @@ inline FloatPoint coerce_FloatPoint(PyObject* obj) {
       py_x1 = PyNumber_Float(py_x0);
       if (py_x1 != NULL) {
         double x = PyFloat_AsDouble(py_x1);
-        Py_DECREF(py_x1);
+        Py_XDECREF(py_x1);
         py_y0 = PySequence_GetItem(obj, 1);
         py_y1 = PyNumber_Float(py_y0);
         if (py_y1 != NULL) {
           double y = PyFloat_AsDouble(py_y1);
-          Py_DECREF(py_y1);
+          Py_XDECREF(py_y1);
           return FloatPoint(x, y);
         }
       }
@@ -922,7 +921,7 @@ inline PyObject* init_image_members(ImageObject* o) {
   */
   static PyObject* array_func = 0;
   if (array_func == 0) {
-    PyObject* array_module = PyImport_ImportModule(CHAR_PTR_CAST "array");
+    PyObject* array_module = PyImport_ImportModule( "array");
     if (array_module == 0)
       return 0;
     PyObject* array_dict = PyModule_GetDict(array_module);
@@ -931,11 +930,11 @@ inline PyObject* init_image_members(ImageObject* o) {
     array_func = PyDict_GetItemString(array_dict, "array");
     if (array_func == 0)
       return 0;
-    Py_DECREF(array_module);
+    Py_XDECREF(array_module);
   }
-  PyObject* arglist = Py_BuildValue(CHAR_PTR_CAST "(s)", CHAR_PTR_CAST "d");
+  PyObject* arglist = Py_BuildValue( "(s)",  "d");
   o->m_features = PyObject_CallObject(array_func, arglist);
-  Py_DECREF(arglist);
+  Py_XDECREF(arglist);
   if (o->m_features == 0)
     return 0;
   // id_name
@@ -948,7 +947,7 @@ inline PyObject* init_image_members(ImageObject* o) {
     return 0;
   // Classification state
   // o->m_classification_state = Py_BuildValue("i", UNCLASSIFIED);
-  o->m_classification_state = PyInt_FromLong(UNCLASSIFIED);
+  o->m_classification_state = PyLong_FromLong(UNCLASSIFIED);
   if (o->m_classification_state == 0)
     return 0;
   // confidence
@@ -981,7 +980,7 @@ inline PyObject* create_ImageObject(Image* image) {
     if (dict == 0)
       return 0;
     pybase_init = PyObject_GetAttrString(PyDict_GetItemString(dict, "ImageBase"),
-                                         CHAR_PTR_CAST "__init__");
+                                          "__init__");
     image_type = (PyTypeObject*)PyDict_GetItemString(dict, "Image");
     subimage_type = (PyTypeObject*)PyDict_GetItemString(dict, "SubImage");
     cc_type = (PyTypeObject*)PyDict_GetItemString(dict, "Cc");
@@ -1041,7 +1040,7 @@ inline PyObject* create_ImageObject(Image* image) {
     image->data()->m_user_data = (void*)d;
   } else {
     d = (ImageDataObject*)image->data()->m_user_data;
-    Py_INCREF(d);
+    Py_XINCREF(d);
   }
 
   ImageObject* i;
@@ -1057,12 +1056,12 @@ inline PyObject* create_ImageObject(Image* image) {
   }
   i->m_data = (PyObject*)d;
   ((RectObject*)i)->m_x = image;
-  PyObject* args = Py_BuildValue(CHAR_PTR_CAST "(O)", (PyObject*)i);
+  PyObject* args = Py_BuildValue( "(O)", (PyObject*)i);
   PyObject* result = PyObject_CallObject(pybase_init, args);
-  Py_DECREF(args);
+  Py_XDECREF(args);
   if (result == 0)
     return 0;
-  Py_DECREF(result);
+  Py_XDECREF(result);
   return init_image_members(i);
 }
 
@@ -1114,6 +1113,16 @@ inline PyObject* create_ImageInfoObject(ImageInfo* x) {
   return (PyObject*)o;
 }
 
+inline int PyObject_Compare(PyObject* o1,PyObject* o2) {
+	if (PyObject_RichCompareBool(o1, o2, Py_EQ) == 1) {
+		return 0;
+	} else if (PyObject_RichCompareBool(o1, o2, Py_GT)) {
+		return 1;
+	} else {
+		return -1;
+	}
+}
+
 #ifndef GAMERACORE_INTERNAL
 inline PyObject* ImageList_to_python(std::list<Image*>* image_list) {
   PyObject* pylist = PyList_New(image_list->size());
@@ -1126,14 +1135,22 @@ inline PyObject* ImageList_to_python(std::list<Image*>* image_list) {
 }
 
 inline PyObject* FloatVector_to_python(FloatVector* cpp) {
-  PyObject* array_init = get_ArrayInit();
-  if (array_init == 0)
-    return 0;
-  PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
-        cpp->size() * sizeof(double));
-  PyObject* py = PyObject_CallFunction(array_init, (char *)"sO", (char *)"d", str);
-  Py_DECREF(str);
-  return py;
+    PyObject *array_init = get_ArrayInit();
+    if (array_init == 0)
+        return 0;
+    PyObject* str = PyBytes_FromStringAndSize((char*)(&((*cpp)[0])),
+                                                cpp->size() * sizeof(double));
+    /*PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
+          cpp->size() * sizeof(double));*/
+
+    //PyObject *str = Py_BuildValue("d", cpp->front());
+    PyObject *py = PyObject_CallFunction(array_init, "sO", "d", str);
+    /*for (int i = 0; i < cpp->size(); i++) {
+		PyObject_CallMethod(py, "insert", "id", i, (*cpp)[0]);
+	}*/
+    
+	Py_XDECREF(str);
+    return py;
 }
 
 inline PyObject* ComplexVector_to_python(ComplexVector* cpp) {
@@ -1147,21 +1164,26 @@ inline PyObject* ComplexVector_to_python(ComplexVector* cpp) {
 }
 
 inline PyObject* IntVector_to_python(IntVector* cpp) {
-  PyObject* array_init = get_ArrayInit();
-  if (array_init == 0)
-    return 0;
-  PyObject* str = PyString_FromStringAndSize((char*)(&((*cpp)[0])),
-        cpp->size() * sizeof(int));
-  PyObject* py = PyObject_CallFunction(array_init, (char *)"sO", (char *)"i", str);
-  Py_DECREF(str);
-  return py;
+	PyObject *array_init = get_ArrayInit();
+	if (array_init == 0)
+		return 0;
+	
+    PyObject* str = PyBytes_FromStringAndSize((char*)(&((*cpp)[0])),
+                                                cpp->size() * sizeof(double));
+	PyObject *py = PyObject_CallFunction(array_init, "sO", "i", str);
+	//TODO slow
+	/*for (int i = 0; i < cpp->size(); i++) {
+		PyObject_CallMethod(py, "insert", "ii", i, (*cpp)[0]);
+	}*/
+	Py_XDECREF(str);
+	return py;
 }
 
 inline PyObject* PointVector_to_python(PointVector* cpp) {
   PyObject* py = PyList_New(cpp->size());
   for (size_t i = 0; i < cpp->size(); ++i) {
     PyObject* point = create_PointObject(Point((*cpp)[i]));
-    Py_INCREF(point); // leak?
+    Py_XINCREF(point); // leak?
     PyList_SetItem(py, i, point);
   }
   return py;
@@ -1180,18 +1202,18 @@ inline FloatVector* FloatVector_from_python(PyObject* py) {
         delete cpp;
         PyErr_SetString(PyExc_TypeError,
                         "Argument must be a sequence of floats.");
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
         return 0;
       }
       (*cpp)[i] = (double)PyFloat_AsDouble(number);
     }
   } catch (std::exception e) {
     delete cpp;
-    Py_DECREF(seq);
+    Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return 0;
   }
-  Py_DECREF(seq);
+  Py_XDECREF(seq);
   return cpp;
 }
 
@@ -1206,7 +1228,7 @@ inline ComplexVector* ComplexVector_from_python(PyObject* py) {
       PyObject* value = PySequence_Fast_GET_ITEM(seq, i);
       if (!PyComplex_Check(value)) {
         delete cpp;
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
         PyErr_SetString(PyExc_TypeError, "Argument must be a sequence of complex numbers.");
         return 0;
       }
@@ -1215,11 +1237,11 @@ inline ComplexVector* ComplexVector_from_python(PyObject* py) {
     }
   } catch (std::exception e) {
     delete cpp;
-    Py_DECREF(seq);
+    Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return 0;
   }
-  Py_DECREF(seq);
+  Py_XDECREF(seq);
   return cpp;
 }
 
@@ -1232,22 +1254,22 @@ inline IntVector* IntVector_from_python(PyObject* py) {
   try {
     for (int i = 0; i < size; ++i) {
       PyObject* number = PySequence_Fast_GET_ITEM(seq, i);
-      if (!PyInt_Check(number)) {
+      if (!PyLong_Check(number)) {
         PyErr_SetString(PyExc_TypeError,
                         "Argument must be a sequence of ints.");
         delete cpp;
-        Py_DECREF(seq);
+        Py_XDECREF(seq);
         return 0;
       }
-      (*cpp)[i] = (int)PyInt_AsLong(number);
+      (*cpp)[i] = (int)PyLong_AsLong(number);
     }
   } catch (std::exception e) {
     delete cpp;
-    Py_DECREF(seq);
+    Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return 0;
   }
-  Py_DECREF(seq);
+  Py_XDECREF(seq);
   return cpp;
 }
 
@@ -1266,16 +1288,16 @@ inline PointVector* PointVector_from_python(PyObject* py) {
     }
   } catch (std::invalid_argument e) {
     delete cpp;
-    Py_DECREF(seq);
+    Py_XDECREF(seq);
     PyErr_SetString(PyExc_TypeError, e.what());
     return 0;
   } catch (std::exception e) {
     delete cpp;
-    Py_DECREF(seq);
+    Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return 0;
   }
-  Py_DECREF(seq);
+  Py_XDECREF(seq);
   return cpp;
 }
 
@@ -1319,11 +1341,11 @@ public:
   inline ProgressBar(const ProgressBar& other) {
     m_progress_bar = other.m_progress_bar;
     if (m_progress_bar)
-      Py_INCREF(m_progress_bar);
+      Py_XINCREF(m_progress_bar);
   }
   inline ~ProgressBar() {
     if (m_progress_bar){
-      Py_DECREF(m_progress_bar);
+      Py_XDECREF(m_progress_bar);
     }
   }
   inline void add_length(int l) {
@@ -1368,15 +1390,15 @@ protected:
 // Converting pixel types to/from Python
 
 inline PyObject* pixel_to_python(OneBitPixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(GreyScalePixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(Grey16Pixel px) {
-  return PyInt_FromLong(px);
+  return PyLong_FromLong(px);
 }
 
 inline PyObject* pixel_to_python(RGBPixel px) {
@@ -1399,7 +1421,7 @@ struct pixel_from_python {
 template<class T>
 inline T pixel_from_python<T>::convert(PyObject* obj) {
   if (!PyFloat_Check(obj)) {
-    if (!PyInt_Check(obj)) {
+    if (!PyLong_Check(obj)) {
       if (!is_RGBPixelObject(obj)) {
         if (!PyComplex_Check(obj)) {
           throw std::runtime_error("Pixel value is not valid");
@@ -1409,7 +1431,7 @@ inline T pixel_from_python<T>::convert(PyObject* obj) {
       }
       return T((*(((RGBPixelObject*)obj)->m_x)).luminance());
     }
-    return (T)PyInt_AsLong(obj);
+    return (T)PyLong_AsLong(obj);
   }
   return (T)PyFloat_AsDouble(obj);
 }
@@ -1418,14 +1440,14 @@ template<>
 inline RGBPixel pixel_from_python<RGBPixel>::convert(PyObject* obj) {
   if (!is_RGBPixelObject(obj)) {
     if (!PyFloat_Check(obj)) {
-      if (!PyInt_Check(obj)) {
+      if (!PyLong_Check(obj)) {
         if (!PyComplex_Check(obj)) {
           throw std::runtime_error("Pixel value is not convertible to an RGBPixel");
         }
         Py_complex temp = PyComplex_AsCComplex(obj);
         return RGBPixel(ComplexPixel(temp.real, temp.imag));
       }
-      return RGBPixel((GreyScalePixel)PyInt_AsLong(obj));
+      return RGBPixel((GreyScalePixel)PyLong_AsLong(obj));
     }
     return RGBPixel(PyFloat_AsDouble(obj));
   }
@@ -1437,10 +1459,10 @@ inline ComplexPixel pixel_from_python<ComplexPixel>::convert(PyObject* obj) {
   if (!PyComplex_Check(obj)) {
     if (!is_RGBPixelObject(obj)) {
       if (!PyFloat_Check(obj)) {
-        if (!PyInt_Check(obj)) {
+        if (!PyLong_Check(obj)) {
           throw std::runtime_error("Pixel value is not convertible to a ComplexPixel");
         }
-        return ComplexPixel((double)PyInt_AsLong(obj), 0.0);
+        return ComplexPixel((double)PyLong_AsLong(obj), 0.0);
       }
       return ComplexPixel(PyFloat_AsDouble(obj), 0.0);
     }

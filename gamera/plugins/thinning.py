@@ -122,7 +122,7 @@ class ThinningModule(PluginModule):
                  thin_hs_large_image, medial_axis_transform_large_image_hs,
                  thin_lc]
     cpp_headers = ["thinning.hpp"]
-    author = u"Michael Droettboom and Karl MacMillan (based on code by \u00d8ivind Due Trier and Qian Huang)"
+    author = "Michael Droettboom and Karl MacMillan (based on code by \u00d8ivind Due Trier and Qian Huang)"
     url = "http://gamera.sourceforge.net/"
 module = ThinningModule()
 

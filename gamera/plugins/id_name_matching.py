@@ -103,7 +103,7 @@ class match_id_name(PluginFunction):
     args = Args([String('regex')])
     def __call__(self, regex):
         global regex_cache
-        if type(regex) == StringType:
+        if regex is str:
             compiled = regex_cache.get(regex, None)
             if compiled is None:
                 compiled = build_id_regex(regex)
@@ -122,7 +122,7 @@ class match_id_name(PluginFunction):
         return 0
     __call__ = staticmethod(__call__)
 
-_valid = string.letters + string.digits + "_"
+_valid = string.ascii_letters + string.digits + "_"
 def id_name_to_identifier(symbol):
     while len(symbol) and symbol[0] == '.':
         symbol = symbol[1:]

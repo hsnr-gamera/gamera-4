@@ -375,10 +375,10 @@ end8:
             }
             else /* mmx not supported - use modified C routine */
             {
-               register unsigned int incr1, initial_val, final_val;
+               unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
@@ -487,10 +487,10 @@ end16:
             }
             else /* mmx not supported - use modified C routine */
             {
-               register unsigned int incr1, initial_val, final_val;
+            	unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
@@ -617,11 +617,10 @@ end24:
                }
             }
             else /* mmx not supported - use modified C routine */
-            {
-               register unsigned int incr1, initial_val, final_val;
+            {unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
@@ -758,10 +757,10 @@ end32:
             }
             else /* mmx _not supported - Use modified C routine */
             {
-               register unsigned int incr1, initial_val, final_val;
+            	unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
@@ -916,10 +915,10 @@ end48:
             }
             else /* mmx _not supported - Use modified C routine */
             {
-               register unsigned int incr1, initial_val, final_val;
+            	unsigned int incr1, initial_val, final_val;
                png_size_t pixel_bytes;
                png_uint_32 i;
-               register int disp = png_pass_inc[png_ptr->pass];
+               int disp = png_pass_inc[png_ptr->pass];
                int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
 
                pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
@@ -947,8 +946,8 @@ end48:
             png_size_t pixel_bytes;
             int offset_table[7] = {0, 4, 0, 2, 0, 1, 0};
             unsigned int i;
-            register int disp = png_pass_inc[png_ptr->pass];  // get the offset
-            register unsigned int incr1, initial_val, final_val;
+            int disp = png_pass_inc[png_ptr->pass];  // get the offset
+            unsigned int incr1, initial_val, final_val;
 
             pixel_bytes = (png_ptr->row_info.pixel_depth >> 3);
             sptr = png_ptr->row_buf + 1 + offset_table[png_ptr->pass]*

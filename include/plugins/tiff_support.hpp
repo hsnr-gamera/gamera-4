@@ -22,11 +22,16 @@
 #define kwm10222002_tiff_support
 
 #include "gamera.hpp"
+#ifdef CPP_COMPILE
+#include <libtiff/tiffio.h>
+#else
 #include <tiffio.h>
+#endif
 #include <string>
 #include <exception>
 #include <stdexcept>
 #include <bitset>
+#include <iostream>
 
 namespace Gamera {
 
@@ -42,11 +47,13 @@ void save_tiff(const T& matrix, const char* filename);
   This function gets informtion about tiff images and places it in and
   ImageInfo object.  See image_info.hpp for more information.
 */
+
 ImageInfo* tiff_info(const char* filename) {
-  TIFFErrorHandler saved_handler = TIFFSetErrorHandler(NULL);
-  TIFF* tif = 0;
+  TIFFErrorHandler saved_handler = TIFFSetErrorHandler(nullptr);
+  TIFF* tif = nullptr;
+		
   tif = TIFFOpen(filename, "r");
-  if (tif == 0) {
+  if (tif == nullptr) {
     TIFFSetErrorHandler(saved_handler);
     throw std::invalid_argument("Failed to open image header");
   }
@@ -350,7 +357,7 @@ namespace {
 }
 
 Image* load_tiff(const char* filename, int storage) {
-  TIFFErrorHandler saved_handler = TIFFSetErrorHandler(NULL);
+  TIFFErrorHandler saved_handler = TIFFSetErrorHandler(nullptr);
   ImageInfo* info = tiff_info(filename);
   if (info->ncolors() == 1) {
     if (info->depth() == 1) {

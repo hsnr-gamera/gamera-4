@@ -259,14 +259,14 @@ def find_comments(file):
    for lineno, line in enumerate(lines):
       if "GAMERA_CPP_DEPRECATED" in line and not line.startswith("#"):
          comment = []
-         for i in xrange(lineno, -1, -1):
+         for i in range(lineno, -1, -1):
             if i < 0 or i >= len(lines):
                raise RuntimeError("Couldn't find comment.")
             find = lines[i].find(r"*/")
             if find != -1:
                comment.insert(0, lines[i][:find].strip())
                break
-         for j in xrange(i - 1, -1, -1):
+         for j in range(i - 1, -1, -1):
             if j < 0 or j >= len(lines):
                raise RuntimeError("Couldn't find comment.")
             find = lines[j].find(r"/*")

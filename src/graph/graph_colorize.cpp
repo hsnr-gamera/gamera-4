@@ -167,7 +167,7 @@ void Graph::colorize(unsigned int ncolors) {
                neighbor_color = get_color(neighbor);
                available_colors[neighbor_color] = false;
 #ifdef __DEBUG_GAPI__
-               std::cerr<< neighbor_color << ",";
+ std::cerr<< neighbor_color << ",";
 #endif
             }
             catch(std::runtime_error) {

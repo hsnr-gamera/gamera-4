@@ -105,7 +105,7 @@ functions/methods.  Their inclusion here is for function name consistency.
 ##
 ## 11/08/98 ... fixed aput to output large arrays correctly
 
-import stats  # required 3rd party module
+from . import stats  # required 3rd party module
 import string, copy
 from types import *
 
@@ -215,16 +215,16 @@ Returns: a list-of-lists corresponding to the columns from listoflists
     column = 0
     if type(cnums) in [ListType,TupleType]:   # if multiple columns to get
         index = cnums[0]
-        column = map(lambda x: x[index], listoflists)
+        column = [x[index] for x in listoflists]
         for col in cnums[1:]:
             index = col
-            column = abut(column,map(lambda x: x[index], listoflists))
-    elif type(cnums) == StringType:              # if an 'x[3:]' type expr.
+            column = abut(column,[x[index] for x in listoflists])
+    elif cnums is str:              # if an 'x[3:]' type expr.
         evalstring = 'map(lambda x: x'+cnums+', listoflists)'
         column = eval(evalstring)
     else:                                     # else it's just 1 col to get
         index = cnums
-        column = map(lambda x: x[index], listoflists)
+        column = [x[index] for x in listoflists]
     return column
 
 
@@ -255,7 +255,7 @@ Returns: a list of lists with all unique permutations of entries appearing in
          keepcols = [keepcols]
      if type(collapsecols) not in [ListType,TupleType]:
          collapsecols = [collapsecols]
-     if cfcn == None:
+     if cfcn is None:
          cfcn = collmean
      if keepcols == []:
          means = [0]*len(collapsecols)
@@ -290,13 +290,13 @@ Returns: a list of lists with all unique permutations of entries appearing in
              for col in collapsecols:
                  avgcol = colex(tmprows,col)
                  item.append(cfcn(avgcol))
-                 if fcn1 <> None:
+                 if fcn1 is not None:
                      try:
                          test = fcn1(avgcol)
                      except Exception:
                          test = 'N/A'
                      item.append(test)
-                 if fcn2 <> None:
+                 if fcn2 is not None:
                      try:
                          test = fcn2(avgcol)
                      except Exception:
@@ -401,7 +401,7 @@ Usage:   linedelimited (inlist,delimiter)
 """
     outstr = ''
     for item in inlist:
-        if type(item) <> StringType:
+        if item is not str:
             item = str(item)
         outstr = outstr + item + delimiter
     outstr = outstr[0:-1]
@@ -417,7 +417,7 @@ Usage:   lineincols (inlist,colsize)   where colsize is an integer
 """
     outstr = ''
     for item in inlist:
-        if type(item) <> StringType:
+        if item is not str:
             item = str(item)
         size = len(item)
         if size <= colsize:
@@ -441,7 +441,7 @@ Returns: formatted string created from inlist
 """
     outstr = ''
     for i in range(len(inlist)):
-        if type(inlist[i]) <> StringType:
+        if inlist[i] is not str:
             item = str(inlist[i])
         else:
             item = inlist[i]
@@ -463,7 +463,7 @@ the string.join function.
 Usage:   list2string (inlist,delimit=' ')
 Returns: the string created from inlist
 """
-    stringlist = map(makestr,inlist)
+    stringlist = list(map(makestr,inlist))
     return string.join(stringlist,delimit)
 
 
@@ -482,7 +482,7 @@ Returns: if l = [1,2,'hi'] then returns [[1],[2],['hi']] etc.
 
 
 def makestr (x):
-    if type(x) <> StringType:
+    if x is not str:
         x = str(x)
     return x
 
@@ -510,18 +510,18 @@ Returns: None
     maxsize = [0]*len(list2print[0])
     for col in range(len(list2print[0])):
         items = colex(list2print,col)
-        items = map(makestr,items)
-        maxsize[col] = max(map(len,items)) + extra
+        items = list(map(makestr,items))
+        maxsize[col] = max(list(map(len,items))) + extra
     for row in lst:
         if row == ['\n'] or row == '\n' or row == '' or row == ['']:
-            print
+            print()
         elif row == ['dashes'] or row == 'dashes':
             dashes = [0]*len(maxsize)
             for j in range(len(maxsize)):
                 dashes[j] = '-'*(maxsize[j]-2)
-            print lineincustcols(dashes,maxsize)
+            print(lineincustcols(dashes,maxsize))
         else:
-            print lineincustcols(row,maxsize)
+            print(lineincustcols(row,maxsize))
     return None
 
 
@@ -534,7 +534,7 @@ Usage:   printincols (listoflists,colsize)
 Returns: None
 """
     for row in listoflists:
-        print lineincols(row,colsize)
+        print(lineincols(row,colsize))
     return None
 
 
@@ -547,9 +547,9 @@ Returns: None
 """
     for row in listoflists:
         if row[-1] == '\n':
-            print row,
+            print(row, end=' ')
         else:
-            print row
+            print(row)
     return None
 
 
@@ -584,7 +584,7 @@ Usage:   recode (inlist,listmap,cols=None)  cols=recode cols, listmap=2D list
 Returns: inlist with the appropriate values replaced with new ones
 """
     lst = copy.deepcopy(inlist)
-    if cols != None:
+    if cols is not None:
         if type(cols) not in [ListType,TupleType]:
             cols = [cols]
         for col in cols:
@@ -622,17 +622,17 @@ Returns: remapped version of listoflists
 def roundlist (inlist,digits):
     """
 Goes through each element in a 1D or 2D inlist, and applies the following
-function to all elements of FloatType ... round(element,digits).
+function to all elements of float ... round(element,digits).
 
 Usage:   roundlist(inlist,digits)
 Returns: list with rounded floats
 """
-    if type(inlist[0]) in [IntType, FloatType]:
+    if type(inlist[0]) in [int, float]:
         inlist = [inlist]
     l = inlist*1
     for i in range(len(l)):
         for j in range(len(l[i])):
-            if type(l[i][j])==FloatType:
+            if type(l[i][j])==float:
                 l[i][j] = round(l[i][j],digits)
     return l
 
@@ -784,18 +784,18 @@ Returns: unique 'conditions' specified by the contents of columns specified
     if type(collapsecols) not in [ListType,TupleType,N.ndarray]:
         collapsecols = [collapsecols]
 
-    if cfcn == None:
+    if cfcn is None:
         cfcn = acollmean
     if keepcols == []:
         avgcol = acolex(a,collapsecols)
         means = N.sum(avgcol)/float(len(avgcol))
-        if fcn1<>None:
+        if fcn1!=None:
             try:
                 test = fcn1(avgcol)
             except Exception:
                 test = N.array(['N/A']*len(means))
             means = aabut(means,test)
-        if fcn2<>None:
+        if fcn2!=None:
             try:
                 test = fcn2(avgcol)
             except Exception:
@@ -816,13 +816,13 @@ Returns: unique 'conditions' specified by the contents of columns specified
             for col in collapsecols:
                 avgcol = acolex(tmprows,col)
                 item.append(acollmean(avgcol))
-                if fcn1<>None:
+                if fcn1!=None:
                     try:
                         test = fcn1(avgcol)
                     except Exception:
                         test = 'N/A'
                     item.append(test)
-                if fcn2<>None:
+                if fcn2!=None:
                     try:
                         test = fcn2(avgcol)
                     except Exception:
@@ -938,7 +938,7 @@ Returns: a version of array a where listmap[i][0] = (instead) listmap[i][1]
         work = acolex(a,col)
         work = work.ravel()
     for pair in listmap:
-        if type(pair[1]) == StringType or work.dtype.char=='O' or a.dtype.char=='O':
+        if pair[1] is str or work.dtype.char=='O' or a.dtype.char=='O':
             work = N.array(work,dtype='O')
             a = N.array(a,dtype='O')
             for i in range(len(work)):
@@ -965,7 +965,7 @@ Returns: an array of equal length containing 1s where the two rows had
 """
     return 
     if row1.dtype.char=='O' or row2.dtype=='O':
-        cmpvect = N.logical_not(abs(N.array(map(cmp,row1,row2)))) # cmp fcn gives -1,0,1
+        cmpvect = N.logical_not(abs(N.array(list(map(cmp,row1,row2))))) # cmp fcn gives -1,0,1
     else:
         cmpvect = N.equal(row1,row2)
     return cmpvect
@@ -1025,7 +1025,7 @@ Usage:   aunique (inarray)
             for item in inarray[1:]:
                 newflag = 1
                 for unq in uniques:  # NOTE: cmp --> 0=same, -1=<, 1=>
-                    test = N.sum(abs(N.array(map(cmp,item,unq))))
+                    test = N.sum(abs(N.array(list(map(cmp,item,unq)))))
                     if test == 0:   # if item identical to any 1 row in uniques
                         newflag = 0 # then not a novel item to add
                         break

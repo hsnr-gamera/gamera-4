@@ -85,7 +85,7 @@ class _KnnLoadXML(gamera.gamera_xml.LoadXML):
       self.remove_start_element_handler('selection')
 
    def _tag_start_selection(self, a):
-      self._data = u''
+      self._data = ''
       self._selection_name = str(a["name"])
       self._parser.CharacterDataHandler = self._add_selections
 
@@ -108,7 +108,7 @@ class _KnnLoadXML(gamera.gamera_xml.LoadXML):
       self.remove_end_element_handler('weight')
 
    def _tag_start_weight(self, a):
-      self._data = u''
+      self._data = ''
       self._weight_name = str(a["name"])
       self._parser.CharacterDataHandler = self._add_weights
 
@@ -261,7 +261,7 @@ Save the kNN settings to the given filename. This settings file (which is XML)
 includes k, distance type, the current selection and weighting. This file is
 different from the one produced by serialize in that it contains only the settings 
 and no data."""
-      from util import word_wrap
+      from .util import word_wrap
       file = open(filename, "w")
       indent = 0
       word_wrap(file, '<?xml version="1.0" encoding="utf-8"?>', indent)
@@ -271,7 +271,7 @@ and no data."""
                    self.num_k,
                    _distance_type_to_name[self.distance_type]), indent)
       indent += 1
-      if self.feature_functions != None:
+      if self.feature_functions is not None:
          # selections
          word_wrap(file, '<selections>', indent)
          indent += 1
@@ -318,7 +318,7 @@ Load the kNN settings from an XML file.  See save_settings_."""
       loader.parse_filename(filename)
       self.num_k = loader.num_k
       self.distance_type = loader.distance_type
-      functions = loader.weights.keys()
+      functions = list(loader.weights.keys())
       functions.sort()
       self.change_feature_set(functions)
 
@@ -402,7 +402,7 @@ returns only the selection values list for the given feature name.
 """
       selections = self.__get_settings_by_features(self.get_selections)
 
-      if feature_name not in selections.keys():
+      if feature_name not in list(selections.keys()):
          raise RuntimeError("get_selections_by_feature: feature is not in the feature set")
 
       return selections[feature_name]
@@ -426,17 +426,17 @@ returns only the weighting values list for the given feature name.
 """
       weights = self.__get_settings_by_features(self.get_weights)
 
-      if feature_name not in weights.keys():
+      if feature_name not in list(weights.keys()):
          raise RuntimeError("get_weights_by_feature: feature is not in the feature set")
 
       return weights[feature_name]
 
    def __set_settings_by_features(self, function, values, a):
-      if len(values.keys()) != len(self.feature_functions[0]):
+      if len(list(values.keys())) != len(self.feature_functions[0]):
          raise RuntimeError("set_settings_by_features: feature number mismatch")
 
       for name, feature_function in self.feature_functions[0]:
-         if name not in values.keys():
+         if name not in list(values.keys()):
             raise RuntimeError("set_settings_by_features: feature is not in the feature set")
 
          if len(values[name]) != feature_function.return_type.length:
@@ -485,7 +485,7 @@ Set the selection vector elements for one specific feature.
 """
       selections = self.get_selections_by_features()
 
-      if feature_name not in selections.keys():
+      if feature_name not in list(selections.keys()):
          raise RuntimeError("set_selections_by_feature: feature is not in the feature set")
 
       if not isinstance(values, list):
@@ -526,7 +526,7 @@ Set the weighting vector elements for one specific feature.
 """
       weights = self.get_weights_by_features()
 
-      if feature_name not in weights.keys():
+      if feature_name not in list(weights.keys()):
          raise RuntimeError("set_weights_by_feature: feature is not in the feature set")
 
       if not isinstance(values, list):
@@ -740,7 +740,7 @@ def simple_feature_selector(glyphs):
    offset = 0
    for x in glyphs[0].get_feature_functions()[0]:
       all_features.append(x[0])
-      feature_indexes[x[0]] = range(offset, offset + x[1].return_type.length)
+      feature_indexes[x[0]] = list(range(offset, offset + x[1].return_type.length))
       offset += x[1].return_type.length
    # First do the easy ones = single features and all features
    answers = []
@@ -756,7 +756,7 @@ def simple_feature_selector(glyphs):
    for x in all_features:
       ans = c.classifier.leave_one_out(feature_indexes[x], stop_threshold)
       num_wrong = ans[1] - ans[0]
-      print num_wrong, ans[1], ans[0]
+      print(num_wrong, ans[1], ans[0])
       if num_wrong < stop_threshold:
          stop_threshold = num_wrong
          answer = (float(ans[0]) / float(ans[1]), x)
@@ -769,7 +769,7 @@ def simple_feature_selector(glyphs):
             indexes.extend(feature_indexes[y])
          ans = c.classifier.leave_one_out(indexes, stop_threshold)
          num_wrong = ans[1] - ans[0]
-         print num_wrong, ans[1], ans[0]
+         print(num_wrong, ans[1], ans[0])
          if num_wrong < stop_threshold:
             stop_threshold = num_wrong
             answer = (float(ans[0]) / float(ans[1]), x)
@@ -783,17 +783,17 @@ class CombGen:
    def __init__(self, seq, k):
       n = self.n = len(seq)
       if not 1 <= k <= n:
-         raise ValueError("k must be in 1.." + `n` + ": " + `k`)
+         raise ValueError("k must be in 1.." + repr(n) + ": " + repr(k))
       self.k = k
       self.seq = seq
-      self.indices = range(k)
+      self.indices = list(range(k))
       # Trickery to make the first .next() call work.
       self.indices[-1] = self.indices[-1] - 1
 
    def __iter__(self):
       return self
 
-   def next(self):
+   def __next__(self):
       n, k, indices = self.n, self.k, self.indices
       lasti, limit = k-1, n-1
       while lasti >= 0 and indices[lasti] == limit:
@@ -802,7 +802,7 @@ class CombGen:
       if lasti < 0:
          raise StopIteration
       newroot = indices[lasti] + 1
-      indices[lasti:] = range(newroot, newroot + k - lasti)
+      indices[lasti:] = list(range(newroot, newroot + k - lasti))
       # Build the result.
       result = []
       seq = self.seq
@@ -811,7 +811,7 @@ class CombGen:
       return result
 
 def _get_id_stats(glyphs, k=None):
-   import stats
+   from . import stats
    if len(glyphs) < 3:
       return (len(glyphs),1.0, 1.0, 1.0)
    if k is None:
@@ -824,18 +824,18 @@ def get_glyphs_stats(glyphs):
    klasses = {}
    for x in glyphs:
       id = x.get_main_id()
-      if not klasses.has_key(id):
+      if id not in klasses:
          klasses[id] = []
       klasses[id].append(x)
    stats = {}
-   for x in klasses.iteritems():
+   for x in klasses.items():
       stats[x[0]] = _get_id_stats(x[1], k)
    return stats
 
 def comma_delim_stats(glyphs, filename):
    file = open(filename, "w")
    stats = get_glyphs_stats(glyphs)
-   for x in stats.iteritems():
+   for x in stats.items():
       file.write(x[0])
       file.write(',')
       file.write(str(x[1][0]))
@@ -852,7 +852,7 @@ def glyphs_by_category(glyphs):
    klasses = {}
    for x in glyphs:
       id = x.get_main_id()
-      if not klasses.has_key(id):
+      if id not in klasses:
          klasses[id] = []
       klasses[id].append(x)
    return klasses

@@ -51,7 +51,7 @@ inline PyObject* pathmap_to_dict(ShortestPathMap *pathmap) {
       }
 
       PyDict_SetItem(pathdict, dynamic_cast<GraphDataPyObject*>(dest_node->_value)->data, pathtuple);
-      Py_DECREF(pathtuple);
+      Py_XDECREF(pathtuple);
 
    }
    return pathdict;
@@ -91,7 +91,7 @@ PyObject* graph_dijkstra_all_pairs_shortest_path(PyObject* self, PyObject* _) {
       PyObject* pypath = pathmap_to_dict(path);
       PyObject* pysource = dynamic_cast<GraphDataPyObject*>(source_node->_value)->data;
       PyDict_SetItem(res, pysource, pypath);
-      Py_DECREF(pypath);
+      Py_XDECREF(pypath);
 
       delete path;
    }
@@ -116,7 +116,7 @@ PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _) {
       PyObject* pypath = pathmap_to_dict(path);
       PyObject* pysource = dynamic_cast<GraphDataPyObject*>(source_node->_value)->data;
       PyDict_SetItem(res, pysource, pypath);
-      Py_DECREF(pypath);
+      Py_XDECREF(pypath);
       delete path;
    }
 
@@ -127,20 +127,20 @@ PyObject* graph_all_pairs_shortest_path(PyObject* self, PyObject* _) {
 
 // -----------------------------------------------------------------------------
 PyObject* graph_create_spanning_tree(PyObject* self, PyObject* pyobject) {
-   INIT_SELF_GRAPH();
-   Graph* g;
-   if(is_NodeObject(pyobject))
-      g = so->_graph->create_spanning_tree(((NodeObject*)pyobject)->_node);
-   else {
-      GraphDataPyObject a(pyobject);
-      g = so->_graph->create_spanning_tree(&a);
-   }
-   if(g == NULL) {
-      PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
-      return NULL;
-   }
+	INIT_SELF_GRAPH();
+	Graph *g;
+	if (is_NodeObject(pyobject)) {
+		g = so->_graph->create_spanning_tree(((NodeObject *) pyobject)->_node);
+	} else {
+		GraphDataPyObject a(pyobject);
+		g = so->_graph->create_spanning_tree(&a);
+	}
+	if (g == nullptr) {
+		PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
+		Py_RETURN_NONE;
+	}
 
-   return (PyObject*)graph_new(g);
+	return (PyObject *) graph_new(g);
 }
 
 
@@ -169,21 +169,21 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       PyObject* images, PyObject* uniq_dists) {
 
    PyObject* images_seq = PySequence_Fast(images, "images must be iteratable");
-   if (images_seq == NULL)
-      return NULL;
+   if (images_seq == nullptr)
+      return nullptr;
 
    static PyTypeObject* imagebase = 0;
    if (imagebase == 0) {
-      PyObject* mod = PyImport_ImportModule(CHAR_PTR_CAST "gamera.gameracore");
+      PyObject* mod = PyImport_ImportModule( "gamera.gameracore");
       if (mod == 0) {
          PyErr_SetString(PyExc_RuntimeError, "Unable to load gameracore.\n");
-         Py_DECREF(images_seq);
+         Py_XDECREF(images_seq);
          return 0;
       }
       PyObject* dict = PyModule_GetDict(mod);
       if (dict == 0) {
          PyErr_SetString(PyExc_RuntimeError, "Unable to get module dictionary\n");
-         Py_DECREF(images_seq);
+         Py_XDECREF(images_seq);
          return 0;
       }
       imagebase = (PyTypeObject*)PyDict_GetItemString(dict, "Image");
@@ -193,13 +193,13 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
    if (!PyObject_TypeCheck(uniq_dists, imagebase)
          || get_pixel_type(uniq_dists) != Gamera::FLOAT) {
       PyErr_SetString(PyExc_TypeError, "uniq_dists must be a float image.");
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
    }
    FloatImageView* dists = (FloatImageView*)((RectObject*)uniq_dists)->m_x;
    if (dists->nrows() != dists->ncols()) {
       PyErr_SetString(PyExc_TypeError, "image must be symmetric.");
-      Py_DECREF(images_seq);
+      Py_XDECREF(images_seq);
       return 0;
    }
 
@@ -226,9 +226,9 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
    for (i = 0; i < images_len; ++i) {
       GraphDataPyObject* obj = new GraphDataPyObject(PySequence_Fast_GET_ITEM(images_seq, i));
       nodes[i] = so->_graph->add_node_ptr(obj);
-      assert(nodes[i] != NULL);
+      assert(nodes[i] != nullptr);
    }
-   Py_DECREF(images_seq);
+   Py_XDECREF(images_seq);
 
    // create the mst using kruskal
    i = 0;
@@ -242,35 +242,34 @@ PyObject* graph_create_minimum_spanning_tree_unique_distances(GraphObject* so,
       ++i;
    }
 
-   RETURN_VOID();
+   RETURN_VOID()
 }
 
 
 
 // -----------------------------------------------------------------------------
 PyObject* graph_create_minimum_spanning_tree(PyObject* self, PyObject* args) {
-   INIT_SELF_GRAPH();
-
-   PyObject* images = NULL;
-   PyObject* uniq_dists = NULL;
-   if(PyArg_ParseTuple(args, CHAR_PTR_CAST "|OO:create_minimum_spanning_tree", 
-            &images, &uniq_dists) <= 0)
-      return NULL;
-   
-   if (images == NULL || uniq_dists == NULL) {
-      Graph* g = so->_graph->create_minimum_spanning_tree(); 
-      if(g == NULL) {
-         PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
-         return NULL;
-      }
-
-      return (PyObject*)graph_new(g);
-
-   }
-   else
-      return graph_create_minimum_spanning_tree_unique_distances(so, images, 
-            uniq_dists);
-
+	INIT_SELF_GRAPH();
+	
+	PyObject *images = nullptr;
+	PyObject *uniq_dists = nullptr;
+	if (PyArg_ParseTuple(args,  "|OO:create_minimum_spanning_tree",
+	                     &images, &uniq_dists) <= 0)
+		return nullptr;
+	
+	if (images == nullptr || uniq_dists == nullptr) {
+		Graph *g = so->_graph->create_minimum_spanning_tree();
+		if (g == nullptr) {
+			PyErr_SetString(PyExc_TypeError, "Graph Type does not match");
+			return nullptr;
+		}
+		
+		return (PyObject *) graph_new(g);
+		
+	}
+	
+	return graph_create_minimum_spanning_tree_unique_distances(so, images, uniq_dists);
+	
 }
 
 
@@ -278,16 +277,16 @@ PyObject* graph_create_minimum_spanning_tree(PyObject* self, PyObject* args) {
 // -----------------------------------------------------------------------------
 PyObject* graph_BFS(PyObject* self, PyObject* root) {
    INIT_SELF_GRAPH();
-   BfsIterator* it = NULL;
+   BfsIterator* it = nullptr;
    if(is_NodeObject(root))
       it = so->_graph->BFS(((NodeObject*)root)->_node);
    else {
       GraphDataPyObject a(root);
       it = so->_graph->BFS(&a);
    }
-   if(it == NULL) {
+   if(it == nullptr) {
       PyErr_SetString(PyExc_KeyError, "starting-node not found");
-      return NULL;
+      return nullptr;
 
    }
 
@@ -303,16 +302,16 @@ PyObject* graph_BFS(PyObject* self, PyObject* root) {
 // -----------------------------------------------------------------------------
 PyObject* graph_DFS(PyObject* self, PyObject* root) {
    INIT_SELF_GRAPH();
-   DfsIterator* it = NULL;
+   DfsIterator* it = nullptr;
    if(is_NodeObject(root))
       it = so->_graph->DFS(((NodeObject*)root)->_node);
    else {
       GraphDataPyObject a(root);
       it = so->_graph->DFS(&a);
    }
-   if(it == NULL) {
+   if(it == nullptr) {
       PyErr_SetString(PyExc_KeyError, "starting-node not found");
-      return NULL;
+      return nullptr;
 
    }
 
@@ -328,11 +327,11 @@ PyObject* graph_DFS(PyObject* self, PyObject* root) {
 PyObject* graph_get_color(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
    if(is_NodeObject(pyobject)) {
-      RETURN_INT(so->_graph->get_color(((NodeObject*)pyobject)->_node));
+      RETURN_INT(so->_graph->get_color(((NodeObject*)pyobject)->_node))
    }
    else {
       GraphDataPyObject a(pyobject);
-      RETURN_INT(so->_graph->get_color(&a));
+      RETURN_INT(so->_graph->get_color(&a))
    }
 
 }
@@ -340,14 +339,14 @@ PyObject* graph_get_color(PyObject* self, PyObject* pyobject) {
 
 PyObject* graph_colorize(PyObject* self, PyObject* pyobject) {
    INIT_SELF_GRAPH();
-   unsigned int ncolors = PyInt_AsUnsignedLongMask(pyobject);
+   unsigned int ncolors = (unsigned int)PyLong_AsUnsignedLongMask(pyobject);
    try {
       so->_graph->colorize(ncolors);
-      RETURN_VOID();
+      RETURN_VOID()
    }
    catch (std::runtime_error e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());
-      return NULL;
+      return nullptr;
    }
    
 }

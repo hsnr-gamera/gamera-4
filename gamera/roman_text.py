@@ -227,7 +227,7 @@ class Page:
         # display the sections
         result = self.sections                
 
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:
@@ -240,7 +240,7 @@ class Page:
         """Display the lines found by placing a box around them
         in a display. If clear is true then any boxes already on
         the displayed are cleared first."""
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:
@@ -251,7 +251,7 @@ class Page:
                 display.add_box(core.Rect(core.Point(b.ul_x, b.ul_y), core.Dim(b.ncols, b.nrows)))
 
     def display_glyphs(self, clear=1):
-        if self.image._display == None:
+        if self.image._display is None:
             self.image.display()
         display = self.image._display
         if clear:
@@ -399,7 +399,7 @@ class Section:
                     found = 1
                     break
             if not found:
-                print "Did not find lines for all tall glyphs"
+                print("Did not find lines for all tall glyphs")
                 
         self.glyphs = orig_glyphs
         self.lines = lines
@@ -456,7 +456,7 @@ def name_lookup_old(id_name):
                 elif s == "lessthan":
                     return "<"
                 else:
-                    print "ERROR: Name not known about:", id_name
+                    print("ERROR: Name not known about:", id_name)
                     return ""
             elif l == 3:
                 if split_string[1] == "paren":
@@ -470,10 +470,10 @@ def name_lookup_old(id_name):
                     else:
                         return "["
                 else:
-                    print "ERROR: Name not known about:", id_name
+                    print("ERROR: Name not known about:", id_name)
                     return ""
             else:
-                print "ERROR: Name not known about:", id_name
+                print("ERROR: Name not known about:", id_name)
                 return ""
         elif split_string[0] == "digit":
             return split_string[1]
@@ -485,7 +485,7 @@ def name_lookup_old(id_name):
             else:
                 return ""
         else:
-            print "ERROR: Name not known about:", id_name
+            print("ERROR: Name not known about:", id_name)
             return ""
     else:
         return ""
@@ -496,7 +496,7 @@ def name_lookup_unicode(id_name):
     try:
         return unicodedata.lookup(name)
     except KeyError:
-        print "ERROR: Name not found:", name
+        print("ERROR: Name not found:", name)
         return ""
     
 def make_string(lines, name_lookup_func=name_lookup_unicode):

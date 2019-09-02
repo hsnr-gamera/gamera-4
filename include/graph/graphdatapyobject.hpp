@@ -21,6 +21,7 @@
 
 #include <Python.h>
 #include "graphdata.hpp"
+#include "gameramodule.hpp"
 
 namespace Gamera { namespace GraphApi {
 
@@ -33,48 +34,42 @@ namespace Gamera { namespace GraphApi {
 struct GraphDataPyObject: public GraphData {
    PyObject* data;
    PyObject* _node;
-   
-   GraphDataPyObject(PyObject* d = NULL) {
+
+    explicit GraphDataPyObject(PyObject* d = nullptr)  {
       data = d;
-      _node = NULL;
+      _node = nullptr;
       incref();
    }
 
-   ~GraphDataPyObject() {
+   ~GraphDataPyObject() override {
       decref();
    }
 
-
    GraphDataPyObject& operator=(const GraphDataPyObject& other) {
+    	decref();
       data = other.data;
       _node = other._node;
       incref();
       return *this;
    }
 
-   void incref() {
-      if(data != NULL)
-         Py_INCREF(data);
-      if(_node != NULL)
-         Py_INCREF(_node);
+   void incref() override{
+     Py_XINCREF(data);
+     Py_XINCREF(_node);
    }
 
-   void decref() {
-      if(data != NULL)
-         Py_DECREF(data);
-      if(_node != NULL)
-         Py_DECREF(_node);
+   void decref() override{
+     Py_XDECREF(data);
+     Py_XDECREF(_node);
    }
 
-   int compare(const GraphData& b) const {
-      return PyObject_Compare(data, 
-            dynamic_cast<const GraphDataPyObject&>(b).data);
+   int compare(const GraphData& b) const override {
+	  return PyObject_Compare(data, dynamic_cast<const GraphDataPyObject &>(b).data);
    }
 
 
-   GraphData* copy() {
-      GraphData *a = new GraphDataPyObject(data);
-      return a;
+    GraphData* copy() override {
+      return new GraphDataPyObject(data);
    }
 };
 

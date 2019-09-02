@@ -7,12 +7,11 @@ try:
    wxBitmapFromImage = compat_wx.create_bitmap_from_image
 except Exception:
    from wxPython.wx import wxImageFromStream, wxBitmapFromImage
-import cStringIO, zlib
+import io, zlib
 
 
 def getIconSelectInvertData():
-    return zlib.decompress(
-"x\xda\x01Z\x01\xa5\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b"x\xda\x01Z\x01\xa5\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01\x11IDATH\x89\xed\x95\xb1N\x850\x14\x86\x7f\
 \xcc\xcd\x1ddqs\xe5\x11\xd8\xbb0\xd3\x19\xde\xc0\x91g\xb8\xe5\t\xe8\xee\xc2\
@@ -32,13 +31,12 @@ def getIconSelectInvertBitmap():
     return wxBitmapFromImage(getIconSelectInvertImage())
 
 def getIconSelectInvertImage():
-    stream = cStringIO.StringIO(getIconSelectInvertData())
+    stream = io.BytesIO(getIconSelectInvertData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageRgbData():
-    return zlib.decompress(
-'x\xda\x01\x97\x08h\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\x97\x08h\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x08NIDATX\x85\x9d\x97\xdb\x8b]W\x19\xc0\x7fk\xed\xeb\xd9\
 \xfb\\f\xce\\\x9b\xb4IM1VmM\xeb\xa5J\xbd\x05E\x90\xbc\x88\x85\x82O\x05}\xb1b\
@@ -129,13 +127,12 @@ def getIconImageRgbBitmap():
     return wxBitmapFromImage(getIconImageRgbImage())
 
 def getIconImageRgbImage():
-    stream = cStringIO.StringIO(getIconImageRgbData())
+    stream = io.BytesIO(getIconImageRgbData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconMarkHighlightsData():
-    return zlib.decompress(
-'x\xda\x01s\x01\x8c\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01s\x01\x8c\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01*IDATH\x89\xdd\x95\xc1q\xc3 \x14D\x9f|O\x07r\
 \x15\xb9(\xee#\x7f\xdc\x86\x0b\xd1\xd53n\x81B\xe4\x16|\x8d\xd2A\x1a \x87\xfc\
@@ -155,13 +152,12 @@ def getIconMarkHighlightsBitmap():
     return wxBitmapFromImage(getIconMarkHighlightsImage())
 
 def getIconMarkHighlightsImage():
-    stream = cStringIO.StringIO(getIconMarkHighlightsData())
+    stream = io.BytesIO(getIconMarkHighlightsData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageData():
-    return zlib.decompress(
-'x\xda\x01\xdf\x03 \xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\xdf\x03 \xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x03\x96IDATX\x85\xb5\x97\xcdN#W\x10\x85\xbfv\xb7\xb1c\x07\
 \x14Yd\xa2\x8c\xa2\x89\xb2\xc92\x1b$\xd6<\x03/\xc3\x1b \x99\x1d\x8f\xe1W\xe0\
@@ -206,13 +202,12 @@ def getIconImageBitmap():
     return wxBitmapFromImage(getIconImageImage())
 
 def getIconImageImage():
-    stream = cStringIO.StringIO(getIconImageData())
+    stream = io.BytesIO(getIconImageData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconConfirmData():
-    return zlib.decompress(
-'x\xda\x01\x97\x02h\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\x97\x02h\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x02NIDAT8\x8d\xed\x94\xc1k\xd3`\x18\xc6\x7f\xe9:\
 \xb6)\x9bJ\x9d,\x979\'B\xcb\xf4\xe8\xe8\x9c\xb6\xe8A\xf0"\xe4R\xc7\xce;\r\
@@ -243,13 +238,12 @@ def getIconConfirmBitmap():
     return wxBitmapFromImage(getIconConfirmImage())
 
 def getIconConfirmImage():
-    stream = cStringIO.StringIO(getIconConfirmData())
+    stream = io.BytesIO(getIconConfirmData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getComplexVectorData():
-    return zlib.decompress(
-'x\xda\x01\xc1\x01>\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\xc1\x01>\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x01xIDATX\x85\xed\xd61K\x1cQ\x14\x86\xe1\xc7\xc4B\x82\x06\
 \x8b\xa0\x8b\x08\xb1\xb4\x08X\x08ViR(X\x18\xac\x82?\xc0"$M\x8a\x80\x92&\xfe\
@@ -273,13 +267,12 @@ def getComplexVectorBitmap():
     return wxBitmapFromImage(getComplexVectorImage())
 
 def getComplexVectorImage():
-    stream = cStringIO.StringIO(getComplexVectorData())
+    stream = io.BytesIO(getComplexVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSelectAllData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
 \x06$\x1f\x94\xdb\xfe\x00R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4\xc7x\xba8\
 \x86xt&',0LHIHH\xf8\xb0\xea\xfe\xaf\xf9A\xcd\xdbL\xab\x8c\x1fMi\x89j\x10\x16\
 V\x96\x17\x13k\xbb\x9a\xa3\xe6\x15\xeb\xc7\xd1\x13e\xc0\xa4\x93\xd0h\xb8\xe7\
@@ -291,13 +284,12 @@ def getIconSelectAllBitmap():
     return wxBitmapFromImage(getIconSelectAllImage())
 
 def getIconSelectAllImage():
-    stream = cStringIO.StringIO(getIconSelectAllData())
+    stream = io.BytesIO(getIconSelectAllData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconData():
-    return zlib.decompress(
-'x\xda\x01\x9d\x07b\xf8\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\x9d\x07b\xf8\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x07TIDATX\x85\xbd\x97Yl\\W\x1d\xc6\x7f\xe7\xde\x99;\x8bg\
 \xc6\xe3Y\xbc\x8d\xf7=!N\x9a4[\x1d\x15%\x12"4\xe5\x81\xa0\x96\x87R\xa9\x12}\
@@ -378,13 +370,12 @@ def getIconBitmap():
     return wxBitmapFromImage(getIconImage())
 
 def getIconImage():
-    stream = cStringIO.StringIO(getIconData())
+    stream = io.BytesIO(getIconData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconZoomViewData():
-    return zlib.decompress(
-'x\xda\x01q\x04\x8e\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01q\x04\x8e\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x04(IDATH\x89\xbd\x95KlTe\x14\xc7\x7fw:\x1dh;m\
 \xda\xdb!hi\xa1\xe9\xc2\x07\xaf>\x90GJ\xca+,\x8c\xb3\x01\xbb1\xa81v\xc3\x06!\
@@ -432,13 +423,12 @@ def getIconZoomViewBitmap():
     return wxBitmapFromImage(getIconZoomViewImage())
 
 def getIconZoomViewImage():
-    stream = cStringIO.StringIO(getIconZoomViewData())
+    stream = io.BytesIO(getIconZoomViewData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconZoomInData():
-    return zlib.decompress(
-'x\xda\x01\x11\x03\xee\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
+    return zlib.decompress(b'x\xda\x01\x11\x03\xee\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
 \x18\x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\
 \x08\x08\x08|\x08d\x88\x00\x00\x02\xc8IDATH\x89\xc5\x94\xcbO\x13Q\x14\xc6\
 \xbf\xb6P\x10\xda&\x0c%\x11\xe4\x15\x16\x1a\x17\x02Jt\x01QX\xfa7h\xdc\xb0\
@@ -475,13 +465,12 @@ def getIconZoomInBitmap():
     return wxBitmapFromImage(getIconZoomInImage())
 
 def getIconZoomInImage():
-    stream = cStringIO.StringIO(getIconZoomInData())
+    stream = io.BytesIO(getIconZoomInData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconCcData():
-    return zlib.decompress(
-'x\xda\x01a\x04\x9e\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01a\x04\x9e\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x04\x18IDATX\x85\xe5\x97\xafs\x1bG\x14\xc7?\xbey`\x81\x81@\
 \x80\x80A@\x81A@@\x80@\x81@AA\x81A\x80A\xff\x00\x83\x80\xc0\x80\x00\x81\x00\
@@ -529,13 +518,12 @@ def getIconCcBitmap():
     return wxBitmapFromImage(getIconCcImage())
 
 def getIconCcImage():
-    stream = cStringIO.StringIO(getIconCcData())
+    stream = io.BytesIO(getIconCcData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageGreyData():
-    return zlib.decompress(
-'x\xda\x01\xfe\x08\x01\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
+    return zlib.decompress(b'x\xda\x01\xfe\x08\x01\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
 \x00\x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08\
 |\x08d\x88\x00\x00\x08\xb5IDATX\x85\x9d\x97[\x8cU\xd5\x19\x80\xbf};\xfb\xcc\
 \xb9\xcc\x8d3W\xe6\xe2 c\x90\xf1\x82\x0c\x05So(Xa\xa01\x91\xc46\xa1\xc1\xa4>\
@@ -629,13 +617,12 @@ def getIconSubimageGreyBitmap():
     return wxBitmapFromImage(getIconSubimageGreyImage())
 
 def getIconSubimageGreyImage():
-    stream = cStringIO.StringIO(getIconSubimageGreyData())
+    stream = io.BytesIO(getIconSubimageGreyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconDeleteData():
-    return zlib.decompress(
-'x\xda\x01\x14\x03\xeb\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
+    return zlib.decompress(b'x\xda\x01\x14\x03\xeb\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
 \x18\x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\
 \x08\x08\x08|\x08d\x88\x00\x00\x02\xcbIDATH\x89\xb5\x96MO\x13A\x1c\x87\x1f\
 \xda"BQ\x03\xed\xd2\xd0"D\xfd\x02\x90\x10\xe2\x07h\xf0 7H\xb8\x98r\xe5#`<\
@@ -671,13 +658,12 @@ def getIconDeleteBitmap():
     return wxBitmapFromImage(getIconDeleteImage())
 
 def getIconDeleteImage():
-    stream = cStringIO.StringIO(getIconDeleteData())
+    stream = io.BytesIO(getIconDeleteData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconFileData():
-    return zlib.decompress(
-'x\xda\x013\x04\xcc\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x013\x04\xcc\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x03\xeaIDAT8\x8d\xad\x95=H\x9b[\x18\xc7\x7fy\xf3\
 \xb6\xc1!\xea\x0bj\x14\xb4\x065\xe2\xa6\xa2\xd1A!"\x98\xe2G\xd1A\xc1\xe2 \
@@ -725,13 +711,12 @@ def getIconFileBitmap():
     return wxBitmapFromImage(getIconFileImage())
 
 def getIconFileImage():
-    stream = cStringIO.StringIO(getIconFileData())
+    stream = io.BytesIO(getIconFileData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconBackData():
-    return zlib.decompress(
-'x\xda\x01\x87\x06x\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\x87\x06x\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x06>IDATH\x89}V]l\\G\x15\xfe\xe6\xe7\xce\xbd\xbe\
 \xf6\xee\xda\xb1qjg\xa3\xf2c\xa5\x11\x18%*q"\x99\x9f\x88\xe0\x16)\xad\xa0V\
@@ -800,13 +785,12 @@ def getIconBackBitmap():
     return wxBitmapFromImage(getIconBackImage())
 
 def getIconBackImage():
-    stream = cStringIO.StringIO(getIconBackData())
+    stream = io.BytesIO(getIconBackData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconRefreshData():
-    return zlib.decompress(
-'x\xda\x01\xb2\x03M\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\xb2\x03M\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x03iIDATH\x89\xb5\x94OL\x9bu\x18\xc7?o\xe9\xdb\
 \xbev\xd2A\xf6v%\x8dX%=\x18\xca\x18&\x93\xa8\x0b\x06\x0f\xcc\xb8\xcb\x16\xe3\
@@ -848,13 +832,12 @@ def getIconRefreshBitmap():
     return wxBitmapFromImage(getIconRefreshImage())
 
 def getIconRefreshImage():
-    stream = cStringIO.StringIO(getIconRefreshData())
+    stream = io.BytesIO(getIconRefreshData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSortAscData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
 \x06$\x1f\x94\xdb\xfe\x00R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4\xf7z\xba8\
 \x86xt\xbe\r\xb2\xe4;\xa0\xc0\xc3\x1d*\x7f\xf2\xbf\xfd$?\x1e\x0e\xeb\xc2\x85\
 +\xb8\xef\tL\xec?\x92\xc6\xfe\xba \xbc\xed\xc6\xf1\xaf\x0b'K\x9a|\xcf\xe4RUU\
@@ -868,13 +851,12 @@ def getIconSortAscBitmap():
     return wxBitmapFromImage(getIconSortAscImage())
 
 def getIconSortAscImage():
-    stream = cStringIO.StringIO(getIconSortAscData())
+    stream = io.BytesIO(getIconSortAscData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageGrey16Data():
-    return zlib.decompress(
-'x\xda\x01n\x05\x91\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01n\x05\x91\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x05%IDATX\x85\x95\x971h\x1cG\x14\x86\xbf;?\x8bWL1\x84\xc5l\
 q\x85\x8aTF\x85\n\x15\xc6\xb80\xc6\x8dA\x10\x17*T\xd8\x9d\x0b\x83\x85H)\x83\
@@ -933,13 +915,12 @@ def getIconImageGrey16Bitmap():
     return wxBitmapFromImage(getIconImageGrey16Image())
 
 def getIconImageGrey16Image():
-    stream = cStringIO.StringIO(getIconImageGrey16Data())
+    stream = io.BytesIO(getIconImageGrey16Data())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageUnknownData():
-    return zlib.decompress(
-'x\xda\x01\xfa\x08\x05\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
+    return zlib.decompress(b'x\xda\x01\xfa\x08\x05\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
 \x00\x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08\
 |\x08d\x88\x00\x00\x08\xb1IDATX\x85\x9d\x97{lW\xe5\x19\xc7?\xe7\xfa\xbb_\xe8\
 \x1d(\xb6`\x95\xaa(\xc8m\xccE\xec\x94\xb1IY\xe2\x98A\xf0\x0f\xcdd8\xe3\x8c\
@@ -1031,13 +1012,12 @@ def getIconSubimageUnknownBitmap():
     return wxBitmapFromImage(getIconSubimageUnknownImage())
 
 def getIconSubimageUnknownImage():
-    stream = cStringIO.StringIO(getIconSubimageUnknownData())
+    stream = io.BytesIO(getIconSubimageUnknownData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconMoveData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2b \xcc\xc1\x06$\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2b \xcc\xc1\x06$\
 \x8fl\xc9\xb1\x06R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4wx\xba8\x86X\xf4^\xbd\
 r\x91\xafA\x81\x83\xf5\x02\xf7\xff\xff\xe7\xbf=\x9ae\xb8\xf7\xce\x95\xac\x8f\
 W\x8c\xceILH\xbb\xb0\x88\x81\x95\x81gB\xd0\x1f>\xa9\xf9\xd3\x1f\xc8-y \x92\
@@ -1051,13 +1031,12 @@ def getIconMoveBitmap():
     return wxBitmapFromImage(getIconMoveImage())
 
 def getIconMoveImage():
-    stream = cStringIO.StringIO(getIconMoveData())
+    stream = io.BytesIO(getIconMoveData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconUndoData():
-    return zlib.decompress(
-'x\xda\x01\xc0\x03?\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\xc0\x03?\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x03wIDAT8\x8d\x95\x95Kl\x1bU\x14\x86\xbf\xb1\xc7v\
 \x9d\x87\xe3x\xda\xe6AB-\xa7\xa0\xe9C\x85ES\x8aDi\x85xU\x88\x1d\x9a\x05\x12R\
@@ -1100,13 +1079,12 @@ def getIconUndoBitmap():
     return wxBitmapFromImage(getIconUndoImage())
 
 def getIconUndoImage():
-    stream = cStringIO.StringIO(getIconUndoData())
+    stream = io.BytesIO(getIconUndoData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageBinaryData():
-    return zlib.decompress(
-'x\xda\x01\xf8\x08\x07\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
+    return zlib.decompress(b'x\xda\x01\xf8\x08\x07\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
 \x00\x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08\
 |\x08d\x88\x00\x00\x08\xafIDATX\x85\x9d\x97k\x8c\x1de\x19\xc7\x7fs;g\xcee\
 \xb7\xbbg\xaf\xdd\xedv]\xda\xdd\x16\x8a\xb4PlI\x8aZ\xa0jl\x8b\x89\x90\xe87\
@@ -1199,13 +1177,12 @@ def getIconSubimageBinaryBitmap():
     return wxBitmapFromImage(getIconSubimageBinaryImage())
 
 def getIconSubimageBinaryImage():
-    stream = cStringIO.StringIO(getIconSubimageBinaryData())
+    stream = io.BytesIO(getIconSubimageBinaryData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSelectData():
-    return zlib.decompress(
-"x\xda\x010\x01\xcf\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b"x\xda\x010\x01\xcf\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x00\xe7IDATH\x89\xed\x94!n\x84@\x18\x85\xdf6\xab\
 \xaap\x95x\x14\x1e\x83f4\xc7\xe0\x0c\xb0'\x98+`\xd66 \xc0\xfe\x184\xd55\x9c\
@@ -1222,13 +1199,12 @@ def getIconSelectBitmap():
     return wxBitmapFromImage(getIconSelectImage())
 
 def getIconSelectImage():
-    stream = cStringIO.StringIO(getIconSelectData())
+    stream = io.BytesIO(getIconSelectData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageRgbData():
-    return zlib.decompress(
-'x\xda\x01\xa5\tZ\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\xa5\tZ\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\t\\IDATX\x85\x9d\x97[\x8cU\xd7y\xc7\x7fk_\xce\xde\xe7:\xcc\
 \x0cs\xe6\xc2\xc00u\xa0\xd4\x8c\x0b\x18l\xaa\xa6\x8e\x89\xed\xa4\t\x10)q\x95\
@@ -1330,13 +1306,12 @@ def getIconSubimageRgbBitmap():
     return wxBitmapFromImage(getIconSubimageRgbImage())
 
 def getIconSubimageRgbImage():
-    stream = cStringIO.StringIO(getIconSubimageRgbData())
+    stream = io.BytesIO(getIconSubimageRgbData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getToolbarCloseData():
-    return zlib.decompress(
-'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\xac@,\xc1\xc1\
+    return zlib.decompress(b'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\xac@,\xc1\xc1\
 \x06$\x8d\xd4\xcd\x17\x00)\x96b\'\xcf\x10\x0e \xa8\xe1H\xe9\x00\xf2\xad<]\
 \x1cC$\xa6&\'84\xfc7`S\xde\xc5\xc0\xcc\xcc\xac\xac<\x8b\x81\xf1\xc3\xbf\xbf\
 \xd5"W}x\x80\xc0{\x9a\xce\xc1\t\t 0\xc3\xa6\xf2S\xfd\x1c\xa1\xc5b\x81\xf7\
@@ -1347,13 +1322,12 @@ def getToolbarCloseBitmap():
     return wxBitmapFromImage(getToolbarCloseImage())
 
 def getToolbarCloseImage():
-    stream = cStringIO.StringIO(getToolbarCloseData())
+    stream = io.BytesIO(getToolbarCloseData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSaveData():
-    return zlib.decompress(
-'x\xda\x01\'\x02\xd8\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\'\x02\xd8\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01\xdeIDATH\x89\xed\x951\x8b\x13A\x14\xc7\x7f\
 \x8a\xf5\x81\x8dMF\xd2\x84 x\x8d\x01\x17\xae\x10\xc1&*\x9aS\xc1\xca6\xddV~\
@@ -1380,13 +1354,12 @@ def getIconSaveBitmap():
     return wxBitmapFromImage(getIconSaveImage())
 
 def getIconSaveImage():
-    stream = cStringIO.StringIO(getIconSaveData())
+    stream = io.BytesIO(getIconSaveData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconZoomOutData():
-    return zlib.decompress(
-'x\xda\x01\t\x03\xf6\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\t\x03\xf6\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x02\xc0IDATH\x89\xbd\x94\xbdOSQ\x18\xc6\x9f\xb6P\
 \x10\xda&\\J"H\x810h\x1c\x04\x94\xe8\x00Q\x18\xfd\x1b4.,]\x8c\x8e\xea\xa2\
@@ -1423,13 +1396,12 @@ def getIconZoomOutBitmap():
     return wxBitmapFromImage(getIconZoomOutImage())
 
 def getIconZoomOutImage():
-    stream = cStringIO.StringIO(getIconZoomOutData())
+    stream = io.BytesIO(getIconZoomOutData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageUnknownData():
-    return zlib.decompress(
-'x\xda\x01\x12\x08\xed\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
+    return zlib.decompress(b'x\xda\x01\x12\x08\xed\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
 \x00\x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08\
 |\x08d\x88\x00\x00\x07\xc9IDATX\x85\x9d\x97m\x8c\x9cU\x15\xc7\x7f\xf7>/\xf3>\
 ;\xddn\xb7[\xa8v!5\x82"(6@L\xac\x8d1\xa4\x94~\xc0R\x9a\x16\x0c~@4\x80\t\x86\
@@ -1515,13 +1487,12 @@ def getIconImageUnknownBitmap():
     return wxBitmapFromImage(getIconImageUnknownImage())
 
 def getIconImageUnknownImage():
-    stream = cStringIO.StringIO(getIconImageUnknownData())
+    stream = io.BytesIO(getIconImageUnknownData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconMakeViewData():
-    return zlib.decompress(
-'x\xda\x01\xf6\x03\t\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\xf6\x03\t\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x03\xadIDATH\x89\xad\x95KlUU\x18\x85\xbfs\x0e\xb6\
 \xa4\xe5q\x01\x8b\xe5\x91\x80\x02\x03m(N\x08\xe6\x1a\x03\x17H!\xc6\xa4\x11\
@@ -1565,13 +1536,12 @@ def getIconMakeViewBitmap():
     return wxBitmapFromImage(getIconMakeViewImage())
 
 def getIconMakeViewImage():
-    stream = cStringIO.StringIO(getIconMakeViewData())
+    stream = io.BytesIO(getIconMakeViewData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getXData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x1c \xcc\xc1\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x1c \xcc\xc1\
 \x06$\x8f\xf0\xef\xeb\x06R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4[y\xba8\x86HL\
 m\xedw\xe4cP\xe09\xd4\xf5\xff\xbf\xb1\xdc\x15\x97\x99'w\xf4N\xea\xe5\xdc\xe0\
 \xd0R\xf3\xc7W'L\xebyRZ\xc4\xf7\xbc\xfas\xbd-l\xf6\xa9\xbb\xf8^\xed\x0bP\\\
@@ -1581,13 +1551,12 @@ def getXBitmap():
     return wxBitmapFromImage(getXImage())
 
 def getXImage():
-    stream = cStringIO.StringIO(getXData())
+    stream = io.BytesIO(getXData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconForwardData():
-    return zlib.decompress(
-'x\xda\x01:\x06\xc5\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01:\x06\xc5\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x05\xf1IDATH\x89}\x96mh\\Y\x19\xc7\xff\xe7\xe5\
 \xde\x99\xdc\xe9L\xe6%\x99N\xd2t\xcb\xda\xd9n\xa9\xed\xb6\xb4\x8dB\xbe\xb4\
@@ -1656,13 +1625,12 @@ def getIconForwardBitmap():
     return wxBitmapFromImage(getIconForwardImage())
 
 def getIconForwardImage():
-    stream = cStringIO.StringIO(getIconForwardData())
+    stream = io.BytesIO(getIconForwardData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageComplexData():
-    return zlib.decompress(
-'x\xda\x01\x97\x04h\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\x97\x04h\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x04NIDATX\x85\x9d\x97Ko\x13W\x14\xc7\x7fc\x8fcc7\x11\xb2\
 \x02m\x03Jh\x17]\xf4A\x17\x91X\xb4\r\xe4\x0bt\x01R\xb6UUu\xcd\xa2B\xe2\x13\
@@ -1714,13 +1682,12 @@ def getIconImageComplexBitmap():
     return wxBitmapFromImage(getIconImageComplexImage())
 
 def getIconImageComplexImage():
-    stream = cStringIO.StringIO(getIconImageComplexData())
+    stream = io.BytesIO(getIconImageComplexData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconNextManclassData():
-    return zlib.decompress(
-'x\xda\x01\x8d\x01r\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\x8d\x01r\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01DIDAT8\x8d\xed\xd4\xb1j\xc2@\x1c\xc7\xf1o$.\
 \x01\x97\x03\xc1I\xc8\xe0s\xe8\xe6\xe2\xe0"\x0e>\x81\xaf\xa6\xab\x08\xe2&\
@@ -1742,13 +1709,12 @@ def getIconNextManclassBitmap():
     return wxBitmapFromImage(getIconNextManclassImage())
 
 def getIconNextManclassImage():
-    stream = cStringIO.StringIO(getIconNextManclassData())
+    stream = io.BytesIO(getIconNextManclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconShowNameData():
-    return zlib.decompress(
-"x\xda\x01Q\x02\xae\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b"x\xda\x01Q\x02\xae\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x02\x08IDATH\x89\xbd\x96\xcdn\xd3P\x10\x85\xbfi\
 \xd3\xd0V@[\x8a\xaa\xb6\x90\x17\x80%\x9b\xb8{\x9e\x00M\x1f\x82\xa7\xf0\x13$;\
@@ -1777,13 +1743,12 @@ def getIconShowNameBitmap():
     return wxBitmapFromImage(getIconShowNameImage())
 
 def getIconShowNameImage():
-    stream = cStringIO.StringIO(getIconShowNameData())
+    stream = io.BytesIO(getIconShowNameData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIntVectorData():
-    return zlib.decompress(
-'x\xda\x01\xec\x01\x13\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
+    return zlib.decompress(b'x\xda\x01\xec\x01\x13\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \
 \x00\x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08\
 |\x08d\x88\x00\x00\x01\xa3IDATX\x85\xed\x96;K\x03A\x14\x85?5\xc6\x07Q\x0b\
 \x15\x04\x11DD\xd4\xc6Z\xc1R\xac%?@\x10A\x04\x1b\xff\x80E\x10l\x02\xf6\x82X\
@@ -1808,13 +1773,12 @@ def getIntVectorBitmap():
     return wxBitmapFromImage(getIntVectorImage())
 
 def getIntVectorImage():
-    stream = cStringIO.StringIO(getIntVectorData())
+    stream = io.BytesIO(getIntVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageComplexData():
-    return zlib.decompress(
-'x\xda\x01R\x06\xad\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01R\x06\xad\xf9\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x06\tIDATX\x85\x9d\x97\xebk\x1c\xd7\x19\x87\x9f\xd9\x9d\
 \xd5\xae\xf6\x16i\xb5\x92j\xf9"E\xc5)5H\x96\xebD\x85\xb6\t\xea\x87\xd2PRJ]\
@@ -1882,13 +1846,12 @@ def getIconSubimageComplexBitmap():
     return wxBitmapFromImage(getIconSubimageComplexImage())
 
 def getIconSubimageComplexImage():
-    stream = cStringIO.StringIO(getIconSubimageComplexData())
+    stream = io.BytesIO(getIconSubimageComplexData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSelectRemovedData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
 \x06$\x1f\x94\xdb\xfe\x00R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe47{\xba8\x86xt\
 &',0LHIHH\xf8\xb0\xea\xfe\xaf\xf9A\xcd\xdbL\xab\x8c\x1fMi\x89j\x10\xae\xbe\
 \x9a\xff\xb7\x9f\xbf\x02H\xca\x8b\x89\xb5]\xcdQ\xf3\x8a\xf5\xe3\xe8\x892`\
@@ -1901,13 +1864,12 @@ def getIconSelectRemovedBitmap():
     return wxBitmapFromImage(getIconSelectRemovedImage())
 
 def getIconSelectRemovedImage():
-    stream = cStringIO.StringIO(getIconSelectRemovedData())
+    stream = io.BytesIO(getIconSelectRemovedData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageGrey16Data():
-    return zlib.decompress(
-'x\xda\x01\x05\t\xfa\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\x05\t\xfa\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x08\xbcIDATX\x85\x8d\x96k\x8cT\xe5\x19\xc7\x7f\xe7\xcc93\
 \xb3s\xd9\x1b\xb3WvY\x17\xc5\xac\x80\x8a]\xaaDmEY\xab\xec\xd2\x90HB\x1b[1\
@@ -2003,13 +1965,12 @@ def getIconSubimageGrey16Bitmap():
     return wxBitmapFromImage(getIconSubimageGrey16Image())
 
 def getIconSubimageGrey16Image():
-    stream = cStringIO.StringIO(getIconSubimageGrey16Data())
+    stream = io.BytesIO(getIconSubimageGrey16Data())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getPlusData():
-    return zlib.decompress(
-'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x1c \xcc\xc1\
+    return zlib.decompress(b'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x1c \xcc\xc1\
 \x06$\x8f\xf0\xef\xeb\x06R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4ky\xba8\x86HL\
 MNIqh\xf8\xcf\xc3\xf3_RRbB\xab\xc4\x0c\t\x0e\x86&.\tE\xb5\xc7SRR\x964KKpj00t\
 \x1a\xb2\n\xae\x10\xb5\xd7\x06\xeab\xf0t\xf5sY\xe7\x94\xd0\x04\x00$\x03\x19\
@@ -2019,13 +1980,12 @@ def getPlusBitmap():
     return wxBitmapFromImage(getPlusImage())
 
 def getPlusImage():
-    stream = cStringIO.StringIO(getPlusData())
+    stream = io.BytesIO(getPlusData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconHomeData():
-    return zlib.decompress(
-'x\xda\x01P\x04\xaf\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01P\x04\xaf\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x04\x07IDATH\x89\x9d\x95\xcfKcW\x14\xc7?/y\xea\
 \x8b\xc6\x1f\xd345\xfe\x1aa.\xb4\x88-\x15\x85\x01\xb14 \xd3E\xe9\xae .\x06Z*\
@@ -2073,13 +2033,12 @@ def getIconHomeBitmap():
     return wxBitmapFromImage(getIconHomeImage())
 
 def getIconHomeImage():
-    stream = cStringIO.StringIO(getIconHomeData())
+    stream = io.BytesIO(getIconHomeData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconZoomFitData():
-    return zlib.decompress(
-'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2" \xcc\xc1\x06$\
+    return zlib.decompress(b'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2" \xcc\xc1\x06$\
 {;ey\x81\x14K\xb1\x93g\x08\x07\x10\xd4p\xa4t\x00\xf9\xb3<]\x1cC,z\xcfN\xd9\
 \xcbw@\x81\xa3\xe5\xfc>\xd3\xe6\xc9\xcd\xfd\xb9\xd3\xb3\x1c~\x1a\xfa\xde\xf2\
 x\x14`y\xce\x7f\x0b\xd3r\xf7\xa2\xa2\xb7\xbes\xd39N]aX0\x8d\xeb\x94J\xd1\xd6\
@@ -2093,13 +2052,12 @@ def getIconZoomFitBitmap():
     return wxBitmapFromImage(getIconZoomFitImage())
 
 def getIconZoomFitImage():
-    stream = cStringIO.StringIO(getIconZoomFitData())
+    stream = io.BytesIO(getIconZoomFitData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getGameraSplashData():
-    return zlib.decompress(
-'x\xda\xd4\xbbeP\x1c_\xf8\xad\x8b\x07\x87\xe0\x12\xdc-0\x10 \xc1%\xb8K\xf0\
+    return zlib.decompress(b'x\xda\xd4\xbbeP\x1c_\xf8\xad\x8b\x07\x87\xe0\x12\xdc-0\x10 \xc1%\xb8K\xf0\
 \xe0\xae\x81\xe0.\xc1\xdd\x1d\x02\xc1\xdd!\xb8\x0e\x0e\xc1!\xb8\xbb;\x0c\xcc\
 \xe9\xfc\xfeu\xaan\xd5\xad\xf3\xedV\x9d\xba\t5\x19\x9a\xd0\xbd{\xef\xf7]\xeb\
 Y\xdd=\xe1\xca\x8aR\x18\xa8$\xa8000\x182\xd2\x9fUa``\xbf\xc0\xc0\xc0!#\xc3\
@@ -6800,13 +6758,12 @@ def getGameraSplashBitmap():
     return wxBitmapFromImage(getGameraSplashImage())
 
 def getGameraSplashImage():
-    stream = cStringIO.StringIO(getGameraSplashData())
+    stream = io.BytesIO(getGameraSplashData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageBinaryData():
-    return zlib.decompress(
-'x\xda\x01T\x07\xab\xf8\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01T\x07\xab\xf8\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x07\x0bIDATX\x85\x9d\x97\xcbo\x1cY\x15\xc6\x7f\xb7\xea\xd6\
 \xab\x1fv\xa7\xd3v\x92\xf1\xc4=RH`\xc3C,"\xa4\x19F\x11\x11\x9b\xd1\x08)\x99\
@@ -6884,13 +6841,12 @@ def getIconImageBinaryBitmap():
     return wxBitmapFromImage(getIconImageBinaryImage())
 
 def getIconImageBinaryImage():
-    stream = cStringIO.StringIO(getIconImageBinaryData())
+    stream = io.BytesIO(getIconImageBinaryData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSelectAddedData():
-    return zlib.decompress(
-'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
+    return zlib.decompress(b'x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
 \x06$\x1f\x94\xdb\xfe\x00R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4wx\xba8\x86xt\
 \xbe\x9d\xea\xc8\xd5\xa0 \xe0z\xfcE\xc9\xe3{\xaf3\xae\x17\xda\xc7\x9d\x17\
 \x9b\xaa`\xe1\xf5R`\xa2<Kb\xca\xbcG\xd7\xf9\x15tX\x19\x1a\xa6%\xe5/\xde\x90y\
@@ -6904,13 +6860,12 @@ def getIconSelectAddedBitmap():
     return wxBitmapFromImage(getIconSelectAddedImage())
 
 def getIconSelectAddedImage():
-    stream = cStringIO.StringIO(getIconSelectAddedData())
+    stream = io.BytesIO(getIconSelectAddedData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconGuessData():
-    return zlib.decompress(
-"x\xda\x01\x9c\x02c\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b"x\xda\x01\x9c\x02c\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x02SIDAT8\x8d\xcd\x94\xcfk\x92q\x1c\xc7\xdf\xcf\
 \xa6\xcf\xa3bX&\xd3\x90\xd1\xe6r\x0c,\xe6\xd4\xb6\xb1\x0eA]\xd6!v\x18v\x1au\
@@ -6941,13 +6896,12 @@ def getIconGuessBitmap():
     return wxBitmapFromImage(getIconGuessImage())
 
 def getIconGuessImage():
-    stream = cStringIO.StringIO(getIconGuessData())
+    stream = io.BytesIO(getIconGuessData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconNextUnclassData():
-    return zlib.decompress(
-'x\xda\x01\x88\x01w\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\x88\x01w\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01?IDAT8\x8d\xed\xd4\xb1\x8a\xc2@\x14\x85\xe1\
 \x7fdm\x026\x01\xc1J\xb0\xf09\xb4\xb3M\x13,|\x02_M{A\xecD\x04\x1b\xc9#\x04,B\
@@ -6968,13 +6922,12 @@ def getIconNextUnclassBitmap():
     return wxBitmapFromImage(getIconNextUnclassImage())
 
 def getIconNextUnclassImage():
-    stream = cStringIO.StringIO(getIconNextUnclassData())
+    stream = io.BytesIO(getIconNextUnclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconClassifyData():
-    return zlib.decompress(
-'x\xda\x01)\x02\xd6\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01)\x02\xd6\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x01\xe0IDATX\x85\xed\x96;O\x02A\x14\x85\xcf\xe0\x16`EBbaiE\
 \xc1O\x80\x84P[SPXC\xa5\x7f\xc1\x9e\x86J\x1b\x1a\x13\x89\x12l\xc4\x8a\x84\
@@ -7002,13 +6955,12 @@ def getIconClassifyBitmap():
     return wxBitmapFromImage(getIconClassifyImage())
 
 def getIconClassifyImage():
-    stream = cStringIO.StringIO(getIconClassifyData())
+    stream = io.BytesIO(getIconClassifyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getFloatVectorData():
-    return zlib.decompress(
-'x\xda\x01\xae\x01Q\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01\xae\x01Q\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x01eIDATX\x85\xed\xd6\xbbJ$A\x14\x06\xe0o]G\x14\x8c\x14A0\
 \x11Ev\x93\x8d4\x13\x03\x1f\xc070\x12\x0c\x8c|\x003\x1fD10\x1364\xda@6Y\xd8`\
@@ -7030,13 +6982,12 @@ def getFloatVectorBitmap():
     return wxBitmapFromImage(getFloatVectorImage())
 
 def getFloatVectorImage():
-    stream = cStringIO.StringIO(getFloatVectorData())
+    stream = io.BytesIO(getFloatVectorData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconNoninterClassifyData():
-    return zlib.decompress(
-'x\xda\x01%\x05\xda\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01%\x05\xda\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x04\xdcIDATX\x85\xed\x97[l\x14e\x14\xc7\x7f\xb3\xb3]\xb6\
 \xed^\xda\xee\xb6X\xa8\xfa\x005"\x88\x89(\x18\xc1\xc8E\xc5D4\xf1\xc5K\xb5&\
@@ -7093,13 +7044,12 @@ def getIconNoninterClassifyBitmap():
     return wxBitmapFromImage(getIconNoninterClassifyImage())
 
 def getIconNoninterClassifyImage():
-    stream = cStringIO.StringIO(getIconNoninterClassifyData())
+    stream = io.BytesIO(getIconNoninterClassifyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconDetailsData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2b \xcc\xc1\x06$\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2b \xcc\xc1\x06$\
 \x8fl\xc9\xb1\x06R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4[{\xba8\x86X\xf4&'H\
 \xbcz`\xc3\xcc|\xb8\x9e\xcb0\x97QYj\xbe\x94\xd9\xa2\xd9\x9e\xb1\x06\xaf\x92r\
 \xd2\x82\xc4{vI\xcc\x9ey\x85u\xb1\xde\xb14\xb5RF\xd3\x18\x9fhq\xbeZ\x06\x86\
@@ -7110,13 +7060,12 @@ def getIconDetailsBitmap():
     return wxBitmapFromImage(getIconDetailsImage())
 
 def getIconDetailsImage():
-    stream = cStringIO.StringIO(getIconDetailsData())
+    stream = io.BytesIO(getIconDetailsData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSortDecData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12 \xcc\xc1\
 \x06$\x1f\x94\xdb\xfe\x00R,\xc5N\x9e!\x1c@P\xc3\x91\xd2\x01\xe4\xcf\xf0tq\
 \x0c\xf1\xe8|\x1b\xe2\xc8w@\x81\xe3pj\xff\x97\xff\xf2\x89\xec\xc9\xcfZ\x98&W\
 F\x0bO\xe6\\\xac\xeb\xa5\xf2\xeb\xe1\x823\x8cjI\xcb\x1d\xael12]\xf7o%\x97\
@@ -7130,13 +7079,12 @@ def getIconSortDecBitmap():
     return wxBitmapFromImage(getIconSortDecImage())
 
 def getIconSortDecImage():
-    stream = cStringIO.StringIO(getIconSortDecData())
+    stream = io.BytesIO(getIconSortDecData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageFloatData():
-    return zlib.decompress(
-'x\xda\x015\x08\xca\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x015\x08\xca\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x07\xecIDATX\x85\x9d\x97[h\x1c\xe7\x15\xc7\x7f\xdf\xec\xcc\
 \xce\xce\xecE\xd2Z\xb7(\xae\x04\x0e\xb8\x85\xa6\xb6\xc9ETQ\xb1\xd3\xd2@\xed\
@@ -7223,13 +7171,12 @@ def getIconImageFloatBitmap():
     return wxBitmapFromImage(getIconImageFloatImage())
 
 def getIconImageFloatImage():
-    stream = cStringIO.StringIO(getIconImageFloatData())
+    stream = io.BytesIO(getIconImageFloatData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageGreyData():
-    return zlib.decompress(
-'x\xda\x01d\x05\x9b\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01d\x05\x9b\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x05\x1bIDATX\x85\x9d\x97\xb1k\x1bI\x14\xc6\x7fV\x1ef\x8a)\
 \x860\x84%l!\x8e\xe0JE\n\x15\xe60GH\xe5"E\x8a\x14)R\xa6H\xe12\x04\x13\x8c\n\
@@ -7288,13 +7235,12 @@ def getIconImageGreyBitmap():
     return wxBitmapFromImage(getIconImageGreyImage())
 
 def getIconImageGreyImage():
-    stream = cStringIO.StringIO(getIconImageGreyData())
+    stream = io.BytesIO(getIconImageGreyData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getToolbarOpenData():
-    return zlib.decompress(
-"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12@\xcc\xca\
+    return zlib.decompress(b"x\xda\xeb\x0c\xf0s\xe7\xe5\x92\xe2b``\xe0\xf5\xf4p\t\x02\xd2\x12@\xcc\xca\
 \xc1\x06$\xe3\xedu\xf6\x02)\x96b'\xcf\x10\x0e \xa8\xe1H\xe9\x00\xf2u<]\x1cC$\
 \xa6&',\xe0\xfd\xc1\x9fl\xa0\xd8\xed7\xcf\xe6\xe7\xff\xdf\xdf\xdf\xff\x0f\
 \xf6\xe4q\x9d'\xd6v\xd8\xe0*\xaf\xfb\xb6\x864\x86<\x0b\x86\x95'\xc3\xb4\x1f;\
@@ -7304,13 +7250,12 @@ def getToolbarOpenBitmap():
     return wxBitmapFromImage(getToolbarOpenImage())
 
 def getToolbarOpenImage():
-    stream = cStringIO.StringIO(getToolbarOpenData())
+    stream = io.BytesIO(getToolbarOpenData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageListData():
-    return zlib.decompress(
-'x\xda\x01(\x05\xd7\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01(\x05\xd7\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\x04\xdfIDATX\x85\xc5\x97]lTE\x14\xc7\x7f3\xf7\xde\xed\x07-\
 \xadliK\xb7\x85\x8a\xd1\x04\n\x06-V\xe3WbH\x88h\x13\x13Ix\xf0\xd9\xc4\x10\
@@ -7367,13 +7312,12 @@ def getIconImageListBitmap():
     return wxBitmapFromImage(getIconImageListImage())
 
 def getIconImageListImage():
-    stream = cStringIO.StringIO(getIconImageListData())
+    stream = io.BytesIO(getIconImageListData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageBrowserData():
-    return zlib.decompress(
-'x\xda\x01\x00\x08\xff\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00#\
+    return zlib.decompress(b'x\xda\x01\x00\x08\xff\xf7\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00#\
 \x00\x00\x00$\x08\x06\x00\x00\x00\x03\xdc\x83\xe1\x00\x00\x00\x04sBIT\x08\
 \x08\x08\x08|\x08d\x88\x00\x00\x07\xb7IDATX\x85\xcd\xd8\x7fl\x13\xe7\x1d\xc7\
 \xf1\xf7=wG|\xb6\x13\x93\x04h\x02\x01\x12\x82CHRPK\x19\xdd\xc6\n\r+\x01$X\
@@ -7457,13 +7401,12 @@ def getIconImageBrowserBitmap():
     return wxBitmapFromImage(getIconImageBrowserImage())
 
 def getIconImageBrowserImage():
-    stream = cStringIO.StringIO(getIconImageBrowserData())
+    stream = io.BytesIO(getIconImageBrowserData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconSubimageFloatData():
-    return zlib.decompress(
-'x\xda\x01c\t\x9c\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
+    return zlib.decompress(b'x\xda\x01c\t\x9c\xf6\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\
 \x00\x00 \x08\x06\x00\x00\x00szz\xf4\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\
 \x08d\x88\x00\x00\t\x1aIDATX\x85\x9d\x97k\x8c\\e\x19\xc7\x7f\xe7\xcc\x99=s\
 \xdb\x99\xee\xb6\xb3;\xdd\xee\xa5\xcb\xb2\xb5\xd2mYX\\$\xa8-X5v\x0b&\x18\x83\
@@ -7560,13 +7503,12 @@ def getIconSubimageFloatBitmap():
     return wxBitmapFromImage(getIconSubimageFloatImage())
 
 def getIconSubimageFloatImage():
-    stream = cStringIO.StringIO(getIconSubimageFloatData())
+    stream = io.BytesIO(getIconSubimageFloatData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconPrinterData():
-    return zlib.decompress(
-'x\xda\x01B\x05\xbd\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01B\x05\xbd\xfa\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x04\xf9IDATH\x89\x9d\x96]h\x14W\x14\xc7\x7f3;3\
 \xbb\xb3Y\xf3\xa1\xdd|i\x9b<\x944-6\x15\xdaB\xfa\xe2GDJ\x8a\x98\x82\xb0V\x91\
@@ -7624,13 +7566,12 @@ def getIconPrinterBitmap():
     return wxBitmapFromImage(getIconPrinterImage())
 
 def getIconPrinterImage():
-    stream = cStringIO.StringIO(getIconPrinterData())
+    stream = io.BytesIO(getIconPrinterData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconHelpData():
-    return zlib.decompress(
-"x\xda\x01\x9c\x02c\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b"x\xda\x01\x9c\x02c\xfd\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x02SIDAT8\x8d\xcd\x94\xcfk\x92q\x1c\xc7\xdf\xcf\
 \xa6\xcf\xa3bX&\xd3\x90\xd1\xe6r\x0c,\xe6\xd4\xb6\xb1\x0eA]\xd6!v\x18v\x1au\
@@ -7661,13 +7602,12 @@ def getIconHelpBitmap():
     return wxBitmapFromImage(getIconHelpImage())
 
 def getIconHelpImage():
-    stream = cStringIO.StringIO(getIconHelpData())
+    stream = io.BytesIO(getIconHelpData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconZoomNormData():
-    return zlib.decompress(
-'x\xda\x01\x12\x03\xed\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
+    return zlib.decompress(b'x\xda\x01\x12\x03\xed\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
 \x18\x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\
 \x08\x08\x08|\x08d\x88\x00\x00\x02\xc9IDATH\x89\xcd\x94\xbbOSQ\x1c\xc7\xbf\
 \xb7\x85\x82\xd06\xe1R\x12A^q\xd08\x08(\xd1\x01\xa20\xfa7h\\X\xba\x18\x1d\
@@ -7703,13 +7643,12 @@ def getIconZoomNormBitmap():
     return wxBitmapFromImage(getIconZoomNormImage())
 
 def getIconZoomNormImage():
-    stream = cStringIO.StringIO(getIconZoomNormData())
+    stream = io.BytesIO(getIconZoomNormData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconChooseImageData():
-    return zlib.decompress(
-'x\xda\x01\x91\x04n\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
+    return zlib.decompress(b'x\xda\x01\x91\x04n\xfb\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\
 \x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x04HIDATH\x89\xad\x96_\x88TU\x18\xc0\x7f\xe7\xdc;\
 sw\x06\xff\xcc"\xb3\xeb\x8a\xd0\xa0ldjF`\xc6\x84,(\xf8\x98\xd1\x8b=\xf4\x14\
@@ -7759,13 +7698,12 @@ def getIconChooseImageBitmap():
     return wxBitmapFromImage(getIconChooseImageImage())
 
 def getIconChooseImageImage():
-    stream = cStringIO.StringIO(getIconChooseImageData())
+    stream = io.BytesIO(getIconChooseImageData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconNextAutoclassData():
-    return zlib.decompress(
-'x\xda\x01\x90\x01o\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\x90\x01o\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01GIDAT8\x8d\xed\xd4\xb1j\xc2@\x1c\xc7\xf1o$.\
 \x01\x97\x80\xe0$d\xf0%\xba\xe8\xe6\xea"\x0e>\x81\x93\xcf\xe2k\xe8.\x88\x9b\
@@ -7787,13 +7725,12 @@ def getIconNextAutoclassBitmap():
     return wxBitmapFromImage(getIconNextAutoclassImage())
 
 def getIconNextAutoclassImage():
-    stream = cStringIO.StringIO(getIconNextAutoclassData())
+    stream = io.BytesIO(getIconNextAutoclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconNextHeurclassData():
-    return zlib.decompress(
-'x\xda\x01\x91\x01n\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
+    return zlib.decompress(b'x\xda\x01\x91\x01n\xfe\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x16\
 \x00\x00\x00\x16\x08\x06\x00\x00\x00\xc4\xb4l;\x00\x00\x00\x04sBIT\x08\x08\
 \x08\x08|\x08d\x88\x00\x00\x01HIDAT8\x8d\xed\xd4\xb1j\xc2@\x1c\xc7\xf1o$.\
 \x01\xa1\x04\x04\xe9 d\xf09tsu\x11\x07\x9f\xc0\xbd\x8f\xd1\'\xd1]\x1071\xab\
@@ -7814,13 +7751,12 @@ def getIconNextHeurclassBitmap():
     return wxBitmapFromImage(getIconNextHeurclassImage())
 
 def getIconNextHeurclassImage():
-    stream = cStringIO.StringIO(getIconNextHeurclassData())
+    stream = io.BytesIO(getIconNextHeurclassData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getGameraWizardData():
-    return zlib.decompress(
-'x\xda\x005@\xca\xbf\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x94\x00\
+    return zlib.decompress(b'x\xda\x005@\xca\xbf\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x94\x00\
 \x00\x01<\x08\x02\x00\x00\x00\xa9f\x0f\xb4\x00\x00\x00\x03sBIT\x08\x08\x08\
 \xdb\xe1O\xe0\x00\x00 \x00IDATx\x9c\xec\xbd\xef\x8f\xe3Hz\xe7\xf9!\x15\x94BR\
 (\xc5\xccdU\xa9\xab\xd5\xdd\xd93e\xbbm\xb7o\x1aF\x1b7\xb8\xdb\xdb\xf5\x01\
@@ -9585,13 +9521,12 @@ def getGameraWizardBitmap():
     return wxBitmapFromImage(getGameraWizardImage())
 
 def getGameraWizardImage():
-    stream = cStringIO.StringIO(getGameraWizardData())
+    stream = io.BytesIO(getGameraWizardData())
     return wxImageFromStream(stream)
 
 #----------------------------------------------------------------------
 def getIconImageCopyData():
-    return zlib.decompress(
-'x\xda\x01\x04\x03\xfb\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
+    return zlib.decompress(b'x\xda\x01\x04\x03\xfb\xfc\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\
 \x18\x00\x00\x00\x18\x08\x06\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\
 \x08\x08\x08|\x08d\x88\x00\x00\x02\xbbIDATH\x89\xb5\x92\xcfj[W\x10\x87?]]\
 \xcb\x7f\xda\xc4\x8a\x82\x8a\xbci\n6\xa2P\x02]\xa4)\x94\xac\n\xd9\xb8P\x83\
@@ -9627,6 +9562,6 @@ def getIconImageCopyBitmap():
     return wxBitmapFromImage(getIconImageCopyImage())
 
 def getIconImageCopyImage():
-    stream = cStringIO.StringIO(getIconImageCopyData())
+    stream = io.BytesIO(getIconImageCopyData())
     return wxImageFromStream(stream)
 

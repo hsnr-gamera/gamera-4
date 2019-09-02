@@ -218,7 +218,7 @@ class OptimizerFrame(wx.Frame):
         from gamera import knn
 
         filename = gui_util.open_file_dialog(self, gamera_xml.extensions)
-        if filename == None:
+        if filename is None:
             gui_util.message("Can't open classifier-xml file")
             return
 
@@ -243,7 +243,7 @@ class OptimizerFrame(wx.Frame):
             self, gui.main_win.shell.locals,
             docstring="""Choose an already created classifier for optimization.""")
 
-        if results == None:
+        if results is None:
             return
 
         self.classifier = results[0]
@@ -260,11 +260,11 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
     def OnSaveXML(self, event):
     #---------------------------------------------------------------------------
-        if self.classifier == None:
+        if self.classifier is None:
             gui_util.message("No classifier loaded")
             return
 
-        if self.settingsFilename == None:
+        if self.settingsFilename is None:
             self.OnSaveXMLAs(event)
 
         # save the current settings into file
@@ -277,7 +277,7 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
     def OnSaveXMLAs(self, event):
     #---------------------------------------------------------------------------
-        if self.classifier == None:
+        if self.classifier is None:
             gui_util.message("No classifier loaded")
             return
 
@@ -311,7 +311,7 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
         from gamera import knn
 
-        if self.classifier == None:
+        if self.classifier is None:
             gui.message("No classifier loaded")
             return
 
@@ -329,7 +329,7 @@ class OptimizerFrame(wx.Frame):
 
         name = var_name.get("classifier", gui.main_win.shell.locals)
 
-        if name == None:
+        if name is None:
             gui_util.message("No valid variable name for classifier entered")
             return
 
@@ -343,12 +343,12 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
         from gamera import gamera_xml
 
-        if self.classifier == None:
+        if self.classifier is None:
             gui.message("No classifier loaded")
             return
 
         filename = gui_util.open_file_dialog(self, gamera_xml.extensions)
-        if filename == None:
+        if filename is None:
             gui_util.message("Can't open classifier settings xml file")
             return
 
@@ -364,7 +364,7 @@ class OptimizerFrame(wx.Frame):
         from gamera.core import ImageBase
         from gamera.args import Args, Check
 
-        if self.classifier == None:
+        if self.classifier is None:
             gui.message("No classifier loaded")
             return
 
@@ -382,7 +382,7 @@ class OptimizerFrame(wx.Frame):
 
         result = dialog.show(self)
 
-        if result == None:
+        if result is None:
             gui_util.message("No change applied")
             return
 
@@ -394,7 +394,7 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
     def OnResetSelections(self, event):
     #---------------------------------------------------------------------------
-        if self.classifier == None:
+        if self.classifier is None:
             gui.message("No classifier loaded")
             return
 
@@ -411,7 +411,7 @@ class OptimizerFrame(wx.Frame):
     #---------------------------------------------------------------------------
     def OnResetWeights(self, event):
     #---------------------------------------------------------------------------
-        if self.classifier == None:
+        if self.classifier is None:
             gui.message("No classifier loaded")
             return
 
