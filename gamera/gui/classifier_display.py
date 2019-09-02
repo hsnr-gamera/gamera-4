@@ -22,6 +22,7 @@
 import os.path
 import wx
 from wx import grid
+import logging
 from wx.lib import buttons
 try:
    from wx import aui
@@ -318,7 +319,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
                     (-1,0), (0,-1), (1,0), (0,1),   # +
                     (-1,-1), (-1,1), (1,-1), (1,1)) # x
    def find_glyphs_in_rect(self, x1, y1, x2, y2, shift):
-      matches = util.sets.Set()
+      matches = set()
       if x1 == x2 or y1 == y2:
          point = Point(x1, y1)
          for i, g in enumerate(self.sorted_glyphs):
@@ -336,7 +337,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
                   matches.add(i)
       first = True
       if shift:
-         selected = util.sets.Set()
+         selected = set()
          for i in self.GetSelectedIndices():
             selected.add(i)
          new_matches = matches.symmetric_difference(selected)
@@ -996,7 +997,7 @@ class ClassifierFrame(ImageFrameBase):
       if directory is None:
          gui_util.message("You must provide a directory to load.")
          return
-      error_messages = util.sets.Set()
+      error_messages = set()
       if settings:
          try:
             self._SaveClassifierSettings(
@@ -1095,7 +1096,7 @@ class ClassifierFrame(ImageFrameBase):
 
       self._save_by_criteria_dialog = results
 
-      glyphs = util.sets.Set()
+      glyphs = set()
       if classifier:
          glyphs.update(self._classifier.get_glyphs())
       if page:
@@ -1367,6 +1368,7 @@ class ClassifierFrame(ImageFrameBase):
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
       except Exception as e:
+         print(e)
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return
@@ -1395,6 +1397,7 @@ class ClassifierFrame(ImageFrameBase):
          self._segment_image(image, segmenters[segmenter])
          self.multi_iw.id.is_dirty = False
       except Exception as e:
+         logging.log(logging.ERROR, e)
          wx.EndBusyCursor()
          gui_util.message(str(e))
          return

@@ -37,15 +37,21 @@ from gamera.gui import image_menu, var_name, gui_util, toolbar, has_gui, compat_
 import gamera.plugins.gui_support  # Gamera plugin
 
 ##############################################################################
+def cmp(x, y):
+   """
+   @source https://portingguide.readthedocs.io/en/latest/comparisons.html
+
+   Replacement for built-in function cmp that was removed in Python 3
+
+   Compare the two objects x and y and return an integer according to
+   the outcome. The return value is negative if x < y, zero if x == y
+   and strictly positive if x > y.
+   """
+
+   return (x > y) - (x < y)
 
 # we want this done on import
 compat_wx.init_image_handlers()
-
-def _sort_by_nrows(a, b):
-   return cmp(a.nrows, b.nrows)
-
-def _sort_by_ncols(a, b):
-   return cmp(a.nrows, b.nrows)
 
 #############################################################################
 
@@ -1248,24 +1254,13 @@ class MultiImageDisplay(gridlib.Grid):
    # SORTING
 
    def _sort_by_name_func(self, a, b):
-      if a.id_name == [] and b.id_name == []:
-         r = 0
-      elif a.id_name == []:
-         r = 1
-      elif b.id_name == []:
-         r = -1
-      else:
-         r = cmp(a.get_main_id(), b.get_main_id())
-      if r == 0:
-         r = cmp(b.classification_state, a.classification_state)
-         if r == 0 and a.classification_state != UNCLASSIFIED:
-            r = cmp(b.id_name[0][0], a.id_name[0][0])
-      return r
+      raise RuntimeError("Function '_sort_by_name_func' not implemented")
 
    def _split_classified_from_unclassified(self, list):
       # Find split between classified and unclassified
       if not len(list):
          return [], []
+      i = 0
       for i in range(len(list)):
          if list[i].classification_state == UNCLASSIFIED:
             break
@@ -1290,7 +1285,7 @@ class MultiImageDisplay(gridlib.Grid):
    # To minimize the size of the grid, we sort the images
    # first by height, and then within each row by width
    def _sort_by_size(self, list):
-      list.sort(key=_sort_by_nrows)
+      list.sort(key=lambda x: x.nrows)
       outlist = []
       while len(list):
          if len(list) < self.cols:
@@ -1299,7 +1294,7 @@ class MultiImageDisplay(gridlib.Grid):
          else:
             sublist = list[:self.cols]
             list = list[self.cols:]
-         sublist.sort(key=_sort_by_ncols)
+         sublist.sort(key=lambda x: x.nrows)
          outlist.extend(sublist)
       return outlist
 
@@ -1310,7 +1305,7 @@ class MultiImageDisplay(gridlib.Grid):
       # mark that we want to display row labels
       self.display_row_labels = 1
       # Sort by label
-      _list.sort(key=self._sort_by_name_func)
+      _list.sort(key=lambda x: x.get_main_id())
       # Find split between classified and unclassified
       classified, unclassified = self._split_classified_from_unclassified(_list)
       # Sort the unclassified by size
