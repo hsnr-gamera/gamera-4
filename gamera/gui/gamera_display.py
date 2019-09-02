@@ -350,11 +350,11 @@ class ImageDisplay(wx.ScrolledWindow, util.CallbackObject):
       if self.image is None:
          return
       old_scale = self.scaling
-      if new_scale < old_scale:
-         # self.Clear()
-         self.RefreshAll()
       if new_scale is None or new_scale <= 0:
          new_scale = old_scale
+      elif new_scale < old_scale:
+         # self.Clear()
+         self.RefreshAll()
 
       # Clamp scaling to a reasonable range
       # Going outside of this range has been known to cause segfaults
@@ -1290,33 +1290,35 @@ class MultiImageDisplay(gridlib.Grid):
    # To minimize the size of the grid, we sort the images
    # first by height, and then within each row by width
    def _sort_by_size(self, list):
-      list.sort(_sort_by_nrows)
+      list.sort(key=_sort_by_nrows)
       outlist = []
       while len(list):
          if len(list) < self.cols:
-            sublist = list; list = []
+            sublist = list
+            list = []
          else:
-            sublist = list[:self.cols]; list = list[self.cols:]
-         sublist.sort(_sort_by_ncols)
+            sublist = list[:self.cols]
+            list = list[self.cols:]
+         sublist.sort(key=_sort_by_ncols)
          outlist.extend(sublist)
       return outlist
 
-   def default_sort(self, list):
+   def default_sort(self, _list):
       # If we've done no classification, use the default sort from
       # MultiImageDisplay
       self.last_sort = "default"
       # mark that we want to display row labels
       self.display_row_labels = 1
       # Sort by label
-      list.sort(self._sort_by_name_func)
+      _list.sort(key=self._sort_by_name_func)
       # Find split between classified and unclassified
-      classified, unclassified = self._split_classified_from_unclassified(list)
+      classified, unclassified = self._split_classified_from_unclassified(_list)
       # Sort the unclassified by size
       unclassified = self._sort_by_size(unclassified)
       # Merge back together
-      list = classified + unclassified
+      _list = classified + unclassified
       # Make sure each new label begins in a new row
-      new_list = self._insert_for_line_breaks(list)
+      new_list = self._insert_for_line_breaks(_list)
       return new_list
 
    # Sorts the list of images by a given function, or the
@@ -1351,7 +1353,7 @@ class MultiImageDisplay(gridlib.Grid):
                   del item.sort_cache
                return
             self.sorted_glyphs = list(self.glyphs)
-            self.sorted_glyphs.sort(util.fast_cmp)
+            self.sorted_glyphs.sort(key=util.fast_cmp)
             for item in self.glyphs:
                del item.sort_cache
          if self.sort_order:
