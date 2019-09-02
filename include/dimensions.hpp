@@ -568,7 +568,7 @@ namespace Gamera {
 			min_x = min_y = std::numeric_limits<size_t>::max();
 			max_x = max_y = 0;
 			
-			for (auto rect : rects) {
+			for (Rect * rect : rects) {
 				min_x = std::min(min_x, rect->ul_x());
 				min_y = std::min(min_y, rect->ul_y());
 				max_x = std::max(max_x, rect->lr_x());
@@ -624,10 +624,10 @@ namespace Gamera {
 	
 	private:
 		double euclid(coord_t x1, coord_t y1, coord_t x2, coord_t y2) {
-			auto dx1 = (double) x1;
-			auto dy1 = (double) y1;
-			auto dx2 = (double) x2;
-			auto dy2 = (double) y2;
+			double dx1 = (double) x1;
+			double dy1 = (double) y1;
+			double dx2 = (double) x2;
+			double dy2 = (double) y2;
 			double a = std::pow(std::abs(dx1 - dx2), 2);
 			double b = std::pow(std::abs(dy1 - dy2), 2);
 			return std::sqrt(a + b);

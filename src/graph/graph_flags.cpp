@@ -45,7 +45,7 @@ void Graph::make_directed() {
    }
 
    delete it;
-   for(auto _e : edges) {
+   for(Edge* _e : edges) {
       add_edge(_e->to_node, _e->from_node, _e->weight, true, _e->label);
    }
 }
@@ -83,7 +83,7 @@ void Graph::make_undirected() {
 
       delete it;
    }
-   for(auto & it : remove) {
+   for(smallEdge* it : remove) {
       try {
          remove_edge(it->_from, it->_to);
       }
@@ -142,7 +142,7 @@ bool Graph::is_cyclic() {
    else {
       NodeVector* roots = get_subgraph_roots();
 
-      for(auto rit = roots->begin(); rit != roots->end() && !cyclic; rit++) {
+      for(NodeVector::iterator rit = roots->begin(); rit != roots->end() && !cyclic; rit++) {
 	      //tests for cycles in each subgraph
 	      DfsIterator *it = DFS(*rit);
 	      while (it->next() != nullptr);
@@ -217,7 +217,7 @@ void Graph::make_acyclic() {
          }
       }
 
-      for(auto it : edges_to_remove) {
+      for(Edge* it : edges_to_remove) {
          remove_edge(it);
       }
 

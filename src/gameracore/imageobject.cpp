@@ -928,13 +928,13 @@ static PyObject *image_len(PyObject *self, PyObject *) {
 }
 
 static PyObject *image_eq(PyObject *self, PyObject *args) {
-	auto image = (Image *) ((RectObject *) self)->m_x;
+	Image* image = (Image *) ((RectObject *) self)->m_x;
 	PyObject *other;
 	
 	if (PyArg_ParseTuple(args,  "O", &other)) {
 		if (!is_ImageObject(other)) Py_RETURN_FALSE;
 		
-		auto otherImage = (Image *) ((RectObject *) other)->m_x;
+		Image* otherImage = (Image *) ((RectObject *) other)->m_x;
 		if (*image == *otherImage) {
 			Py_RETURN_TRUE;
 		}
@@ -946,12 +946,12 @@ static PyObject *image_eq(PyObject *self, PyObject *args) {
 }
 
 static PyObject *image_gt(PyObject *self, PyObject *args) {
-	auto image = (Image *) ((RectObject *) self)->m_x;
+	Image* image = (Image *) ((RectObject *) self)->m_x;
 	PyObject *other;
 	if (PyArg_ParseTuple(args,  "O", &other)) {
 		if (!is_ImageObject(other)) Py_RETURN_FALSE;
 		
-		auto otherImage = (Image *) ((RectObject *) other)->m_x;
+		Image* otherImage = (Image *) ((RectObject *) other)->m_x;
 		if (image->origin() > otherImage->origin()) {
 			Py_RETURN_TRUE;
 		}
@@ -968,9 +968,9 @@ static PyObject *image_gt(PyObject *self, PyObject *args) {
 }
 
 static PyObject *image_hash(PyObject *self, PyObject *) {
-	auto image = (Image *) ((RectObject *) self)->m_x;
-	auto origin = image->origin();
-	auto lr = image->lr();
+	Image* image = (Image *) ((RectObject *) self)->m_x;
+	Point origin = image->origin();
+	Point lr = image->lr();
 	return Py_BuildValue("i",  _Py_HashDouble((double)origin.x()) +
 	                           _Py_HashDouble((double)origin.y())+
 	                           _Py_HashDouble((double)lr.x())+
@@ -980,9 +980,9 @@ static PyObject *image_hash(PyObject *self, PyObject *) {
 }
 
 static PyObject *cc_hash(PyObject *self, PyObject *) {
-	auto cc = (Image *) ((RectObject *) self)->m_x;
-	auto origin = cc->origin();
-	auto lr = cc->lr();
+	Image* cc = (Image *) ((RectObject *) self)->m_x;
+	Point origin = cc->origin();
+	Point lr = cc->lr();
 	return Py_BuildValue("i", _Py_HashDouble((double)origin.x()) +
 			_Py_HashDouble((double)origin.y())+
 			_Py_HashDouble((double)lr.x())+
@@ -1132,8 +1132,8 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			if (!is_CCObject(a) || !is_CCObject(b))
 				cmp = false;
 			else {
-				auto ac = *(Cc *) ((RectObject *) a)->m_x;
-				auto bc = *(Cc *) ((RectObject *) b)->m_x;
+				Cc ac = *(Cc *) ((RectObject *) a)->m_x;
+				Cc bc = *(Cc *) ((RectObject *) b)->m_x;
 				cmp = (ap == bp) && (ap.data() == bp.data()) && ac.label() == bc.label();
 			}
 			break;
@@ -1141,8 +1141,8 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			if (!is_CCObject(a) || !is_CCObject(b))
 				cmp = true;
 			else {
-				auto ac = *(Cc *) ((RectObject *) a)->m_x;
-				auto bc = *(Cc *) ((RectObject *) b)->m_x;
+				Cc ac = *(Cc *) ((RectObject *) a)->m_x;
+				Cc bc = *(Cc *) ((RectObject *) b)->m_x;
 				cmp = (ap != bp) || (ap.data() != bp.data()) || ac.label() != bc.label();
 			}
 			break;
@@ -1150,8 +1150,8 @@ static PyObject *cc_richcompare(PyObject *a, PyObject *b, int op) {
 			if (!is_CCObject(a) || !is_CCObject(b))
 				cmp = false;
 			else {
-				auto ac = *(Cc *) ((RectObject *) a)->m_x;
-				auto bc = *(Cc *) ((RectObject *) b)->m_x;
+				Cc ac = *(Cc *) ((RectObject *) a)->m_x;
+				Cc bc = *(Cc *) ((RectObject *) b)->m_x;
 				
 				if (ac.origin() == bc.origin()) {
 					if (ac.lr() == bc.lr()) {

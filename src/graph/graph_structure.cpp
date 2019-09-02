@@ -73,12 +73,12 @@ Graph::Graph(flag_t flags) {
   */
 Graph::~Graph() {
 	size_t edgecount = 0, nodecount = 0;
-	for (auto & _edge : _edges) {
+	for (Edge* _edge : _edges) {
 		delete _edge;
 		edgecount++;
 	}
 	
-	for (auto & _node : _nodes) {
+	for (Node* _node : _nodes) {
 		delete _node;
 		nodecount++;
 	}
@@ -234,7 +234,7 @@ Node* Graph::add_node_ptr(GraphData * value) {
  */
 int Graph::add_nodes(const NodeVector& nodes) {
    int count = 0;
-   for(auto & node : nodes) {
+   for(Node* node : nodes) {
       if(add_node(node))
          count++;
    }
@@ -249,7 +249,7 @@ int Graph::add_nodes(const NodeVector& nodes) {
   */
 int Graph::add_nodes(const ValueVector& values) {
    int count = 0;
-   for(auto & value : values) {
+   for(GraphData* value : values) {
       if(add_node(value))
          count++;
    }
@@ -260,7 +260,7 @@ int Graph::add_nodes(const ValueVector& values) {
 
 // -----------------------------------------------------------------------------
 Node* Graph::get_node(GraphData * value) {
-   auto it = _valuemap.find(value);
+	ValueNodeMap::iterator it = _valuemap.find(value);
    if(it == _valuemap.end())
       return nullptr;
    else
@@ -424,7 +424,7 @@ void Graph::remove_edge(GraphData * from_value, GraphData * to_value) {
 void Graph::remove_edge(Node* from_node, Node* to_node) {
    unsigned long count = 0;
    EdgeVector to_remove;
-   for(auto e : _edges) {
+   for(Edge* e : _edges) {
       if(e->to_node == to_node && e->from_node == from_node) {
          to_remove.push_back(e);
       }
@@ -435,7 +435,7 @@ void Graph::remove_edge(Node* from_node, Node* to_node) {
       }
    }
 
-   for(auto & it : to_remove) {
+   for(Edge* it : to_remove) {
       remove_edge(it);
       count++;
    }
@@ -461,7 +461,7 @@ void Graph::remove_edge(Edge* edge) {
 void Graph::remove_all_edges() {
    //not calling remove_edge because this would take O ( e*ln(e)*ln(e) )
    //doing it this way takes only O(e * ln(e))
-   for(auto & _edge : _edges) {
+   for(Edge* _edge : _edges) {
       _edge->remove_self();
       delete _edge;
    }
