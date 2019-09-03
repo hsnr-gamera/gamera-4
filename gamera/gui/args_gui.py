@@ -566,19 +566,15 @@ class _Filename:
 
    def get_string(self):
       text = self.text.GetValue()
-      if text == "":
+      if not text:
          return "None"
       else:
          return "r'" + text + "'"
 
    def get(self):
       text = self.text.GetValue()
-      try:
-         textutf8 = text.encode('utf8')
-         text = textutf8
-      except Exception:
-         pass
-      if text == "":
+
+      if not text:
          return None
       else:
          return str(text)
@@ -587,6 +583,7 @@ class FileOpen(_Filename):
    def OnBrowse(self, event):
       parent = self.text.GetParent()
       filename = gui_util.open_file_dialog(parent, self.extension)
+
       if filename:
          self.text.SetValue(filename)
       parent.Raise()

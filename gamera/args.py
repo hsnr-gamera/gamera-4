@@ -45,7 +45,9 @@ class NoGUIArgs:
 
 class Args(NoGUIArgs):
    # list is a list of "Arg s"
-   def __init__(self, list=[], name="Arguments", function=None, title=None):
+   def __init__(self, list=None, name="Arguments", function=None, title=None):
+      if list is None:
+         list = []
       self.list = util.make_sequence(list)
       self.valid = 1
       self.name = name
@@ -281,8 +283,10 @@ class Rect(Arg):
       return result
       
 class Choice(Arg):
-   def __init__(self, name=None, choices=[], default=None):
+   def __init__(self, name=None, choices=None, default=None):
       Arg.__init__(self, name)
+      if choices is None:
+         choices = []
       if not util.is_string_or_unicode_list(choices):
          raise TypeError("'choices' must be a list of strings.")
       self.choices = choices
@@ -307,8 +311,10 @@ class Choice(Arg):
       return result
 
 class ChoiceString(Arg):
-   def __init__(self, name=None, choices=[], default=None, strict=True):
+   def __init__(self, name=None, choices=None, default=None, strict=True):
       Arg.__init__(self, name)
+      if choices is None:
+         choices = []
       if not util.is_string_or_unicode_list(choices):
          raise TypeError("'choices' must be a list of strings.")
       self.choices = choices

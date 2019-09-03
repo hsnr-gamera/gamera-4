@@ -133,8 +133,7 @@ class ImageMenu:
       return menu
 
    def create_methods(self, methods, menu):
-      items = methods.items()
-      items.sort()
+      items = sorted(methods.items())
       for key, val in items:
          if type(val) == dict:
             item = self.create_methods(val, wx.Menu())
