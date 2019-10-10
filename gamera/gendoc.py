@@ -338,7 +338,7 @@ class PluginDocumentationGenerator:
 
     def recurse(self, methods, level, images, s=None):
         methods_list = methods.items()
-        methods_list.sort()
+        methods_list = sorted(methods_list)
         for key, val in methods_list:
             if type(val) == dict:
                 if level == 0:
@@ -355,7 +355,7 @@ class PluginDocumentationGenerator:
     def table_of_contents(self, methods):
         def toc_recurse(s, methods, level, links, index, filename=None):
             methods_list = methods.items()
-            methods_list.sort()
+            methods_list = sorted(methods_list)
             for key, val in methods_list:
                 if key.startswith("_"):
                     key = key[1:]
@@ -383,7 +383,7 @@ class PluginDocumentationGenerator:
         index = []
         toc_recurse(s, methods, 0, links, index)
         s.write("Alphabetical\n-------------\n")
-        index.sort(sort_lowercase)
+        index = sorted(sort_lowercase)
         letter = ord('A') - 1
         first = True
         for name in index:
