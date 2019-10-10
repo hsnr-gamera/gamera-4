@@ -1,0 +1,144 @@
+
+Relational
+==========
+
+``bounding_box_grouping_function``
+----------------------------------
+
+``bool`` **bounding_box_grouping_function** (``Rect`` *a*, ``Rect`` *b*, int *threshold*)
+
+
+:Returns: ``bool``
+:Category: Relational
+:Defined in: structural.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Given two rectangles *a*, *b*, and a given *threshold* distance
+(in pixels), returns ``True`` if the two rectangles are closer
+than *threshold*.
+
+
+``edit_distance``
+-----------------
+
+int **edit_distance** (str *s1*, str *s2*)
+
+
+:Returns: int
+:Category: Relational
+:Defined in: structural.py
+:Author: Christoph Dalitz
+
+
+Computes the edit distance (also known as *Levenshtein distance*) between
+two strings.
+
+This counts the number of character substitutions, additions and deletions
+necessary to transform one string into another. This plugin is a 
+straightforward implementation of the classic algorithm by Wagner 
+and Fischer, which has runtime complexity *O(m*n)*, where *m* and *n* are
+the lengths of the two strings.
+
+See R.A. Wagner, M.J. Fischer: *The String-to-String Correction Problem.*
+Journal of the ACM 21, pp. 168-173, 1974.
+
+
+``least_squares_fit``
+---------------------
+
+object **least_squares_fit** ([object *points*])
+
+
+:Returns: object
+:Category: Relational
+:Defined in: structural.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Performs a least squares fit on a given list of points.
+
+The result is a tuple of the form (*m*, *b*, *q*) where *m* is the
+slope of the line, *b* is the *y*-offset, and *q* is the gamma fit
+of the line to the points. (This assumes the same statistical
+significance for all points).
+
+See Numerical Recipes in C, section 15.2__ for more information.
+
+.. __: http://www.library.cornell.edu/nr/bookcpdf/c15-2.pdf
+
+
+``least_squares_fit_xy``
+------------------------
+
+object **least_squares_fit_xy** ([object *points*])
+
+
+:Returns: object
+:Category: Relational
+:Defined in: structural.py
+:Author: Christoph Dalitz
+
+
+Identical to *least_squares_fit* for line angles below 45 degrees.
+For lines with a more vertical slope a least square fit of *x = my
++ b* is done instead.
+
+The result is a tuple of the form (*m*, *b*, *q*, *x_of_y*) where
+*m, b, q* are the same as in *least_squares_fit*, but the integer
+value *x_of_y* determines the actual meaning of the parameters *m*
+and *b*:
+
+When *x_of_y* is zero, *y = mx + b*. Otherwise *x = my + b*.
+
+
+``polar_distance``
+------------------
+
+``FloatVector`` **polar_distance** (``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] *other*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Returns: ``FloatVector``
+:Category: Relational
+:Defined in: structural.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns a tuple containing the normalized distance, polar
+direction, and non-normalized polar distance to another glyph
+(based on center of bounding boxes).
+
+
+``polar_match``
+---------------
+
+int **polar_match** (float *r1*, float *q1*, float *r2*, float *q2*)
+
+
+:Returns: int
+:Category: Relational
+:Defined in: structural.py
+:Author: Michael Droettboom and Karl MacMillan
+
+.. warning:: No documentation written.
+
+
+
+``shaped_grouping_function``
+----------------------------
+
+``bool`` **shaped_grouping_function** (``Image`` [OneBit] *a*, ``Image`` [OneBit] *b*, int *threshold*)
+
+
+:Returns: ``bool``
+:Category: Relational
+:Defined in: structural.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Given two connected components *a*, *b*, and a given *threshold*
+distance (in pixels), returns ``True`` if any pixel in *a* are
+closer than *threshold* to any pixel in *b*.
+
+

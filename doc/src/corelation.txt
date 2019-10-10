@@ -1,0 +1,94 @@
+
+Corelation
+==========
+
+``corelation_sum``
+------------------
+
+float **corelation_sum** (``Image`` [OneBit] *template*, ``Point`` *offset*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale]
+:Returns: float
+:Category: Corelation
+:Defined in: corelation.py
+:Author: Michael Droettboom
+
+
+Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (*x*, *y*).  Uses the
+sum of absolute distance method.  A higher value indicates more
+corelation.
+
+*template*
+  The template image.
+
+*offset*
+  The displacement of the template on the image.
+
+
+``corelation_sum_squares``
+--------------------------
+
+float **corelation_sum_squares** (``Image`` [OneBit] *template*, ``Point`` *offset*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale]
+:Returns: float
+:Category: Corelation
+:Defined in: corelation.py
+:Author: Michael Droettboom
+
+
+Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (*x*, *y*).  Uses the
+sum of squares method.  A higher value indicates more corelation.
+
+*template*
+  The template image.
+*offset*
+  The displacement of the template on the image.
+
+
+``corelation_weighted``
+-----------------------
+
+float **corelation_weighted** (``Image`` [OneBit] *template*, ``Point`` *offset*, float *bb*, float *bw*, float *wb*, float *ww*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale]
+:Returns: float
+:Category: Corelation
+:Defined in: corelation.py
+:Author: Michael Droettboom
+
+
+Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (*x*, *y*).  Uses the
+weighted reward/penalty method.
+
+*template*
+  The template image.
+
+*offset*
+  The displacement of the template on the image.
+
+*bb*, *bw*, *wb*, *ww*
+  The rewards and penalties for different combinations of pixels.
+  The first letter in the argument name indicates the color of the
+  template; the second letter indicates the color of the source
+  image.  For instance, the value of *bw* will be applied to the
+  result when the template pixel is black and the source image
+  pixel is white.
+
++--------+--------+------------------+
+| Image  |        | Template         |
+|        +--------+---------+--------+
+|        |        | black   | white  |
+|        +--------+---------+--------+
+|        | black  | *bb*    | *wb*   |
+|        +--------+---------+--------+
+|        | white  | *bw*    | *ww*   |
++--------+--------+---------+--------+
+
+

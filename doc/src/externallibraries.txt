@@ -1,0 +1,368 @@
+
+ExternalLibraries
+=================
+
+
+Numpy
+-----
+
+``from_numpy``
+``````````````
+
+``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] **from_numpy** (object *array*)
+
+
+:Returns: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: ExternalLibraries/Numpy
+:Defined in: numpy_io.py
+:Author: Robert Butz based on code by Alex Cobb
+
+
+Instantiates a Gamera image from a Numeric multi-dimensional
+array *array*.
+    
+The array must be one of the following types and will map to
+the corresponding Gamera image type:
+
++------------+------------------+
+| Gamera     | Numpy            |
+| type       | type             |
++============+==================+
+| RGB        | uint8 (on 3      |
+|            | planes)          |
++------------+------------------+
+| GREYSCALE  | uint8            |
++------------+------------------+
+| GREY16     | uint32           |
++------------+------------------+
+| ONEBIT     | uint16           |
++------------+------------------+
+| FLOAT      | float64          |
++------------+------------------+
+| COMPLEX    | complex128       |
++------------+------------------+
+
+Requires two copying operations;  may fail for very large images.
+
+To use this function, which is not a method on images, do the
+following:
+
+.. code:: Python
+
+  from gamera.plugins import numpy_io
+  image = numpy_io.from_numpy(array)
+
+
+``to_numpy``
+````````````
+
+object **to_numpy** ()
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Returns: object
+:Category: ExternalLibraries/Numpy
+:Defined in: numpy_io.py
+:Author: Robert Butz based on code by Alex Cobb
+
+
+Returns an ``Numeric`` array containing a copy of the image's data.
+
+The array will be one of the following types corresponding to
+each of the Gamera image types:
+
++------------+-----------------+
+| Gamera     | Numeric         |
+| type       | type            |
++============+=================+
+| RGB        | uint8 (on 3     |
+|            | planes)         |
++------------+-----------------+
+| GREYSCALE  | uint8           |
++------------+-----------------+
+| GREY16     | uint32          |
++------------+-----------------+
+| ONEBIT     | uint16          |
++------------+-----------------+
+| FLOAT      | float64         |
++------------+-----------------+
+| COMPLEX    | complex128      |
++------------+-----------------+
+
+Requires *three* copies, and may fail for very large images.
+
+This method can be used for utilizing special functions present in
+numpy. If you need to compute the discrete fourier transform of
+an image, you can use numpy, as in the following  example:
+
+.. code:: Python
+
+  from gamera.plugins import numpy_io
+  from numpy import fft
+  nparr = image.to_numpy()
+  fourarr = fft.fft2(nparr)
+  fourimage = numpy_io.from_numpy(fourarr)
+
+----------
+
+**Example 1:** to_numpy
+
+|to_numpy_plugin_00_00| |to_numpy_plugin_00_01| 
+
+.. |to_numpy_plugin_00_00| image:: images/to_numpy_plugin_00_00.png
+   :height: 129
+   :width: 227
+
+.. |to_numpy_plugin_00_01| image:: images/to_numpy_plugin_00_01.png
+   :height: 129
+   :width: 227
+
+**Example 2:** to_numpy
+
+|to_numpy_plugin_01_00| |to_numpy_plugin_01_01| 
+
+.. |to_numpy_plugin_01_00| image:: images/to_numpy_plugin_01_00.png
+   :height: 67
+   :width: 96
+
+.. |to_numpy_plugin_01_01| image:: images/to_numpy_plugin_01_01.png
+   :height: 67
+   :width: 96
+
+**Example 3:** to_numpy
+
+|to_numpy_plugin_02_00| |to_numpy_plugin_02_01| 
+
+.. |to_numpy_plugin_02_00| image:: images/to_numpy_plugin_02_00.png
+   :height: 99
+   :width: 69
+
+.. |to_numpy_plugin_02_01| image:: images/to_numpy_plugin_02_01.png
+   :height: 99
+   :width: 69
+
+**Example 4:** to_numpy
+
+|to_numpy_plugin_03_00| |to_numpy_plugin_03_01| 
+
+.. |to_numpy_plugin_03_00| image:: images/to_numpy_plugin_03_00.png
+   :height: 67
+   :width: 96
+
+.. |to_numpy_plugin_03_01| image:: images/to_numpy_plugin_03_01.png
+   :height: 67
+   :width: 96
+
+**Example 5:** to_numpy
+
+|to_numpy_plugin_04_00| |to_numpy_plugin_04_01| 
+
+.. |to_numpy_plugin_04_00| image:: images/to_numpy_plugin_04_00.png
+   :height: 67
+   :width: 96
+
+.. |to_numpy_plugin_04_01| image:: images/to_numpy_plugin_04_01.png
+   :height: 67
+   :width: 96
+
+
+
+
+PIL
+---
+
+``from_pil``
+````````````
+
+``Image`` [GreyScale|RGB|Float] **from_pil** (object *image*)
+
+
+:Returns: ``Image`` [GreyScale|RGB|Float]
+:Category: ExternalLibraries/PIL
+:Defined in: pil_io.py
+:Author: Alex Cobb
+
+
+Instantiates a Gamera image from a Python Imaging Library
+image *image*.
+
+Only RGB or 8-bit greyscale mode PIL images are supported.
+Requires a copying operation;  may fail for very large images.
+
+This can, e.g., be used to read images from file formats not
+directly supported by gamera, as JPEG images:
+
+.. code:: Python
+
+  # Beware: name "Image" is already used in Gamera!
+  import Image as Pil
+  from pil_io import
+
+  # read a JPEG image and convert it to a Gamera image
+  pilimg = Pil.open("image.jpg")
+  img = from_pil(pilimg)
+
+
+``to_pil``
+``````````
+
+object **to_pil** ()
+
+
+:Operates on: ``Image`` [RGB|GreyScale]
+:Returns: object
+:Category: ExternalLibraries/PIL
+:Defined in: pil_io.py
+:Author: Alex Cobb
+
+
+Returns a Python Imaging Library image containing a copy of
+image's data.
+
+Only RGB and Greyscale images are supported.
+May fail for very large images.
+
+----------
+
+**Example 1:** to_pil
+
+|to_pil_plugin_00_00| |to_pil_plugin_00_01| 
+
+.. |to_pil_plugin_00_00| image:: images/to_pil_plugin_00_00.png
+   :height: 129
+   :width: 227
+
+.. |to_pil_plugin_00_01| image:: images/to_pil_plugin_00_01.png
+   :height: 129
+   :width: 227
+
+**Example 2:** to_pil
+
+|to_pil_plugin_01_00| |to_pil_plugin_01_01| 
+
+.. |to_pil_plugin_01_00| image:: images/to_pil_plugin_01_00.png
+   :height: 67
+   :width: 96
+
+.. |to_pil_plugin_01_01| image:: images/to_pil_plugin_01_01.png
+   :height: 67
+   :width: 96
+
+
+
+``_from_raw_string``
+--------------------
+
+``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] **_from_raw_string** (``Point`` *offset*, ``Dim`` *dim*, int *pixel_type*, int *storage_type*, object *data_string*)
+
+
+:Returns: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: ExternalLibraries
+:Defined in: string_io.py
+:Author: Alex Cobb
+
+
+Instantiates an image from binary data in a Python string.
+
+Requires a copying operation;  may fail for very large images.
+
+This function is not intended to be used directly.  To move data
+to/from Numeric/numarray/PIL, use the functions in numeric_io.py,
+numarray_io.py and pil_io.py respectively.
+
+
+``_to_raw_string``
+------------------
+
+object **_to_raw_string** ()
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Returns: object
+:Category: ExternalLibraries
+:Defined in: string_io.py
+:Author: Alex Cobb
+
+
+Returns the image's binary data as a Python string.
+
+Requires a copying operation;  may fail for very large images.
+
+This function is not intended to be used directly.  To move data
+to/from Numeric/numarray/PIL, use the functions in numeric_io.py,
+numarray_io.py and pil_io.py respectively.
+
+
+
+cv
+--
+
+``from_cv``
+```````````
+
+``Image`` [GreyScale|RGB|Float] **from_cv** (object *image*)
+
+
+:Returns: ``Image`` [GreyScale|RGB|Float]
+:Category: ExternalLibraries/cv
+:Defined in: cv_io.py
+:Author: Manuel Jeltsch
+
+
+Instantiates a Gamera RGB image from an OpenCV
+cv.cvmat or cv.iplimage. May fail for very large images.
+
+Usage example:
+
+.. code:: Python
+
+  from gamera.plugins import cv_io
+
+  # read a JPEG image and convert it to a Gamera image
+  cvImg = cv.LoadImage("foo.jpg")
+  img = cv_io.from_cv(cvImg)
+
+
+``to_cv``
+`````````
+
+object **to_cv** ()
+
+
+:Operates on: ``Image`` [RGB|GreyScale|OneBit]
+:Returns: object
+:Category: ExternalLibraries/cv
+:Defined in: cv_io.py
+:Author: Manuel Jeltsch
+
+
+Returns an OpenCv image (cv.cvmat) containing a copy of
+image's data.
+
+Only RGB, Greyscale and Onebit images are supported.
+May fail for very large images.
+
+
+``to_buffer``
+-------------
+
+**to_buffer** (object *Buffer*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: ExternalLibraries
+:Defined in: gui_support.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Encodes the image into a 'buffer' required by wx.Image.
+(i.e. 8-bit RGB triplets). If you need to convert a gamera image
+*scaled_image* to a wx.Bitmap, you can do so as follows:
+
+.. code:: Python
+    
+  wximg = wx.EmptyImage(scaled_image.ncols, scaled_image.nrows)
+  scaled_image.to_buffer(wximg.GetDataBuffer())
+  wxbmp = wx.BitmapFromImage(wximg)
+
+

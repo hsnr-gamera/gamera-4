@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>segmentation.txt</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+
+
+<p>b'nSegmentationn============nn**Last modified**: October 10, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``cc_analysis``n---------------nn[object] <strong>cc_analysis</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnPerforms connected component analysis on the image.nnThis algorithm assumes 8-connected components, meaning any twonpixels are considered &quot;connected&quot; if they are adjacent in anyndirection, including diagonally.nnThe original image will have all of its pixels &quot;labeled&quot; with annumber representing each connected component.  This is so thenconnected components can share data with their source image andnmakes things much more efficient.nnReturns a list of ccs found in the image.  Since all the CC'snshare the same data with the original image, changing the CC'snwill affect the original.  If you do not want this behavior, usenthe <a href="#id237"><span class="problematic" id="id238">image_copy_</span></a> function on each of the CCs::nn  ccs = [x.image_copy() for x in ccs]nn.. _image_copy: utility.html#image-copynn----------nn**Example 1:** cc_analysis()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|cc_analysis_plugin_00_00| <a href="#id3"><span class="problematic" id="id4">|cc_analysis_plugin_00_01|</span></a> <a href="#id5"><span class="problematic" id="id6">|cc_analysis_plugin_00_02|</span></a> <a href="#id7"><span class="problematic" id="id8">|cc_analysis_plugin_00_03|</span></a> <a href="#id9"><span class="problematic" id="id10">|cc_analysis_plugin_00_04|</span></a> nn.. <a href="#id11"><span class="problematic" id="id12">|cc_analysis_plugin_00_00|</span></a> image:: images/cc_analysis_plugin_00_00.pngn   :height: 87n   :width: 65nn.. <a href="#id13"><span class="problematic" id="id14">|cc_analysis_plugin_00_01|</span></a> image:: images/cc_analysis_plugin_00_01.pngn   :height: 3n   :width: 2nn.. <a href="#id15"><span class="problematic" id="id16">|cc_analysis_plugin_00_02|</span></a> image:: images/cc_analysis_plugin_00_02.pngn   :height: 10n   :width: 1nn.. <a href="#id17"><span class="problematic" id="id18">|cc_analysis_plugin_00_03|</span></a> image:: images/cc_analysis_plugin_00_03.pngn   :height: 4n   :width: 4nn.. <a href="#id19"><span class="problematic" id="id20">|cc_analysis_plugin_00_04|</span></a> image:: images/cc_analysis_plugin_00_04.pngn   :height: 7n   :width: 41nnnn``cc_and_cluster``n------------------nn[object] <strong>cc_and_cluster</strong> (float <em>ratio</em> = 1.00, int <em>distance</em> = 2)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnPerforms connected component analysis using <a href="#id239"><span class="problematic" id="id240">cc_analysis_</span></a> and thennclusters the CC's according to their similarity.nnTODO: We need some more detailed documentation here.nn----------nn**Example 1:** cc_and_cluster()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|cc_and_cluster_plugin_00_00| <a href="#id21"><span class="problematic" id="id22">|cc_and_cluster_plugin_00_01|</span></a> <a href="#id23"><span class="problematic" id="id24">|cc_and_cluster_plugin_00_02|</span></a> <a href="#id25"><span class="problematic" id="id26">|cc_and_cluster_plugin_00_03|</span></a> <a href="#id27"><span class="problematic" id="id28">|cc_and_cluster_plugin_00_04|</span></a> nn.. <a href="#id29"><span class="problematic" id="id30">|cc_and_cluster_plugin_00_00|</span></a> image:: images/cc_and_cluster_plugin_00_00.pngn   :height: 87n   :width: 65nn.. <a href="#id31"><span class="problematic" id="id32">|cc_and_cluster_plugin_00_01|</span></a> image:: images/cc_and_cluster_plugin_00_01.pngn   :height: 3n   :width: 2nn.. <a href="#id33"><span class="problematic" id="id34">|cc_and_cluster_plugin_00_02|</span></a> image:: images/cc_and_cluster_plugin_00_02.pngn   :height: 10n   :width: 1nn.. <a href="#id35"><span class="problematic" id="id36">|cc_and_cluster_plugin_00_03|</span></a> image:: images/cc_and_cluster_plugin_00_03.pngn   :height: 4n   :width: 4nn.. <a href="#id37"><span class="problematic" id="id38">|cc_and_cluster_plugin_00_04|</span></a> image:: images/cc_and_cluster_plugin_00_04.pngn   :height: 7n   :width: 41nnnn``splitx``n----------nn[object] <strong>splitx</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom, Karl MacMillan and Christoph DalitznnnSplits an image vertically.nnThe split point is determined automatically by finding a valley innthe projections near <em>center</em>.nnThis function is overloaded to work both with a single valuenand a list of splitting point candidates as input.nn----------nn**Example 1:** splitx()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splitx_plugin_00_00| <a href="#id39"><span class="problematic" id="id40">|splitx_plugin_00_01|</span></a> <a href="#id41"><span class="problematic" id="id42">|splitx_plugin_00_02|</span></a> <a href="#id43"><span class="problematic" id="id44">|splitx_plugin_00_03|</span></a> <a href="#id45"><span class="problematic" id="id46">|splitx_plugin_00_04|</span></a> <a href="#id47"><span class="problematic" id="id48">|splitx_plugin_00_05|</span></a> <a href="#id49"><span class="problematic" id="id50">|splitx_plugin_00_06|</span></a> <a href="#id51"><span class="problematic" id="id52">|splitx_plugin_00_07|</span></a> <a href="#id53"><span class="problematic" id="id54">|splitx_plugin_00_08|</span></a> nn.. <a href="#id55"><span class="problematic" id="id56">|splitx_plugin_00_00|</span></a> image:: images/splitx_plugin_00_00.pngn   :height: 56n   :width: 28nn.. <a href="#id57"><span class="problematic" id="id58">|splitx_plugin_00_01|</span></a> image:: images/splitx_plugin_00_01.pngn   :height: 6n   :width: 7nn.. <a href="#id59"><span class="problematic" id="id60">|splitx_plugin_00_02|</span></a> image:: images/splitx_plugin_00_02.pngn   :height: 4n   :width: 4nn.. <a href="#id61"><span class="problematic" id="id62">|splitx_plugin_00_03|</span></a> image:: images/splitx_plugin_00_03.pngn   :height: 6n   :width: 15nn.. <a href="#id63"><span class="problematic" id="id64">|splitx_plugin_00_04|</span></a> image:: images/splitx_plugin_00_04.pngn   :height: 76n   :width: 36nn.. <a href="#id65"><span class="problematic" id="id66">|splitx_plugin_00_05|</span></a> image:: images/splitx_plugin_00_05.pngn   :height: 3n   :width: 2nn.. <a href="#id67"><span class="problematic" id="id68">|splitx_plugin_00_06|</span></a> image:: images/splitx_plugin_00_06.pngn   :height: 10n   :width: 1nn.. <a href="#id69"><span class="problematic" id="id70">|splitx_plugin_00_07|</span></a> image:: images/splitx_plugin_00_07.pngn   :height: 12n   :width: 23nn.. <a href="#id71"><span class="problematic" id="id72">|splitx_plugin_00_08|</span></a> image:: images/splitx_plugin_00_08.pngn   :height: 7n   :width: 25nnnn``splitx_left``n---------------nn[object] <strong>splitx_left</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnSplits an image vertically.nnThe split point is determined automatically by finding a valley innthe projections near the left of the image.nn----------nn**Example 1:** splitx_left()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splitx_left_plugin_00_00| <a href="#id73"><span class="problematic" id="id74">|splitx_left_plugin_00_01|</span></a> <a href="#id75"><span class="problematic" id="id76">|splitx_left_plugin_00_02|</span></a> <a href="#id77"><span class="problematic" id="id78">|splitx_left_plugin_00_03|</span></a> <a href="#id79"><span class="problematic" id="id80">|splitx_left_plugin_00_04|</span></a> <a href="#id81"><span class="problematic" id="id82">|splitx_left_plugin_00_05|</span></a> <a href="#id83"><span class="problematic" id="id84">|splitx_left_plugin_00_06|</span></a> <a href="#id85"><span class="problematic" id="id86">|splitx_left_plugin_00_07|</span></a> nn.. <a href="#id87"><span class="problematic" id="id88">|splitx_left_plugin_00_00|</span></a> image:: images/splitx_left_plugin_00_00.pngn   :height: 53n   :width: 19nn.. <a href="#id89"><span class="problematic" id="id90">|splitx_left_plugin_00_01|</span></a> image:: images/splitx_left_plugin_00_01.pngn   :height: 4n   :width: 4nn.. <a href="#id91"><span class="problematic" id="id92">|splitx_left_plugin_00_02|</span></a> image:: images/splitx_left_plugin_00_02.pngn   :height: 3n   :width: 6nn.. <a href="#id93"><span class="problematic" id="id94">|splitx_left_plugin_00_03|</span></a> image:: images/splitx_left_plugin_00_03.pngn   :height: 87n   :width: 45nn.. <a href="#id95"><span class="problematic" id="id96">|splitx_left_plugin_00_04|</span></a> image:: images/splitx_left_plugin_00_04.pngn   :height: 4n   :width: 6nn.. <a href="#id97"><span class="problematic" id="id98">|splitx_left_plugin_00_05|</span></a> image:: images/splitx_left_plugin_00_05.pngn   :height: 3n   :width: 2nn.. <a href="#id99"><span class="problematic" id="id100">|splitx_left_plugin_00_06|</span></a> image:: images/splitx_left_plugin_00_06.pngn   :height: 10n   :width: 1nn.. <a href="#id101"><span class="problematic" id="id102">|splitx_left_plugin_00_07|</span></a> image:: images/splitx_left_plugin_00_07.pngn   :height: 7n   :width: 34nnnn``splitx_max``n--------------nn[object] <strong>splitx_max</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom, Karl MacMillan and Christoph DalitznnnSplits an image vertically.nn    The split point is determined automatically by finding a peak inn    the projections near <em>center</em>.nn    This function is overloaded to work both with a single value and an    list of splitting point candidates as input.n    nn----------nn**Example 1:** splitx_max()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splitx_max_plugin_00_00| <a href="#id103"><span class="problematic" id="id104">|splitx_max_plugin_00_01|</span></a> <a href="#id105"><span class="problematic" id="id106">|splitx_max_plugin_00_02|</span></a> <a href="#id107"><span class="problematic" id="id108">|splitx_max_plugin_00_03|</span></a> <a href="#id109"><span class="problematic" id="id110">|splitx_max_plugin_00_04|</span></a> <a href="#id111"><span class="problematic" id="id112">|splitx_max_plugin_00_05|</span></a> <a href="#id113"><span class="problematic" id="id114">|splitx_max_plugin_00_06|</span></a> <a href="#id115"><span class="problematic" id="id116">|splitx_max_plugin_00_07|</span></a> <a href="#id117"><span class="problematic" id="id118">|splitx_max_plugin_00_08|</span></a> nn.. <a href="#id119"><span class="problematic" id="id120">|splitx_max_plugin_00_00|</span></a> image:: images/splitx_max_plugin_00_00.pngn   :height: 1n   :width: 1nn.. <a href="#id121"><span class="problematic" id="id122">|splitx_max_plugin_00_01|</span></a> image:: images/splitx_max_plugin_00_01.pngn   :height: 57n   :width: 37nn.. <a href="#id123"><span class="problematic" id="id124">|splitx_max_plugin_00_02|</span></a> image:: images/splitx_max_plugin_00_02.pngn   :height: 4n   :width: 4nn.. <a href="#id125"><span class="problematic" id="id126">|splitx_max_plugin_00_03|</span></a> image:: images/splitx_max_plugin_00_03.pngn   :height: 6n   :width: 24nn.. <a href="#id127"><span class="problematic" id="id128">|splitx_max_plugin_00_04|</span></a> image:: images/splitx_max_plugin_00_04.pngn   :height: 70n   :width: 27nn.. <a href="#id129"><span class="problematic" id="id130">|splitx_max_plugin_00_05|</span></a> image:: images/splitx_max_plugin_00_05.pngn   :height: 3n   :width: 2nn.. <a href="#id131"><span class="problematic" id="id132">|splitx_max_plugin_00_06|</span></a> image:: images/splitx_max_plugin_00_06.pngn   :height: 10n   :width: 1nn.. <a href="#id133"><span class="problematic" id="id134">|splitx_max_plugin_00_07|</span></a> image:: images/splitx_max_plugin_00_07.pngn   :height: 10n   :width: 14nn.. <a href="#id135"><span class="problematic" id="id136">|splitx_max_plugin_00_08|</span></a> image:: images/splitx_max_plugin_00_08.pngn   :height: 7n   :width: 16nnnn``splitx_right``n----------------nn[object] <strong>splitx_right</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnSplits an image vertically.nnThe split point is determined automatically by finding a valley innthe projections near the right of the image.nn----------nn**Example 1:** splitx_right()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splitx_right_plugin_00_00| <a href="#id137"><span class="problematic" id="id138">|splitx_right_plugin_00_01|</span></a> <a href="#id139"><span class="problematic" id="id140">|splitx_right_plugin_00_02|</span></a> <a href="#id141"><span class="problematic" id="id142">|splitx_right_plugin_00_03|</span></a> <a href="#id143"><span class="problematic" id="id144">|splitx_right_plugin_00_04|</span></a> <a href="#id145"><span class="problematic" id="id146">|splitx_right_plugin_00_05|</span></a> <a href="#id147"><span class="problematic" id="id148">|splitx_right_plugin_00_06|</span></a> nn.. <a href="#id149"><span class="problematic" id="id150">|splitx_right_plugin_00_00|</span></a> image:: images/splitx_right_plugin_00_00.pngn   :height: 7n   :width: 18nn.. <a href="#id151"><span class="problematic" id="id152">|splitx_right_plugin_00_01|</span></a> image:: images/splitx_right_plugin_00_01.pngn   :height: 61n   :width: 54nn.. <a href="#id153"><span class="problematic" id="id154">|splitx_right_plugin_00_02|</span></a> image:: images/splitx_right_plugin_00_02.pngn   :height: 3n   :width: 2nn.. <a href="#id155"><span class="problematic" id="id156">|splitx_right_plugin_00_03|</span></a> image:: images/splitx_right_plugin_00_03.pngn   :height: 10n   :width: 1nn.. <a href="#id157"><span class="problematic" id="id158">|splitx_right_plugin_00_04|</span></a> image:: images/splitx_right_plugin_00_04.pngn   :height: 4n   :width: 4nn.. <a href="#id159"><span class="problematic" id="id160">|splitx_right_plugin_00_05|</span></a> image:: images/splitx_right_plugin_00_05.pngn   :height: 7n   :width: 41nn.. <a href="#id161"><span class="problematic" id="id162">|splitx_right_plugin_00_06|</span></a> image:: images/splitx_right_plugin_00_06.pngn   :height: 30n   :width: 10nnnn``splity``n----------nn[object] <strong>splity</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom, Karl MacMillan and Christoph DalitznnnSplits an image horizontally.nnThe split point is determined automatically by finding a valley innthe projections near <em>center</em>.nnThis function is overloaded to work both with a single value and anlist of splitting point candidates as input.nn----------nn**Example 1:** splity()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splity_plugin_00_00| <a href="#id163"><span class="problematic" id="id164">|splity_plugin_00_01|</span></a> <a href="#id165"><span class="problematic" id="id166">|splity_plugin_00_02|</span></a> <a href="#id167"><span class="problematic" id="id168">|splity_plugin_00_03|</span></a> <a href="#id169"><span class="problematic" id="id170">|splity_plugin_00_04|</span></a> <a href="#id171"><span class="problematic" id="id172">|splity_plugin_00_05|</span></a> <a href="#id173"><span class="problematic" id="id174">|splity_plugin_00_06|</span></a> nn.. <a href="#id175"><span class="problematic" id="id176">|splity_plugin_00_00|</span></a> image:: images/splity_plugin_00_00.pngn   :height: 45n   :width: 44nn.. <a href="#id177"><span class="problematic" id="id178">|splity_plugin_00_01|</span></a> image:: images/splity_plugin_00_01.pngn   :height: 15n   :width: 21nn.. <a href="#id179"><span class="problematic" id="id180">|splity_plugin_00_02|</span></a> image:: images/splity_plugin_00_02.pngn   :height: 3n   :width: 2nn.. <a href="#id181"><span class="problematic" id="id182">|splity_plugin_00_03|</span></a> image:: images/splity_plugin_00_03.pngn   :height: 41n   :width: 52nn.. <a href="#id183"><span class="problematic" id="id184">|splity_plugin_00_04|</span></a> image:: images/splity_plugin_00_04.pngn   :height: 10n   :width: 1nn.. <a href="#id185"><span class="problematic" id="id186">|splity_plugin_00_05|</span></a> image:: images/splity_plugin_00_05.pngn   :height: 4n   :width: 4nn.. <a href="#id187"><span class="problematic" id="id188">|splity_plugin_00_06|</span></a> image:: images/splity_plugin_00_06.pngn   :height: 7n   :width: 41nnnn``splity_bottom``n-----------------nn[object] <strong>splity_bottom</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnSplits an image horizontally.nnThe split point is determined automatically by finding a valley innthe projections near the bottom of the image.nn----------nn**Example 1:** splity_bottom()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splity_bottom_plugin_00_00| <a href="#id189"><span class="problematic" id="id190">|splity_bottom_plugin_00_01|</span></a> <a href="#id191"><span class="problematic" id="id192">|splity_bottom_plugin_00_02|</span></a> <a href="#id193"><span class="problematic" id="id194">|splity_bottom_plugin_00_03|</span></a> <a href="#id195"><span class="problematic" id="id196">|splity_bottom_plugin_00_04|</span></a> <a href="#id197"><span class="problematic" id="id198">|splity_bottom_plugin_00_05|</span></a> <a href="#id199"><span class="problematic" id="id200">|splity_bottom_plugin_00_06|</span></a> nn.. <a href="#id201"><span class="problematic" id="id202">|splity_bottom_plugin_00_00|</span></a> image:: images/splity_bottom_plugin_00_00.pngn   :height: 72n   :width: 44nn.. <a href="#id203"><span class="problematic" id="id204">|splity_bottom_plugin_00_01|</span></a> image:: images/splity_bottom_plugin_00_01.pngn   :height: 42n   :width: 26nn.. <a href="#id205"><span class="problematic" id="id206">|splity_bottom_plugin_00_02|</span></a> image:: images/splity_bottom_plugin_00_02.pngn   :height: 3n   :width: 2nn.. <a href="#id207"><span class="problematic" id="id208">|splity_bottom_plugin_00_03|</span></a> image:: images/splity_bottom_plugin_00_03.pngn   :height: 10n   :width: 1nn.. <a href="#id209"><span class="problematic" id="id210">|splity_bottom_plugin_00_04|</span></a> image:: images/splity_bottom_plugin_00_04.pngn   :height: 4n   :width: 4nn.. <a href="#id211"><span class="problematic" id="id212">|splity_bottom_plugin_00_05|</span></a> image:: images/splity_bottom_plugin_00_05.pngn   :height: 14n   :width: 46nn.. <a href="#id213"><span class="problematic" id="id214">|splity_bottom_plugin_00_06|</span></a> image:: images/splity_bottom_plugin_00_06.pngn   :height: 7n   :width: 41nnnn``splity_top``n--------------nn[object] <strong>splity_top</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Segmentationn:Defined in: segmentation.pyn:Author: Michael Droettboom and Karl MacMillannnnSplits an image horizontally.nnThe split point is determined automatically by finding a valley innthe projections near the top of the image.nn----------nn**Example 1:** splity_top()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn|splity_top_plugin_00_00| <a href="#id215"><span class="problematic" id="id216">|splity_top_plugin_00_01|</span></a> <a href="#id217"><span class="problematic" id="id218">|splity_top_plugin_00_02|</span></a> <a href="#id219"><span class="problematic" id="id220">|splity_top_plugin_00_03|</span></a> <a href="#id221"><span class="problematic" id="id222">|splity_top_plugin_00_04|</span></a> <a href="#id223"><span class="problematic" id="id224">|splity_top_plugin_00_05|</span></a> nn.. <a href="#id225"><span class="problematic" id="id226">|splity_top_plugin_00_00|</span></a> image:: images/splity_top_plugin_00_00.pngn   :height: 24n   :width: 29nn.. <a href="#id227"><span class="problematic" id="id228">|splity_top_plugin_00_01|</span></a> image:: images/splity_top_plugin_00_01.pngn   :height: 62n   :width: 64nn.. <a href="#id229"><span class="problematic" id="id230">|splity_top_plugin_00_02|</span></a> image:: images/splity_top_plugin_00_02.pngn   :height: 3n   :width: 2nn.. <a href="#id231"><span class="problematic" id="id232">|splity_top_plugin_00_03|</span></a> image:: images/splity_top_plugin_00_03.pngn   :height: 10n   :width: 1nn.. <a href="#id233"><span class="problematic" id="id234">|splity_top_plugin_00_04|</span></a> image:: images/splity_top_plugin_00_04.pngn   :height: 4n   :width: 4nn.. <a href="#id235"><span class="problematic" id="id236">|splity_top_plugin_00_05|</span></a> image:: images/splity_top_plugin_00_05.pngn   :height: 7n   :width: 41nnnn'</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
+Unknown interpreted text role &quot;raw-html&quot;.</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="id3">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_01&quot;.</div>
+<div class="system-message" id="id5">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_02&quot;.</div>
+<div class="system-message" id="id7">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_03&quot;.</div>
+<div class="system-message" id="id9">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_04&quot;.</div>
+<div class="system-message" id="id11">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_00&quot;.</div>
+<div class="system-message" id="id13">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_01&quot;.</div>
+<div class="system-message" id="id15">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_02&quot;.</div>
+<div class="system-message" id="id17">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_03&quot;.</div>
+<div class="system-message" id="id19">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_analysis_plugin_00_04&quot;.</div>
+<div class="system-message" id="id21">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_01&quot;.</div>
+<div class="system-message" id="id23">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_02&quot;.</div>
+<div class="system-message" id="id25">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_03&quot;.</div>
+<div class="system-message" id="id27">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_04&quot;.</div>
+<div class="system-message" id="id29">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_00&quot;.</div>
+<div class="system-message" id="id31">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_01&quot;.</div>
+<div class="system-message" id="id33">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_02&quot;.</div>
+<div class="system-message" id="id35">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_03&quot;.</div>
+<div class="system-message" id="id37">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
+Undefined substitution referenced: &quot;cc_and_cluster_plugin_00_04&quot;.</div>
+<div class="system-message" id="id39">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_01&quot;.</div>
+<div class="system-message" id="id41">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_02&quot;.</div>
+<div class="system-message" id="id43">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id44">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_03&quot;.</div>
+<div class="system-message" id="id45">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id46">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_04&quot;.</div>
+<div class="system-message" id="id47">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id48">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_05&quot;.</div>
+<div class="system-message" id="id49">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id50">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_06&quot;.</div>
+<div class="system-message" id="id51">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id52">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_07&quot;.</div>
+<div class="system-message" id="id53">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id54">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_08&quot;.</div>
+<div class="system-message" id="id55">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id56">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_00&quot;.</div>
+<div class="system-message" id="id57">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id58">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_01&quot;.</div>
+<div class="system-message" id="id59">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id60">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_02&quot;.</div>
+<div class="system-message" id="id61">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id62">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_03&quot;.</div>
+<div class="system-message" id="id63">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id64">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_04&quot;.</div>
+<div class="system-message" id="id65">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id66">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_05&quot;.</div>
+<div class="system-message" id="id67">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id68">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_06&quot;.</div>
+<div class="system-message" id="id69">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id70">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_07&quot;.</div>
+<div class="system-message" id="id71">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id72">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_plugin_00_08&quot;.</div>
+<div class="system-message" id="id73">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id74">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_01&quot;.</div>
+<div class="system-message" id="id75">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id76">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_02&quot;.</div>
+<div class="system-message" id="id77">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id78">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_03&quot;.</div>
+<div class="system-message" id="id79">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id80">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_04&quot;.</div>
+<div class="system-message" id="id81">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id82">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_05&quot;.</div>
+<div class="system-message" id="id83">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id84">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_06&quot;.</div>
+<div class="system-message" id="id85">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id86">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_07&quot;.</div>
+<div class="system-message" id="id87">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id88">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_00&quot;.</div>
+<div class="system-message" id="id89">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id90">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_01&quot;.</div>
+<div class="system-message" id="id91">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id92">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_02&quot;.</div>
+<div class="system-message" id="id93">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id94">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_03&quot;.</div>
+<div class="system-message" id="id95">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id96">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_04&quot;.</div>
+<div class="system-message" id="id97">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id98">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_05&quot;.</div>
+<div class="system-message" id="id99">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id100">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_06&quot;.</div>
+<div class="system-message" id="id101">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id102">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_left_plugin_00_07&quot;.</div>
+<div class="system-message" id="id103">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id104">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_01&quot;.</div>
+<div class="system-message" id="id105">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id106">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_02&quot;.</div>
+<div class="system-message" id="id107">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id108">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_03&quot;.</div>
+<div class="system-message" id="id109">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id110">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_04&quot;.</div>
+<div class="system-message" id="id111">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id112">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_05&quot;.</div>
+<div class="system-message" id="id113">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id114">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_06&quot;.</div>
+<div class="system-message" id="id115">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id116">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_07&quot;.</div>
+<div class="system-message" id="id117">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id118">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_08&quot;.</div>
+<div class="system-message" id="id119">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id120">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_00&quot;.</div>
+<div class="system-message" id="id121">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id122">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_01&quot;.</div>
+<div class="system-message" id="id123">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id124">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_02&quot;.</div>
+<div class="system-message" id="id125">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id126">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_03&quot;.</div>
+<div class="system-message" id="id127">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id128">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_04&quot;.</div>
+<div class="system-message" id="id129">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id130">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_05&quot;.</div>
+<div class="system-message" id="id131">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id132">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_06&quot;.</div>
+<div class="system-message" id="id133">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id134">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_07&quot;.</div>
+<div class="system-message" id="id135">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id136">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_max_plugin_00_08&quot;.</div>
+<div class="system-message" id="id137">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id138">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_01&quot;.</div>
+<div class="system-message" id="id139">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id140">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_02&quot;.</div>
+<div class="system-message" id="id141">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id142">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_03&quot;.</div>
+<div class="system-message" id="id143">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id144">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_04&quot;.</div>
+<div class="system-message" id="id145">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id146">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_05&quot;.</div>
+<div class="system-message" id="id147">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id148">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_06&quot;.</div>
+<div class="system-message" id="id149">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id150">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_00&quot;.</div>
+<div class="system-message" id="id151">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id152">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_01&quot;.</div>
+<div class="system-message" id="id153">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id154">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_02&quot;.</div>
+<div class="system-message" id="id155">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id156">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_03&quot;.</div>
+<div class="system-message" id="id157">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id158">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_04&quot;.</div>
+<div class="system-message" id="id159">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id160">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_05&quot;.</div>
+<div class="system-message" id="id161">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id162">backlink</a></em></p>
+Undefined substitution referenced: &quot;splitx_right_plugin_00_06&quot;.</div>
+<div class="system-message" id="id163">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id164">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_01&quot;.</div>
+<div class="system-message" id="id165">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id166">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_02&quot;.</div>
+<div class="system-message" id="id167">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id168">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_03&quot;.</div>
+<div class="system-message" id="id169">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id170">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_04&quot;.</div>
+<div class="system-message" id="id171">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id172">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_05&quot;.</div>
+<div class="system-message" id="id173">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id174">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_06&quot;.</div>
+<div class="system-message" id="id175">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id176">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_00&quot;.</div>
+<div class="system-message" id="id177">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id178">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_01&quot;.</div>
+<div class="system-message" id="id179">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id180">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_02&quot;.</div>
+<div class="system-message" id="id181">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id182">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_03&quot;.</div>
+<div class="system-message" id="id183">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id184">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_04&quot;.</div>
+<div class="system-message" id="id185">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id186">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_05&quot;.</div>
+<div class="system-message" id="id187">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id188">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_plugin_00_06&quot;.</div>
+<div class="system-message" id="id189">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id190">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_01&quot;.</div>
+<div class="system-message" id="id191">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id192">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_02&quot;.</div>
+<div class="system-message" id="id193">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id194">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_03&quot;.</div>
+<div class="system-message" id="id195">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id196">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_04&quot;.</div>
+<div class="system-message" id="id197">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id198">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_05&quot;.</div>
+<div class="system-message" id="id199">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id200">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_06&quot;.</div>
+<div class="system-message" id="id201">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id202">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_00&quot;.</div>
+<div class="system-message" id="id203">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id204">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_01&quot;.</div>
+<div class="system-message" id="id205">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id206">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_02&quot;.</div>
+<div class="system-message" id="id207">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id208">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_03&quot;.</div>
+<div class="system-message" id="id209">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id210">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_04&quot;.</div>
+<div class="system-message" id="id211">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id212">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_05&quot;.</div>
+<div class="system-message" id="id213">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id214">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_bottom_plugin_00_06&quot;.</div>
+<div class="system-message" id="id215">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id216">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_01&quot;.</div>
+<div class="system-message" id="id217">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id218">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_02&quot;.</div>
+<div class="system-message" id="id219">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id220">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_03&quot;.</div>
+<div class="system-message" id="id221">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id222">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_04&quot;.</div>
+<div class="system-message" id="id223">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id224">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_05&quot;.</div>
+<div class="system-message" id="id225">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id226">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_00&quot;.</div>
+<div class="system-message" id="id227">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id228">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_01&quot;.</div>
+<div class="system-message" id="id229">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id230">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_02&quot;.</div>
+<div class="system-message" id="id231">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id232">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_03&quot;.</div>
+<div class="system-message" id="id233">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id234">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_04&quot;.</div>
+<div class="system-message" id="id235">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id236">backlink</a></em></p>
+Undefined substitution referenced: &quot;splity_top_plugin_00_05&quot;.</div>
+<div class="system-message" id="id237">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id238">backlink</a></em></p>
+Unknown target name: &quot;image_copy&quot;.</div>
+<div class="system-message" id="id239">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/segmentation.txt</tt>, line 1); <em><a href="#id240">backlink</a></em></p>
+Unknown target name: &quot;cc_analysis&quot;.</div>
+</div>
+</div>
+</body>
+</html>

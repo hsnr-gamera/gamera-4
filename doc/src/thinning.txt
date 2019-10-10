@@ -1,0 +1,222 @@
+
+Thinning
+========
+
+``medial_axis_transform_hs``
+----------------------------
+
+``Image`` [OneBit] **medial_axis_transform_hs** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+"This function is an alias for thin_hs_.
+
+----------
+
+**Example 1:** medial_axis_transform_hs()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/medial_axis_transform_hs_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+
+``medial_axis_transform_large_image_hs``
+----------------------------------------
+
+``Image`` [OneBit] **medial_axis_transform_large_image_hs** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+This function is an alias for thin_hs_large_image_.
+
+----------
+
+**Example 1:** medial_axis_transform_large_image_hs()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/medial_axis_transform_large_image_hs_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+
+``thin_hs``
+-----------
+
+``Image`` [OneBit] **thin_hs** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+Derives the medial axis transformation from a ONEBIT image using the
+Haralick and Shapiro algorithm.
+
+Unlike thin_zs_ and thin_lc_, this function performs a medial axis
+transformation, and the ends of the skeleton extend to the corners of
+the original image.
+
+Consider using thin_hs_large_image_ instead, for faster performance on
+large images with a lot of connected components.
+
+R. M. Haralick and L. G. Shapiro. 1992.  *Computer and Robot Vision*,
+Vol. 1, Chapter 5 (especially 5.10.1).  Reading, MA: Addison-Wesley.
+
+----------
+
+**Example 1:** thin_hs()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/thin_hs_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+
+``thin_hs_large_image``
+-----------------------
+
+``Image`` [OneBit] **thin_hs_large_image** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+Thins (skeletonizes) a ONEBIT image using the Haralick and Shapiro
+algorithm.
+
+Unlike thin_hs_, this algorithm performs skeletonization on one
+connected component at a time.  On large images with a lot of
+connected components, this can be significantly faster.  However,
+for small images with a single connected component, this has
+unnecessary overhead, which is why both versions are included.
+Please note cc_analysis results in a labelled image, which you can
+reset afterwards with reset_onebit_image().
+
+----------
+
+**Example 1:** thin_hs_large_image()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/thin_hs_large_image_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+
+``thin_lc``
+-----------
+
+``Image`` [OneBit] **thin_lc** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+Thins (skeletonizes) a ONEBIT image using the Lee and Chen
+algorithm.
+
+This function is a simple extension to the Zhang and Suen
+algorithm in thin_zs_ that ensure that no two pixels are more than
+4-connected.
+
+The resulting skeleton is not a medial axis transformation, and
+the ends of the skeleton will not extend to the edges of the
+original image.
+
+H.-J. Lee and B. Chen. 1992.  Recognition of handwritten Chinese
+characters via short line segments. *Pattern Recognition*. 25(5)
+543-552.
+
+----------
+
+**Example 1:** thin_lc()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/thin_lc_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+
+``thin_zs``
+-----------
+
+``Image`` [OneBit] **thin_zs** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``Image`` [OneBit]
+:Category: Thinning
+:Defined in: thinning.py
+:Author: Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)
+
+
+Thins (skeletonizes) a ONEBIT image using the Zhang and Suen
+algorithm.
+
+The resulting skeleton is not a medial axis transformation, and
+the ends of the skeleton will not extend to the edges of the
+original image.
+
+T. Y. Zhang and C. Y. Suen. 1984.  A Fast Parallel Algorithm for
+Thinning Digital Patterns., *Communications of ACM*, 2(3).
+
+R. C. Gonzalez and P. Wintz. 1987 *Digital Image Processing.*,
+2. edition. 398-402.
+
+----------
+
+**Example 1:** thin_zs()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+..  image:: images/thin_zs_plugin_00.png
+   :height: 99
+   :width: 69
+
+
+

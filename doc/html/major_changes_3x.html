@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>major_changes_3x.txt</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+
+
+<p>b'===========================================nMajor changes from Gamera 2.x to Gamera 3.xn===========================================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnDeprecated functionsn====================nnSome functions have been deprecated.  They will continue to work fornnow, but will be removed at some point in the future.  For moreninformation, see the <a href="#id3"><span class="problematic" id="id4">`migration guide`__</span></a>.nn.. __: migration_guide.htmlnnPlugin systemn=============nnSome more types were added to the plugin system, meaning they can benconveniently passed between Python and C++ plugins.nn  - <strong>Point</strong>nn  - <strong>FloatPoint</strong>nn  - <strong>Dim</strong>nnGraphical user interfacen========================nn- <strong>wxPython 2.6.x support</strong>:nn  Gamera now runs with the wxPython 2.6.x as well as the wxPythonn  2.4.x series.nn  Note that native Cocoa support on OSX is not currently supported,n  since as of the time of this writing, wxPython is <a href="#id3"><span class="problematic" id="id5">broken__</span></a>.nn.. __: <a class="reference external" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1194622&amp;group_id=9863&amp;atid=109863nn">http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1194622&amp;group_id=9863&amp;atid=109863nn</a>  wxPython 2.6.x is a lot closer to the native look and feel of the n  various platforms.  You may notice that the placement of somen  buttons in some dialog boxes has changed and other minor look andn  feel details.  Most of these are not due to any changes in Gameran  itself.nn- <strong>New information pane in the shell</strong> (replacing the History pane)nn  This includes three tabs, based on PyCrust:nn  - <strong>Docstring display</strong>:nn    When a function or property is typed in the shell, its docstringn    is displayed in the bottom pane.  This is less annoying than then    popup that would occasionally fill the entire screen with a longn    docstring.nn    If wxPython 2.6 and docutils is installed, the docstring isn    formatted as reStructuredText with bold and italics etc.nn  - <strong>Namespace</strong>:n  n    Browse all of the objects in the shell.nn  - <strong>History</strong>:n   n    An improved command history.nn- <strong>Docstrings in dialog boxes</strong>nn  Many dialog boxes now include docstrings where appropriate.nnGeneral sanity fixesn====================nn- There were a few places where memory leaks were happening only whenn  an exception was raised.  Many of these exceptions are now beingn  caught and the leaked objects are deleted.nn- Docstrings on C++ plugins work correctly.n'</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/major_changes_3x.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
+Unknown interpreted text role &quot;raw-html&quot;.</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="id3">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/major_changes_3x.txt</tt>, line 2); <em>backlinks: <a href="#id4">1</a>, <a href="#id5">2</a></em></p>
+Anonymous hyperlink mismatch: 2 references but 0 targets.
+See &quot;backrefs&quot; attribute for IDs.</div>
+</div>
+</div>
+</body>
+</html>

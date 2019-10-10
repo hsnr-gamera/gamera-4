@@ -1,0 +1,13 @@
+class ``ImageInfo``
+===================
+
+``ImageInfo``
+-------------
+
+In module ``gamera.core``
+
+.. docstring:: gamera.core ImageInfo
+   :no_title:
+
+.. docstring:: gamera.core ImageInfo x_resolution y_resolution ncols nrows depth ncolors
+

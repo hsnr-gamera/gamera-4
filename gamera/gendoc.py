@@ -383,7 +383,8 @@ class PluginDocumentationGenerator:
         index = []
         toc_recurse(s, methods, 0, links, index)
         s.write("Alphabetical\n-------------\n")
-        index = sorted(sort_lowercase)
+        from functools import cmp_to_key
+        index = sorted(index, key=lambda x: x.lower())
         letter = ord('A') - 1
         first = True
         for name in index:
@@ -557,7 +558,7 @@ class ClassDocumentationGenerator:
         s = codecs.open(os.path.join(self.docgen.src_path, "classes.txt"), "w", "utf-8")
         s.write("=======\nClasses\n=======\n\n")
         s.write("Alphabetical\n-------------\n")
-        self.class_names.sort(sort_firstitem_lowercase)
+        self.class_names = sorted(self.class_names, key=lambda x: x[0].lower())
         letter = '~'
         first = True
         links = []

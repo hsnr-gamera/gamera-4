@@ -1,0 +1,13 @@
+class ``RGBPixel``
+==================
+
+``RGBPixel``
+------------
+
+In module ``gamera.core``
+
+.. docstring:: gamera.core RGBPixel
+   :no_title:
+
+.. docstring:: gamera.core RGBPixel red green blue hue saturation value cie_x cie_y cie_z cie_Lab_L cie_Lab_a cie_Lab_b cyan magenta yellow
+

@@ -1,0 +1,726 @@
+
+Features
+========
+
+``area``
+--------
+
+``FloatVector`` **area** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+The area of the bounding box (i.e. *nrows* * *ncols*).
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|       |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** area()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [7000.0])
+
+
+
+``aspect_ratio``
+----------------
+
+``FloatVector`` **aspect_ratio** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+The aspect ratio of the bounding box (i.e. *ncols* / *nrows*).
+
+This feature is scale invariant.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** aspect_ratio()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.7])
+
+
+
+``black_area``
+--------------
+
+``FloatVector`` **black_area** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+The simplest of all feature-generating functions, ``black_area``
+simply returns the number of black pixels.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|       |     X    |   X    |
++-------+----------+--------+
+
+.. warning:: This feature is not scale invariant.
+
+----------
+
+**Example 1:** black_area()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [1518.0])
+
+
+
+``compactness``
+---------------
+
+``FloatVector`` **compactness** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Compactness is the volume to surface ratio. Highly ornate connected
+components have a low compactness, whereas a perfect circle has a 
+high compactness. The present implementation of this feature in
+Gamera does however not return the compactness, but its *inverse*,
+i.e. the surface to volume ratio.
+
+Since this function requires allocation and deallocation of
+memory, it is relatively slow.  However, it has proven to be a
+very useful feature in many cases.
+
+This feature is not scale invariant, because, as
+the image is scaled by *a*, the surface increases proportional to *a*
+while the volume grows with *a^2*.
+This is currently not corrected for.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|       |    X     |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** compactness()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.5276679841897234])
+
+
+
+``diagonal_projection``
+-----------------------
+
+``FloatVector`` **diagonal_projection** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Andrew Hankinson
+
+
+Computes the ratio of sum of the interquartile (center plusminus half width)
+rotated projections at +/- 45 degrees.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |        |
++-------+----------+--------+
+
+----------
+
+**Example 1:** diagonal_projection()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.8093883357041253])
+
+
+
+``fourier_broken``
+------------------
+
+``FloatVector`` **fourier_broken** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: fourier_features.py
+:Author: Christian Brandt and Christoph Dalitz
+
+
+Fourier descriptor for arbitrary (not necessarily connected) shapes
+according to equations (18) and (19) in 
+
+  C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:
+  `Fourier Descriptors for Broken Shapes`__.
+  EURASIP Journal on Advances in Signal Processing 2013:161, 2013
+ 
+The coefficient c_0 is used for scale normalisation. The 
+absolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are 
+returned.
+
+    +---------------------------+
+    | **Invariant to:**         |  
+    +-------+----------+--------+
+    | scale | rotation | mirror | 
+    +-------+----------+--------+
+    |   X   |     X    |        |
+    +-------+----------+--------+
+
+.. __: http://dx.doi.org/10.1186/1687-6180-2013-161
+
+
+----------
+
+**Example 1:** fourier_broken()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [1.0, 0.02142828360121643, 0.014612796315609201, 0.1495321921926191, 0.1359123070524482, 0.09670401182040583, 0.03262759415868247, 0.0237157790432664, 0.01754772234258709, 0.0067814576101620895, 0.015363120266972848, 0.021162618823014172, 0.018017956206137546, 0.01756079519393544, 0.011530544698179443, 0.0053427432030605446, 0.00415364606145243, 0.013335064359944755, 0.013186805552803925, 0.011689748562071554, 0.011607336951062768, 0.0001842312399756008, 0.002473830584174222, 0.007069049350917071, 0.006343859341554472, 0.010895894711687391, 0.010494846336294338, 0.00293067888238877, 0.001925719165360069, 0.002426025360094545, 0.0009863037535571553, 0.002197954601884808, 0.005170996123540047, 0.003123113017560981, 0.0027080016082946298, 0.0015581678913639168, 0.0016191030003190835, 0.002599033242677227, 0.0037265469302364806, 0.0016236926711151408, 0.0015624885792808387, 0.0022017602733647858, 0.0011244781683759759, 0.001793232574190955, 0.0008852954917615224, 0.0013942456903604087, 0.0011666318489265358, 0.002078467872437278])
+
+
+
+``moments``
+-----------
+
+``FloatVector`` **moments** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns *moments* of the image.
+
+The first two elements of the returned ``FloatVector`` are the 
+center of gravity on *x* and *y* axis normalized by width and height,
+respectively. The following seven entries are the 
+*normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For their
+definition, see Gonzalez, Woods: "Digital Image Processing",
+Prentice Hall, second edition (2002).
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |        |
++-------+----------+--------+
+
+----------
+
+**Example 1:** moments()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.5015848465753948, 0.5456608243169508, 0.19879033815007144, 0.4166108441912556, -0.12548447613565852, 0.006243076385811907, 0.10423298400666886, -0.04951029064645005, -0.0795276505095402])
+
+
+
+``ncols_feature``
+-----------------
+
+``FloatVector`` **ncols_feature** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Simply the number of cols. As this feature is *not* scale
+invariant, it is helpful for distinguishing similar symbols of
+different size.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|       |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** ncols_feature()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [70.0])
+
+
+
+``nholes``
+----------
+
+``FloatVector`` **nholes** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Computes for each row or column the average number of white runs not
+	touching the border. From these values, the average over all rows and
+	all columns is returned.
+
+The elements of the returned ``FloatVector`` are:
+
+0. vertical
+1. horizontal
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** nholes()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [1.8857142857142857, 0.96])
+
+
+
+``nholes_extended``
+-------------------
+
+``FloatVector`` **nholes_extended** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Divides the image into four strips and then does a nholes_
+analysis on each of those strips. This is first done vertically
+and then horizontally, resulting in a total of eight feature values.
+
+The elements of the returned ``FloatVector`` are:
+
+0 - 3
+  vertical ``nholes`` for each of the strips in order left to right.
+4 - 7
+  horizonal ``nholes`` for each of the strips in order top to bottom.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |        |
++-------+----------+--------+
+
+----------
+
+**Example 1:** nholes_extended()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.17142857142857143, 2.5142857142857142, 2.742857142857143, 1.8857142857142857, 0.0, 1.6, 1.52, 0.72])
+
+
+
+``nrows_feature``
+-----------------
+
+``FloatVector`` **nrows_feature** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Simply the number of rows. As this feature is *not* scale
+invariant, it is helpful for distinguishing similar symbols of
+different size.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|       |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** nrows_feature()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [100.0])
+
+
+
+``skeleton_features``
+---------------------
+
+``FloatVector`` **skeleton_features** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Generates a number of features based on the skeleton of an image.
+First, the image in skeletonized using the Lee and Chen algorithm,
+which guarantees that the pixels of the resulting skeleton are
+never more than 4-connected.  Then, this skeleton is analysed for
+a number of properties:
+
+0. Number of X joints (4-connected pixels)
+1. Number of T joints (3-connected pixels)
+2. Average number of bend points (pixels which do not form a horizontal or
+   vertical line with its neighbors)
+3. Number of end points (1-connected pixels)
+4. Number of *x*-axis crossings with respect to the *x*-axis through the center of mass
+5. Number of *y*-axis crossings with respect to the *y*-axis through the center of mass
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** skeleton_features()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [4.0, 15.0, 0.4172661870503597, 12.0, 4.0, 3.0])
+
+
+
+``top_bottom``
+--------------
+
+``FloatVector`` **top_bottom** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Features useful only for segmentation-free analysis.  Currently,
+the first feature is the first row containing a black pixel, and
+the second feature is the last row containing a black pixel.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** top_bottom()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.0, 0.99])
+
+
+
+``volume``
+----------
+
+``FloatVector`` **volume** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+The percentage of black pixels within the rectangular bounding box
+of the image.  Result in range (0, 1].
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** volume()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.21685714285714286])
+
+
+
+``volume16regions``
+-------------------
+
+``FloatVector`` **volume16regions** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Divides the image into a 4 x 4 grid of 16 regions and calculates
+the volume within each. This feature is also known as "zoning" method.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |        |
++-------+----------+--------+
+
+----------
+
+**Example 1:** volume16regions()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.0, 0.18588235294117647, 0.548235294117647, 0.06823529411764706, 0.0, 0.21777777777777776, 0.051111111111111114, 0.43555555555555553, 0.08470588235294117, 0.46352941176470586, 0.47058823529411764, 0.3270588235294118, 0.34444444444444444, 0.18222222222222223, 0.035555555555555556, 0.07777777777777778])
+
+
+
+``volume64regions``
+-------------------
+
+``FloatVector`` **volume64regions** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Divides the image into an 8 x 8 grid of 64 regions and calculates
+the volume within each. This feature is also known as "zoning" method.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |          |        |
++-------+----------+--------+
+
+----------
+
+**Example 1:** volume64regions()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.0, 0.0, 0.0, 0.009615384615384616, 0.25, 0.125, 0.0625, 0.0, 0.0, 0.0, 0.009259259259259259, 0.6581196581196581, 0.7962962962962963, 0.9401709401709402, 0.21296296296296297, 0.0, 0.0, 0.0, 0.3148148148148148, 0.19658119658119658, 0.0, 0.18803418803418803, 0.7037037037037037, 0.15384615384615385, 0.0, 0.0, 0.12962962962962962, 0.23076923076923078, 0.0, 0.008547008547008548, 0.7407407407407407, 0.18803418803418803, 0.07291666666666667, 0.0, 0.1875, 0.9807692307692307, 0.9895833333333334, 0.8557692307692307, 0.5104166666666666, 0.21153846153846154, 0.26851851851851855, 0.0, 0.5648148148148148, 0.13675213675213677, 0.1111111111111111, 0.03418803418803419, 0.42592592592592593, 0.18803418803418803, 0.42592592592592593, 0.0, 0.37962962962962965, 0.06837606837606838, 0.12037037037037036, 0.02564102564102564, 0.16666666666666666, 0.1452991452991453, 0.32407407407407407, 0.6324786324786325, 0.3055555555555556, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+
+
+``zernike_moments``
+-------------------
+
+``FloatVector`` **zernike_moments** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Robert Butz, Fabian Schmitt, Christoph Dalitz
+
+
+Computes the absolute values of the Normalized Zernike Moments up to
+order six.
+
+Zernike moments are the scalar product in the complex L2
+Hilbert space between the image and the complex Zernike polynomials.
+This results in complex values, the absolute values of which are
+invariant under image rotation and reflection. To make them additionally
+scale invariant, different normalization schemes have been suggested.
+The present implementation normalizes the Zernike moments by
+division with the zeroeth geometric moment *m00*, which results
+in an approximate scale invariance according to
+S. Belkasim, E. Hassan, T. Obeidi: "Explicit invariance of Cartesian
+Zernike moments." Pattern Recognition Letters 28, pp. 1969-1980 (2007)
+
+The return values are the absolute values of
+*A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
+The moments *A00* and *A11* are not computed because these are constant
+under the used normalization scheme.
+
++---------------------------+
+| **Invariant to:**         |  
++-------+----------+--------+
+| scale | rotation | mirror | 
++-------+----------+--------+
+|   X   |    X     |   X    |
++-------+----------+--------+
+
+----------
+
+**Example 1:** zernike_moments()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [0.41985994859323733, 0.14446675451280785, 0.19930745874798886, 0.12285513319379245, 0.24576011020129576, 0.09126205693022849, 0.08813297730267446, 0.11505822141131866, 0.12461255166774005, 0.10456963336198771, 0.07185503783903133, 0.10729227059728876, 0.06994988520126252, 0.07362673513981027])
+
+
+
+``zernike_moments_plugin``
+--------------------------
+
+``FloatVector`` **zernike_moments_plugin** (int *order* = 6)
+
+
+:Operates on: ``Image`` [GreyScale]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: features.py
+:Author: Christoph Dalitz, Robert Butz, Fabian Schmitt
+
+
+Computes the absolute values of the Normalized Zernike Moments up to
+the given order. This is separate from the feature *zernike_moments*,
+because features only support onebit images, so we need a different
+function for greyscale images.
+
+Zernike moments are the scalar product in the complex L2
+Hilbert space between the image and the complex Zernike polynomials.
+This results in complex values, the absolute values of which are
+invariant under image rotation and reflection. To make them additionally
+scale invariant, different normalization schemes have been suggested.
+The present implementation normalizes the Zernike moments by
+division with the zeroeth geometric moment *m00*, which results
+in an approximate scale invariance according to
+S. Belkasim, E. Hassan, T. Obeidi: "Explicit invariance of Cartesian
+Zernike moments." Pattern Recognition Letters 28, pp. 1969-1980 (2007)
+
+The return values are the absolute values of
+*A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
+The moments *A00* and *A11* are not computed because these are constant
+under the used normalization scheme.
+
+

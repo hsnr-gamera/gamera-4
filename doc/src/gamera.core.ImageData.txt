@@ -1,0 +1,13 @@
+class ``ImageData``
+===================
+
+``ImageData``
+-------------
+
+In module ``gamera.core``
+
+.. docstring:: gamera.core ImageData
+   :no_title:
+
+.. docstring:: gamera.core ImageData nrows ncols page_offset_x page_offset_y stride size bytes pixel_type storage_format
+
