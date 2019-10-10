@@ -1169,7 +1169,7 @@ inline PyObject* IntVector_to_python(IntVector* cpp) {
 		return 0;
 	
     PyObject* str = PyBytes_FromStringAndSize((char*)(&((*cpp)[0])),
-                                                cpp->size() * sizeof(double));
+                                                cpp->size() * sizeof(int));
 	PyObject *py = PyObject_CallFunction(array_init, "sO", "i", str);
 	//TODO slow
 	/*for (int i = 0; i < cpp->size(); i++) {

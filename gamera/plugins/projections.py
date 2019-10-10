@@ -30,7 +30,7 @@ class projection_rows(PluginFunction):
     """
     self_type = ImageType([ONEBIT])
     return_type = IntVector()
-    doc_examples = [(ONEBIT,)]
+    doc_examples = [(ONEBIT)]
 
 
 class projection_cols(PluginFunction):
@@ -40,7 +40,7 @@ class projection_cols(PluginFunction):
     """
     self_type = ImageType([ONEBIT])
     return_type = IntVector()
-    doc_examples = [(ONEBIT,)]
+    doc_examples = [(ONEBIT)]
 
 
 class projections(PluginFunction):
