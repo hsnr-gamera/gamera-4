@@ -1,0 +1,37 @@
+
+XML
+===
+
+``to_xml``
+----------
+
+str **to_xml** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: str
+:Category: XML
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns a string containing the Gamera XML representation of the image.
+(See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
+
+
+``to_xml_filename``
+-------------------
+
+**to_xml_filename** (``FileSave`` *filename*)
+
+
+:Operates on: ``Image`` [OneBit]
+:Category: XML
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Saves the Gamera XML representation of the image to the given *filename*.
+(See the Gamera XML DTD in ``misc/gamera.dtd`` in the source distribution.)
+
+

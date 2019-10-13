@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>matplotlib_support.txt</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+
+
+<p>b'==================nmatplotlib supportn==================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnGamera includes optional support for plotting figures using thenmatplotlib_ library.  If matplotlib is not installed on your machine,nGamera will continue to work normally, but plotting support will notnbe available.nn.. _matplotlib: <a class="reference external" href="http://matplotlib.sourceforge.netnnThe">http://matplotlib.sourceforge.netnnThe</a> matplotlib library provides high-quality plots, including line,nscatter, bar, and polar plots, and export of those plots to formatsnsuch as PostScript, SVG, PNG or the printer.  The list of features isnway too long to go into here.  This document only describes the bridgenbetween the Gamera GUI and matplotlib.  For more information, see thenmatplotlib_ documentation.nnThe connection between Gamera and matplotlib is intentionally minimal,nso that it is easy to take advantage of all of matplotlib'snfunctionality and to make it less dependent on any one specificnversion of matplotlib.  If you feel that particular graphs ofnparticular kinds of data in Gamera should be made more convenient,nplease contact that Gamera authors.nnObtaining matplotlibn--------------------nnDownload and install <a href="#id19"><span class="problematic" id="id20">matplotlib_</span></a> following the instructions provided.nnThere are no special steps to make matplotlib work with Gamera.  If itnis installed in the default location, Gamera will automatically detectnand use it.nnInteractive usen---------------nnSequences of numbers will appear in the Gamera icon display as one ofnthe following icons:nn  +----------------------------------------+----------------------------------------+n  | <a href="#id7"><span class="problematic" id="id8">|IntVector|</span></a>                            | A sequence of ints.                    <a href="#id9"><span class="problematic" id="id10">|\n  +----------------------------------------+----------------------------------------+\n  | |FloatVector|</span></a>                          | A sequence of floats.                  <a href="#id11"><span class="problematic" id="id12">|\n  +----------------------------------------+----------------------------------------+\n  | |ComplexVector|</span></a>                        | A sequence of complex numbers.         <a href="#id13"><span class="problematic" id="id14">|\n  +----------------------------------------+----------------------------------------+\n\n.. |IntVector|</span></a> image:: images/int_vector.pngn.. <a href="#id15"><span class="problematic" id="id16">|FloatVector|</span></a> image:: images/float_vector.pngn.. <a href="#id17"><span class="problematic" id="id18">|ComplexVector|</span></a> image:: images/complex_vector.pngnnFor example, loading an image into the variable <tt class="docutils literal">image0</tt> and typing the followingninto the Gamera console, will produce a [Z] icon in the icon display:nn.. code:: Pythonn    n   &gt;&gt;&gt; projection_cols0 = image0.projection_cols()nnDouble-clicking a vector icon will plot it usingnmatplotlib in a new plot window.  You will be prompted to provide anvariable for the figure.  (This figure instance can be used to modifynthe plot).nn  .. image:: images/matplotlib_example1.pngnnDragging a vector icon into an existing plot will add it to thenplot using a line of a different color.nn  .. image:: images/matplotlib_example2.pngnnThe toolbar buttons in the matplotlib window can be used tonmodify and then save or print the view.  The behavior is the same asnfor the standard matplotlib viewing windows.nnProperties of the figure can be accessed through the figure objectnreturned.  For instance, to add a title:nn.. code:: Pythonnn   &gt;&gt;&gt; figure0.axes[0].set_title(&quot;Projections&quot;)nnUsing matplotlib directlyn-------------------------nnTo move beyond simple line plots, matplotlib can be used directly asndescribed in the matplotlib docs, using the object-oriented orn``pylab`` interfaces.nnThe following example uses the <tt class="docutils literal">pylab</tt> interface and is takenndirectly from the matplotlib example <tt class="docutils literal">plot_demo.py</tt>.  This code canneither be entered directly into the Gamera console, or imported from anfile.  This code assumes that either <tt class="docutils literal">Numeric</tt> or <tt class="docutils literal">numarray</tt> is installed.nn.. code:: Pythonnn  from pylab import <a href="#id3"><span class="problematic" id="id4">*</span></a>nn  # radar green, solid grid linesn  rc('grid', color='#316931', linewidth=1, linestyle='-')n  rc('tick', labelsize=15)n  # force square figure and square axes looks better for polar, IMOn  figure(figsize=(8,8))n  ax = axes([0.1, 0.1, 0.8, 0.8], polar=True, axisbg='#d5de9c')nn  r = arange(0,1,0.001)n  theta = 2*2*pi*rn  polar(theta, r, color='#ee8d18', lw=3)nn  title(&quot;And there was much rejoicing!&quot;, fontsize=20)n  savefig('polar_demo')n  show()n  n.. image:: images/matplotlib_example4.pngnnUsing Gamera images as a 2D data sourcen---------------------------------------nnmatplotlib can be used to plot 2D images, and it is fairly easy to usenGamera images as a source.  Simply convert the Gamera image to anNumeric or numarray array, and then pass that array to matplotlib'sn``imshow`` function.  This functionality is fairly slow, so do not trynthis on large images.nnFor example, if you have Numeric Python installed:nn.. code:: Pythonnn  &gt;&gt;&gt; arr = image.to_numeric()nnOr, if you have numarray installed:nn.. code:: Pythonnn  &gt;&gt;&gt; arr = image.to_numarray()nnThen pass that array to <tt class="docutils literal">imshow</tt>:nn.. code:: Pythonnn  &gt;&gt;&gt; from pylab import <a href="#id5"><span class="problematic" id="id6">*</span></a>n  &gt;&gt;&gt; imshow(arr) # Show imagen  &gt;&gt;&gt; hot()       # Choose hot colormapn  &gt;&gt;&gt; colorbar()  # Show colorbarn  &gt;&gt;&gt; show()      # updatenn.. image:: images/matplotlib_example5.pngn'</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
+Unknown interpreted text role &quot;raw-html&quot;.</div>
+<div class="system-message" id="id3">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<div class="system-message" id="id5">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="id7">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
+Undefined substitution referenced: &quot;IntVector&quot;.</div>
+<div class="system-message" id="id9">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
+Undefined substitution referenced: &quot;n +----------------------------------------+----------------------------------------+n | |FloatVector&quot;.</div>
+<div class="system-message" id="id11">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
+Undefined substitution referenced: &quot;n +----------------------------------------+----------------------------------------+n | |ComplexVector&quot;.</div>
+<div class="system-message" id="id13">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
+Undefined substitution referenced: &quot;n +----------------------------------------+----------------------------------------+nn.. |IntVector&quot;.</div>
+<div class="system-message" id="id15">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
+Undefined substitution referenced: &quot;FloatVector&quot;.</div>
+<div class="system-message" id="id17">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
+Undefined substitution referenced: &quot;ComplexVector&quot;.</div>
+<div class="system-message" id="id19">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/matplotlib_support.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
+Unknown target name: &quot;matplotlib&quot;.</div>
+</div>
+</div>
+</body>
+</html>

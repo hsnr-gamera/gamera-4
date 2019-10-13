@@ -1,0 +1,551 @@
+
+Segmentation
+============
+
+``cc_analysis``
+---------------
+
+[object] **cc_analysis** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Performs connected component analysis on the image.
+
+This algorithm assumes 8-connected components, meaning any two
+pixels are considered "connected" if they are adjacent in any
+direction, including diagonally.
+
+The original image will have all of its pixels "labeled" with a
+number representing each connected component.  This is so the
+connected components can share data with their source image and
+makes things much more efficient.
+
+Returns a list of ccs found in the image.  Since all the CC's
+share the same data with the original image, changing the CC's
+will affect the original.  If you do not want this behavior, use
+the image_copy_ function on each of the CCs::
+
+  ccs = [x.image_copy() for x in ccs]
+
+.. _image_copy: utility.html#image-copy
+
+----------
+
+**Example 1:** cc_analysis()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|cc_analysis_plugin_00_00| |cc_analysis_plugin_00_01| |cc_analysis_plugin_00_02| |cc_analysis_plugin_00_03| |cc_analysis_plugin_00_04| 
+
+.. |cc_analysis_plugin_00_00| image:: images/cc_analysis_plugin_00_00.png
+   :height: 87
+   :width: 65
+
+.. |cc_analysis_plugin_00_01| image:: images/cc_analysis_plugin_00_01.png
+   :height: 3
+   :width: 2
+
+.. |cc_analysis_plugin_00_02| image:: images/cc_analysis_plugin_00_02.png
+   :height: 10
+   :width: 1
+
+.. |cc_analysis_plugin_00_03| image:: images/cc_analysis_plugin_00_03.png
+   :height: 4
+   :width: 4
+
+.. |cc_analysis_plugin_00_04| image:: images/cc_analysis_plugin_00_04.png
+   :height: 7
+   :width: 41
+
+
+
+``cc_and_cluster``
+------------------
+
+[object] **cc_and_cluster** (float *ratio* = 1.00, int *distance* = 2)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Performs connected component analysis using cc_analysis_ and then
+clusters the CC's according to their similarity.
+
+TODO: We need some more detailed documentation here.
+
+----------
+
+**Example 1:** cc_and_cluster()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|cc_and_cluster_plugin_00_00| |cc_and_cluster_plugin_00_01| |cc_and_cluster_plugin_00_02| |cc_and_cluster_plugin_00_03| |cc_and_cluster_plugin_00_04| 
+
+.. |cc_and_cluster_plugin_00_00| image:: images/cc_and_cluster_plugin_00_00.png
+   :height: 87
+   :width: 65
+
+.. |cc_and_cluster_plugin_00_01| image:: images/cc_and_cluster_plugin_00_01.png
+   :height: 3
+   :width: 2
+
+.. |cc_and_cluster_plugin_00_02| image:: images/cc_and_cluster_plugin_00_02.png
+   :height: 10
+   :width: 1
+
+.. |cc_and_cluster_plugin_00_03| image:: images/cc_and_cluster_plugin_00_03.png
+   :height: 4
+   :width: 4
+
+.. |cc_and_cluster_plugin_00_04| image:: images/cc_and_cluster_plugin_00_04.png
+   :height: 7
+   :width: 41
+
+
+
+``splitx``
+----------
+
+[object] **splitx** (``FloatVector`` *center* = [0.5])
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom, Karl MacMillan and Christoph Dalitz
+
+
+Splits an image vertically.
+
+The split point is determined automatically by finding a valley in
+the projections near *center*.
+
+This function is overloaded to work both with a single value
+and a list of splitting point candidates as input.
+
+----------
+
+**Example 1:** splitx()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splitx_plugin_00_00| |splitx_plugin_00_01| |splitx_plugin_00_02| |splitx_plugin_00_03| |splitx_plugin_00_04| |splitx_plugin_00_05| |splitx_plugin_00_06| |splitx_plugin_00_07| |splitx_plugin_00_08| 
+
+.. |splitx_plugin_00_00| image:: images/splitx_plugin_00_00.png
+   :height: 56
+   :width: 28
+
+.. |splitx_plugin_00_01| image:: images/splitx_plugin_00_01.png
+   :height: 6
+   :width: 7
+
+.. |splitx_plugin_00_02| image:: images/splitx_plugin_00_02.png
+   :height: 4
+   :width: 4
+
+.. |splitx_plugin_00_03| image:: images/splitx_plugin_00_03.png
+   :height: 6
+   :width: 15
+
+.. |splitx_plugin_00_04| image:: images/splitx_plugin_00_04.png
+   :height: 76
+   :width: 36
+
+.. |splitx_plugin_00_05| image:: images/splitx_plugin_00_05.png
+   :height: 3
+   :width: 2
+
+.. |splitx_plugin_00_06| image:: images/splitx_plugin_00_06.png
+   :height: 10
+   :width: 1
+
+.. |splitx_plugin_00_07| image:: images/splitx_plugin_00_07.png
+   :height: 12
+   :width: 23
+
+.. |splitx_plugin_00_08| image:: images/splitx_plugin_00_08.png
+   :height: 7
+   :width: 25
+
+
+
+``splitx_left``
+---------------
+
+[object] **splitx_left** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Splits an image vertically.
+
+The split point is determined automatically by finding a valley in
+the projections near the left of the image.
+
+----------
+
+**Example 1:** splitx_left()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splitx_left_plugin_00_00| |splitx_left_plugin_00_01| |splitx_left_plugin_00_02| |splitx_left_plugin_00_03| |splitx_left_plugin_00_04| |splitx_left_plugin_00_05| |splitx_left_plugin_00_06| |splitx_left_plugin_00_07| 
+
+.. |splitx_left_plugin_00_00| image:: images/splitx_left_plugin_00_00.png
+   :height: 53
+   :width: 19
+
+.. |splitx_left_plugin_00_01| image:: images/splitx_left_plugin_00_01.png
+   :height: 4
+   :width: 4
+
+.. |splitx_left_plugin_00_02| image:: images/splitx_left_plugin_00_02.png
+   :height: 3
+   :width: 6
+
+.. |splitx_left_plugin_00_03| image:: images/splitx_left_plugin_00_03.png
+   :height: 87
+   :width: 45
+
+.. |splitx_left_plugin_00_04| image:: images/splitx_left_plugin_00_04.png
+   :height: 4
+   :width: 6
+
+.. |splitx_left_plugin_00_05| image:: images/splitx_left_plugin_00_05.png
+   :height: 3
+   :width: 2
+
+.. |splitx_left_plugin_00_06| image:: images/splitx_left_plugin_00_06.png
+   :height: 10
+   :width: 1
+
+.. |splitx_left_plugin_00_07| image:: images/splitx_left_plugin_00_07.png
+   :height: 7
+   :width: 34
+
+
+
+``splitx_max``
+--------------
+
+[object] **splitx_max** (``FloatVector`` *center* = [0.5])
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom, Karl MacMillan and Christoph Dalitz
+
+
+Splits an image vertically.
+
+    The split point is determined automatically by finding a peak in
+    the projections near *center*.
+
+    This function is overloaded to work both with a single value and a
+    list of splitting point candidates as input.
+    
+
+----------
+
+**Example 1:** splitx_max()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splitx_max_plugin_00_00| |splitx_max_plugin_00_01| |splitx_max_plugin_00_02| |splitx_max_plugin_00_03| |splitx_max_plugin_00_04| |splitx_max_plugin_00_05| |splitx_max_plugin_00_06| |splitx_max_plugin_00_07| |splitx_max_plugin_00_08| 
+
+.. |splitx_max_plugin_00_00| image:: images/splitx_max_plugin_00_00.png
+   :height: 1
+   :width: 1
+
+.. |splitx_max_plugin_00_01| image:: images/splitx_max_plugin_00_01.png
+   :height: 57
+   :width: 37
+
+.. |splitx_max_plugin_00_02| image:: images/splitx_max_plugin_00_02.png
+   :height: 4
+   :width: 4
+
+.. |splitx_max_plugin_00_03| image:: images/splitx_max_plugin_00_03.png
+   :height: 6
+   :width: 24
+
+.. |splitx_max_plugin_00_04| image:: images/splitx_max_plugin_00_04.png
+   :height: 70
+   :width: 27
+
+.. |splitx_max_plugin_00_05| image:: images/splitx_max_plugin_00_05.png
+   :height: 3
+   :width: 2
+
+.. |splitx_max_plugin_00_06| image:: images/splitx_max_plugin_00_06.png
+   :height: 10
+   :width: 1
+
+.. |splitx_max_plugin_00_07| image:: images/splitx_max_plugin_00_07.png
+   :height: 10
+   :width: 14
+
+.. |splitx_max_plugin_00_08| image:: images/splitx_max_plugin_00_08.png
+   :height: 7
+   :width: 16
+
+
+
+``splitx_right``
+----------------
+
+[object] **splitx_right** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Splits an image vertically.
+
+The split point is determined automatically by finding a valley in
+the projections near the right of the image.
+
+----------
+
+**Example 1:** splitx_right()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splitx_right_plugin_00_00| |splitx_right_plugin_00_01| |splitx_right_plugin_00_02| |splitx_right_plugin_00_03| |splitx_right_plugin_00_04| |splitx_right_plugin_00_05| |splitx_right_plugin_00_06| 
+
+.. |splitx_right_plugin_00_00| image:: images/splitx_right_plugin_00_00.png
+   :height: 7
+   :width: 18
+
+.. |splitx_right_plugin_00_01| image:: images/splitx_right_plugin_00_01.png
+   :height: 61
+   :width: 54
+
+.. |splitx_right_plugin_00_02| image:: images/splitx_right_plugin_00_02.png
+   :height: 3
+   :width: 2
+
+.. |splitx_right_plugin_00_03| image:: images/splitx_right_plugin_00_03.png
+   :height: 10
+   :width: 1
+
+.. |splitx_right_plugin_00_04| image:: images/splitx_right_plugin_00_04.png
+   :height: 4
+   :width: 4
+
+.. |splitx_right_plugin_00_05| image:: images/splitx_right_plugin_00_05.png
+   :height: 7
+   :width: 41
+
+.. |splitx_right_plugin_00_06| image:: images/splitx_right_plugin_00_06.png
+   :height: 30
+   :width: 10
+
+
+
+``splity``
+----------
+
+[object] **splity** (``FloatVector`` *center* = [0.5])
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom, Karl MacMillan and Christoph Dalitz
+
+
+Splits an image horizontally.
+
+The split point is determined automatically by finding a valley in
+the projections near *center*.
+
+This function is overloaded to work both with a single value and a
+list of splitting point candidates as input.
+
+----------
+
+**Example 1:** splity()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splity_plugin_00_00| |splity_plugin_00_01| |splity_plugin_00_02| |splity_plugin_00_03| |splity_plugin_00_04| |splity_plugin_00_05| |splity_plugin_00_06| 
+
+.. |splity_plugin_00_00| image:: images/splity_plugin_00_00.png
+   :height: 45
+   :width: 44
+
+.. |splity_plugin_00_01| image:: images/splity_plugin_00_01.png
+   :height: 15
+   :width: 21
+
+.. |splity_plugin_00_02| image:: images/splity_plugin_00_02.png
+   :height: 3
+   :width: 2
+
+.. |splity_plugin_00_03| image:: images/splity_plugin_00_03.png
+   :height: 41
+   :width: 52
+
+.. |splity_plugin_00_04| image:: images/splity_plugin_00_04.png
+   :height: 10
+   :width: 1
+
+.. |splity_plugin_00_05| image:: images/splity_plugin_00_05.png
+   :height: 4
+   :width: 4
+
+.. |splity_plugin_00_06| image:: images/splity_plugin_00_06.png
+   :height: 7
+   :width: 41
+
+
+
+``splity_bottom``
+-----------------
+
+[object] **splity_bottom** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Splits an image horizontally.
+
+The split point is determined automatically by finding a valley in
+the projections near the bottom of the image.
+
+----------
+
+**Example 1:** splity_bottom()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splity_bottom_plugin_00_00| |splity_bottom_plugin_00_01| |splity_bottom_plugin_00_02| |splity_bottom_plugin_00_03| |splity_bottom_plugin_00_04| |splity_bottom_plugin_00_05| |splity_bottom_plugin_00_06| 
+
+.. |splity_bottom_plugin_00_00| image:: images/splity_bottom_plugin_00_00.png
+   :height: 72
+   :width: 44
+
+.. |splity_bottom_plugin_00_01| image:: images/splity_bottom_plugin_00_01.png
+   :height: 42
+   :width: 26
+
+.. |splity_bottom_plugin_00_02| image:: images/splity_bottom_plugin_00_02.png
+   :height: 3
+   :width: 2
+
+.. |splity_bottom_plugin_00_03| image:: images/splity_bottom_plugin_00_03.png
+   :height: 10
+   :width: 1
+
+.. |splity_bottom_plugin_00_04| image:: images/splity_bottom_plugin_00_04.png
+   :height: 4
+   :width: 4
+
+.. |splity_bottom_plugin_00_05| image:: images/splity_bottom_plugin_00_05.png
+   :height: 14
+   :width: 46
+
+.. |splity_bottom_plugin_00_06| image:: images/splity_bottom_plugin_00_06.png
+   :height: 7
+   :width: 41
+
+
+
+``splity_top``
+--------------
+
+[object] **splity_top** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: Segmentation
+:Defined in: segmentation.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Splits an image horizontally.
+
+The split point is determined automatically by finding a valley in
+the projections near the top of the image.
+
+----------
+
+**Example 1:** splity_top()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+|splity_top_plugin_00_00| |splity_top_plugin_00_01| |splity_top_plugin_00_02| |splity_top_plugin_00_03| |splity_top_plugin_00_04| |splity_top_plugin_00_05| 
+
+.. |splity_top_plugin_00_00| image:: images/splity_top_plugin_00_00.png
+   :height: 24
+   :width: 29
+
+.. |splity_top_plugin_00_01| image:: images/splity_top_plugin_00_01.png
+   :height: 62
+   :width: 64
+
+.. |splity_top_plugin_00_02| image:: images/splity_top_plugin_00_02.png
+   :height: 3
+   :width: 2
+
+.. |splity_top_plugin_00_03| image:: images/splity_top_plugin_00_03.png
+   :height: 10
+   :width: 1
+
+.. |splity_top_plugin_00_04| image:: images/splity_top_plugin_00_04.png
+   :height: 4
+   :width: 4
+
+.. |splity_top_plugin_00_05| image:: images/splity_top_plugin_00_05.png
+   :height: 7
+   :width: 41
+
+
+

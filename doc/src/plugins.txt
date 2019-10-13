@@ -1,0 +1,974 @@
+=======
+Plugins
+=======
+
+By categories
+-------------
+
+- Analysis_
+
+  - Contour_
+
+    - contour_bottom_
+
+    - contour_left_
+
+    - contour_pavlidis_
+
+    - contour_right_
+
+    - contour_samplepoints_
+
+    - contour_top_
+
+  - diagonal_projections_
+
+  - histogram_
+
+  - min_max_location_
+
+  - projection_cols_
+
+  - projection_rows_
+
+  - projection_skewed_cols_
+
+  - projection_skewed_rows_
+
+  - projections_
+
+  - rotation_angle_projections_
+
+- Binarization_
+
+  - RegionInformation_
+
+    - gatos_background_
+
+    - image_mean_
+
+    - image_variance_
+
+    - mean_filter_
+
+    - variance_filter_
+
+  - abutaleb_threshold_
+
+  - bernsen_threshold_
+
+  - brink_threshold_
+
+  - djvu_threshold_
+
+  - gatos_threshold_
+
+  - niblack_threshold_
+
+  - otsu_find_threshold_
+
+  - otsu_threshold_
+
+  - sauvola_threshold_
+
+  - shading_subtraction_
+
+  - soft_threshold_
+
+  - soft_threshold_find_sigma_
+
+  - threshold_
+
+  - tsai_moment_preserving_find_threshold_
+
+  - tsai_moment_preserving_threshold_
+
+  - white_rohrer_threshold_
+
+- Classification_
+
+  - classify_automatic_
+
+  - classify_heuristic_
+
+  - classify_manual_
+
+  - get_confidence_
+
+  - get_main_id_
+
+  - has_id_name_
+
+  - match_id_name_
+
+  - unclassify_
+
+- Color_
+
+  - blue_
+
+  - cie_Lab_L_
+
+  - cie_Lab_a_
+
+  - cie_Lab_b_
+
+  - cie_x_
+
+  - cie_y_
+
+  - cie_z_
+
+  - color_ccs_
+
+  - colors_to_labels_
+
+  - cyan_
+
+  - false_color_
+
+  - graph_color_ccs_
+
+  - green_
+
+  - hue_
+
+  - magenta_
+
+  - red_
+
+  - saturation_
+
+  - value_
+
+  - yellow_
+
+- Combine_
+
+  - Arithmetic_
+
+    - add_images_
+
+    - divide_images_
+
+    - multiply_images_
+
+    - subtract_images_
+
+  - Logical_
+
+    - and_image_
+
+    - or_image_
+
+    - xor_image_
+
+  - diff_images_
+
+  - mask_
+
+  - union_images_
+
+- Conversion_
+
+  - extract_imaginary_
+
+  - extract_real_
+
+  - to_complex_
+
+  - to_float_
+
+  - to_grey16_
+
+  - to_greyscale_
+
+  - to_onebit_
+
+  - to_rgb_
+
+- Corelation_
+
+  - corelation_sum_
+
+  - corelation_sum_squares_
+
+  - corelation_weighted_
+
+- Deformations_
+
+  - degrade_kanungo_
+
+  - ink_diffuse_
+
+  - inkrub_
+
+  - noise_
+
+  - wave_
+
+  - white_speckles_
+
+- Displaying_
+
+  - display_
+
+  - display_ccs_
+
+  - display_false_color_
+
+- Draw_
+
+  - draw_bezier_
+
+  - draw_circle_
+
+  - draw_filled_rect_
+
+  - draw_hollow_rect_
+
+  - draw_line_
+
+  - draw_marker_
+
+  - draw_text_
+
+  - fill_
+
+  - fill_white_
+
+  - flood_fill_
+
+  - highlight_
+
+  - invert_
+
+  - remove_border_
+
+- Edge_
+
+  - canny_edge_image_
+
+  - difference_of_exponential_crack_edge_image_
+
+  - difference_of_exponential_edge_image_
+
+  - labeled_region_edges_
+
+  - outline_
+
+- ExternalLibraries_
+
+  - Numpy_
+
+    - from_numpy_
+
+    - to_numpy_
+
+  - PIL_
+
+    - from_pil_
+
+    - to_pil_
+
+  - from_raw_string_
+
+  - to_raw_string_
+
+  - cv_
+
+    - from_cv_
+
+    - to_cv_
+
+  - to_buffer_
+
+- Features_
+
+  - area_
+
+  - aspect_ratio_
+
+  - black_area_
+
+  - compactness_
+
+  - diagonal_projection_
+
+  - fourier_broken_
+
+  - moments_
+
+  - ncols_feature_
+
+  - nholes_
+
+  - nholes_extended_
+
+  - nrows_feature_
+
+  - skeleton_features_
+
+  - top_bottom_
+
+  - volume_
+
+  - volume16regions_
+
+  - volume64regions_
+
+  - zernike_moments_
+
+  - zernike_moments_plugin_
+
+- File_
+
+  - PNG_info_
+
+  - load_PNG_
+
+  - load_image_
+
+  - load_tiff_
+
+  - save_PNG_
+
+  - save_image_
+
+  - save_tiff_
+
+  - tiff_info_
+
+- Filter_
+
+  - Convolution_
+
+    - convolve_
+
+    - convolve_x_
+
+    - convolve_xy_
+
+    - convolve_y_
+
+  - ConvolutionKernels_
+
+    - AveragingKernel_
+
+    - BinomialKernel_
+
+    - GaussianDerivativeKernel_
+
+    - GaussianKernel_
+
+    - SimpleSharpeningKernel_
+
+    - SymmetricGradientKernel_
+
+  - create_gabor_filter_
+
+  - gaussian_gradient_
+
+  - gaussian_smoothing_
+
+  - hessian_matrix_of_gaussian_
+
+  - kfill_
+
+  - kfill_modified_
+
+  - laplacian_of_gaussian_
+
+  - mean_
+
+  - min_max_filter_
+
+  - rank_
+
+  - simple_sharpen_
+
+  - sobel_edge_detection_
+
+  - wiener_filter_
+
+- Geometry_
+
+  - convex_hull_as_image_
+
+  - convex_hull_as_points_
+
+  - convex_hull_from_points_
+
+  - delaunay_from_points_
+
+  - hough_lines_
+
+  - labeled_region_neighbors_
+
+  - max_empty_rect_
+
+  - voronoi_from_labeled_image_
+
+  - voronoi_from_points_
+
+- List_
+
+  - all_subsets_
+
+  - argmax_
+
+  - argmin_
+
+  - kernel_density_
+
+  - median_
+
+  - permute_list_
+
+- Morphology_
+
+  - despeckle_
+
+  - dilate_
+
+  - dilate_with_structure_
+
+  - distance_transform_
+
+  - erode_
+
+  - erode_dilate_
+
+  - erode_with_structure_
+
+- PageSegmentation_
+
+  - bbox_merging_
+
+  - kise_block_extraction_
+
+  - projection_cutting_
+
+  - runlength_smearing_
+
+  - segmentation_error_
+
+  - sub_cc_analysis_
+
+  - textline_reading_order_
+
+- Relational_
+
+  - bounding_box_grouping_function_
+
+  - edit_distance_
+
+  - least_squares_fit_
+
+  - least_squares_fit_xy_
+
+  - polar_distance_
+
+  - polar_match_
+
+  - shaped_grouping_function_
+
+- Runlength_
+
+  - filter_narrow_runs_
+
+  - filter_short_runs_
+
+  - filter_tall_runs_
+
+  - filter_wide_runs_
+
+  - from_rle_
+
+  - iterate_runs_
+
+  - most_frequent_run_
+
+  - most_frequent_runs_
+
+  - run_histogram_
+
+  - runlength_from_point_
+
+  - to_rle_
+
+- Segmentation_
+
+  - cc_analysis_
+
+  - cc_and_cluster_
+
+  - splitx_
+
+  - splitx_left_
+
+  - splitx_max_
+
+  - splitx_right_
+
+  - splity_
+
+  - splity_bottom_
+
+  - splity_top_
+
+- Thinning_
+
+  - medial_axis_transform_hs_
+
+  - medial_axis_transform_large_image_hs_
+
+  - thin_hs_
+
+  - thin_hs_large_image_
+
+  - thin_lc_
+
+  - thin_zs_
+
+- Transformation_
+
+  - grey_convert_
+
+  - mirror_horizontal_
+
+  - mirror_vertical_
+
+  - resize_
+
+  - rotate_
+
+  - scale_
+
+  - shear_column_
+
+  - shear_row_
+
+- Utility_
+
+  - NestedLists_
+
+    - nested_list_to_image_
+
+    - to_nested_list_
+
+  - ccs_from_labeled_image_
+
+  - clip_image_
+
+  - generate_features_
+
+  - image_copy_
+
+  - image_save_
+
+  - mse_
+
+  - pad_image_
+
+  - reset_onebit_image_
+
+  - subimage_
+
+  - trim_image_
+
+- XML_
+
+  - to_xml_
+
+  - to_xml_filename_
+
+Alphabetical
+-------------
+
+
+**A**
+
+abutaleb_threshold_, add_images_, all_subsets_, and_image_, area_, argmax_, argmin_, aspect_ratio_, AveragingKernel_
+
+**B**
+
+bbox_merging_, bernsen_threshold_, BinomialKernel_, black_area_, blue_, bounding_box_grouping_function_, brink_threshold_
+
+**C**
+
+canny_edge_image_, cc_analysis_, cc_and_cluster_, ccs_from_labeled_image_, cie_Lab_a_, cie_Lab_b_, cie_Lab_L_, cie_x_, cie_y_, cie_z_, classify_automatic_, classify_heuristic_, classify_manual_, clip_image_, color_ccs_, colors_to_labels_, compactness_, contour_bottom_, contour_left_, contour_pavlidis_, contour_right_, contour_samplepoints_, contour_top_, convex_hull_as_image_, convex_hull_as_points_, convex_hull_from_points_, convolve_, convolve_x_, convolve_xy_, convolve_y_, corelation_sum_, corelation_sum_squares_, corelation_weighted_, create_gabor_filter_, cyan_
+
+**D**
+
+degrade_kanungo_, delaunay_from_points_, despeckle_, diagonal_projection_, diagonal_projections_, diff_images_, difference_of_exponential_crack_edge_image_, difference_of_exponential_edge_image_, dilate_, dilate_with_structure_, display_, display_ccs_, display_false_color_, distance_transform_, divide_images_, djvu_threshold_, draw_bezier_, draw_circle_, draw_filled_rect_, draw_hollow_rect_, draw_line_, draw_marker_, draw_text_
+
+**E**
+
+edit_distance_, erode_, erode_dilate_, erode_with_structure_, extract_imaginary_, extract_real_
+
+**F**
+
+false_color_, fill_, fill_white_, filter_narrow_runs_, filter_short_runs_, filter_tall_runs_, filter_wide_runs_, flood_fill_, fourier_broken_, from_cv_, from_numpy_, from_pil_, from_raw_string_, from_rle_
+
+**G**
+
+gatos_background_, gatos_threshold_, gaussian_gradient_, gaussian_smoothing_, GaussianDerivativeKernel_, GaussianKernel_, generate_features_, get_confidence_, get_main_id_, graph_color_ccs_, green_, grey_convert_
+
+**H**
+
+has_id_name_, hessian_matrix_of_gaussian_, highlight_, histogram_, hough_lines_, hue_
+
+**I**
+
+image_copy_, image_mean_, image_save_, image_variance_, ink_diffuse_, inkrub_, invert_, iterate_runs_
+
+**K**
+
+kernel_density_, kfill_, kfill_modified_, kise_block_extraction_
+
+**L**
+
+labeled_region_edges_, labeled_region_neighbors_, laplacian_of_gaussian_, least_squares_fit_, least_squares_fit_xy_, load_image_, load_PNG_, load_tiff_
+
+**M**
+
+magenta_, mask_, match_id_name_, max_empty_rect_, mean_, mean_filter_, medial_axis_transform_hs_, medial_axis_transform_large_image_hs_, median_, min_max_filter_, min_max_location_, mirror_horizontal_, mirror_vertical_, moments_, most_frequent_run_, most_frequent_runs_, mse_, multiply_images_
+
+**N**
+
+ncols_feature_, nested_list_to_image_, nholes_, nholes_extended_, niblack_threshold_, noise_, nrows_feature_
+
+**O**
+
+or_image_, otsu_find_threshold_, otsu_threshold_, outline_
+
+**P**
+
+pad_image_, permute_list_, PNG_info_, polar_distance_, polar_match_, projection_cols_, projection_cutting_, projection_rows_, projection_skewed_cols_, projection_skewed_rows_, projections_
+
+**R**
+
+rank_, red_, remove_border_, reset_onebit_image_, resize_, rotate_, rotation_angle_projections_, run_histogram_, runlength_from_point_, runlength_smearing_
+
+**S**
+
+saturation_, sauvola_threshold_, save_image_, save_PNG_, save_tiff_, scale_, segmentation_error_, shading_subtraction_, shaped_grouping_function_, shear_column_, shear_row_, simple_sharpen_, SimpleSharpeningKernel_, skeleton_features_, sobel_edge_detection_, soft_threshold_, soft_threshold_find_sigma_, splitx_, splitx_left_, splitx_max_, splitx_right_, splity_, splity_bottom_, splity_top_, sub_cc_analysis_, subimage_, subtract_images_, SymmetricGradientKernel_
+
+**T**
+
+textline_reading_order_, thin_hs_, thin_hs_large_image_, thin_lc_, thin_zs_, threshold_, tiff_info_, to_buffer_, to_complex_, to_cv_, to_float_, to_grey16_, to_greyscale_, to_nested_list_, to_numpy_, to_onebit_, to_pil_, to_raw_string_, to_rgb_, to_rle_, to_xml_, to_xml_filename_, top_bottom_, trim_image_, tsai_moment_preserving_find_threshold_, tsai_moment_preserving_threshold_
+
+**U**
+
+unclassify_, union_images_
+
+**V**
+
+value_, variance_filter_, volume_, volume16regions_, volume64regions_, voronoi_from_labeled_image_, voronoi_from_points_
+
+**W**
+
+wave_, white_rohrer_threshold_, white_speckles_, wiener_filter_
+
+**X**
+
+xor_image_
+
+**Y**
+
+yellow_
+
+**Z**
+
+zernike_moments_, zernike_moments_plugin_
+
+.. _Analysis: analysis.html#analysis
+.. _Contour: analysis.html#contour
+.. _contour_bottom: analysis.html#contour-bottom
+.. _contour_left: analysis.html#contour-left
+.. _contour_pavlidis: analysis.html#contour-pavlidis
+.. _contour_right: analysis.html#contour-right
+.. _contour_samplepoints: analysis.html#contour-samplepoints
+.. _contour_top: analysis.html#contour-top
+.. _diagonal_projections: analysis.html#diagonal-projections
+.. _histogram: analysis.html#histogram
+.. _min_max_location: analysis.html#min-max-location
+.. _projection_cols: analysis.html#projection-cols
+.. _projection_rows: analysis.html#projection-rows
+.. _projection_skewed_cols: analysis.html#projection-skewed-cols
+.. _projection_skewed_rows: analysis.html#projection-skewed-rows
+.. _projections: analysis.html#projections
+.. _rotation_angle_projections: analysis.html#rotation-angle-projections
+.. _Binarization: binarization.html#binarization
+.. _RegionInformation: binarization.html#regioninformation
+.. _gatos_background: binarization.html#gatos-background
+.. _image_mean: binarization.html#image-mean
+.. _image_variance: binarization.html#image-variance
+.. _mean_filter: binarization.html#mean-filter
+.. _variance_filter: binarization.html#variance-filter
+.. _abutaleb_threshold: binarization.html#abutaleb-threshold
+.. _bernsen_threshold: binarization.html#bernsen-threshold
+.. _brink_threshold: binarization.html#brink-threshold
+.. _djvu_threshold: binarization.html#djvu-threshold
+.. _gatos_threshold: binarization.html#gatos-threshold
+.. _niblack_threshold: binarization.html#niblack-threshold
+.. _otsu_find_threshold: binarization.html#otsu-find-threshold
+.. _otsu_threshold: binarization.html#otsu-threshold
+.. _sauvola_threshold: binarization.html#sauvola-threshold
+.. _shading_subtraction: binarization.html#shading-subtraction
+.. _soft_threshold: binarization.html#soft-threshold
+.. _soft_threshold_find_sigma: binarization.html#soft-threshold-find-sigma
+.. _threshold: binarization.html#threshold
+.. _tsai_moment_preserving_find_threshold: binarization.html#tsai-moment-preserving-find-threshold
+.. _tsai_moment_preserving_threshold: binarization.html#tsai-moment-preserving-threshold
+.. _white_rohrer_threshold: binarization.html#white-rohrer-threshold
+.. _Classification: classification.html#classification
+.. _classify_automatic: classification.html#classify-automatic
+.. _classify_heuristic: classification.html#classify-heuristic
+.. _classify_manual: classification.html#classify-manual
+.. _get_confidence: classification.html#get-confidence
+.. _get_main_id: classification.html#get-main-id
+.. _has_id_name: classification.html#has-id-name
+.. _match_id_name: classification.html#match-id-name
+.. _unclassify: classification.html#unclassify
+.. _Color: color.html#color
+.. _blue: color.html#blue
+.. _cie_Lab_L: color.html#cie-lab-l
+.. _cie_Lab_a: color.html#cie-lab-a
+.. _cie_Lab_b: color.html#cie-lab-b
+.. _cie_x: color.html#cie-x
+.. _cie_y: color.html#cie-y
+.. _cie_z: color.html#cie-z
+.. _color_ccs: color.html#color-ccs
+.. _colors_to_labels: color.html#colors-to-labels
+.. _cyan: color.html#cyan
+.. _false_color: color.html#false-color
+.. _graph_color_ccs: color.html#graph-color-ccs
+.. _green: color.html#green
+.. _hue: color.html#hue
+.. _magenta: color.html#magenta
+.. _red: color.html#red
+.. _saturation: color.html#saturation
+.. _value: color.html#value
+.. _yellow: color.html#yellow
+.. _Combine: combine.html#combine
+.. _Arithmetic: combine.html#arithmetic
+.. _add_images: combine.html#add-images
+.. _divide_images: combine.html#divide-images
+.. _multiply_images: combine.html#multiply-images
+.. _subtract_images: combine.html#subtract-images
+.. _Logical: combine.html#logical
+.. _and_image: combine.html#and-image
+.. _or_image: combine.html#or-image
+.. _xor_image: combine.html#xor-image
+.. _diff_images: combine.html#diff-images
+.. _mask: combine.html#mask
+.. _union_images: combine.html#union-images
+.. _Conversion: conversion.html#conversion
+.. _extract_imaginary: conversion.html#extract-imaginary
+.. _extract_real: conversion.html#extract-real
+.. _to_complex: conversion.html#to-complex
+.. _to_float: conversion.html#to-float
+.. _to_grey16: conversion.html#to-grey16
+.. _to_greyscale: conversion.html#to-greyscale
+.. _to_onebit: conversion.html#to-onebit
+.. _to_rgb: conversion.html#to-rgb
+.. _Corelation: corelation.html#corelation
+.. _corelation_sum: corelation.html#corelation-sum
+.. _corelation_sum_squares: corelation.html#corelation-sum-squares
+.. _corelation_weighted: corelation.html#corelation-weighted
+.. _Deformations: deformations.html#deformations
+.. _degrade_kanungo: deformations.html#degrade-kanungo
+.. _ink_diffuse: deformations.html#ink-diffuse
+.. _inkrub: deformations.html#inkrub
+.. _noise: deformations.html#noise
+.. _wave: deformations.html#wave
+.. _white_speckles: deformations.html#white-speckles
+.. _Displaying: displaying.html#displaying
+.. _display: displaying.html#display
+.. _display_ccs: displaying.html#display-ccs
+.. _display_false_color: displaying.html#display-false-color
+.. _Draw: draw.html#draw
+.. _draw_bezier: draw.html#draw-bezier
+.. _draw_circle: draw.html#draw-circle
+.. _draw_filled_rect: draw.html#draw-filled-rect
+.. _draw_hollow_rect: draw.html#draw-hollow-rect
+.. _draw_line: draw.html#draw-line
+.. _draw_marker: draw.html#draw-marker
+.. _draw_text: draw.html#draw-text
+.. _fill: draw.html#fill
+.. _fill_white: draw.html#fill-white
+.. _flood_fill: draw.html#flood-fill
+.. _highlight: draw.html#highlight
+.. _invert: draw.html#invert
+.. _remove_border: draw.html#remove-border
+.. _Edge: edge.html#edge
+.. _canny_edge_image: edge.html#canny-edge-image
+.. _difference_of_exponential_crack_edge_image: edge.html#difference-of-exponential-crack-edge-image
+.. _difference_of_exponential_edge_image: edge.html#difference-of-exponential-edge-image
+.. _labeled_region_edges: edge.html#labeled-region-edges
+.. _outline: edge.html#outline
+.. _ExternalLibraries: externallibraries.html#externallibraries
+.. _Numpy: externallibraries.html#numpy
+.. _from_numpy: externallibraries.html#from-numpy
+.. _to_numpy: externallibraries.html#to-numpy
+.. _PIL: externallibraries.html#pil
+.. _from_pil: externallibraries.html#from-pil
+.. _to_pil: externallibraries.html#to-pil
+.. _from_raw_string: externallibraries.html#from-raw-string
+.. _to_raw_string: externallibraries.html#to-raw-string
+.. _cv: externallibraries.html#cv
+.. _from_cv: externallibraries.html#from-cv
+.. _to_cv: externallibraries.html#to-cv
+.. _to_buffer: externallibraries.html#to-buffer
+.. _Features: features.html#features
+.. _area: features.html#area
+.. _aspect_ratio: features.html#aspect-ratio
+.. _black_area: features.html#black-area
+.. _compactness: features.html#compactness
+.. _diagonal_projection: features.html#diagonal-projection
+.. _fourier_broken: features.html#fourier-broken
+.. _moments: features.html#moments
+.. _ncols_feature: features.html#ncols-feature
+.. _nholes: features.html#nholes
+.. _nholes_extended: features.html#nholes-extended
+.. _nrows_feature: features.html#nrows-feature
+.. _skeleton_features: features.html#skeleton-features
+.. _top_bottom: features.html#top-bottom
+.. _volume: features.html#volume
+.. _volume16regions: features.html#volume16regions
+.. _volume64regions: features.html#volume64regions
+.. _zernike_moments: features.html#zernike-moments
+.. _zernike_moments_plugin: features.html#zernike-moments-plugin
+.. _File: file.html#file
+.. _PNG_info: file.html#png-info
+.. _load_PNG: file.html#load-png
+.. _load_image: file.html#load-image
+.. _load_tiff: file.html#load-tiff
+.. _save_PNG: file.html#save-png
+.. _save_image: file.html#save-image
+.. _save_tiff: file.html#save-tiff
+.. _tiff_info: file.html#tiff-info
+.. _Filter: filter.html#filter
+.. _Convolution: filter.html#convolution
+.. _convolve: filter.html#convolve
+.. _convolve_x: filter.html#convolve-x
+.. _convolve_xy: filter.html#convolve-xy
+.. _convolve_y: filter.html#convolve-y
+.. _ConvolutionKernels: filter.html#convolutionkernels
+.. _AveragingKernel: filter.html#averagingkernel
+.. _BinomialKernel: filter.html#binomialkernel
+.. _GaussianDerivativeKernel: filter.html#gaussianderivativekernel
+.. _GaussianKernel: filter.html#gaussiankernel
+.. _SimpleSharpeningKernel: filter.html#simplesharpeningkernel
+.. _SymmetricGradientKernel: filter.html#symmetricgradientkernel
+.. _create_gabor_filter: filter.html#create-gabor-filter
+.. _gaussian_gradient: filter.html#gaussian-gradient
+.. _gaussian_smoothing: filter.html#gaussian-smoothing
+.. _hessian_matrix_of_gaussian: filter.html#hessian-matrix-of-gaussian
+.. _kfill: filter.html#kfill
+.. _kfill_modified: filter.html#kfill-modified
+.. _laplacian_of_gaussian: filter.html#laplacian-of-gaussian
+.. _mean: filter.html#mean
+.. _min_max_filter: filter.html#min-max-filter
+.. _rank: filter.html#rank
+.. _simple_sharpen: filter.html#simple-sharpen
+.. _sobel_edge_detection: filter.html#sobel-edge-detection
+.. _wiener_filter: filter.html#wiener-filter
+.. _Geometry: geometry.html#geometry
+.. _convex_hull_as_image: geometry.html#convex-hull-as-image
+.. _convex_hull_as_points: geometry.html#convex-hull-as-points
+.. _convex_hull_from_points: geometry.html#convex-hull-from-points
+.. _delaunay_from_points: geometry.html#delaunay-from-points
+.. _hough_lines: geometry.html#hough-lines
+.. _labeled_region_neighbors: geometry.html#labeled-region-neighbors
+.. _max_empty_rect: geometry.html#max-empty-rect
+.. _voronoi_from_labeled_image: geometry.html#voronoi-from-labeled-image
+.. _voronoi_from_points: geometry.html#voronoi-from-points
+.. _List: list.html#list
+.. _all_subsets: list.html#all-subsets
+.. _argmax: list.html#argmax
+.. _argmin: list.html#argmin
+.. _kernel_density: list.html#kernel-density
+.. _median: list.html#median
+.. _permute_list: list.html#permute-list
+.. _Morphology: morphology.html#morphology
+.. _despeckle: morphology.html#despeckle
+.. _dilate: morphology.html#dilate
+.. _dilate_with_structure: morphology.html#dilate-with-structure
+.. _distance_transform: morphology.html#distance-transform
+.. _erode: morphology.html#erode
+.. _erode_dilate: morphology.html#erode-dilate
+.. _erode_with_structure: morphology.html#erode-with-structure
+.. _PageSegmentation: pagesegmentation.html#pagesegmentation
+.. _bbox_merging: pagesegmentation.html#bbox-merging
+.. _kise_block_extraction: pagesegmentation.html#kise-block-extraction
+.. _projection_cutting: pagesegmentation.html#projection-cutting
+.. _runlength_smearing: pagesegmentation.html#runlength-smearing
+.. _segmentation_error: pagesegmentation.html#segmentation-error
+.. _sub_cc_analysis: pagesegmentation.html#sub-cc-analysis
+.. _textline_reading_order: pagesegmentation.html#textline-reading-order
+.. _Relational: relational.html#relational
+.. _bounding_box_grouping_function: relational.html#bounding-box-grouping-function
+.. _edit_distance: relational.html#edit-distance
+.. _least_squares_fit: relational.html#least-squares-fit
+.. _least_squares_fit_xy: relational.html#least-squares-fit-xy
+.. _polar_distance: relational.html#polar-distance
+.. _polar_match: relational.html#polar-match
+.. _shaped_grouping_function: relational.html#shaped-grouping-function
+.. _Runlength: runlength.html#runlength
+.. _filter_narrow_runs: runlength.html#filter-narrow-runs
+.. _filter_short_runs: runlength.html#filter-short-runs
+.. _filter_tall_runs: runlength.html#filter-tall-runs
+.. _filter_wide_runs: runlength.html#filter-wide-runs
+.. _from_rle: runlength.html#from-rle
+.. _iterate_runs: runlength.html#iterate-runs
+.. _most_frequent_run: runlength.html#most-frequent-run
+.. _most_frequent_runs: runlength.html#most-frequent-runs
+.. _run_histogram: runlength.html#run-histogram
+.. _runlength_from_point: runlength.html#runlength-from-point
+.. _to_rle: runlength.html#to-rle
+.. _Segmentation: segmentation.html#segmentation
+.. _cc_analysis: segmentation.html#cc-analysis
+.. _cc_and_cluster: segmentation.html#cc-and-cluster
+.. _splitx: segmentation.html#splitx
+.. _splitx_left: segmentation.html#splitx-left
+.. _splitx_max: segmentation.html#splitx-max
+.. _splitx_right: segmentation.html#splitx-right
+.. _splity: segmentation.html#splity
+.. _splity_bottom: segmentation.html#splity-bottom
+.. _splity_top: segmentation.html#splity-top
+.. _Thinning: thinning.html#thinning
+.. _medial_axis_transform_hs: thinning.html#medial-axis-transform-hs
+.. _medial_axis_transform_large_image_hs: thinning.html#medial-axis-transform-large-image-hs
+.. _thin_hs: thinning.html#thin-hs
+.. _thin_hs_large_image: thinning.html#thin-hs-large-image
+.. _thin_lc: thinning.html#thin-lc
+.. _thin_zs: thinning.html#thin-zs
+.. _Transformation: transformation.html#transformation
+.. _grey_convert: transformation.html#grey-convert
+.. _mirror_horizontal: transformation.html#mirror-horizontal
+.. _mirror_vertical: transformation.html#mirror-vertical
+.. _resize: transformation.html#resize
+.. _rotate: transformation.html#rotate
+.. _scale: transformation.html#scale
+.. _shear_column: transformation.html#shear-column
+.. _shear_row: transformation.html#shear-row
+.. _Utility: utility.html#utility
+.. _NestedLists: utility.html#nestedlists
+.. _nested_list_to_image: utility.html#nested-list-to-image
+.. _to_nested_list: utility.html#to-nested-list
+.. _ccs_from_labeled_image: utility.html#ccs-from-labeled-image
+.. _clip_image: utility.html#clip-image
+.. _generate_features: utility.html#generate-features
+.. _image_copy: utility.html#image-copy
+.. _image_save: utility.html#image-save
+.. _mse: utility.html#mse
+.. _pad_image: utility.html#pad-image
+.. _reset_onebit_image: utility.html#reset-onebit-image
+.. _subimage: utility.html#subimage
+.. _trim_image: utility.html#trim-image
+.. _XML: xml.html#xml
+.. _to_xml: xml.html#to-xml
+.. _to_xml_filename: xml.html#to-xml-filename

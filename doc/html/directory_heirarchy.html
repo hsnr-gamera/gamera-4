@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>directory_heirarchy.txt</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+
+
+<p>b'=======================nThe Directory Hierarchyn=======================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnThe Gamera source tree looks something like this:nn+---------------------+----------------------------------------------------------------+n| ./                  | Basic information files for building Gamera.                   <a href="#id5"><span class="problematic" id="id6">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | setup.py      | A Python <tt class="docutils literal">distutils</tt>-based build script.     <a href="#id7"><span class="problematic" id="id8">|\n|</span></a>                     |               | See <a href="#id103"><span class="problematic" id="id104">`building and installing Gamera`_</span></a>.         <a href="#id9"><span class="problematic" id="id10">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> doc/                | Documentation for Gamera                                       <a href="#id11"><span class="problematic" id="id12">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | gendoc.py     | Script to generate documentation.              <a href="#id13"><span class="problematic" id="id14">|\n|</span></a>                     |               | (requires that <a href="#id105"><span class="problematic" id="id106">docutils_</span></a> be installed)         <a href="#id15"><span class="problematic" id="id16">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | src/          | Source files for the static documentation.     <a href="#id17"><span class="problematic" id="id18">|\n|</span></a>                     |               | These are written in the reStructuredText      <a href="#id19"><span class="problematic" id="id20">|\n|</span></a>                     |               | format used by <a href="#id107"><span class="problematic" id="id108">docutils_</span></a>.                      <a href="#id21"><span class="problematic" id="id22">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | html/         | The generated HTML documentation.              <a href="#id23"><span class="problematic" id="id24">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> gamera/             | All the files needed by Gamera at runtime.                     <a href="#id25"><span class="problematic" id="id26">|\n|</span></a>                     | Since Python is interpreted, this means                        <a href="#id27"><span class="problematic" id="id28">|\n|</span></a>                     | Python source files.                                           <a href="#id29"><span class="problematic" id="id30">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | gui/          | Python source related to the GUI.  These are   <a href="#id31"><span class="problematic" id="id32">|\n|</span></a>                     |               | optional.                                      <a href="#id33"><span class="problematic" id="id34">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | plugins/      | Python source for plugins.  This is mostly     <a href="#id35"><span class="problematic" id="id36">|\n|</span></a>                     |               | metadata that describes how to compile and run <a href="#id37"><span class="problematic" id="id38">|\n|</span></a>                     |               | C++ plugins.  See <a href="#id109"><span class="problematic" id="id110">`Writing Gamera Plugins`_</span></a>    <a href="#id39"><span class="problematic" id="id40">|\n|</span></a>                     |               | for more info.                                 <a href="#id41"><span class="problematic" id="id42">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | pixmaps/      | Images and icons used by the Gamera GUI.       <a href="#id43"><span class="problematic" id="id44">|\n|</span></a>                     |               | These PNG files are converted into Python      <a href="#id45"><span class="problematic" id="id46">|\n|</span></a>                     |               | source code (<tt class="docutils literal">gamera/gui/gamera_icons.py</tt>)   <a href="#id47"><span class="problematic" id="id48">|\n|</span></a>                     |               | using the <tt class="docutils literal">convert_images.py</tt> script.        <a href="#id49"><span class="problematic" id="id50">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> include/            | C++ header (<tt class="docutils literal">.hpp</tt>) files.                                   <a href="#id51"><span class="problematic" id="id52">|\n|</span></a>                     | Since the Gamera C++ code is so heavily                        <a href="#id53"><span class="problematic" id="id54">|\n|</span></a>                     | templatized, most of the code is here.                         <a href="#id55"><span class="problematic" id="id56">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | plugins/      | Source code for the C++-based plugins.         <a href="#id57"><span class="problematic" id="id58">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | vigra/        | Code from the <a href="#id111"><span class="problematic" id="id112">`VIGRA Computer Vision Library`_</span></a> <a href="#id59"><span class="problematic" id="id60">|\n|</span></a>                     |               | used by Gamera.  Gamera can use these methods  <a href="#id61"><span class="problematic" id="id62">|\n|</span></a>                     |               | directly thanks to the <tt class="docutils literal"><span class="pre">vigra_*.hpp</span></tt> headers.|n+---------------------+---------------+------------------------------------------------+n| misc/               | Other miscellaneous files for information that                 <a href="#id63"><span class="problematic" id="id64">|\n|</span></a>                     | are not used directly by Gamera.                               <a href="#id65"><span class="problematic" id="id66">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | gamera.dtd    | An XML DTD for Gamera's XML file format.       <a href="#id67"><span class="problematic" id="id68">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> src/                | Source code (that compiles directly to object                  <a href="#id69"><span class="problematic" id="id70">|\n|</span></a>                     | files.)                                                        <a href="#id71"><span class="problematic" id="id72">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | eodev/        | <a href="#id113"><span class="problematic" id="id114">EOdev_</span></a>: Evolving Objects (EO): an              <a href="#id73"><span class="problematic" id="id74">|\n|</span></a>                     |               | Evolutionary Computation Framework             <a href="#id75"><span class="problematic" id="id76">|\n|</span></a>                     |               | used to optimize the kNN classifier.           <a href="#id77"><span class="problematic" id="id78">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | graph/        | A graph library.  API should be considered     <a href="#id79"><span class="problematic" id="id80">|\n|</span></a>                     |               | unstable.                                      <a href="#id81"><span class="problematic" id="id82">|\n|</span></a>                     +---------------+------------------------------------------------+n|                     | libtiff/      | <a href="#id115"><span class="problematic" id="id116">libtiff_</span></a>: A library for reading/writing Tagged <a href="#id83"><span class="problematic" id="id84">|\n|</span></a>                     |               | Image Format Files (otherwise known as <em>Tons of|n|                     |               | Incompatible File Formats</em>).  Included for     <a href="#id85"><span class="problematic" id="id86">|\n|</span></a>                     |               | compiling convenience on MS-Windows and Mac    <a href="#id87"><span class="problematic" id="id88">|\n|</span></a>                     |               | OS-X.                                          <a href="#id89"><span class="problematic" id="id90">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> tests/              | Includes unit tests for running with the <tt class="docutils literal">py.test</tt> framework.|n|                     | These files are mainly useful only for the developers of       <a href="#id91"><span class="problematic" id="id92">|\n|</span></a>                     | Gamera.                                                        <a href="#id93"><span class="problematic" id="id94">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> migration_tools/    | Some tools to help migrate scripts from Gamera 2.x to Gamera   <a href="#id95"><span class="problematic" id="id96">|\n|</span></a>                     | 3.x                                                            <a href="#id97"><span class="problematic" id="id98">|\n|</span></a>                     |                                                                <a href="#id99"><span class="problematic" id="id100">|\n|</span></a>                     |                                                                <a href="#id101"><span class="problematic" id="id102">|\n+---------------------+---------------+------------------------------------------------+\n|</span></a> examples/           | Basic Gamera scripts to be used as starting points for end-user|n|                     | applications.  See the <a href="#id117"><span class="problematic" id="id118">`script-writing documentation`_</span></a> for more|n|                     | information                                                    <a href="#id3"><span class="problematic" id="id4">|</span></a>n+---------------------+---------------+------------------------------------------------+nn.. _building and installing Gamera: install.htmln.. _docutils: <a class="reference external" href="http://docutils.sf.net/n">http://docutils.sf.net/n</a>.. _Writing Gamera Plugins: writing_plugins.htmln.. _VIGRA Computer Vision Library: <a class="reference external" href="http://kogs-www.informatik.uni-hamburg.de/~koethe/vigra/n">http://kogs-www.informatik.uni-hamburg.de/~koethe/vigra/n</a>.. _EOdev: <a class="reference external" href="http://eodev.sourceforge.net/n">http://eodev.sourceforge.net/n</a>.. _libtiff: <a class="reference external" href="http://www.libtiff.org/n">http://www.libtiff.org/n</a>.. _script-writing documentation: script.htmln'</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
+Unknown interpreted text role &quot;raw-html&quot;.</div>
+<div class="system-message" id="id3">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
+Inline substitution_reference start-string without end-string.</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="id5">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id7">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id9">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id11">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id13">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id15">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id17">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id19">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id21">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id23">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id25">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id27">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id29">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id31">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id33">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id35">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id37">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id39">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id41">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id43">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id44">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id45">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id46">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id47">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id48">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id49">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id50">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id51">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id52">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id53">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id54">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id55">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id56">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id57">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id58">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id59">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id60">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id61">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id62">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id63">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id64">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id65">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id66">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id67">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id68">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id69">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id70">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id71">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id72">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id73">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id74">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id75">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id76">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id77">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id78">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id79">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id80">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id81">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id82">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id83">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id84">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id85">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id86">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id87">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id88">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id89">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id90">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id91">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id92">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id93">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id94">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id95">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id96">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id97">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id98">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id99">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id100">backlink</a></em></p>
+Undefined substitution referenced: &quot;n&quot;.</div>
+<div class="system-message" id="id101">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id102">backlink</a></em></p>
+Undefined substitution referenced: &quot;n+---------------------+---------------+------------------------------------------------+n&quot;.</div>
+<div class="system-message" id="id103">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id104">backlink</a></em></p>
+Unknown target name: &quot;building and installing gamera&quot;.</div>
+<div class="system-message" id="id105">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id106">backlink</a></em></p>
+Unknown target name: &quot;docutils&quot;.</div>
+<div class="system-message" id="id107">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id108">backlink</a></em></p>
+Unknown target name: &quot;docutils&quot;.</div>
+<div class="system-message" id="id109">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id110">backlink</a></em></p>
+Unknown target name: &quot;writing gamera plugins&quot;.</div>
+<div class="system-message" id="id111">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id112">backlink</a></em></p>
+Unknown target name: &quot;vigra computer vision library&quot;.</div>
+<div class="system-message" id="id113">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id114">backlink</a></em></p>
+Unknown target name: &quot;eodev&quot;.</div>
+<div class="system-message" id="id115">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id116">backlink</a></em></p>
+Unknown target name: &quot;libtiff&quot;.</div>
+<div class="system-message" id="id117">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/directory_heirarchy.txt</tt>, line 1); <em><a href="#id118">backlink</a></em></p>
+Unknown target name: &quot;script-writing documentation&quot;.</div>
+</div>
+</div>
+</body>
+</html>

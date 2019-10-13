@@ -1,0 +1,236 @@
+
+Classification
+==============
+
+``classify_automatic``
+----------------------
+
+**classify_automatic** (str *id*)
+
+
+:Operates on: ``Image`` [OneBit]
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Classifies the image as the value *id_name* and sets the state
+to AUTOMATIC.  Use this method when an automatic classifier has classified
+this glyph. Note that this method does not touch the *confidence* map for
+the main id; this must be set separately.
+
+*id_name*
+  Can come in one of two forms:
+
+    **string**
+       image is classified using the given ``.``-delimited class name.
+       As in this case no confidence is provided, it is set to zero.
+    **list of tuples**
+       A list of tuples where each tuple is the pair (*confidence*, *class_name*).
+
+       *confidence*
+         A value in range (0, 1), where 0 is uncertain and 1 is certain.
+       *class_name*
+         A ``.``-delimited class name.
+
+
+``classify_heuristic``
+----------------------
+
+**classify_heuristic** (str *id*)
+
+
+:Operates on: ``Image`` [OneBit]
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Classifies the image as the value *id_name* and sets the state
+to HEURISTIC.  Use this method when a heuristic process has classified
+this glyph. This method also unsets the *confidence* map.
+
+*id_name*
+  Can come in one of two forms:
+
+    **string**
+       image is classified using the given ``.``-delimited class name.
+       As in this case no confidence is provided, it is set to 0.5.
+    **list of tuples**
+       A list of tuples where each tuple is the pair (*confidence*, *class_name*).
+
+       *confidence*
+         A value in range (0, 1), where 0 is uncertain and 1 is certain.
+       *class_name*
+         A ``.``-delimited class name.
+
+
+``classify_manual``
+-------------------
+
+**classify_manual** (str *id*)
+
+
+:Operates on: ``Image`` [OneBit]
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Classifies the image as the value *id_name* and sets the state
+to MANUAL.  Use this method when an end user has classified this glyph.
+This method also unsets the *confidence* map.
+
+*id_name*
+  Can come in one of two forms:
+
+    **string**
+       image is classified using the given ``.``-delimited class name.
+       As in this case no confidence is provided, it is set to one.
+    **list of tuples**
+       A list of tuples where each tuple is the pair (*confidence*, *class_name*).
+
+       *confidence*
+         A value in range (0, 1), where 0 is uncertain and 1 is certain.
+       *class_name*
+         A ``.``-delimited class name.
+
+
+``get_confidence``
+------------------
+
+float **get_confidence** (``Choice`` [] *confidence_type* = None)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: float
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns the confidence of the primary class assigned to the image.
+*confidence_type* can be one of the predefined `confidence measures`__, e.g.
+
+.. __: classify.html#confidence
+
+.. code:: Python
+
+   from gamera.gameracore import CONFIDENCE_KNNFRACTION
+   glyph.get_confidence(CONFIDENCE_KNNFRACTION)
+
+When no *confidence_type* is given, the default confidence stored with
+``id_name[0]`` is returned. If the image is unclassified, -1.0 is returned.
+
+For details about the confidence computation in Gamera, see
+
+   C. Dalitz: `Reject Options and Confidence Measures for kNN Classifiers.`__
+   In C. Dalitz (Ed.): "Document Image Analysis with the Gamera Framework."
+   Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
+   Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009).
+
+.. __: http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdf
+
+
+
+``get_main_id``
+---------------
+
+str **get_main_id** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: str
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns the primary class name assigned to the image.
+
+If the image is unclassified, the result is 'UNCLASSIFIED'.
+
+
+
+``has_id_name``
+---------------
+
+``bool`` **has_id_name** (str *id*)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``bool``
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns ``True`` if the image has the given classification ``name``.
+
+
+``match_id_name``
+-----------------
+
+**match_id_name** (str *regex*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: Classification
+:Defined in: id_name_matching.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns true if the image's main ``id_name`` matches the given regular
+expression.
+
+*regex*
+  A special-purpose regular expression as defined below.
+
+A special-purpose regular expression language designed for
+convenience on Gamera symbol names is used here.  It has limited
+flexibility relative to Python regular expressions, and is more
+akin to wildcards in command-line shells.  This language is
+converted to standard Python regular expressions (``re`` module)
+for efficiency.
+
+**Informal syntax definition:**
+
+====================  =============================================
+Regular expression    Description
+====================  =============================================
+``A|B``               matches ``A`` or ``B``
+``A.B|C``             matches ``A.B`` or ``A.C``
+``*``                 multiple-character wildcard
+``?``                 single character wildcard
+``()``                grouping can be performed with parentheses
+``[a-z]``             matches any character a-z
+====================  =============================================
+
+**Example expressions:**
+
+========================  ====================================================  
+``(upper.x)|(lower.y)``   match either ``upper.x`` or ``lower.y``
+``upper.x|upper.y``       careful! matches ``upper.x.y`` or ``upper.upper.y``
+``upper.*``               match anything in the ``upper`` category
+``upper.a|b|c``           matches ``upper.a``, ``upper.b`` or ``upper.c``
+``upper.capital_?``       ``?`` is a single character wildcard
+========================  ====================================================
+
+
+``unclassify``
+--------------
+
+**unclassify** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Category: Classification
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Sets the image back to an UNCLASSIFIED state.  Use this
+when you are not longer sure of the identity of the image and you
+want an automatic classifier to reclassify.
+
+

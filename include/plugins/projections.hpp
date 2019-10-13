@@ -37,21 +37,21 @@ namespace Gamera {
   */
   template<class T>
   inline IntVector* projection(T i, const T end) {
-    IntVector* proj = new IntVector(end - i, 0);
-    try {
-      typename T::iterator j;
-      typename IntVector::iterator p = proj->begin();
-      for (; i != end; ++i, ++p) {
-	for (j = i.begin(); j != i.end(); ++j) {
-	  if (is_black(*j))
-	    *p += 1;
-	}
-      }
-    } catch (std::exception e) {
-      delete proj;
-      throw;
-    }
-    return proj;
+	  IntVector *proj = new IntVector(end - i, 0);
+	  try {
+		  typename T::iterator j;
+		  typename IntVector::iterator p = proj->begin();
+		  for (; i != end; ++i, ++p) {
+			  for (j = i.begin(); j != i.end(); ++j) {
+				  if (is_black(*j))
+					  *p += 1;
+			  }
+		  }
+	  } catch (std::exception e) {
+		  delete proj;
+		  throw;
+	  }
+	  return proj;
   }
 
   /*

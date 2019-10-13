@@ -13,3 +13,4 @@ gamera/backport/__pycache__/
 gamera/gui/__pycache__/
 gamera/mac/__pycache__/
 gamera/plugins/__pycache__/
+.pytest_cache

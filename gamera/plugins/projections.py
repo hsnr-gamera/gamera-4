@@ -19,11 +19,9 @@
 #
 
 from math import pi
-
 import _projections
 
 from gamera.plugin import *
-
 
 class projection_rows(PluginFunction):
     """
@@ -64,6 +62,7 @@ class projections(PluginFunction):
     def __call__(image):
         rows = _projections.projection_rows(image)
         cols = _projections.projection_cols(image)
+        from gamera.gui import has_gui
         gui = has_gui.gui
         if gui:
             gui.ShowProjections(rows, cols, image)

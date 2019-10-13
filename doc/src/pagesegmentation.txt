@@ -1,0 +1,351 @@
+
+PageSegmentation
+================
+
+``bbox_merging``
+----------------
+
+[object] **bbox_merging** (int *Ex* = -1, int *Ey* = -1, int *iterations* = 2)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Rene Baston, Karl MacMillan, and Christoph Dalitz
+
+
+Segments a page by extending and merging the bounding boxes of the
+connected components on the page.
+
+How much the segments are extended is controlled by the arguments
+*Ex* and *Ey*. Depending on their value, the returned segments
+can be lines or paragraphs or something else.
+
+The return value is a list of 'CCs' where each 'CC' represents a
+found segment. Note that the input image is changed such that each
+pixel is set to its segment label.
+
+Arguments:
+
+*Ex*:
+  How much each CC is extended to the left and right before merging.
+  When *-1*, it is set to twice the median width of all CCs.
+
+*Ey*:
+  How much each CC is extended to the top and bottom before merging.
+  When *-1*, it is set to the median height of all CCs.
+  This will typically segment into paragraphs.
+
+  If you want to segment into lines, set *Ey* to something small like
+  one sixth of the median symbol height.
+
+*iterations*:
+  After merging intersecting bounding boxes, it can happen that the
+  enclosing bounding boxes of different segments still intersect.
+  If you do not want this, set *iterations* > 1 (two will typically be
+  sufficient). If you however only want actually intersecting bounding
+  boxes to be merged, set *iterations* to one.
+
+
+``kise_block_extraction``
+-------------------------
+
+[object] **kise_block_extraction** (float *Ta* = 40.00, float *fr* = 0.34)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Christoph Dalitz
+
+
+Segments a page into blocks by Kise's method based on the area Voronoi diagram
+as described in
+
+    K. Kise, A. Sato, M. Iwata: *Segmentation of Page Images Using the
+    Area Voronoi Diagram.* Computer Vision and Image Understandig 70,
+    pp. 370-382, 1998
+
+The return value is a list of 'CCs' where each 'CC' represents a
+found segment. Note that the input image is changed such that each
+pixel is set to its segment label.
+
+The algorithm first builds a CC neighborhood graph and then removes edges from
+this graph based upon the area ratio and distance between adjacent segments.
+The criterion is
+
+    *d/Td1* <= 1  OR  *d/Td2* + *A/Ta* <= 1
+
+where *Td1* < *Td2* are the two largest peaks in the CC distance distribution and
+A is the area ratio of the adjacent CCs.
+
+Arguments:
+
+*Ta*:
+  Area ratio in the criterion above.
+
+*fr*:
+  Fraction for determining Td2. It is not chosen as the peak position, but
+  larger at the position where the peak has fallen to a fraction *fr* of its
+  height.
+
+
+``projection_cutting``
+----------------------
+
+[object] **projection_cutting** (int *Tx* = 0, int *Ty* = 0, int *noise* = 0, ``Choice`` [cut|ignore] *gap_treatment* = cut)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Maria Elhachimi and Robert Butz
+
+
+Segments a page with the *Iterative Projection Profile Cuttings*
+method.
+
+The image is split recursively in the horizontal and vertical
+direction by looking for 'gaps' in the projection profile.  A
+'gap' is a contiguous sequence of projection values smaller than
+*noise* pixels. The splitting is done for each gap wider or higher
+than given thresholds *Tx* or *Ty*. When no further split points
+are found, the recursion stops.
+
+Whether the resulting segments represent lines, columns or
+paragraphs depends on the values for *Tx* and *Ty*. The return
+value is a list of 'CCs' where each 'CC' represents a found
+segment. Note that the input image is changed such that each pixel
+is set to its CC label.
+
+*Tx*:
+  minimum 'gap' width in the horizontal direction.  When set to
+  zero, *Tx* is set to the median height of all connected
+  component * 7, which might be a reasonable assumption for the
+  gap width between adjacent text columns.
+
+*Ty*:
+  minimum 'gap' width in the vertical direction.  When set to
+  zero, *Ty* is set to half the median height of all connected
+  component, which might be a reasonable assumption for the gap
+  width between adjacent text lines.
+
+*noise*:
+  maximum projection value still considered as belonging to a
+  'gap'.
+
+*gap_treatment*:
+  decides how to treat gaps when *noise* is non zero.
+  When 0 ('cut'), gaps are cut in the middle and the noise pixels
+  in the gap are assigned to the segments.
+  When 1 ('ignore'), noise pixels within the gap are not assigned
+  to a segment, in other words, they are ignored.
+
+
+``runlength_smearing``
+----------------------
+
+[object] **runlength_smearing** (int *Cx* = -1, int *Cy* = -1, int *Csm* = -1)
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: [object]
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Christoph Dalitz and Iliya Stoyanov
+
+
+Segments a page with the *Run Length Smearing* algorithm.
+
+The algorithm converts white horizontal and vertical runs shorter
+than given thresholds *Cx* and *Cy* to black pixels (this is the
+so-called 'run length smearing').
+
+The intersection of both smeared images yields the page segments
+as black regions. As this typically still consists small white
+horizontal gaps, these gaps narrower than *Csm* are in a final
+step also filled out.
+
+The return value is a list of 'CCs' where each 'CC' represents a
+found segment. Note that the input image is changed such that each
+pixel is set to its CC label.
+
+Arguments:
+
+*Cx*:
+  Minimal length of white runs in the rows. When set to *-1*, it
+  is set to 20 times the median height of all connected
+  components.
+
+*Cy*:
+  Minimal length of white runs in the columns. When set to *-1*,
+  it is set to 20 times the median height of all connected
+  components.
+
+*Csm*:
+  Minimal length of white runs row-wise in the almost final
+  image. When set to *-1*, it is set to 3 times the median height
+  of all connected components.
+
+
+``segmentation_error``
+----------------------
+
+``IntVector`` **segmentation_error** (``Image`` [OneBit] *Gseg*, ``Image`` [OneBit] *Sseg*)
+
+
+:Returns: ``IntVector``
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Christoph Dalitz
+
+
+Compares a ground truth segmentation *Gseg* with a segmentation *Sseg*
+and returns error count numbers.
+
+The input images must be given in such a way that each segment is
+uniquely labeled, similar to the output of a page segmentation
+algorithm like `runlength_smearing`_. For ground truth data, such a labeled
+image can be obtained from an external color image with `colors_to_labels`_.
+
+.. _`runlength_smearing`: #runlength-smearing
+.. _`colors_to_labels`: color.html#colors-to-labels
+
+The two segmentations are compared by building equivalence classes of
+overlapping segments as described in
+
+  M. Thulke, V. Margner, A. Dengel:
+  *A general approach to quality evaluation of document
+  segmentation results.*
+  Lecture Notes in Computer Science 1655, pp. 43-57 (1999)
+
+Each class is assigned an error type depending on how many ground truth
+and test segments it contains. The return value is a tuple
+(*n1,n2,n3,n4,n5,n6)* where each value is the total number of classes
+with the corresponding error type:
+
++------+-----------------------+---------------+----------------------+
+| Nr   | Ground truth segments | Test segments | Error type           |
++======+=======================+===============+======================+
+| *n1* | 1                     | 1             | correct              |
++------+-----------------------+---------------+----------------------+
+| *n2* | 1                     | 0             | missed segment       |
++------+-----------------------+---------------+----------------------+
+| *n3* | 0                     | 1             | false positive       |
++------+-----------------------+---------------+----------------------+
+| *n4* | 1                     | > 1           | split                |
++------+-----------------------+---------------+----------------------+
+| *n5* | > 1                   | 1             | merge                |
++------+-----------------------+---------------+----------------------+
+| *n6* | > 1                   | > 1           | splits and merges    |
++------+-----------------------+---------------+----------------------+
+
+The total segmentation error can be computed from these numbers as
+*1 - n1 / (n1 + n2 + n3 + n4 + n5 + n6)*. The individual numbers can
+be of use to determine what exactly is wrong with the segmentation.
+
+As this function is not an image method, but a free function, it
+is not automatically imported with all plugins and you must import
+it explicitly with
+
+.. code:: Python
+
+      from gamera.plugins.pagesegmentation import segmentation_error
+
+
+
+``sub_cc_analysis``
+-------------------
+
+tuple **sub_cc_analysis** ([object *cclist*])
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: tuple
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Stephan Ruloff and Christoph Dalitz
+
+
+Further subsegments the result of a page segmentation algorithm into
+groups of actual connected components.
+
+The result of a page segmentation plugin is a list of 'CCs' where
+each 'CC' does not represent a 'connected component', but a page
+segment (typically a line of text). In a practical OCR application
+you will however need the actual connected components (which
+should roughly correspond to the glyphs) in groups of lines. That
+is what this plugin is meant for.
+
+The input image must be an image that has been processed with a
+page segmentation plugin, i.e. all pixels in the image must be
+labeled with a segment label. The input parameter *cclist* is the
+list of segments returned by the page segmentation algorithm.
+
+The return value is a tuple with two entries:
+
+- a new image with all pixels labeled according to the new CCs
+- a list of ImageLists, each list containing all connected components
+  belonging to the same page segments
+
+
+.. note:: The groups will be returned in the same order as given
+      in *cclist*.  This means that you can sort the page segments
+      by reading order before passing them to *sub_cc_analysis*.
+
+      Note that the order of the returned CCs within each group is
+      not well defined. Hence you will generally need to sort each
+      subgroup by reading order.
+
+
+``textline_reading_order``
+--------------------------
+
+[object] **textline_reading_order** ([object *lineccs*])
+
+
+:Returns: [object]
+:Category: PageSegmentation
+:Defined in: pagesegmentation.py
+:Author: Christoph Dalitz
+
+
+Sorts a list of Images (CCs) representing textlines by reading order and
+returns the sorted list. Incidentally, this will not only work on
+textlines, but also on paragraphs, but *not* on actual Connected 
+Components.
+
+The algorithm sorts all lines in topological order, based on
+the following criteria for the pairwise order of two lines:
+
+- line *a* comes before line *b* when *a* is totally to the left
+  of *b* (order "column before row")
+
+- line *a* comes before *b* when both overlap horizontally and
+  *a* is above *b* (order within a column)
+
+In the reference `"High Performance Document Analysis"`__
+by T.M. Breuel (Symposium on Document Image Understanding,
+USA, pp. 209-218, 2003),
+an additional constraint is made for the first criterion by demanding
+that no other segment may be between *a* and *b* that overlaps
+horizontally with both. This constraint for taking multi column
+headings that interrupt columns into account is replaced in this
+implementation with an a priori sort of all textlines by *y*-position.
+This results in a preference of rows over columns (in case of ambiguity)
+in the depth-first-search utilized in the topological sorting.
+
+.. __: http://iupr1.cs.uni-kl.de/~shared/publications/2003-breuel-sdiut-high-performance-doc-layout-analysis.pdf
+
+As this function is not an image method, but a free function, it
+is not automatically imported with all plugins and you must import
+it explicitly with
+
+.. code:: Python
+
+  from gamera.plugins.pagesegmentation import textline_reading_order
+
+

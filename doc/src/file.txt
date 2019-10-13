@@ -1,0 +1,163 @@
+
+File
+====
+
+``PNG_info``
+------------
+
+object **PNG_info** (str *image_file_name*)
+
+
+:Returns: object
+:Category: File
+:Defined in: png_support.py
+:Author: Michael Droettboom and Albert Bzreckzo
+
+
+Returns an ``ImageInfo`` object describing a PNG file.
+
+*image_file_name*
+  A PNG image filename
+
+
+``load_PNG``
+------------
+
+``Image`` [OneBit|GreyScale|Grey16|RGB|Float] **load_PNG** (``FileOpen`` *image_file_name*, ``Choice`` [DENSE|RLE] *storage format*)
+
+
+:Returns: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float]
+:Category: File
+:Defined in: png_support.py
+:Author: Michael Droettboom and Albert Bzreckzo
+
+
+Loads a PNG format image file.
+
+*image_file_name*
+  A PNG image filename
+
+*storage_format* (optional)
+  specifies the compression type for the result:
+
+  DENSE (0)
+    no compression
+  RLE (1)
+    run-length encoding compression
+
+
+``load_image``
+--------------
+
+``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] **load_image** (``FileOpen`` *filename*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Returns: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: File
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Load an image from the given filename.  At present, TIFF and PNG files are
+supported.
+
+*storage_format*
+  The type of `storage format`__ to use for the resulting image.
+
+.. __: image_types.html#storage-formats
+
+
+``load_tiff``
+-------------
+
+``Image`` [OneBit|GreyScale|Grey16|RGB|Float] **load_tiff** (``FileOpen`` *image_file_name*, ``Choice`` [DENSE|RLE] *storage format*)
+
+
+:Returns: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float]
+:Category: File
+:Defined in: tiff_support.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Loads a TIFF file from disk.
+
+*image_file_name*
+  A TIFF image filename
+
+*storage_format* (optional)
+  specifies the compression type for the result:
+
+  DENSE (0)
+    no compression
+  RLE (1)
+    run-length encoding compression
+
+
+``save_PNG``
+------------
+
+**save_PNG** (``FileSave`` *image_file_name*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: File
+:Defined in: png_support.py
+:Author: Michael Droettboom and Albert Bzreckzo
+
+
+Saves the image to a PNG format file.
+
+
+``save_image``
+--------------
+
+**save_image** (``FileSave`` *filename*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]
+:Category: File
+:Defined in: plugin.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Saves an image to a file.  The file type is automatically
+determined from the extension.
+
+
+``save_tiff``
+-------------
+
+**save_tiff** (``FileSave`` *image_file_name*)
+
+
+:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB]
+:Category: File
+:Defined in: tiff_support.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Saves an image to disk in TIFF format.
+
+*image_file_name*
+  A TIFF image filename
+
+
+``tiff_info``
+-------------
+
+object **tiff_info** (str *image_file_name*)
+
+
+:Returns: object
+:Category: File
+:Defined in: tiff_support.py
+:Author: Michael Droettboom and Karl MacMillan
+
+
+Returns an ``ImageInfo`` object describing a TIFF file.
+
+*image_file_name*
+  A TIFF image filename
+
+
