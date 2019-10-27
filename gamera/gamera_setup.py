@@ -78,8 +78,7 @@ elif sys.platform == "win32":
 sys.path.append("gamera")
 from . import generate
 
-# TODO remove debug args
-extras = {'extra_compile_args': ['-Wall',"-g","-O0", '-std=c++11']}
+extras = {'extra_compile_args': ['-Wall',"-O2", '-std=c++11']}
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
    extras['extra_compile_args'] = ['/GR','/EHsc']#, "/Zi"]
 elif sys.platform == 'darwin':

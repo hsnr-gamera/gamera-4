@@ -128,15 +128,14 @@ Linux (and other \*nix)
 Prerequisites
 -------------
 
-- Python 2.3 and later are supported, though Python 2.4 or later is
+- Python 3.5 and later are supported, though Python 3.7 is
   recommended.
 
   You will need to have the headers (but not the complete source) to
   build Gamera from source code.  Most Linux distributions include
   these as a separate package (eg. ``python-dev`` or ``python-devel``).
 
-- wxPython 2.4.x or later (wxPython 2.8.x or later recommended for
-  full functionality).
+- wxPython 4.0.x or later
 
 - ``gcc`` version 3.1 or later.
 
@@ -286,7 +285,7 @@ this distinction is no longer necessary, but using ``pythonw`` also works.
 
 On OS-X 10.5, the script ``gamera_gui`` is installed to ``/usr/local/bin``,
 which is also in the default search PATH for programs.
-Prior to OS-X 10.5, the script ``gamera_gui`` was installed to 
+Prior to OS-X 10.5, the script ``gamera_gui`` was installed to
 ``/System/Library/Frameworks/Python.framework/Versions/2.?/bin``, which
 is not in the default search PATH. You can either add this directory
 to your search PATH, or install the scripts to ``/usr/bin`` with::
@@ -330,7 +329,7 @@ X11 build
 ---------
 
 Please note that this build is no longer maintained by the Gamera developers.
-So use it only when the Cocoa build is not possible for some reason (e.g. on a 
+So use it only when the Cocoa build is not possible for some reason (e.g. on a
 legacy OS-X 10.3 system).
 
 Prerequisites
