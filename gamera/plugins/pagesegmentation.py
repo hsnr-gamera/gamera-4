@@ -192,7 +192,7 @@ class bbox_merging(PluginFunction):
         # does one merging step
         def merge_boxes(bboxes):
             from gamera import graph
-            bboxes.sort(lambda b1, b2: b1.rect.ul_y - b2.rect.ul_y)
+            bboxes = sorted(bboxes, key=lambda x: x.rect.ul_y)
             g = graph.Graph(graph.UNDIRECTED)
             # build graph where edge means overlap of two boxes
             for i in range(len(bboxes)):
