@@ -9,15 +9,14 @@ Linux (and other \*nix)
 Prerequisites
 -------------
 
-- Python 2.3 and later are supported, though Python 2.4 or later is
+- Python 3.5 and later are supported, though Python 3.7 is
   recommended.
 
   You will need to have the headers (but not the complete source) to
   build Gamera from source code.  Most Linux distributions include
   these as a separate package (eg. ``python-dev`` or ``python-devel``).
 
-- wxPython 2.4.x or later (wxPython 2.8.x or later up to 3.0.x recommended for
-  full functionality).
+- wxPython 4.0.x or later.
 
 - ``gcc`` version 3.1 or later.
 
@@ -357,7 +356,7 @@ please consider contributing your experiences to this documentation.
 Prerequisites
 `````````````
 
-- Python 2.5.x or later
+- Python 3.5.x or later
   (only the distribution from python.org has been tested)
 
 - wxPython 2.6.x or later (wxPython 2.8.x or later recommended for
