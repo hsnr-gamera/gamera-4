@@ -41,34 +41,37 @@ PyObject* _to_raw_string(const T &image) {
 
 template <class T>
 bool fill_image_from_string(T &image, PyObject* data_string) {
- 
-	char* s = PyBytes_AsString(data_string);
-	Py_XDECREF(data_string);
+	Py_XINCREF(data_string);
+	PyObject *s = PyObject_Bytes(data_string);
 	if (s == nullptr) {
 		PyErr_SetString(PyExc_TypeError, "could not get string from id_name tuple.");
 		return -1;
 	}
 	size_t length = PyBytes_GET_SIZE(data_string);
-  //char* s = PyString_AS_STRING(data_string);
-  //size_t length = PyString_GET_SIZE(data_string);
-  typedef typename T::value_type value_type;
-  size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
-  if (length != image_size) {
-    if (length > image_size) {
-      PyErr_SetString(PyExc_ValueError,
-		      "data_string too long for image");
-    } else {
-      PyErr_SetString(PyExc_ValueError,
-		      "data_string too short for image");
-    }
-    return false;
-  }
-  typename T::vec_iterator i = image.vec_begin();
-  value_type* j = (value_type*)s;
-  for (; i != image.vec_end(); ++i, ++j) {
-    *i = *j;
-  }
-  return true;
+	//char* s = PyString_AS_STRING(data_string);
+	//size_t length = PyString_GET_SIZE(data_string);
+	typedef typename T::value_type value_type;
+	size_t image_size = image.ncols() * image.nrows() * sizeof(value_type);
+	if (length != image_size) {
+		if (length > image_size) {
+			Py_XDECREF(data_string);
+			PyErr_SetString(PyExc_ValueError,
+			                "data_string too long for image");
+		} else {
+			Py_XDECREF(data_string);
+			PyErr_SetString(PyExc_ValueError,
+			                "data_string too short for image");
+		}
+		Py_XDECREF(data_string);
+		return false;
+	}
+	typename T::vec_iterator i = image.vec_begin();
+	value_type *j = (value_type *) s;
+	for (; i != image.vec_end(); ++i, ++j) {
+		*i = *j;
+	}
+	Py_XDECREF(data_string);
+	return true;
 }
 
 Image* _from_raw_string(Point offset, Dim size,
