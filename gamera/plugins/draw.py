@@ -424,9 +424,11 @@ class draw_text(PluginFunction):
       (0, 0), Dim(w, h), RGB, 0, img_str)
     text_image = text_image.to_onebit()
     if halign == 1:
-      p = (p[0] - w / 2, p[1])
+      p = (int(p.x - w / 2), int(p.y))
     elif halign == 2:
-      p = (p[0] - w, p[1])
+      p = (int(p.x - w), int(p.y))
+    else:
+      p = (int(p.x), int(p.y))
 
     ul = (max(p[0], self.ul_x), max(p[1], self.ul_y))
     lr = (min(p[0] + w, self.lr_x), min(p[1] + h, self.lr_y))
