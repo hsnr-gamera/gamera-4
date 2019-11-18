@@ -144,7 +144,7 @@ installers from http://www.wxpython.org/, because there is none for
 Python 2.3, and the other Python versions require a particular prerelease
 of Xcode to build extensions, that is no longer available.
 So if you decide to upgrade wxPython on OS-X 10.4, you must do it from
-the source release of wxPython 2.6.
+the source release of wxPython 4.0.
 
 Standard Build and Install
 ``````````````````````````
