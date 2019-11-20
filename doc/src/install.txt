@@ -120,58 +120,6 @@ avoid the installation of wxPython. For this case, use the option
 Mac OS-X
 ========
 
-On OS-X 10.5 (Panther) up to 10.10 (Yosemite), Gamera compiled oout of the
-box with the Apple command line develloper tools and the python and wxpython
-that came preinstalled with the OS. Since version 10.11 (El Capatain),
-the "system integrity protection" (SIP) prevents installation of third party
-packages system wide on OS-X. You must therefore use *virtualenv* on newer
-OS-X to create a virtual environments.
-
-Moreover, Gamera currently requires wxPython before 4.0. Versions up to 3.0.x
-came installed with OS-X, but are not shipped with OS-X >= 10.11. On
-OS-X 10.11 (El Captain) and above, wxPython must therefore be compiled from
-the sources.
-
-
-Installation up to 10.10 (Yosemite)
------------------------------------
-
-Prerequisites
-`````````````
-
-Gamera installs out of the box on 10.5 (Leopard) up to 10.10 (Yosemite).
-The only prerequisite is to install the comamnd line tools of XCode,
-which are avalibale for free from the Apple App Store.
-
-
-Build and Install
-`````````````````
-
-Gamera is built using the Python-standard Distutils system.
-To build Gamera, open a terminal and type::
-
-  # the following line is only required on OS-X 10.6 and later
-  export CFLAGS="-stdlib=libstdc++ -mmacosx-version-min=10.6"
-  python setup.py build
-
-and then to install (you'll need to have admin privileges)::
-
-  sudo python setup.py install
-
-The script ``gamera_gui`` is installed to ``/usr/local/bin``,
-which is also in the default search PATH for programs.
-
-
-Running
-```````
-
-Start the Terminal application and run the ``gamera_gui`` script.
-
-.. note:: Running the script from the root of the source tree will not
-  work, since it will not be able to find the compiled version of
-  Gamera.
-
-
 Installation on 10.11 (El Captain) and above
 --------------------------------------------
 
@@ -193,19 +141,19 @@ If you want to use the Python that comes with OS-X, you can install
 the prerequisites for virtual environments with::
 
   sudo easy_install pip
-  sudo pip2 install virtualenv
+  sudo pip3 install virtualenv
 
 If this runs into problems with SIP or if you prefer to use the homebrew
 version of Python, you can install the prerequisites instead with::
 
-  brew install python2
-  pip2 install virtualenv
+  brew install python3
+  pip3 install virtualenv
 
 Then you can set up a virtual environment and install wxPython therein::
 
   virtualenv /usr/local/lib/py2gamera
   source /usr/local/lib/py2gamera/bin/activate
-  pip2 install -U wxPython
+  pip3 install -U wxPython
 
 
 Build and install
@@ -252,8 +200,6 @@ Wrapper shell-script for *gamera_gui* using the Python shipped with OS-X:
       exit 1
   fi
 
-  SYSTEM_FRAMEWORK_PYTHON_ROOT="/Library/Frameworks/Python.framework/Versions/$PYVER"
-  # OS X >= 10.10
   SYSTEM_FRAMEWORK_PYTHON_ROOT="/System$SYSTEM_FRAMEWORK_PYTHON_ROOT"
 
   PYTHON_BINARY="bin/python$PYVER"
@@ -283,8 +229,6 @@ Wrapper shell-script for *gamera_gui* using the homebrew Python:
       exit 1
   fi
 
-  SYSTEM_FRAMEWORK_PYTHON_ROOT="/Library/Frameworks/Python.framework/Versions/$PYVER"
-  # OS X >= 10.10
   SYSTEM_FRAMEWORK_PYTHON_ROOT="/System$SYSTEM_FRAMEWORK_PYTHON_ROOT"
 
   PYSUBVER="$(python --version 2>&1 | cut -d ' ' -f2)"  # e.g., 2.7.10
