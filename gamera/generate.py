@@ -68,9 +68,9 @@ def restore_import():
 
 template = Template("""
   [[exec from os import path]]
-  [[exec from enums import *]]
-  [[exec from plugin import *]]
-  [[exec from util import get_pixel_type_name]]
+  [[exec from gamera.enums import *]]
+  [[exec from gamera.plugin import *]]
+  [[exec from gamera.util import get_pixel_type_name]]
 
   [[# This should be included first in order to avoid libpng.h/setjmp.h problems. #]]
   [[if module.__class__.__name__ == "PngSupportModule"]]
