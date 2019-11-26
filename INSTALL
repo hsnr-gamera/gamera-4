@@ -251,3 +251,4 @@ Start an X11 terminal and run the ``gamera_gui`` script.
 .. note:: Running the script from the root of the source tree will not
   work, since it will not be able to find the compiled version of
   Gamera.
+
