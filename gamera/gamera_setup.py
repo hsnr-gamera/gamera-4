@@ -83,7 +83,7 @@ extras = {'extra_compile_args': [
    "-O2",
    '-std=c++11',
    '-Wunused-variable',
-   '-Wwritable-strings',
+   '-Wwrite-strings',
    '-Wdeprecated-declarations',
    ]
 }
