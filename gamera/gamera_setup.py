@@ -78,14 +78,17 @@ elif sys.platform == "win32":
 sys.path.append("gamera")
 from . import generate
 
-extras = {'extra_compile_args': ['-Wall',"-O2", '-std=c++11']}
+extras = {'extra_compile_args': [
+   '-Wall',
+   "-O2",
+   '-std=c++11',
+   '-Wunused-variable',
+   '-Wwritable-strings',
+   '-Wdeprecated-declarations',
+   ]
+}
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
    extras['extra_compile_args'] = ['/GR','/EHsc']#, "/Zi"]
-elif sys.platform == 'darwin':
-   extras['extra_link_args'] = ['-F/System/Library/Frameworks/']
-   macosversion = platform.mac_ver()[0]
-   if macosversion.startswith("10.6"):
-      extras['extra_link_args'].append('-L/Developer/SDKs/MacOSX10.5.sdk/usr/lib')
 elif '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
    extras['libraries'] = ['stdc++'] # Not for intel compiler
 
