@@ -60,10 +60,25 @@ class smart_install_data(install_data.install_data):
       self.data_files = output
       return install_data.install_data.run(self)
 
+
+extras = {
+   'extra_compile_args': [
+      '-Wall',
+      '-O2',
+      '-std=c++11',
+      '-Wunused-variable',
+      '-Wwrite-strings',
+      '-Wdeprecated-declarations',
+      '-Wunknown-pragmas',
+      '-Wformat'
+   ]
+}
+
 cmdclass = {'install_data': smart_install_data}
 if sys.platform == "darwin":
    from gamera.mac import gamera_mac_setup
    cmdclass['bdist_osx'] = gamera_mac_setup.bdist_osx
+   extras['extra_compile_args'].append('-Wmacro-redefined')
 elif sys.platform == "win32":
    try:
       from win32 import bdist_msi
@@ -78,18 +93,6 @@ elif sys.platform == "win32":
 sys.path.append("gamera")
 from . import generate
 
-extras = {'extra_compile_args': [
-   '-Wall',
-   '-O2',
-   '-std=c++11',
-   '-Wunused-variable',
-   '-Wwrite-strings',
-   '-Wdeprecated-declarations',
-   '-Wunknown-pragmas',
-   '-Wformat',
-   '-Wmacro-redefined'
-   ]
-}
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
    extras['extra_compile_args'] = ['/GR','/EHsc']#, "/Zi"]
 elif '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
