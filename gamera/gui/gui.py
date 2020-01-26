@@ -376,7 +376,7 @@ class ShellFrame(wx.Frame):
                                 "Reload %s toolkit" % toolkit)
             compat_wx.handle_event_1(self, wx.EVT_MENU, self._OnReloadToolkit, toolkitID)
             self.reload_toolkits[toolkitID] = toolkit
-            toolkits_menu.AppendMenu(wx.NewId(), toolkit, toolkit_menu)
+            toolkits_menu.Append(wx.NewId(), toolkit, toolkit_menu)
             self.toolkit_menus[toolkit] = toolkit_menu
       else:
          toolkits_menu.Append(wx.NewId(), "No toolkits installed.")
