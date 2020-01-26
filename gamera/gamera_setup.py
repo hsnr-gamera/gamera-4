@@ -80,12 +80,14 @@ from . import generate
 
 extras = {'extra_compile_args': [
    '-Wall',
-   "-O2",
+   '-O2',
    '-std=c++11',
    '-Wunused-variable',
    '-Wwrite-strings',
    '-Wdeprecated-declarations',
-   '-Wunknown-pragmas'
+   '-Wunknown-pragmas',
+   '-Wformat',
+   '-Wmacro-redefined'
    ]
 }
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:
