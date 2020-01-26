@@ -30,7 +30,7 @@
  * Read and return a packed RGBA image.
  */
 #include "tiffiop.h"
-#include <stdio.h>
+#include <cstdio>
 
 static int gtTileContig(TIFFRGBAImage *, uint32 *, uint32, uint32);
 

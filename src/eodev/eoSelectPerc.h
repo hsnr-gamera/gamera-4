@@ -29,7 +29,7 @@
 //-----------------------------------------------------------------------------
 #include <eoSelect.h>
 #include <eoSelectOne.h>
-#include <math.h>
+#include <cmath>
 //-----------------------------------------------------------------------------
 
 /** eoSelectPerc selects many individuals using eoSelectOne as it's

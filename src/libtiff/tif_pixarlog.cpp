@@ -93,9 +93,9 @@
 #include "tif_predict.h"
 #include "zlib.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
 /* Tables for converting to/from 11 bit coded values */
 

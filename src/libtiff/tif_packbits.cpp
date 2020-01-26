@@ -32,7 +32,7 @@
  *
  * PackBits Compression Algorithm Support
  */
-#include <stdio.h>
+#include <cstdio>
 
 static int
 PackBitsPreEncode(TIFF *tif, uint16 s) {

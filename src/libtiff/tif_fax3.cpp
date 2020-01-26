@@ -44,7 +44,7 @@
 #define    G3CODES
 
 #include "t4.h"
-#include <stdio.h>
+#include <cstdio>
 
 /*
  * Compression+decompression state blocks are

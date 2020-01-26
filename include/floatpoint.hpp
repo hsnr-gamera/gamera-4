@@ -21,7 +21,7 @@
 #define mgd_floatpoint
 
 #include "gamera.hpp"
-#include <math.h>
+#include <cmath>
 
 template<class T>
 class PointBase {

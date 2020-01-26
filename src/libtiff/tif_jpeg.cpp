@@ -27,7 +27,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "tiffiop.h"
 

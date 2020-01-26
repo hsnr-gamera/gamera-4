@@ -85,6 +85,7 @@ extras = {'extra_compile_args': [
    '-Wunused-variable',
    '-Wwrite-strings',
    '-Wdeprecated-declarations',
+   '-Wunknown-pragmas'
    ]
 }
 if sys.platform == 'win32' and not '--compiler=mingw32' in sys.argv:

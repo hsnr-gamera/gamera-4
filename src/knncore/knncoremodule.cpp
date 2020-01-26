@@ -35,9 +35,9 @@
 #include <map>
 #include <string.h>
 #include <assert.h>
-#include <stdio.h>
+#include <cstdio>
 // for rand
-#include <stdlib.h>
+#include <cstdlib>
 #include <time.h>
 // exception handling
 #include <stdexcept>

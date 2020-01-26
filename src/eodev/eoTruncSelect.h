@@ -31,7 +31,7 @@
 //-----------------------------------------------------------------------------
 #include <eoSelect.h>
 #include <utils/eoHowMany.h>
-#include <math.h>
+#include <cmath>
 //-----------------------------------------------------------------------------
 
 /** eoTruncSelect selects individuals after truncating the population

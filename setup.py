@@ -180,7 +180,7 @@ if has_openmp:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall", "-fopenmp", '-std=c++11'],
+                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
                       extra_link_args=["-fopenmp"]
                       )
 else:
@@ -188,7 +188,7 @@ else:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall", '-std=c++11']
+                      extra_compile_args=gamera_setup.extras['extra_compile_args']
                       )
 
 extensions = [Extension("gamera.gameracore",
@@ -207,7 +207,7 @@ extensions = [Extension("gamera.gameracore",
                          "src/gameracore/iteratorobject.cpp"
                          ],
                         include_dirs=["include"],
-                        **gamera_setup.extras
+                        **gamera_setup.extras,
                         ),
               Extension("gamera.knncore",
                         ["src/knncore/knncoremodule.cpp"],

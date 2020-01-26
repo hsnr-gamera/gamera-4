@@ -302,7 +302,7 @@ struct inflate_state FAR *state;
 }
 
 #ifdef MAKEFIXED
-#include <stdio.h>
+#include <cstdio>
 
 /*
    Write out the inffixed.h that is #include'd above.  Defining MAKEFIXED also

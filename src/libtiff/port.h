@@ -56,10 +56,10 @@ typedef unsigned int u_int;
 typedef unsigned long u_long;
 #define HOST_FILLORDER FILLORDER_MSB2LSB
 #define HOST_BIGENDIAN	0
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
 #include <string.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <fcntl.h>
 typedef double dblparam_t;
 #ifdef __STRICT_ANSI__
@@ -77,10 +77,10 @@ extern void free(void*);
 #include <sys/types.h>
 #define HOST_FILLORDER FILLORDER_MSB2LSB
 #define HOST_BIGENDIAN    1
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
 #include <string.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <fcntl.h>
 typedef double dblparam_t;
 #ifdef __STRICT_ANSI__

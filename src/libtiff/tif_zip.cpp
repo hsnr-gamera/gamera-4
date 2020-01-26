@@ -50,7 +50,7 @@
 #include "tif_predict.h"
 #include "zlib.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 /*
  * Sigh, ZLIB_VERSION is defined as a string so there's no

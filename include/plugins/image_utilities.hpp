@@ -30,7 +30,7 @@
 #include "vigra/basicgeometry.hxx"
 #include "plugins/logical.hpp"
 #include <exception>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 #include <map>
 

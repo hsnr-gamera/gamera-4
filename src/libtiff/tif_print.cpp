@@ -30,7 +30,7 @@
  * Directory Printing Support
  */
 #include "tiffiop.h"
-#include <stdio.h>
+#include <cstdio>
 
 #include <ctype.h>
 
@@ -230,7 +230,7 @@ _TIFFPrettyPrintField(TIFF *tif, const TIFFField *fip, FILE *fd, uint32 tag,
 void
 TIFFPrintDirectory(TIFF *tif, FILE *fd, long flags) {
 	TIFFDirectory *td = &tif->tif_dir;
-	char *sep;
+	const char *sep;
 	long l, n;
 
 #if defined(__WIN32__) && (defined(_MSC_VER) || defined(__MINGW32__))

@@ -31,7 +31,7 @@
  */
 #include "tiffiop.h"
 #include "tif_predict.h"
-#include <math.h>
+#include <cmath>
 
 uint32
 _TIFFMultiply32(TIFF *tif, uint32 first, uint32 second, const char *where) {

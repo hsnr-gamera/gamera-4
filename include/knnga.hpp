@@ -21,7 +21,7 @@
 
 #include "knncoremodule.hpp"
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 #include <vector>
 #include <string>
 #include <stdexcept>
