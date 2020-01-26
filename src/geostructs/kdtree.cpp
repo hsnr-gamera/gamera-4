@@ -19,7 +19,7 @@
 #include "geostructs/kdtree.hpp"
 #include <algorithm>
 #include <stdexcept>
-#include <math.h>
+#include <cmath>
 #include <limits>
 
 

@@ -27,7 +27,7 @@
 #include "neighbor.hpp"
 #include "vigra/gaborfilter.hxx"
 #include "convolution.hpp"
-#include <math.h>
+#include <cmath>
 
 namespace Gamera {
 

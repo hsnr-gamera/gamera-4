@@ -18,7 +18,7 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <stdio.h>
+#include <cstdio>
 #include <signal.h>
 #include <unistd.h>
 

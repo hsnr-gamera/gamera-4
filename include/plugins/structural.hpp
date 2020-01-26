@@ -23,7 +23,7 @@
 #define mgd11272002_relational
 
 #include "gamera.hpp"
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 namespace Gamera {

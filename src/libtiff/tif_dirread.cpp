@@ -41,7 +41,7 @@
 
 #include "tiffiop.h"
 #include <float.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #define IGNORE 0          /* tag placeholder used below */
 #define FAILED_FII    ((uint32) -1)

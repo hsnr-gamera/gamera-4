@@ -50,7 +50,7 @@ Olivier: this has been removed in .NET :) One step more standard...
 */
 #pragma warning(disable:4786)
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifdef min
 #undef min

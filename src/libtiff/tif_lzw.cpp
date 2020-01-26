@@ -39,7 +39,7 @@
  */
 #include "tif_predict.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 /*
  * NB: The 5.0 spec describes a different algorithm than Aldus

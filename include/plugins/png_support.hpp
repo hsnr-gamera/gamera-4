@@ -27,7 +27,7 @@
 
 #include "image_utilities.hpp"
 #include <png.h>
-#include <stdio.h>
+#include <cstdio>
 #include <stdint.h>
 
 // TODO: Get/Save resolution information

@@ -25,7 +25,7 @@
 #define EODATA_H
 
 #ifndef _MSC_VER
-#include <math.h>
+#include <cmath>
 #define _isnan isnan
 #endif
 

@@ -31,9 +31,9 @@
  */
 #include "tiffconf.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -331,16 +331,16 @@ FillTable(TIFFFaxTabEnt *T, int Size, struct proto *P, int State) {
 	}
 }
 
-static char *storage_class = "";
-static char *const_class = "";
+static char *storage_class = nullptr;
+static char *const_class = nullptr;
 static int packoutput = 1;
-static char *prebrace = "";
-static char *postbrace = "";
+static const char *prebrace = nullptr;
+static const char *postbrace = nullptr;
 
 void
 WriteTable(FILE *fd, const TIFFFaxTabEnt *T, int Size, const char *name) {
 	int i;
-	char *sep;
+	const char *sep;
 	
 	fprintf(fd, "%s %s TIFFFaxTabEnt %s[%d] = {",
 	        storage_class, const_class, name, Size);

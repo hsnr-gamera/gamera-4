@@ -31,7 +31,7 @@
 //-----------------------------------------------------------------------------
 #include <eoSelect.h>
 #include <utils/eoHowMany.h>
-#include <math.h>
+#include <cmath>
 //-----------------------------------------------------------------------------
 
 /** eoDetSelect selects many individuals determinisctically

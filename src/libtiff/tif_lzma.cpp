@@ -39,7 +39,7 @@
 #include "tif_predict.h"
 #include "lzma.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 /*
  * State block for each open TIFF file using LZMA2 compression/decompression.

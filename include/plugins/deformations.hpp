@@ -27,7 +27,7 @@
 #include <exception>
 #include <cstdlib>
 #include <ctime>
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <algorithm>
 

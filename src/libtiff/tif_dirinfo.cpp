@@ -30,7 +30,7 @@
  * Core Directory Tag Support.
  */
 #include "tiffiop.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 /*
  * NOTE: THIS ARRAY IS ASSUMED TO BE SORTED BY TAG.

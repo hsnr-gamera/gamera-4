@@ -38,7 +38,7 @@
 #include <errno.h>
 
 #include <stdarg.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/stat.h>
 
 #ifdef HAVE_UNISTD_H

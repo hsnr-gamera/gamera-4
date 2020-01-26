@@ -37,7 +37,7 @@
  */
 
 #include "tiffiop.h"
-#include <math.h>
+#include <cmath>
 
 /*
  * Convert color value from the CIE L*a*b* 1976 space to CIE XYZ.

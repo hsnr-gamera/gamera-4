@@ -13,7 +13,7 @@
 #ifndef EO_PIPECOM_H
 #define EO_PIPECOM_H
 
-#include <stdio.h>
+#include <cstdio>
 
 
 typedef struct PipeCommunication {

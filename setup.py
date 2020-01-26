@@ -21,8 +21,12 @@
 #
 import datetime
 import glob
+import multiprocessing
 import os
 import platform
+from distutils.ccompiler import CCompiler
+from distutils.command.build_ext import build_ext
+
 import sys
 
 # # unfortunately this does not help installing data_files
@@ -176,7 +180,7 @@ if has_openmp:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall", "-fopenmp", '-std=c++11'],
+                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
                       extra_link_args=["-fopenmp"]
                       )
 else:
@@ -184,7 +188,7 @@ else:
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["include", "src"] + eodev_includes,
                       libraries=galibraries,
-                      extra_compile_args=["-Wall", '-std=c++11']
+                      extra_compile_args=gamera_setup.extras['extra_compile_args']
                       )
 
 extensions = [Extension("gamera.gameracore",
@@ -203,7 +207,7 @@ extensions = [Extension("gamera.gameracore",
                          "src/gameracore/iteratorobject.cpp"
                          ],
                         include_dirs=["include"],
-                        **gamera_setup.extras
+                        **gamera_setup.extras,
                         ),
               Extension("gamera.knncore",
                         ["src/knncore/knncoremodule.cpp"],
@@ -267,6 +271,61 @@ data_files += srcfiles
 
 if sys.platform == 'darwin':
     packages.append("gamera.mac")
+
+# https://stackoverflow.com/a/13176803
+# multithreading building
+try:
+    from concurrent.futures import ThreadPoolExecutor as Pool
+except ImportError:
+    from multiprocessing.pool import ThreadPool as LegacyPool
+
+    # To ensure the with statement works. Required for some older 2.7.x releases
+    class Pool(LegacyPool):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            self.close()
+            self.join()
+
+
+def build_extensions(self):
+    """Function to monkey-patch
+    distutils.command.build_ext.build_ext.build_extensions
+
+    """
+    self.check_extensions_list(self.extensions)
+
+    try:
+        num_jobs = os.cpu_count()
+    except AttributeError:
+        num_jobs = multiprocessing.cpu_count()
+
+    with Pool(num_jobs) as pool:
+        pool.map(self.build_extension, self.extensions)
+
+
+def compile(self, sources, output_dir=None, macros=None, include_dirs=None, debug=0, extra_preargs=None,
+            extra_postargs=None, depends=None):
+    """Function to monkey-patch distutils.ccompiler.CCompiler"""
+    macros, objects, extra_postargs, pp_opts, build = self._setup_compile(
+        output_dir, macros, include_dirs, sources, depends, extra_postargs
+    )
+    cc_args = self._get_cc_args(pp_opts, debug, extra_preargs)
+
+    for obj in objects:
+        try:
+            src, ext = build[obj]
+        except KeyError:
+            continue
+        self._compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
+
+    # Return *all* object filenames, not just the ones we just built.
+    return objects
+
+
+build_ext.build_extensions = build_extensions
+CCompiler.compile = compile
 
 setup(cmdclass=gamera_setup.cmdclass,
       name="gamera",

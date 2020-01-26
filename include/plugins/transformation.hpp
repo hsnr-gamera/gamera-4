@@ -30,7 +30,7 @@
 #include "plugins/logical.hpp"
 #include "image_utilities.hpp"
 #include <exception>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 

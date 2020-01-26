@@ -32,7 +32,7 @@
 #include <eoSelect.h>
 #include <eoSelectOne.h>
 #include <utils/eoHowMany.h>
-#include <math.h>
+#include <cmath>
 //-----------------------------------------------------------------------------
 
 /** eoTruncatedSelectOne selects one individual using eoSelectOne as it's
