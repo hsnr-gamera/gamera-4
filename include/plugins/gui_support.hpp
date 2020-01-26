@@ -209,18 +209,7 @@ PyObject* to_string(T& m) {
 }
 
 static char *get_writable_buffer(PyObject *py_buffer, size_t nrows, size_t ncols) {
-  if (PyObject_CheckReadBuffer(py_buffer) == 1) {
-    // Old Buffer Protocol
-    char *buffer;
-    Py_ssize_t buffer_len;
-    PyObject_AsWriteBuffer(py_buffer, (void **)&buffer, &buffer_len);
-
-    if ((size_t)buffer_len != nrows * ncols * 3 || buffer == NULL) {
-      printf("The image passed to to_buffer is not of the correct size.\n");
-      return NULL;
-    }
-    return buffer;
-  } else if (PyMemoryView_Check(py_buffer) == 1) {
+  if (PyMemoryView_Check(py_buffer) == 1) {
     // New Buffer Protocol
     Py_buffer *buffer = PyMemoryView_GET_BUFFER(py_buffer);
 
