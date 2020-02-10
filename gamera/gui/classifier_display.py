@@ -28,10 +28,13 @@ try:
    from wx import aui
    # AUI has too many problems for now
    aui = None
+   from gamera.gui.args_gui import args
+
 except ImportError:
    aui = None
-from gamera.core import *
+
 from gamera.args import *
+from gamera.core import *
 from gamera.symbol_table import SymbolTable
 from gamera import gamera_xml, util, plugin
 from gamera.classify import InteractiveClassifier, ClassifierError, BoundingBoxGroupingFunction, ShapedGroupingFunction
