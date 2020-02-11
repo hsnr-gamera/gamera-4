@@ -1305,6 +1305,9 @@ class MultiImageDisplay(gridlib.Grid):
       # mark that we want to display row labels
       self.display_row_labels = 1
       # Sort by label
+      for index, value in enumerate(_list):
+         if type(value) == str:
+            _list[index] = value.encode()
       _list.sort(key=lambda x: x.get_main_id())
       # Find split between classified and unclassified
       classified, unclassified = self._split_classified_from_unclassified(_list)

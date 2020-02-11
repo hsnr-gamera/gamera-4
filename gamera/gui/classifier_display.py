@@ -1853,6 +1853,10 @@ class SymbolTreeCtrl(wx.TreeCtrl):
          item, cookie = self.GetFirstChild(root, cookie)
          while item.IsOk():
             text = self.GetItemText(item)
+            if type(text) != str and type(token) == str:
+               text = text.decode('utf-8')
+            if type(text) == str and type(token) != str:
+               token = token.decode('utf-8')
             if text == token:
                found = 1
                break
@@ -1862,6 +1866,9 @@ class SymbolTreeCtrl(wx.TreeCtrl):
             item, cookie = self.GetNextChild(root, cookie)
          if not found:
             item = self.AppendItem(root, token)
+            if type(tokens[0]) != str:
+               tokens=[x.decode('utf-8') for x in tokens]
+
             compat_wx.set_tree_item_data(self, item, '.'.join(tokens[0:i + 1]))
             self.SortChildren(root)
             if token.startswith('_'):
