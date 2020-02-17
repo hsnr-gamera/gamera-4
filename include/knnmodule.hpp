@@ -46,14 +46,16 @@ enum DistanceType {
   type checking is performed.
 */
 inline int image_get_fv(PyObject* image, double** buf, Py_ssize_t* len) {
-	ImageObject *x = (ImageObject *) image;
+	ImageObject* x = (ImageObject*)image;
 	
-	if (!PyMemoryView_Check(x->m_features)) {
+	if (PyObject_CheckReadBuffer(x->m_features) < 0) {
 		return -1;
 	}
-	Py_buffer *buffer = PyMemoryView_GET_BUFFER(x->m_features);
-	*len = buffer->len;
 	
+	if (PyObject_AsReadBuffer(x->m_features, (const void**)buf, len) < 0) {
+		PyErr_SetString(PyExc_TypeError, "knn: Could not use image as read buffer.");
+		return -1;
+	}
 	if (*len == 0) {
 		return -1;
 	}

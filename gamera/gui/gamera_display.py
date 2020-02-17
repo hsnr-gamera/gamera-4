@@ -22,19 +22,19 @@
 
 
 
+import string
+import warnings
+import weakref
+from math import sqrt, ceil, log, floor  # Python standard library
+
 import wx
 import wx.grid as gridlib
 
-from math import sqrt, ceil, log, floor # Python standard library
-from sys import maxsize
-import sys, string, weakref
-import warnings
-
-from gamera.core import *          # Gamera specific
+from gamera import util, plugin
 from gamera.config import config
-from gamera import paths, util, plugin
+from gamera.core import *  # Gamera specific
 from gamera.gui import image_menu, var_name, gui_util, toolbar, has_gui, compat_wx
-import gamera.plugins.gui_support  # Gamera plugin
+
 
 ##############################################################################
 def cmp(x, y):
@@ -1305,7 +1305,17 @@ class MultiImageDisplay(gridlib.Grid):
       # mark that we want to display row labels
       self.display_row_labels = 1
       # Sort by label
-      _list.sort(key=lambda x: x.get_main_id())
+      for index, value in enumerate(_list):
+         if type(value) == str:
+            _list[index] = value.encode()
+
+      def compare(x):
+         if type(x.get_main_id()) == str:
+            return x.get_main_id().encode()
+         else:
+            return x.get_main_id()
+
+      _list.sort(key=compare)
       # Find split between classified and unclassified
       classified, unclassified = self._split_classified_from_unclassified(_list)
       # Sort the unclassified by size

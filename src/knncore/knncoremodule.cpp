@@ -1343,46 +1343,50 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
 }
 
 static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
-  KnnObject* o = (KnnObject*)self;
-  PyObject* arglist = Py_BuildValue( "(s)", "d");
-  PyObject* array = PyEval_CallObject(array_init, arglist);
-  if (array == 0) {
-    PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
-    return 0;
-  }
-  Py_XDECREF(arglist);
-  PyObject* result;
-  for (size_t i = 0; i < o->num_features; ++i) {
-    result = PyObject_CallMethod(array, "append", "f", o->weight_vector[i]);
-    if (result == 0)
-      return 0;
-    Py_XDECREF(result);
-  }
-  Py_XDECREF(arglist);
-  return array;
+	KnnObject *o = (KnnObject *) self;
+	PyObject *arglist = Py_BuildValue("(s)", "d");
+	PyObject *array = PyEval_CallObject(array_init, arglist);
+	if (array == nullptr) {
+		PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
+		return nullptr;
+	}
+	Py_XDECREF(arglist);
+	PyObject *result;
+	for (size_t i = 0; i < o->num_features; ++i) {
+		result = PyObject_CallMethod(array, "append", "f", o->weight_vector[i]);
+		if (result == nullptr)
+			return nullptr;
+		Py_XDECREF(result);
+	}
+	Py_XDECREF(arglist);
+	return array;
 }
 
 static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
-	KnnObject *o = (KnnObject *) self;
+	KnnObject *o = (KnnObject*) self;
 	PyObject *array;
 	
-	if (PyArg_ParseTuple(args, "O", &array) <= 0) {
+	if (PyArg_ParseTuple(args,  "O", &array) <= 0) {
 		return nullptr;
 	}
 	
+	Py_ssize_t len;
 	int *selections;
 	
-	if (!PyMemoryView_Check(array)) {
+	if (!PyObject_CheckReadBuffer(array)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
-	Py_buffer *buffer = PyMemoryView_GET_BUFFER(array);
 	
-	if ((size_t) buffer->len != o->num_features * sizeof(int)) {
+	if ((PyObject_AsReadBuffer(array, (const void**)&selections, &len) != 0)) {
+		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
+		return nullptr;
+	}
+	
+	if ( (size_t) len != o->num_features * sizeof(int)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: selection vector is not the correct size.");
 		return nullptr;
 	}
-	selections = (int *) buffer->buf;
 	
 	for (size_t i = 0; i < o->num_features; ++i) {
 		if (selections[i] == 0 || selections[i] == 1) {
@@ -1399,23 +1403,25 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 
 
 static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
-	KnnObject *o = (KnnObject *) self;
-	PyObject *array;
-	if (PyArg_ParseTuple(args, "O", &array) <= 0) {
+	KnnObject* o = (KnnObject*)self;
+	PyObject* array;
+	if (PyArg_ParseTuple(args,  "O", &array) <= 0) {
 		return nullptr;
 	}
-	double *weights;
-	if (!PyMemoryView_Check(array)) {
+	Py_ssize_t len;
+	double* weights;
+	if (!PyObject_CheckReadBuffer(array)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
-	Py_buffer *buffer = PyMemoryView_GET_BUFFER(array);
-	
-	if ((size_t)buffer->len != o->num_features * sizeof(double)) {
+	if ((PyObject_AsReadBuffer(array, (const void**)&weights, &len) != 0)) {
+		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
+		return nullptr;
+	}
+	if (size_t(len) != o->num_features * sizeof(double)) {
 		PyErr_SetString(PyExc_ValueError, "knn: weight vector is not the correct size.");
 		return nullptr;
 	}
-	weights = (double*)buffer->buf;
 	for (size_t i = 0; i < o->num_features; ++i) {
 		o->weight_vector[i] = weights[i];
 	}

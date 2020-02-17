@@ -46,12 +46,18 @@ class SymbolTable(util.CallbackObject):
       if symbol == '':
          return '', []
       symbol = symbol.lower()
-      orig_tokens = symbol.strip().split('.')
+      if type(symbol) == str:
+         orig_tokens = symbol.strip().split('.')
+      else:
+         orig_tokens = symbol.strip().split(b'.')
       tokens = []
       for token in orig_tokens:
          if token.strip() != '':
             tokens.append(token.strip())
-      symbol = '.'.join(tokens)
+      if type(symbol) == str:
+         symbol = '.'.join(tokens)
+      else:
+         symbol = b'.'.join(tokens)
       return symbol, tokens
 
    def add(self, symbol, id = -1):
