@@ -125,12 +125,18 @@ class WriteXML:
       else:
          symbols = list(symbol_table.symbols.keys())
       if len(symbols):
-         symbols.sort()
+         def sortList(x):
+            if type(x) == str:
+               return x.encode()
+            else:
+               return x
+
+         symbols.sort(key=sortList)
          word_wrap(stream, '<symbols>', indent)
          indent += 1
          for x in symbols:
             if type(x) is bytes:
-               x = x.encode(encoding)
+               x = x.decode(encoding)
             word_wrap(stream, '<symbol name="%s"/>' % x, indent)
          indent -= 1
          word_wrap(stream, '</symbols>', indent)
