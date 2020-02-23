@@ -1871,8 +1871,12 @@ class SymbolTreeCtrl(wx.TreeCtrl):
 
             compat_wx.set_tree_item_data(self, item, '.'.join(tokens[0:i + 1]))
             self.SortChildren(root)
-            if token.startswith('_'):
-               self.SetItemBold(item)
+            if type(token) == str:
+               if token.startswith('_'):
+                  self.SetItemBold(item)
+            else:
+               if token.startswith(b'_'):
+                  self.SetItemBold(item)
          root = item
          if token != tokens[-1]:
             self.SetItemHasChildren(root)
