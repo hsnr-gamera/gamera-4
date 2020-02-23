@@ -1558,6 +1558,8 @@ class MultiImageDisplay(gridlib.Grid):
    def reduce_label_length(self, dc, width, label):
       extent = dc.GetTextExtent(label)
       if extent[0] > width:
+         if type(label) == bytes:
+            label = label.decode('utf-8')
          for i in range(1, len(label)):
             new_label = "..." + label[-i:]
             extent = dc.GetTextExtent(new_label)
