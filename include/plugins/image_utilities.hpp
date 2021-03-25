@@ -30,7 +30,7 @@
 #include "vigra/basicgeometry.hxx"
 #include "plugins/logical.hpp"
 #include <exception>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 #include <map>
 
@@ -125,7 +125,7 @@ namespace Gamera {
       new typename ImageFactory<T>::view_type(*dest_data, src.origin(), src.size());
     try {
       image_copy_fill(src, *dest);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;
@@ -154,7 +154,7 @@ namespace Gamera {
         new typename ImageFactory<T>::dense_view_type(*data, a.origin(), a.size());
       try {
         image_copy_fill(a, *view);
-      } catch (const std::exception& e) {
+      } catch (std::exception e) {
         delete view;
         delete data;
         throw;
@@ -167,7 +167,7 @@ namespace Gamera {
         new typename ImageFactory<T>::rle_view_type(*data, a.origin(), a.size());
       try {
         image_copy_fill(a, *view);
-      } catch (const std::exception& e) {
+      } catch (std::exception e) {
         delete view;
         delete data;
         throw;
@@ -244,7 +244,7 @@ namespace Gamera {
             ("There is an Image in the list that is not a OneBit image.");
         }
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;
@@ -285,7 +285,7 @@ namespace Gamera {
       for (size_t i = 0; i < l; i++) {
         (*values)[i] = (*values)[i] / size;
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete values;
       throw;
     }
@@ -382,7 +382,7 @@ namespace Gamera {
     
     try {
       image_copy_fill(src, *dest_srcpart);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_srcpart;
       delete dest_data;
@@ -442,7 +442,7 @@ namespace Gamera {
       if (left_pad)
         fill(*left_pad, value);
       image_copy_fill(src, *dest_srcpart);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       if (top_pad) delete top_pad;
       if (right_pad) delete right_pad;
       if (bottom_pad) delete bottom_pad;
@@ -570,7 +570,7 @@ namespace Gamera {
         else
           a_accessor.set(white(*dest), it_dest);
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;
@@ -634,7 +634,7 @@ namespace Gamera {
           Py_XDECREF(row_seq);
         }
         Py_XDECREF(seq);
-      } catch (const std::exception& e) {
+      } catch (std::exception e) {
         if (image)
           delete image;
         if (data)

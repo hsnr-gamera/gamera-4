@@ -33,7 +33,7 @@
 #include <map>
 #include <vector>
 
-#include <stdio.h>
+#include <cstdio>
 
 /*
   ConnectedComponent
@@ -340,19 +340,13 @@ namespace Gamera {
 	  || offset_y() < m_image_data->page_offset_y()
 	  || offset_x() < m_image_data->page_offset_x()) {
 	char error[1024];
-	sprintf(error, "Image view dimensions out of range for data\n"
-  "\tnrows %d\n"
-  "\toffset_y %d\n"
-  "\tdata nrows %d\n"
-  "\tncols %d\n"
-  "\toffset_x %d\n"
-  "\tdata ncols %d\n",
-  (int)nrows(),
-  (int)offset_y(),
-  (int)m_image_data->nrows(),
-  (int)ncols(),
-  (int)offset_x(),
-  (int)m_image_data->ncols());
+	sprintf(error, "Image view dimensions out of range for data\n");
+	sprintf(error, "%s\tnrows %d\n", error, (int)nrows());
+	sprintf(error, "%s\toffset_y %d\n", error, (int)offset_y());
+	sprintf(error, "%s\tdata nrows %d\n", error, (int)m_image_data->nrows());
+	sprintf(error, "%s\tncols %d\n", error, (int)ncols());
+	sprintf(error, "%s\toffset_x %d\n", error, (int)offset_x());
+	sprintf(error, "%s\tdata ncols %d\n", error,(int)m_image_data->ncols());
 	throw std::range_error(error);
       }
     }
@@ -783,19 +777,13 @@ namespace Gamera {
     	  || offset_y() < m_image_data->page_offset_y()
     	  || offset_x() < m_image_data->page_offset_x()) {
       	char error[1024];
-      	sprintf(error, "Image view dimensions out of range for data\n"
-        "\tnrows %d\n"
-        "\toffset_y %d\n"
-        "\tdata nrows %d\n"
-        "\tncols %d\n"
-        "\toffset_x %d\n"
-        "\tdata ncols %d\n",
-        (int)nrows(),
-        (int)offset_y(),
-        (int)m_image_data->nrows(),
-        (int)ncols(),
-        (int)offset_x(),
-        (int)m_image_data->ncols());
+      	sprintf(error, "Image view dimensions out of range for data\n");
+      	sprintf(error, "%s\tnrows %d\n", error, (int)nrows());
+      	sprintf(error, "%s\toffset_y %d\n", error, (int)offset_y());
+      	sprintf(error, "%s\tdata nrows %d\n", error, (int)m_image_data->nrows());
+      	sprintf(error, "%s\tncols %d\n", error, (int)ncols());
+      	sprintf(error, "%s\toffset_x %d\n", error, (int)offset_x());
+      	sprintf(error, "%s\tdata ncols %d\n", error,(int)m_image_data->ncols());
       	throw std::range_error(error);
       }
     }

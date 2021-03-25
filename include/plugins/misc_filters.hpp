@@ -27,7 +27,7 @@
 #include "neighbor.hpp"
 #include "vigra/gaborfilter.hxx"
 #include "convolution.hpp"
-#include <math.h>
+#include <cmath>
 
 namespace Gamera {
 
@@ -437,7 +437,7 @@ namespace Gamera {
 			       vigra::angularGaborSigma(direction, frequency),
 			       vigra::radialGaborSigma(frequency));
       
-    } catch(const std::exception& e) {
+    } catch(std::exception e) {
       delete dest;
       delete dest_data;
       throw std::runtime_error("VIGRA function 'createGaborFilter' failed!");

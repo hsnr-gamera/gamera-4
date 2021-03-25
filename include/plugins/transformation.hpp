@@ -30,7 +30,7 @@
 #include "plugins/logical.hpp"
 #include "image_utilities.hpp"
 #include <exception>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 
@@ -133,7 +133,7 @@ namespace Gamera {
           spline(src_image_range(*tmp));
         vigra::rotateImage(spline, dest_image(*dest), -angle);
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete tmp->data();
       delete tmp;
       delete dest;

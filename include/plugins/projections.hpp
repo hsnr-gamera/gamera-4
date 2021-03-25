@@ -47,7 +47,7 @@ namespace Gamera {
 					  *p += 1;
 			  }
 		  }
-	  } catch (const std::exception& e) {
+	  } catch (std::exception e) {
 		  delete proj;
 		  throw;
 	  }
@@ -91,7 +91,7 @@ namespace Gamera {
 	  }
 	}
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete proj;
       throw;
     }

@@ -27,7 +27,7 @@
 #include <exception>
 #include <cstdlib>
 #include <ctime>
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <algorithm>
 
@@ -365,7 +365,7 @@ typename ImageFactory<T>::view_type* wave(const T &src, int amplitude, float fre
     }
     
     image_copy_attributes(src, *new_view);
-  } catch (const std::exception& e) {
+  } catch (std::exception e) {
     delete new_view;
     delete new_data;
     throw;
@@ -436,7 +436,7 @@ typename ImageFactory<T>::view_type* noise(const T &src, int amplitude, int dire
 		      src.get(Point(j, i)));
       }
     }
-  } catch (const std::exception& e) {
+  } catch (std::exception e) {
     delete new_view;
     delete new_data;
     throw;
@@ -484,7 +484,7 @@ typename ImageFactory<T>::view_type* inkrub(const T &src, int a, long random_see
     }
     
     image_copy_attributes(src, *new_view);
-  } catch (const std::exception& e) {
+  } catch (std::exception e) {
     delete new_view;
     delete new_data;
     throw;
@@ -590,7 +590,7 @@ typename ImageFactory<T>::view_type* ink_diffuse(const T &src, int type, double 
     }
     
     image_copy_attributes(src, *new_view);
-  } catch (const std::exception& e) {
+  } catch (std::exception e) {
     delete new_view;
     delete new_data;
     throw;

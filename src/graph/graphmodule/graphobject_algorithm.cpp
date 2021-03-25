@@ -344,7 +344,7 @@ PyObject* graph_colorize(PyObject* self, PyObject* pyobject) {
       so->_graph->colorize(ncolors);
       RETURN_VOID()
    }
-   catch (const std::runtime_error& e) {
+   catch (std::runtime_error e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());
       return nullptr;
    }

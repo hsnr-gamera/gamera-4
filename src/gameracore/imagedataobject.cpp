@@ -45,7 +45,7 @@ static PyObject* imagedata_new(PyTypeObject* pytype, PyObject* args,
       if (is_DimObject(py_dim)) {
 	try {
 	  return create_ImageDataObject(*(((DimObject*)py_dim)->m_x), coerce_Point(py_point), pixel, format);
-	} catch (const std::invalid_argument& e) {
+	} catch (std::invalid_argument e) {
 	  ;
 	}
       }

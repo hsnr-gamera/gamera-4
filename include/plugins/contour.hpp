@@ -44,7 +44,7 @@ FloatVector* contour_top(const T& m) {
                 result = (double)r;
             (*output)[c] = result;
         }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
         delete output;
         throw;
     }
@@ -67,7 +67,7 @@ FloatVector* contour_bottom(const T& m) {
                 result = (double)(m.nrows() - r);
             (*output)[c] = result;
         }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
     	std::cerr << e.what() << std::endl;
         delete output;
         throw;
@@ -91,7 +91,7 @@ FloatVector* contour_left(const T& m) {
                 result = (double)c;
             (*output)[r] = result;
         }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
         delete output;
         throw;
     }
@@ -114,7 +114,7 @@ FloatVector* contour_right(const T& m) {
                 result = (double)(m.ncols() - c);
             (*output)[r] = result;
         }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
         delete output;
         throw;
     }

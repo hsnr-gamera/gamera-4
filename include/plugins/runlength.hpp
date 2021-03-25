@@ -222,7 +222,7 @@ namespace Gamera {
       }
       SortBySecondFunctor<RunPair> func;
       std::sort(runs->begin(), runs->end(), func);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete runs;
       throw;
     }
@@ -268,7 +268,7 @@ namespace Gamera {
       iterator end = direction.end(image);
       for (iterator i = direction.begin(image); i != end; ++i)
 	run_histogram(i.begin(), i.end(), *hist, color);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete hist;
       throw;
     }
@@ -296,7 +296,7 @@ namespace Gamera {
 	  }
 	}
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete hist;
       throw;
     }
@@ -333,7 +333,7 @@ namespace Gamera {
     size_t result;
     try {
       result = std::max_element(hist->begin(), hist->end()) - hist->begin();
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete hist;
       throw;
     }
@@ -367,7 +367,7 @@ namespace Gamera {
     RunVector* result = NULL;
     try {
       result = _sort_run_results(hist);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete hist;
       throw;
     }
@@ -401,7 +401,7 @@ namespace Gamera {
     PyObject* result;
     try {
       result = _run_results_to_python(runs, n);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete runs;
       throw;
     }

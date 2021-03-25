@@ -86,7 +86,7 @@ namespace Gamera {
               out_acc.set(RGBPixel(tmp, tmp, tmp), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -117,7 +117,7 @@ namespace Gamera {
                 out_acc.set(black(*view), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -145,7 +145,7 @@ namespace Gamera {
               out_acc.set(RGBPixel(tmp, tmp, tmp), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -181,7 +181,7 @@ namespace Gamera {
               out_acc.set(RGBPixel(tmp, tmp, tmp), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -214,7 +214,7 @@ namespace Gamera {
               out_acc.set(RGBPixel(tmp, tmp, tmp), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -251,7 +251,7 @@ namespace Gamera {
               out_acc.set(GreyScalePixel(in_acc(in_col) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -283,7 +283,7 @@ namespace Gamera {
                 out_acc.set(black(*view), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -310,7 +310,7 @@ namespace Gamera {
               out_acc.set(in_acc(in_col).luminance(), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -345,7 +345,7 @@ namespace Gamera {
               out_acc.set(GreyScalePixel((in_acc(in_col)-minv) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -378,7 +378,7 @@ namespace Gamera {
               out_acc.set(GreyScalePixel(in_acc(in_col) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -416,7 +416,7 @@ namespace Gamera {
               out_acc.set(Grey16Pixel(in_acc(in_col) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -443,7 +443,7 @@ namespace Gamera {
               out_acc.set(in_acc(in_col).luminance(), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -475,7 +475,7 @@ namespace Gamera {
                 out_acc.set(black(*view), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -504,7 +504,7 @@ namespace Gamera {
               out_acc.set(tmp, out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -540,7 +540,7 @@ namespace Gamera {
               out_acc.set(Grey16Pixel((in_acc(in_col)-minv) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -573,7 +573,7 @@ namespace Gamera {
               out_acc.set(Grey16Pixel(in_acc(in_col) * scale), out_col);
             }
           }
-        } catch (const std::exception& e) {
+        } catch (std::exception e) {
           delete view->data();
           delete view;
           throw;
@@ -603,7 +603,7 @@ namespace Gamera {
 	      out_acc.set(FloatPixel(in_acc(in_col)), out_col);
 	    }
 	  }
-       	} catch (const std::exception& e) {
+       	} catch (std::exception e) {
 	  delete view->data();
 	  delete view;
 	  throw;
@@ -629,7 +629,7 @@ namespace Gamera {
 	      out_acc.set(FloatPixel(in_acc.get(in_col).luminance()), out_col);
 	    }
 	  }
-	} catch (const std::exception& e) {
+	} catch (std::exception e) {
 	  delete view->data();
 	  delete view;
 	  throw;
@@ -662,7 +662,7 @@ namespace Gamera {
 		out_acc.set(FloatPixel(0.0), out_col);	      
 	    }
 	  }
-	} catch (const std::exception& e) {
+	} catch (std::exception e) {
 	  delete view->data();
 	  delete view;
 	  throw;
@@ -695,7 +695,7 @@ namespace Gamera {
 	      out_acc.set(in_acc(in_col), out_col);
 	    }
 	  }
-	} catch (const std::exception& e) {
+	} catch (std::exception e) {
 	  delete view->data();
 	  delete view;
 	  throw;
@@ -730,7 +730,7 @@ namespace Gamera {
 	      }    
 	    }
 	  }
-	} catch (const std::exception& e) {
+	} catch (std::exception e) {
 	  delete view->data();
 	  delete view;
 	  throw;
@@ -789,7 +789,7 @@ namespace Gamera {
 	  out_acc.set(FloatPixel(in_acc(in_col).real()), out_col);
 	}
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete view;
       delete data;
       throw;
@@ -815,7 +815,7 @@ namespace Gamera {
 	  out_acc.set(FloatPixel(in_acc(in_col).imag()), out_col);
 	}
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete view;
       delete data;
       throw;

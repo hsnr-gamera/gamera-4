@@ -260,7 +260,7 @@ namespace Gamera {
 	    }
 	    ngeo++;
 	  }
-	} catch (const std::exception& e) {
+	} catch (std::exception e) {
 	  delete flip_view->data();
 	  delete flip_view;
 	  throw;
@@ -283,7 +283,7 @@ namespace Gamera {
 	}
 	return new_view;
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete new_view;
       delete new_data;
       throw;
@@ -408,7 +408,7 @@ namespace Gamera {
       typename view_type::vec_iterator h = new_view->vec_begin();
       for (; g != m.vec_end(); g++, h++)
 	*g = *h;
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete new_view;
       delete new_data;
       throw;
@@ -483,7 +483,7 @@ namespace Gamera {
     
     try {
       vigra::distanceTransform(src_image_range(src), dest_image(*dest), 0, norm);
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;

@@ -170,7 +170,7 @@ void Graph::colorize(unsigned int ncolors) {
  std::cerr<< neighbor_color << ",";
 #endif
             }
-            catch(const std::runtime_error&e) {
+            catch(std::runtime_error) {
                //node is not colorized
             }
          }
@@ -210,7 +210,7 @@ void Graph::colorize(unsigned int ncolors) {
          (*_colorhistogram)[color]++;
       }
    }
-   catch(const std::runtime_error&e) {
+   catch(std::runtime_error) {
       //free degreemap
       for(DegreeMap::iterator it = degrees.begin(); it != degrees.end(); it++) {
          delete it->second;

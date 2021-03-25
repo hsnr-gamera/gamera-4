@@ -44,7 +44,7 @@ namespace Gamera {
     
       if (min_edge_length > 0)
         vigra::removeShortEdges(dest_image_range(*dest), min_edge_length, NumericTraits<typename T::value_type>::one());
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;
@@ -74,7 +74,7 @@ namespace Gamera {
     
       if (beautify)
         vigra::beautifyCrackEdgeImage(dest_image_range(*dest), NumericTraits<typename T::value_type>::one(), NumericTraits<typename T::value_type>::zero());
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;
@@ -95,7 +95,7 @@ namespace Gamera {
 
     try {
       vigra::cannyEdgeImage(src_image_range(src), dest_image(*dest), scale, gradient_threshold, NumericTraits<typename T::value_type>::one());
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete dest;
       delete dest_data;
       throw;

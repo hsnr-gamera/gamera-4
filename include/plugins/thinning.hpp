@@ -136,12 +136,12 @@ namespace Gamera {
 	  deleted = thin_zs_del_fbp(*thin_view, *flag_view);
 	  constant_i = !constant_i;
 	}
-      } catch (const std::exception& e) {
+      } catch (std::exception e) {
 	delete flag_view;
 	delete flag_data;
 	throw;
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete thin_data;
       delete thin_view;
       throw;
@@ -278,14 +278,14 @@ namespace Gamera {
 	bool not_finished = true;
 	while (not_finished)
 	  not_finished = thin_hs_one_pass(*thin_view, *H_M_view);
-      } catch (const std::exception& e) {
+      } catch (std::exception e) {
 	delete H_M_view;
 	delete H_M_data;
 	throw;
       }
       delete H_M_view;
       delete H_M_data;
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete thin_view;
       delete thin_data;
       throw;
@@ -386,7 +386,7 @@ namespace Gamera {
 	  }
 	}
       }
-    } catch (const std::exception& e) {
+    } catch (std::exception e) {
       delete thin_view->data();
       delete thin_view;
     }

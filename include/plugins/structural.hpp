@@ -23,7 +23,7 @@
 #define mgd11272002_relational
 
 #include "gamera.hpp"
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 namespace Gamera {
@@ -230,7 +230,7 @@ namespace Gamera {
       throw std::runtime_error("a too large in gcf.");
     try {
       gammcf = exp(-x + a * log(x) - gln) * h;
-    } catch (const std::overflow_error& e) {
+    } catch (std::overflow_error) {
       gammcf = std::numeric_limits<double>::max();
     }
   }
@@ -287,7 +287,7 @@ namespace Gamera {
     if (points.size() >= 3) {
       try {
 	q = gammq(0.5 * (points.size() - 2), 0.5 * chi2);
-      } catch (const std::exception& e) {
+      } catch (std::exception) {
 	;
       }
     }
