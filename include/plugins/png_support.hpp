@@ -27,7 +27,7 @@
 
 #include "image_utilities.hpp"
 #include <png.h>
-#include <cstdio>
+#include <stdio.h>
 #include <stdint.h>
 
 // TODO: Get/Save resolution information
@@ -130,7 +130,7 @@ ImageInfo* PNG_info(char* filename) {
       info->m_ncolors = 3;
     else if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
       info->m_ncolors = 1;
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete info;
     throw;
   }
@@ -160,7 +160,7 @@ void load_PNG_grey16(T& image, png_structp& png_ptr) {
         c.set((int)*from);
       }
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete[] row;
     throw;
   }
@@ -190,7 +190,7 @@ void load_PNG_onebit(T& image, png_structp& png_ptr) {
           c.set(pixel_traits<OneBitPixel>::white());
       }
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete[] row;
     throw;
   }
@@ -340,7 +340,7 @@ struct PNG_saver<OneBitPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -370,7 +370,7 @@ struct PNG_saver<FloatPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -400,7 +400,7 @@ struct PNG_saver<ComplexPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -425,7 +425,7 @@ struct PNG_saver<Grey16Pixel> {
           *from = (uint16_t)(*c);
         png_write_row(png_ptr, (png_bytep)row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }

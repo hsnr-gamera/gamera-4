@@ -1207,7 +1207,7 @@ inline FloatVector* FloatVector_from_python(PyObject* py) {
       }
       (*cpp)[i] = (double)PyFloat_AsDouble(number);
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete cpp;
     Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -1235,7 +1235,7 @@ inline ComplexVector* ComplexVector_from_python(PyObject* py) {
       Py_complex temp = PyComplex_AsCComplex(value);
       (*cpp)[i] = ComplexPixel(temp.real, temp.imag);
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete cpp;
     Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -1263,7 +1263,7 @@ inline IntVector* IntVector_from_python(PyObject* py) {
       }
       (*cpp)[i] = (int)PyLong_AsLong(number);
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete cpp;
     Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -1286,12 +1286,12 @@ inline PointVector* PointVector_from_python(PyObject* py) {
       Point p = coerce_Point(point);
       cpp->push_back(p);
     }
-  } catch (std::invalid_argument e) {
+  } catch (const std::invalid_argument& e) {
     delete cpp;
     Py_XDECREF(seq);
     PyErr_SetString(PyExc_TypeError, e.what());
     return 0;
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete cpp;
     Py_XDECREF(seq);
     PyErr_SetString(PyExc_RuntimeError, e.what());

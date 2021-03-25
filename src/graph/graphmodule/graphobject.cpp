@@ -232,7 +232,7 @@ PyObject* graph_remove_node(PyObject* self, PyObject* a) {
          delete d;
       }
    }
-   catch (std::runtime_error e) {
+   catch (const std::runtime_error& e) {
       PyErr_SetString(PyExc_ValueError, e.what());
       return nullptr;
    }
@@ -329,7 +329,7 @@ PyObject* graph_remove_edge(PyObject* self, PyObject* args) {
          so->_graph->remove_edge(&a, &b);
       }
    }
-   catch(std::runtime_error e) {
+   catch(const std::runtime_error& e) {
       PyErr_SetString(PyExc_RuntimeError, e.what());
       return nullptr;
    }
@@ -637,7 +637,7 @@ PyObject* graph_get_subgraph_roots(PyObject* self, PyObject* args) {
 
       return (PyObject*)nti;
    }
-   catch(std::runtime_error e) {
+   catch(const std::runtime_error& e) {
       PyErr_SetString(PyExc_TypeError, e.what());
       return nullptr;
    }

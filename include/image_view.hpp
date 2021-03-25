@@ -422,15 +422,23 @@ Use ImageView<T>::get(Point(col, row)) instead.
           || offset_y() < m_image_data->page_offset_y()
           || offset_x() < m_image_data->page_offset_x()) {
         char error[1024];
-        sprintf(error, "Image view dimensions out of range for data\n");
-        sprintf(error, "%s\tnrows %d\n", error, (int)nrows());
-        sprintf(error, "%s\toffset_y %d\n", error, (int)offset_y());
-        sprintf(error, "%s\tdata nrows %d\n", error, (int)m_image_data->nrows());
-        sprintf(error, "%s\tdata offset_y %d\n", error, (int)m_image_data->page_offset_y());
-        sprintf(error, "%s\tncols %d\n", error, (int)ncols());
-        sprintf(error, "%s\toffset_x %d\n", error, (int)offset_x());
-        sprintf(error, "%s\tdata ncols %d\n", error,(int)m_image_data->ncols());
-        sprintf(error, "%s\tdata offset_x %d\n", error, (int)m_image_data->page_offset_x());
+        sprintf(error, "Image view dimensions out of range for data\n"
+        "\tnrows %d\n"
+        "\toffset_y %d\n"
+        "\tdata nrows %d\n"
+        "\tdata offset_y %d\n"
+        "\tncols %d\n"
+        "\toffset_x %d\n"
+        "\tdata ncols %d\n"
+        "\tdata offset_x %d\n",
+        ((int)nrows()),
+        ((int)offset_y()),
+        ((int)m_image_data->nrows()),
+        ((int)m_image_data->page_offset_y()),
+        ((int)ncols()),
+        ((int)offset_x()),
+        ((int)m_image_data->ncols()),
+        ((int)m_image_data->page_offset_x()));  
         throw std::range_error(error);
       }
     }

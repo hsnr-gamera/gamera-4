@@ -86,7 +86,7 @@ ImageInfo* tiff_info(const char* filename) {
     info->inverted(tmp == PHOTOMETRIC_MINISWHITE);
 
     TIFFClose(tif);
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     TIFFSetErrorHandler(saved_handler);
     delete info;
   }
