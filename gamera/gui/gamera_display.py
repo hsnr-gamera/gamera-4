@@ -1744,7 +1744,7 @@ class MultiImageWindow(wx.Panel):
       self.id.ForceRefresh()
 
    def _OnSortAscending(self, event, order=0):
-      sort_string = string.strip(self.sort_combo.GetValue())
+      sort_string = self.sort_combo.GetValue().strip()
       if sort_string not in self.sort_choices:
          self.sort_choices.append(sort_string)
          self.sort_combo.Append(sort_string)
@@ -1754,7 +1754,7 @@ class MultiImageWindow(wx.Panel):
       self._OnSortAscending(event, 1)
 
    def _OnSelect(self, event):
-      select_string = string.strip(self.select_combo.GetValue())
+      select_string = self.select_combo.GetValue().strip()
       if select_string == "":
          return
       try:
