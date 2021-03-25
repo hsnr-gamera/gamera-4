@@ -29,7 +29,7 @@ inline
 typename ImageFactory<T>::view_type* 
 arithmetic_combine(T& a, const U& b, const FUNCTOR& functor, bool in_place) {
   if (a.nrows() != b.nrows() || a.ncols() != b.ncols())
-    throw std::runtime_error("Images must be the same size.");
+    throw const std::runtime_error& e("Images must be the same size.");
   
   typedef typename T::value_type TVALUE;
   typedef typename ImageFactory<T>::view_type VIEW;
@@ -66,7 +66,7 @@ arithmetic_combine(T& a, const U& b, const FUNCTOR& functor, bool in_place) {
 			typename NumericTraits<TVALUE>::Promote(*ib))),
 	       id);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_data;
       throw;

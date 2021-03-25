@@ -278,13 +278,13 @@ namespace Gamera {
             delete rects[i];
           }
         }
-      } catch (std::exception e) {
+      } catch (const std::exception& e) {
         for (ImageList::iterator i = ccs->begin(); i != ccs->end(); ++i)
           delete *i;
         delete ccs;
         throw;
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       for (size_t i = 0; i != rects.size(); ++i)
         delete rects[i];
     }
@@ -509,7 +509,7 @@ namespace Gamera {
       last_split = new_split;
       try {
         ccs = cc_analysis(*view);
-      } catch (std::range_error x) {
+      } catch (const std::range_error& x) {
         split_error_cleanup(view, splits, projs, ccs);
         throw x;
       }
@@ -524,7 +524,7 @@ namespace Gamera {
                                Dim(image.ncols() - last_split, image.nrows())));
     try {
       ccs = cc_analysis(*view);
-    } catch (std::range_error x) {
+    } catch (const std::range_error& x) {
       split_error_cleanup(view, splits, NULL, ccs);
       throw x;
     }
@@ -561,7 +561,7 @@ namespace Gamera {
       last_split = new_split;
       try {
         ccs = cc_analysis(*view);
-      } catch (std::range_error x) {
+      } catch (const std::range_error& x) {
         split_error_cleanup(view, splits, projs, ccs);
         throw x;
       }
@@ -576,7 +576,7 @@ namespace Gamera {
                                Dim(image.ncols() - last_split, image.nrows())));
     try { 
       ccs = cc_analysis(*view);
-    } catch (std::range_error x) {
+    } catch (const std::range_error& x) {
       split_error_cleanup(view, splits, NULL, ccs);
       throw x;
     }
@@ -613,7 +613,7 @@ namespace Gamera {
       last_split = new_split;
       try {
         ccs = cc_analysis(*view);
-      } catch (std::range_error x) {
+      } catch (const std::range_error& x) {
         split_error_cleanup(view, splits, projs, ccs);
         throw x;
       }
@@ -628,7 +628,7 @@ namespace Gamera {
                                Dim(image.ncols(), image.nrows() - last_split)));
     try {
       ccs = cc_analysis(*view);
-    } catch (std::range_error x) {
+    } catch (const std::range_error& x) {
       split_error_cleanup(view, splits, NULL, ccs);
       throw x;
     }

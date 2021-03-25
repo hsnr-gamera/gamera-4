@@ -52,7 +52,7 @@ int pagesegmentation_median_height(ImageList* ccs) {
   ImageList::iterator i;
 
   if (ccs->empty()) {
-    throw std::runtime_error("pagesegmentation_median_height: no CC's found in image.");
+    throw const std::runtime_error& e("pagesegmentation_median_height: no CC's found in image.");
   }
   for (i = ccs->begin(); i != ccs->end(); ++i) {
     ccs_heights.push_back( (*i)->nrows() );

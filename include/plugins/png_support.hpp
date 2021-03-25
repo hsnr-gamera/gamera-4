@@ -46,37 +46,37 @@ void PNG_info_specific(const char* filename, FILE* & fp, png_structp& png_ptr, p
   char buf[PNG_BYTES_TO_CHECK];
   if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
     fclose(fp);
-    throw std::runtime_error("Image file too small");
+    throw const std::runtime_error& e("Image file too small");
   }
   if (png_sig_cmp((png_byte*)buf, 0, PNG_BYTES_TO_CHECK)) {
     fclose(fp);
-    throw std::runtime_error("Not a PNG file");
+    throw const std::runtime_error& e("Not a PNG file");
   }
   png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
                    NULL, NULL);
   if (!png_ptr) {
     fclose(fp);
-    throw std::runtime_error("Could not read PNG header");
+    throw const std::runtime_error& e("Could not read PNG header");
   }
 
   info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
     png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
     fclose(fp);
-    throw std::runtime_error("Could not read PNG info");
+    throw const std::runtime_error& e("Could not read PNG info");
   }
   
   end_info = png_create_info_struct(png_ptr);
   if (!end_info) {
     png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
     fclose(fp);
-    throw std::runtime_error("Could not read PNG info");
+    throw const std::runtime_error& e("Could not read PNG info");
   }
 
   if (setjmp(png_jmpbuf(png_ptr))) {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     fclose(fp);
-    throw std::runtime_error("error in reading PNG header");
+    throw const std::runtime_error& e("error in reading PNG header");
   }
 
   png_set_sig_bytes(png_ptr, PNG_BYTES_TO_CHECK);
@@ -130,7 +130,7 @@ ImageInfo* PNG_info(char* filename) {
       info->m_ncolors = 3;
     else if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
       info->m_ncolors = 1;
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete info;
     throw;
   }
@@ -160,7 +160,7 @@ void load_PNG_grey16(T& image, png_structp& png_ptr) {
         c.set((int)*from);
       }
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete[] row;
     throw;
   }
@@ -190,7 +190,7 @@ void load_PNG_onebit(T& image, png_structp& png_ptr) {
           c.set(pixel_traits<OneBitPixel>::white());
       }
     }
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete[] row;
     throw;
   }
@@ -210,7 +210,7 @@ Image* load_PNG(const char* filename, int storage) {
   if (setjmp(png_jmpbuf(png_ptr))) {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     fclose(fp);
-    throw std::runtime_error("error in reading PNG data");
+    throw const std::runtime_error& e("error in reading PNG data");
   }
 
   //Damon
@@ -224,7 +224,7 @@ Image* load_PNG(const char* filename, int storage) {
       color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
     if (storage == RLE) {
       PNG_close(fp, png_ptr, info_ptr, end_info);
-      throw std::runtime_error("Pixel type must be OneBit to use RLE data.");
+      throw const std::runtime_error& e("Pixel type must be OneBit to use RLE data.");
     }
     if (bit_depth > 8) {
 #if PNG_LIBPNG_VER >= 10504
@@ -274,7 +274,7 @@ Image* load_PNG(const char* filename, int storage) {
     } else if (bit_depth <= 8) {
       if (storage == RLE) {
         PNG_close(fp, png_ptr, info_ptr, end_info);
-        throw std::runtime_error("Pixel type must be OneBit to use RLE data.");
+        throw const std::runtime_error& e("Pixel type must be OneBit to use RLE data.");
       }
       if (bit_depth < 8) {
 #if PNG_LIBPNG_VER > 10399
@@ -295,7 +295,7 @@ Image* load_PNG(const char* filename, int storage) {
     } else if (bit_depth == 16) {
       if (storage == RLE) {
         PNG_close(fp, png_ptr, info_ptr, end_info);
-        throw std::runtime_error("Pixel type must be OneBit to use RLE data.");
+        throw const std::runtime_error& e("Pixel type must be OneBit to use RLE data.");
       }
       typedef TypeIdImageFactory<GREY16, DENSE> fact_type;
       fact_type::image_type*
@@ -309,7 +309,7 @@ Image* load_PNG(const char* filename, int storage) {
     }
   }
   PNG_close(fp, png_ptr, info_ptr, end_info);
-  throw std::runtime_error("PNG file is an unsupported type");
+  throw const std::runtime_error& e("PNG file is an unsupported type");
 }
 
 template<class P>
@@ -340,7 +340,7 @@ struct PNG_saver<OneBitPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -370,7 +370,7 @@ struct PNG_saver<FloatPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -400,7 +400,7 @@ struct PNG_saver<ComplexPixel> {
     }
     png_write_row(png_ptr, row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -425,7 +425,7 @@ struct PNG_saver<Grey16Pixel> {
           *from = (uint16_t)(*c);
         png_write_row(png_ptr, (png_bytep)row);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete[] row;
       throw;
     }
@@ -442,20 +442,20 @@ void save_PNG(T& image, const char* filename) {
   png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   if (!png_ptr) {
     fclose(fp);
-    throw std::runtime_error("Couldn't create PNG header");
+    throw const std::runtime_error& e("Couldn't create PNG header");
   }
 
   png_infop info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
     png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
     fclose(fp);
-    throw std::runtime_error("Couldn't create PNG header");
+    throw const std::runtime_error& e("Couldn't create PNG header");
   }         
 
   if (setjmp(png_jmpbuf(png_ptr))) {
     png_destroy_write_struct(&png_ptr, &info_ptr);
     fclose(fp);
-    throw std::runtime_error("Unknown PNG error");
+    throw const std::runtime_error& e("Unknown PNG error");
   }
   
   png_uint_32 width = image.ncols();

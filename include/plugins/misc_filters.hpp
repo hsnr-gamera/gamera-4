@@ -437,10 +437,10 @@ namespace Gamera {
 			       vigra::angularGaborSigma(direction, frequency),
 			       vigra::radialGaborSigma(frequency));
       
-    } catch(std::exception e) {
+    } catch(const std::exception& e) {
       delete dest;
       delete dest_data;
-      throw std::runtime_error("VIGRA function 'createGaborFilter' failed!");
+      throw const std::runtime_error& e("VIGRA function 'createGaborFilter' failed!");
     }
 
     return dest;

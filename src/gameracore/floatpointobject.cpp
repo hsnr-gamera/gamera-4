@@ -56,7 +56,7 @@ static PyObject* floatpoint_new(PyTypeObject* pytype, PyObject* args,
     if (PyArg_ParseTuple(args,  "O", &p)) {
       try {
 	return _floatpoint_new(pytype, new FloatPoint(coerce_FloatPoint(p)));
-      } catch (std::exception e) {
+      } catch (const std::exception& e) {
 	;
       }
     }
@@ -88,7 +88,7 @@ static PyObject* floatpoint_distance(PyObject* self, PyObject* point) {
     FloatPoint fp = coerce_FloatPoint(point);
     double distance = x->distance(fp);
     return PyFloat_FromDouble(distance);
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     return 0;
   }
 }
@@ -97,13 +97,13 @@ static PyObject* floatpoint_richcompare(PyObject* a, PyObject* b, int op) {
   FloatPoint ap, bp;
   try {
     ap = coerce_FloatPoint(a);
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
   try {
     bp = coerce_FloatPoint(b);
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }
@@ -160,7 +160,7 @@ static PyObject* floatpoint_repr(PyObject* self) {
     FloatPoint fp = coerce_FloatPoint(args); \
     FloatPoint result = *x op fp; \
     return create_FloatPointObject(result); \
-  } catch (std::exception e) { \
+  } catch (const std::exception& e) { \
     return 0; \
   } \
 } \

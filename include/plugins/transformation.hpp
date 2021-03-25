@@ -133,7 +133,7 @@ namespace Gamera {
           spline(src_image_range(*tmp));
         vigra::rotateImage(spline, dest_image(*dest), -angle);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete tmp->data();
       delete tmp;
       delete dest;
@@ -285,10 +285,10 @@ namespace Gamera {
 
     // plausi checks grey values
     if (newgrey->size() < 256)
-      throw std::runtime_error("256 grey values required");
+      throw const std::runtime_error& e("256 grey values required");
     for (i = 0; i < newgrey->size(); i++) {
       if (newgrey->at(i) < 0 || newgrey->at(i) > 255)
-        throw std::runtime_error("Grey values must be in [0,255]");
+        throw const std::runtime_error& e("Grey values must be in [0,255]");
     }
 
 	for(i = 0; i < m.nrows(); i++)

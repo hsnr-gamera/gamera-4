@@ -125,7 +125,7 @@ namespace Gamera {
       new typename ImageFactory<T>::view_type(*dest_data, src.origin(), src.size());
     try {
       image_copy_fill(src, *dest);
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_data;
       throw;
@@ -154,7 +154,7 @@ namespace Gamera {
         new typename ImageFactory<T>::dense_view_type(*data, a.origin(), a.size());
       try {
         image_copy_fill(a, *view);
-      } catch (std::exception e) {
+      } catch (const std::exception& e) {
         delete view;
         delete data;
         throw;
@@ -167,7 +167,7 @@ namespace Gamera {
         new typename ImageFactory<T>::rle_view_type(*data, a.origin(), a.size());
       try {
         image_copy_fill(a, *view);
-      } catch (std::exception e) {
+      } catch (const std::exception& e) {
         delete view;
         delete data;
         throw;
@@ -240,11 +240,11 @@ namespace Gamera {
           _union_image(*dest, *((RleCc*)image));
           break;
         default:
-          throw std::runtime_error
+          throw const std::runtime_error& e
             ("There is an Image in the list that is not a OneBit image.");
         }
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_data;
       throw;
@@ -285,7 +285,7 @@ namespace Gamera {
       for (size_t i = 0; i < l; i++) {
         (*values)[i] = (*values)[i] / size;
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete values;
       throw;
     }
@@ -382,7 +382,7 @@ namespace Gamera {
     
     try {
       image_copy_fill(src, *dest_srcpart);
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_srcpart;
       delete dest_data;
@@ -442,7 +442,7 @@ namespace Gamera {
       if (left_pad)
         fill(*left_pad, value);
       image_copy_fill(src, *dest_srcpart);
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       if (top_pad) delete top_pad;
       if (right_pad) delete right_pad;
       if (bottom_pad) delete bottom_pad;
@@ -544,7 +544,7 @@ namespace Gamera {
   template<class T, class U>
   typename ImageFactory<T>::view_type* mask(const T& a, U &b) {
     if (a.nrows() != b.nrows() || a.ncols() != b.ncols())
-      throw std::runtime_error("The image and the mask image must be the same size.");
+      throw const std::runtime_error& e("The image and the mask image must be the same size.");
 
     typename ImageFactory<T>::data_type* dest_data =
       new typename ImageFactory<T>::data_type(b.size(), b.origin());
@@ -570,7 +570,7 @@ namespace Gamera {
         else
           a_accessor.set(white(*dest), it_dest);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_data;
       throw;
@@ -587,11 +587,11 @@ namespace Gamera {
       
       PyObject* seq = PySequence_Fast(obj, "Argument must be a nested Python iterable of pixels.");
       if (seq == NULL)
-        throw std::runtime_error("Argument must be a nested Python iterable of pixels.");
+        throw const std::runtime_error& e("Argument must be a nested Python iterable of pixels.");
       int nrows = PySequence_Fast_GET_SIZE(seq);
       if (nrows == 0) {
         Py_XDECREF(seq);
-        throw std::runtime_error("Nested list must have at least one row.");
+        throw const std::runtime_error& e("Nested list must have at least one row.");
       }
       int ncols = -1;
       
@@ -611,7 +611,7 @@ namespace Gamera {
             if (ncols == 0) {
               Py_XDECREF(seq);
               Py_XDECREF(row_seq);
-              throw std::runtime_error
+              throw const std::runtime_error& e
                 ("The rows must be at least one column wide.");
             }
             data = new ImageData<T>(Dim(ncols, nrows));
@@ -622,7 +622,7 @@ namespace Gamera {
               delete data;
               Py_XDECREF(row_seq);
               Py_XDECREF(seq);
-              throw std::runtime_error
+              throw const std::runtime_error& e
                 ("Each row of the nested list must be the same length.");
             }
           }
@@ -634,7 +634,7 @@ namespace Gamera {
           Py_XDECREF(row_seq);
         }
         Py_XDECREF(seq);
-      } catch (std::exception e) {
+      } catch (const std::exception& e) {
         if (image)
           delete image;
         if (data)
@@ -650,10 +650,10 @@ namespace Gamera {
     if (pixel_type < 0) {
       PyObject* seq = PySequence_Fast(obj, "Must be a nested Python iterable of pixels.");
       if (seq == NULL)
-        throw std::runtime_error("Must be a nested Python list of pixels.");
+        throw const std::runtime_error& e("Must be a nested Python list of pixels.");
       if (PySequence_Fast_GET_SIZE(seq) == 0) {
         Py_XDECREF(seq);
-        throw std::runtime_error("Nested list must have at least one row.");
+        throw const std::runtime_error& e("Nested list must have at least one row.");
       }
       PyObject* row = PySequence_Fast_GET_ITEM(seq, 0);
       PyObject* pixel;
@@ -664,7 +664,7 @@ namespace Gamera {
         if (PySequence_Fast_GET_SIZE(row_seq) == 0) {
           Py_XDECREF(seq);
           Py_XDECREF(row_seq);
-          throw std::runtime_error("The rows must be at least one column wide.");
+          throw const std::runtime_error& e("The rows must be at least one column wide.");
         }
         pixel = PySequence_Fast_GET_ITEM(row_seq, 0);
       }
@@ -677,7 +677,7 @@ namespace Gamera {
       else if (is_RGBPixelObject(pixel))
         pixel_type = RGB;
       if (pixel_type < 0)
-        throw std::runtime_error
+        throw const std::runtime_error& e
           ("The image type could not automatically be determined from the list.  Please specify an image type using the second argument.");
     }
       
@@ -698,7 +698,7 @@ namespace Gamera {
       _nested_list_to_image<FloatPixel> func5;
       return (Image*)func5(obj);
     default:
-      throw std::runtime_error("Second argument is not a valid image type number.");
+      throw const std::runtime_error& e("Second argument is not a valid image type number.");
     }
   }
  
@@ -720,7 +720,7 @@ namespace Gamera {
   template<class T>
   double mse(T& a, T& b) {
     if (a.size() != b.size())
-      throw std::runtime_error("Both images must be the same size.");
+      throw const std::runtime_error& e("Both images must be the same size.");
     typename T::vec_iterator it_a, it_b;
     double error = 0;
     for (it_a = a.vec_begin(), it_b = b.vec_begin();
@@ -830,7 +830,7 @@ namespace Gamera {
     }
 
     if (max_x < 0)
-      throw std::runtime_error("min_max_location: mask has no black pixel");
+      throw const std::runtime_error& e("min_max_location: mask has no black pixel");
 
     return Py_BuildValue("NiNi", 
                          create_PointObject(Point(min_x,min_y)), min_val,
@@ -865,7 +865,7 @@ namespace Gamera {
     }
 
     if (max_x < 0)
-      throw std::runtime_error("min_max_location: mask has no black pixel");
+      throw const std::runtime_error& e("min_max_location: mask has no black pixel");
 
     return Py_BuildValue("NfNf", 
                          create_PointObject(Point(min_x,min_y)), min_val,
