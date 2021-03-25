@@ -49,16 +49,16 @@ namespace Gamera {
     size_t n,i;
     PyObject *entry, *retval;
     if(!PyList_Check(list))
-      throw const std::runtime_error& e("median: Input argument is no list.");
+      throw std::runtime_error("median: Input argument is no list.");
     n = PyList_Size(list);
     if (0 == n)
-      throw const std::runtime_error& e("median: Input list must not be empty.");
+      throw std::runtime_error("median: Input list must not be empty.");
     // distinction based on content type
     entry = PyList_GetItem(list,0);
     if (PyFloat_Check(entry)) {
       FloatVector* v = FloatVector_from_python(list);
       if (!v)
-        throw const std::runtime_error& e("median: Cannot convert list to float type. Is the list inhomogeneous?");
+        throw std::runtime_error("median: Cannot convert list to float type. Is the list inhomogeneous?");
       double m = median(v, inlist);
       delete v;
       return Py_BuildValue("f",m);
@@ -66,7 +66,7 @@ namespace Gamera {
     else if (PyLong_Check(entry)) {
       IntVector* v = IntVector_from_python(list);
       if (!v)
-        throw const std::runtime_error& e("median: Cannot convert list to int type. Is the list inhomogeneous?");
+        throw std::runtime_error("median: Cannot convert list to int type. Is the list inhomogeneous?");
       int m = median(v, inlist);
       delete v;
       return Py_BuildValue("i",m);
@@ -79,7 +79,7 @@ namespace Gamera {
       for(i=0;i<n;++i) {
         entry = PyList_GetItem(list,i);
         if (!PyObject_TypeCheck(entry,type))
-          throw const std::runtime_error& e("median: All list entries must be of the same type.");
+          throw std::runtime_error("median: All list entries must be of the same type.");
         v->push_back(canonicPyObject(entry));
       }  
       std::nth_element(v->begin(), v->begin() + n/2, v->end());
@@ -137,7 +137,7 @@ namespace Gamera {
     int n = PySequence_Fast_GET_SIZE(a);
     if (k < 0 || k > n) {
       Py_XDECREF(a);
-      throw const std::runtime_error& e("k must be between 0 and len(a)");
+      throw std::runtime_error("k must be between 0 and len(a)");
     }
 
     PyObject* result = PyList_New(0);
@@ -177,11 +177,11 @@ namespace Gamera {
   FloatVector* kernel_density(FloatVector* values, FloatVector* x, double bw=0.0, int kernel=0)
   {
 	if (values->size() == 0)
-      throw const std::runtime_error& e("no values given for kernel density estimation");
+      throw std::runtime_error("no values given for kernel density estimation");
 	if (x->size() == 0)
-      throw const std::runtime_error& e("no x given for kernel density estimation");
+      throw std::runtime_error("no x given for kernel density estimation");
     if (kernel<0 || kernel>2)
-      throw const std::runtime_error& e("kernel must be 0 (rectangular), 1 (triangular), or 2 (gaussian)");
+      throw std::runtime_error("kernel must be 0 (rectangular), 1 (triangular), or 2 (gaussian)");
 
     // copy values because sort changes vector
 	FloatVector val_cop = FloatVector(*values);

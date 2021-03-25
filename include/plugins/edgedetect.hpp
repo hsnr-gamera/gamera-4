@@ -31,7 +31,7 @@ namespace Gamera {
   template<class T>
   typename ImageFactory<T>::view_type* difference_of_exponential_edge_image(const T& src, double scale, double gradient_threshold, unsigned int min_edge_length) {
     if ((scale < 0) || (gradient_threshold < 0))
-      throw const std::runtime_error& e("The scale and gradient_threshold must be greater than 0");
+      throw std::runtime_error("The scale and gradient_threshold must be greater than 0");
 
     typename ImageFactory<T>::data_type* dest_data =
       new typename ImageFactory<T>::data_type(src.size(), src.origin());
@@ -55,7 +55,7 @@ namespace Gamera {
   template<class T>
   typename ImageFactory<T>::view_type* difference_of_exponential_crack_edge_image(const T& src, double scale, double gradient_threshold, unsigned int min_edge_length, unsigned int close_gaps, unsigned int beautify) {
     if ((scale < 0) || (gradient_threshold < 0))
-      throw const std::runtime_error& e("The scale and gradient threshold must be greater than 0");
+      throw std::runtime_error("The scale and gradient threshold must be greater than 0");
 
     typename ImageFactory<T>::data_type* dest_data =
       new typename ImageFactory<T>::data_type(Dim(src.ncols() * 2, src.nrows() * 2), src.origin());
@@ -85,7 +85,7 @@ namespace Gamera {
   template<class T>
   typename ImageFactory<T>::view_type* canny_edge_image(const T& src, double scale, double gradient_threshold) {
     if ((scale < 0) || (gradient_threshold < 0))
-      throw const std::runtime_error& e("The scale and gradient threshold must be >= 0");
+      throw std::runtime_error("The scale and gradient threshold must be >= 0");
 
     typename ImageFactory<T>::data_type* dest_data =
       new typename ImageFactory<T>::data_type(src.size(), src.origin());

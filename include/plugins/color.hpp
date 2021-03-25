@@ -425,7 +425,7 @@ namespace Gamera {
         }
         label++;
         if( !PyObject_TypeCheck(itemKey, get_RGBPixelType()) ) {
-            throw const std::runtime_error& e("Dictionary rgb_to_label must have RGBPixel's as keys");
+            throw std::runtime_error("Dictionary rgb_to_label must have RGBPixel's as keys");
         }
         
         RGBPixel *rgbpixel = ((RGBPixelObject *) itemKey)->m_x;

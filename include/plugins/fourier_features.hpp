@@ -42,7 +42,7 @@ typedef std::vector<FloatPoint> FloatPointVector;
 FloatVector* cutComplexDftAbs(ComplexVector* in, int numCoeff) {
     int dftSize = (signed)in->size();
     if(numCoeff % 2 == 0) {
-        throw const std::runtime_error& e("even number of coefficients in "
+        throw std::runtime_error("even number of coefficients in "
                                  "cutComplexDft is not allowed");
     }
 

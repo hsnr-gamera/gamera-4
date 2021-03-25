@@ -29,7 +29,7 @@ using namespace Gamera;
 template<class T, class U>
 typename ImageFactory<T>::view_type* convolve(const T& src, const U& k, int border_mode) {
   if (k.nrows() > src.nrows() || k.ncols() > src.ncols())
-    throw const std::runtime_error& e("The image must be bigger than the kernel.");
+    throw std::runtime_error("The image must be bigger than the kernel.");
 
   typename ImageFactory<T>::data_type* dest_data =
     new typename ImageFactory<T>::data_type(src.size(), src.ul());
@@ -61,9 +61,9 @@ typename ImageFactory<T>::view_type* convolve(const T& src, const U& k, int bord
 template<class T, class U>
 typename ImageFactory<T>::view_type* convolve_x(const T& src, const U& k, int border_mode) {
   if (k.nrows() > src.nrows() || k.ncols() > src.ncols())
-    throw const std::runtime_error& e("The image must be bigger than the kernel.");
+    throw std::runtime_error("The image must be bigger than the kernel.");
   if (k.nrows() != 1)
-    throw const std::runtime_error& e("The 1D kernel must have only one row.");
+    throw std::runtime_error("The 1D kernel must have only one row.");
 
   typename ImageFactory<T>::data_type* dest_data =
     new typename ImageFactory<T>::data_type(src.size(), src.origin());
@@ -94,9 +94,9 @@ typename ImageFactory<T>::view_type* convolve_x(const T& src, const U& k, int bo
 template<class T, class U>
 typename ImageFactory<T>::view_type* convolve_y(const T& src, const U& k, int border_mode) {
   if (k.nrows() > src.ncols() || k.ncols() > src.nrows())
-    throw const std::runtime_error& e("The image must be bigger than the kernel.");
+    throw std::runtime_error("The image must be bigger than the kernel.");
   if (k.nrows() != 1)
-    throw const std::runtime_error& e("The 1D kernel must have only one row.");
+    throw std::runtime_error("The 1D kernel must have only one row.");
 
   typename ImageFactory<T>::data_type* dest_data =
     new typename ImageFactory<T>::data_type(src.size(), src.origin());

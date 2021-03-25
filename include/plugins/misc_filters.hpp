@@ -440,7 +440,7 @@ namespace Gamera {
     } catch(const std::exception& e) {
       delete dest;
       delete dest_data;
-      throw const std::runtime_error& e("VIGRA function 'createGaborFilter' failed!");
+      throw std::runtime_error("VIGRA function 'createGaborFilter' failed!");
     }
 
     return dest;

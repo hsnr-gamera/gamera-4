@@ -77,7 +77,7 @@ namespace Gamera {
     if (all_labels.size() <= 2) {
       delete voronoi;
       delete voronoi_data;
-      throw const std::runtime_error& e("Black pixels must be labeled for Voronoi tesselation.");
+      throw std::runtime_error("Black pixels must be labeled for Voronoi tesselation.");
     }
 
     FloatImageData* dist_data = new FloatImageData(src.size(), src.origin());
@@ -133,9 +133,9 @@ namespace Gamera {
 
     // some plausi checks
     if (points->empty())
-      throw const std::runtime_error& e("points must not be empty.");
+      throw std::runtime_error("points must not be empty.");
     if (points->size() != labels->size())
-      throw const std::runtime_error& e("Number of points must match the number of labels.");
+      throw std::runtime_error("Number of points must match the number of labels.");
 
     size_t i,x,y;
 
@@ -291,13 +291,13 @@ namespace Gamera {
 
     // some plausi checks
 	if (pv->empty()) {
-      throw const std::runtime_error& e("No points for triangulation given.");
+      throw std::runtime_error("No points for triangulation given.");
     }
     if (pv->size() < 3) {
-      throw const std::runtime_error& e("At least three points are required.");
+      throw std::runtime_error("At least three points are required.");
     }
     if (pv->size() != lv->size()) {
-      throw const std::runtime_error& e("Number of points must match the number of labels.");
+      throw std::runtime_error("Number of points must match the number of labels.");
     }
 
     DelaunayTree dt;
@@ -430,7 +430,7 @@ namespace Gamera {
       Py_XDECREF(labelpairs);
     }
     else {
-      throw const std::runtime_error& e("Unknown method for construction the neighborhood graph");
+      throw std::runtime_error("Unknown method for construction the neighborhood graph");
     }
 
     delete pv;
@@ -504,7 +504,7 @@ namespace Gamera {
     for (i=1; i<ncolors; i++) {
       //printf("neighbors: %i, candidates: %i\n", neighbors.size(), candidateheap.size()); fflush(stdout);
       if (candidateheap.empty()) {
-        throw const std::runtime_error& e("no new color candidates found");
+        throw std::runtime_error("no new color candidates found");
       }
       color = candidateheap.top().color;
       candidateheap.pop();
@@ -531,13 +531,13 @@ namespace Gamera {
 
     // check input parameters
     if( ccs.size() == 0 ) {
-      throw const std::runtime_error& e("graph_color_ccs: no CCs given.");
+      throw std::runtime_error("graph_color_ccs: no CCs given.");
     }
     if( !PyList_Check(colors) ) {
-      throw const std::runtime_error& e("graph_color_ccs: colors is no list");
+      throw std::runtime_error("graph_color_ccs: colors is no list");
     }
     if( PyList_Size(colors) < 6 ) {
-      throw const std::runtime_error& e("graph_color_ccs: coloring algorithm only works "
+      throw std::runtime_error("graph_color_ccs: coloring algorithm only works "
             "with more than five colors");
     }
     ncolors = PyList_Size(colors);
@@ -615,7 +615,7 @@ namespace Gamera {
              if (unique) {
                if (labelcolor.find(label) == labelcolor.end()) {
                  if (colorclusters[c]->empty())
-                   throw const std::runtime_error& e("no color found for label");
+                   throw std::runtime_error("no color found for label");
                  labelcolor[label] = colorclusters[c]->back();
                  colorclusters[c]->pop_back();
                }
@@ -876,7 +876,7 @@ namespace Gamera {
       }
 	}
     if (is_black(src.get(best_lr))) {
-      throw const std::runtime_error& e("max_empty_rect: image has no white pixels.");
+      throw std::runtime_error("max_empty_rect: image has no white pixels.");
     }
     Rect* result = new Rect(best_ul,best_lr);
     return result;

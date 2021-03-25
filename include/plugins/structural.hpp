@@ -30,7 +30,7 @@ namespace Gamera {
   template<class T, class U>
   bool bounding_box_grouping_function(T& a, U& b, double threshold) {
     if (threshold < 0)
-      throw const std::runtime_error& e("Threshold must be a positive number.");
+      throw std::runtime_error("Threshold must be a positive number.");
     size_t int_threshold = size_t(threshold + 0.5); // rounding
     return b->intersects(a->expand(int_threshold));
   }
@@ -38,7 +38,7 @@ namespace Gamera {
   template<class T, class U>
   bool shaped_grouping_function(T& a, U& b, double threshold) {
     if (threshold < 0)
-      throw const std::runtime_error& e("Threshold must be a positive number.");
+      throw std::runtime_error("Threshold must be a positive number.");
 
     size_t int_threshold = size_t(threshold + 0.5);
 
@@ -227,7 +227,7 @@ namespace Gamera {
 	break;
     }
     if (i > ITMAX)
-      throw const std::runtime_error& e("a too large in gcf.");
+      throw std::runtime_error("a too large in gcf.");
     try {
       gammcf = exp(-x + a * log(x) - gln) * h;
     } catch (const std::overflow_error& e) {

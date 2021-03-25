@@ -228,7 +228,7 @@ namespace Gamera {
       break;
     }
     default:
-      throw const std::runtime_error& e("Invalid style.");
+      throw std::runtime_error("Invalid style.");
     }
   }
 
@@ -373,7 +373,7 @@ namespace Gamera {
     double x = double(p.x()) - double(image.ul_x());
     double y = double(p.y()) - double(image.ul_y());
     if (y >= image.nrows() || x >= image.ncols())
-      throw const std::runtime_error& e("Coordinate out of range.");
+      throw std::runtime_error("Coordinate out of range.");
     typename T::value_type interior = image.get(Point((size_t)x, (size_t)y));
     if (color == interior)
       return;

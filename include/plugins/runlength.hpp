@@ -321,7 +321,7 @@ namespace Gamera {
 	return run_histogram(image, runs::White(), runs::Vertical());
       }
     }
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
   }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -358,7 +358,7 @@ namespace Gamera {
 	return most_frequent_run(image, runs::White(), runs::Vertical());
       }
     }
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
   }
 
   template<class T, class Color, class Direction>
@@ -392,7 +392,7 @@ namespace Gamera {
 	return most_frequent_runs(image, runs::White(), runs::Vertical());
       }
     }
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
   }
 
   template<class T, class Color, class Direction>
@@ -425,7 +425,7 @@ namespace Gamera {
 	return most_frequent_runs(image, n, runs::White(), runs::Vertical());
       }
     }
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
   }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -470,7 +470,7 @@ namespace Gamera {
       return filter_narrow_runs(image, max_width, runs::Black());
     else if (color == "white")
       return filter_narrow_runs(image, max_width, runs::White());
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\".");
   }
 
   template<class T, class Color>
@@ -485,7 +485,7 @@ namespace Gamera {
       return filter_short_runs(image, max_width, runs::Black());
     else if (color == "white")
       return filter_short_runs(image, max_width, runs::White());
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\".");
   }
 
   template<class T, class Color>
@@ -500,7 +500,7 @@ namespace Gamera {
       return filter_tall_runs(image, max_width, runs::Black());
     else if (color == "white")
       return filter_tall_runs(image, max_width, runs::White());
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\".");
   }
 
   template<class T, class Color>
@@ -515,7 +515,7 @@ namespace Gamera {
       return filter_wide_runs(image, max_width, runs::Black());
     else if (color == "white")
       return filter_wide_runs(image, max_width, runs::White());
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\".");
   }
 
   template<class T>
@@ -527,7 +527,7 @@ namespace Gamera {
     else if (color == "black")
       color_tf = false;
     else
-      throw const std::runtime_error& e("color must be either \"black\" or \"white\".");
+      throw std::runtime_error("color must be either \"black\" or \"white\".");
     
     // corner point
     if ((p.x() == 0 && direction == "left") || 
@@ -560,7 +560,7 @@ namespace Gamera {
           break;
     }
     else
-      throw const std::runtime_error& e("direction must be either \"top\", \"bottom\", \"left\", or \"right\".");
+      throw std::runtime_error("direction must be either \"top\", \"bottom\", \"left\", or \"right\".");
 
     return count;
   }
@@ -772,7 +772,7 @@ namespace Gamera {
 	return iterate_runs(image, runs::White(), runs::Vertical());
       }
     }
-    throw const std::runtime_error& e("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
+    throw std::runtime_error("color must be either \"black\" or \"white\" and direction must be either \"horizontal\" or \"vertical\".");
   }
 
 #endif // GAMERA_NOPYTHON
