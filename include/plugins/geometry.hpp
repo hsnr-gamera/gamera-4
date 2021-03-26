@@ -99,7 +99,7 @@ namespace Gamera {
         vigra::seededRegionGrowing(src_image_range(*dist), src_image(*voronoi),
                                    dest_image(*voronoi), statistics, CompleteGrow);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dist;
       delete dist_data;
       delete voronoi;
@@ -625,7 +625,7 @@ namespace Gamera {
                coloredImage->set(Point(x,y), *RGBColors[c]);
              }
           }
-          catch( std::runtime_error runtimeError ) {
+          catch( const std::runtime_error& runtimeError ) {
             coloredImage->set(Point(x,y), RGBPixel(0,0,0));
           }
         }

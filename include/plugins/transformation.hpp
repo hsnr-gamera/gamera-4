@@ -133,7 +133,7 @@ namespace Gamera {
           spline(src_image_range(*tmp));
         vigra::rotateImage(spline, dest_image(*dest), -angle);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete tmp->data();
       delete tmp;
       delete dest;
