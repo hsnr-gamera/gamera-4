@@ -49,14 +49,14 @@ static PyObject* rect_new(PyTypeObject* pytype, PyObject* args,
       Point point_a;
       try {
 	point_a = coerce_Point(a);
-      } catch (std::invalid_argument& e) {
+      } catch (const std::invalid_argument& e) {
 	goto phase2;
       }
 
       try {
 	Point point_b = coerce_Point(b);
 	return _rect_new(pytype, new Rect(point_a, point_b));
-      } catch (std::invalid_argument& e) {
+      } catch (const std::invalid_argument& e) {
 	PyErr_Clear();
 	if (is_SizeObject(b)) {
 	  return _rect_new(pytype, new Rect(point_a, *((SizeObject*)b)->m_x));
@@ -140,7 +140,7 @@ static void rect_dealloc(PyObject* self) {
       return -1; \
     } \
     return 0; \
-  } catch (std::invalid_argument& e) { \
+  } catch (const std::invalid_argument& e) { \
     return -1; \
   } \
 }
@@ -289,7 +289,7 @@ static PyObject* rect_contains_point(PyObject* self, PyObject* args) {
 	Py_XINCREF(Py_False);
 	return Py_False;
       }
-    } catch (std::invalid_argument& e) {
+    } catch (const std::invalid_argument& e) {
       ;
     }
   }

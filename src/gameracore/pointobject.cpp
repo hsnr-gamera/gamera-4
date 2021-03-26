@@ -59,7 +59,7 @@ static PyObject* point_new(PyTypeObject* pytype, PyObject* args,
     if (PyArg_ParseTuple(args,  "O", &py_point)) {
       try {
 	return _point_new(pytype, new Point(coerce_Point(py_point)));
-      } catch (std::invalid_argument& e) {
+      } catch (const std::invalid_argument& e) {
 	;
       }
     }
@@ -113,7 +113,7 @@ static PyObject* point_richcompare(PyObject* a, PyObject* b, int op) {
 
   try {
     bp = coerce_Point(b);
-  } catch (std::invalid_argument& e) {
+  } catch (const std::invalid_argument& e) {
     Py_XINCREF(Py_NotImplemented);
     return Py_NotImplemented;
   }

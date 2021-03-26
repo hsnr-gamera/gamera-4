@@ -48,13 +48,13 @@ static PyObject* region_new(PyTypeObject* pytype, PyObject* args,
       Point point_a;
       try {
 	point_a = coerce_Point(a);
-      } catch (std::invalid_argument& e) {
+      } catch (const std::invalid_argument& e) {
 	goto phase2;
       }
       try {
 	Point point_b = coerce_Point(b);
 	return _region_new(pytype, new Region(point_a, point_b));
-      } catch (std::invalid_argument& e) {
+      } catch (const std::invalid_argument& e) {
 	if (is_SizeObject(b)) {
 	  return _region_new(pytype, new Region(point_a, *((SizeObject*)b)->m_x));
 	} else if (is_DimObject(b)) {
