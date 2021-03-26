@@ -70,7 +70,7 @@ logical_combine(T& a, const U& b, const FUNCTOR& functor, bool in_place) {
 	else
 	  ad.set(black(a), id);
       }
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
       delete dest;
       delete dest_data;
       throw;

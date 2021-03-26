@@ -50,7 +50,7 @@ typename ImageFactory<T>::view_type* convolve(const T& src, const U& k, int bord
        (BorderTreatmentMode)border_mode);
     
     vigra::convolveImage(src_image_range(src), dest_image(*dest), kernel); 
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete dest;
     delete dest_data;
     throw;
@@ -83,7 +83,7 @@ typename ImageFactory<T>::view_type* convolve_x(const T& src, const U& k, int bo
        (BorderTreatmentMode)border_mode);
     
     vigra::separableConvolveX(src_image_range(src), dest_image(*dest), kernel); 
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete dest;
     delete dest_data;
     throw;
@@ -116,7 +116,7 @@ typename ImageFactory<T>::view_type* convolve_y(const T& src, const U& k, int bo
        (BorderTreatmentMode)border_mode);
     
     vigra::separableConvolveY(src_image_range(src), dest_image(*dest), kernel); 
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete dest;
     delete dest_data;
     throw;
@@ -131,7 +131,7 @@ FloatImageView* _copy_kernel(const Kernel1D<FloatPixel>& kernel) {
     FloatImageView::vec_iterator iout = dest->vec_begin();
     for (int iin = kernel.left(); iin != kernel.right(); ++iout, ++iin)
       *iout = kernel[iin];
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     delete dest;
     delete dest_data;
     throw;

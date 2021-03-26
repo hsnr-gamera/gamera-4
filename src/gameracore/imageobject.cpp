@@ -155,7 +155,7 @@ static PyObject *image_new(PyTypeObject *pytype, PyObject *args,
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				goto phase2;
 			}
 			
@@ -164,7 +164,7 @@ static PyObject *image_new(PyTypeObject *pytype, PyObject *args,
 				int ncols = point_b.x() - point_a.x() + 1;
 				int nrows = point_b.y() - point_a.y() + 1;
 				return _image_new(pytype, point_a, Dim(ncols, nrows), pixel, format);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				if (is_SizeObject(b)) {
 					Size *size_b = ((SizeObject *) b)->m_x;
@@ -336,7 +336,7 @@ PyObject *sub_image_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				goto phase2;
 			}
 			try {
@@ -344,7 +344,7 @@ PyObject *sub_image_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 				int nrows = point_b.y() - point_a.y() + 1;
 				int ncols = point_b.x() - point_a.x() + 1;
 				return _sub_image_new(pytype, image, point_a, Dim(ncols, nrows));
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				if (is_SizeObject(b)) {
 					Size *size_b = ((SizeObject *) b)->m_x;
@@ -469,7 +469,7 @@ PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				goto phase2;
 			}
 			try {
@@ -477,7 +477,7 @@ PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 				int nrows = point_b.y() - point_a.y() + 1;
 				int ncols = point_b.x() - point_a.x() + 1;
 				return _cc_new(pytype, image, label, point_a, Dim(ncols, nrows));
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				if (is_SizeObject(b)) {
 					Size *size_b = ((SizeObject *) b)->m_x;
@@ -730,7 +730,7 @@ static PyObject *image_get(PyObject *self, PyObject *args) {
 		if (PyArg_ParseTuple(args,  "O", &py_point)) {
 			try {
 				return image_get(self, coerce_Point(py_point));
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				int i;
 				if (PyArg_ParseTuple(args,  "i", &i)) {
@@ -770,7 +770,7 @@ static PyObject *image_set(PyObject *self, PyObject *args) {
 		if (PyArg_ParseTuple(args,  "OO", &py_point, &value)) {
 			try {
 				return image_set(self, coerce_Point(py_point), value);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				int i;
 				if (PyArg_ParseTuple(args,  "iO", &i, &value)) {
@@ -892,7 +892,7 @@ static PyObject *image_getitem(PyObject *self, PyObject *args) {
 	}
 	try {
 		return image_get(self, coerce_Point(arg));
-	} catch (std::invalid_argument e) { ;
+	} catch (const std::invalid_argument& e) { ;
 	}
 	
 	PyErr_Clear();
@@ -914,7 +914,7 @@ static PyObject *image_setitem(PyObject *self, PyObject *args) {
 	}
 	try {
 		return image_set(self, coerce_Point(arg), value);
-	} catch (std::invalid_argument e) { ;
+	} catch (const std::invalid_argument& e) { ;
 	}
 	
 	PyErr_Clear();
@@ -1307,7 +1307,7 @@ static PyObject *mlcc_copy(PyObject *self, PyObject *args) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				goto phase2;
 			}
 			try {
@@ -1315,7 +1315,7 @@ static PyObject *mlcc_copy(PyObject *self, PyObject *args) {
 				int nrows = point_b.y() - point_a.y() + 1;
 				int ncols = point_b.x() - point_a.x() + 1;
 				return _mlcc_copy(mlcc, point_a, Dim(ncols, nrows));
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				if (is_SizeObject(b)) {
 					Size *size_b = ((SizeObject *) b)->m_x;
@@ -1609,7 +1609,7 @@ PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 			Point point_a;
 			try {
 				point_a = coerce_Point(a);
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				goto phase2;
 			}
 			try {
@@ -1617,7 +1617,7 @@ PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 				int nrows = point_b.y() - point_a.y() + 1;
 				int ncols = point_b.x() - point_a.x() + 1;
 				return _mlcc_new(pytype, image, label, point_a, Dim(ncols, nrows));
-			} catch (std::invalid_argument e) {
+			} catch (const std::invalid_argument& e) {
 				PyErr_Clear();
 				if (is_SizeObject(b)) {
 					Size *size_b = ((SizeObject *) b)->m_x;
