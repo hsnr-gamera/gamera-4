@@ -443,7 +443,8 @@ class ShellFrame(wx.Frame):
     def _OnExecFile(self, event):
         filename = gui_util.open_file_dialog(self, "Python files (*py)|*.py")
         if filename:
-            self.shell.run("execfile(%s)" % (repr(filename)))
+            self.shell.run('with open(%s, "r") as sourcef:\n    exec(sourcef.read())' % (repr(filename)))
+            self.shell.run('')
 
     def _OnSaveHistory(self, event):
         filename = gui_util.save_file_dialog(self, "Python files (*.py)|*.py")
