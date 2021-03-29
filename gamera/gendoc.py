@@ -81,7 +81,7 @@ except ImportError as e:
 
 # Source code highlighting support
 if source_highlighter == 'pygments':
-    html_formatter = pygments.formatters.HtmlFormatter()
+    html_formatter = pygments.formatters.get_formatter_by_name("html")
 
 
     def code_block(name, arguments, options, content, lineno,
@@ -137,7 +137,9 @@ except ImportError as e:
 
 
 ######################################################################
-
+def cmp(a, b):
+    return (a > b) - (a < b)
+    
 def sort_lowercase(a, b):
     return cmp(a.lower(), b.lower())
 
@@ -246,9 +248,9 @@ class DocumentationGenerator:
                 print("  Generating " + rootname)
                 lines = fd.readlines()
                 if self.sourceforge_logo:
-                    footer = '.. footer:: :raw-html:`<a href="http://sourceforge.net/projects/gamera" style="float:left;"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=99328&type=13" width="120" height="30" border="0" alt="Get Gamera at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a> <div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
+                    footer = '.. footer::\n :raw-html:`<a href="http://sourceforge.net/projects/gamera" style="float:left;"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=99328&type=13" width="120" height="30" border="0" alt="Get Gamera at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a> <div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
                 else:
-                    footer = '.. footer:: :raw-html:`<div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
+                    footer = '.. footer::\n :raw-html:`<div style="text-align:right;">For contact information, see <a href="' + self.contact_url + '">' + self.contact_url + '</a></div>`\n\n'
                 lines = (lines[:3] +
                          ["\n", "**Last modified**: %s\n\n" % mtime,
                           ".. contents::\n\n",
@@ -256,7 +258,7 @@ class DocumentationGenerator:
                           footer
                           ] +
                          lines[3:])
-                fd = io.StringIO(str((''.join(lines)).encode("utf-8")))
+                fd = io.StringIO(str((''.join(lines))))
                 try:
                     overrides = {'embed_stylesheet': False,
                                  'stylesheet_path': None,
