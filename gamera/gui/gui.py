@@ -450,7 +450,9 @@ class ShellFrame(wx.Frame):
         filename = gui_util.save_file_dialog(self, "Python files (*.py)|*.py")
         if filename:
             fd = open(filename, "w")
-            fd.write(self.history.GetText())
+            history = self.shell.history
+            history.reverse()
+            fd.write('\n'.join(history))
             fd.close()
 
     def _OnBiollante(self, event):
