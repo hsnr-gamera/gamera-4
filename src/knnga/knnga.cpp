@@ -827,3 +827,4 @@ template <typename EOT>
 void GAOptimization<EOT>::setParallelization(GAParallelization *parallel) {
     this->parallelization = parallel;
 }
+
