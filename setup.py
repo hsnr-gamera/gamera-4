@@ -178,7 +178,7 @@ else:
 if has_openmp:
     ExtGA = Extension("gamera.knnga",
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
-                      include_dirs=["include", "src"] + eodev_includes,
+                      include_dirs=["include", "src", "src/knnga"] + eodev_includes,
                       libraries=galibraries,
                       extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
                       extra_link_args=["-fopenmp"]
@@ -186,7 +186,7 @@ if has_openmp:
 else:
     ExtGA = Extension("gamera.knnga",
                       ["src/knnga/knngamodule.cpp"] + eodev_files,
-                      include_dirs=["include", "src"] + eodev_includes,
+                      include_dirs=["include", "src", "src/knnga"] + eodev_includes,
                       libraries=galibraries,
                       extra_compile_args=gamera_setup.extras['extra_compile_args']
                       )
