@@ -209,7 +209,7 @@ namespace Gamera { namespace GA {
     };
 
     template <>
-    bool GAClassifierUpdater<WeightingIndi>::operator() (const eoPop<WeightingIndi> &pop) {
+    inline bool GAClassifierUpdater<WeightingIndi>::operator() (const eoPop<WeightingIndi> &pop) {
         const WeightingIndi bestIndi = pop.best_element();
         WeightingIndi::const_iterator it;
 
@@ -229,7 +229,7 @@ namespace Gamera { namespace GA {
     }
 
     template <>
-    bool GAClassifierUpdater<SelectionIndi>::operator() (const eoPop<SelectionIndi> &pop) {
+    inline bool GAClassifierUpdater<SelectionIndi>::operator() (const eoPop<SelectionIndi> &pop) {
         const SelectionIndi bestIndi = pop.best_element();
         SelectionIndi::const_iterator it;
 
@@ -272,7 +272,7 @@ namespace Gamera { namespace GA {
 
     // specialization for weighting individual
     template <>
-    void GAFitnessEval<WeightingIndi>::operator()( WeightingIndi &individual ) {
+    inline void GAFitnessEval<WeightingIndi>::operator()( WeightingIndi &individual ) {
         AtomType* convertedVector = new AtomType[this->knn->num_features];
         std::fill(convertedVector, convertedVector + this->knn->num_features, 0.0);
 
@@ -290,7 +290,7 @@ namespace Gamera { namespace GA {
 
     // specialization for selection individual
     template <>
-    void GAFitnessEval<SelectionIndi>::operator()( SelectionIndi &individual ) {
+    inline void GAFitnessEval<SelectionIndi>::operator()( SelectionIndi &individual ) {
         int* convertedVector = new int[this->knn->num_features];
         std::fill(convertedVector, convertedVector + this->knn->num_features, 0);
 
@@ -539,7 +539,7 @@ namespace Gamera { namespace GA {
             void setParallelization(GAParallelization *parallel);
     };
 
-#include "knnga.cpp"
+
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
