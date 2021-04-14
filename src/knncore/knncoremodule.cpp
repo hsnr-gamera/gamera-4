@@ -163,7 +163,7 @@ static int knn_create_feature_data(KnnObject* o, size_t num_feature_vectors) {
     for (size_t i = 0; i < num_feature_vectors; ++i)
       o->id_names[i] = 0;
     o->id_name_histogram = new int[num_feature_vectors];
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return -1;
   }
