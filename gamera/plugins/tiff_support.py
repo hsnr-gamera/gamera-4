@@ -76,6 +76,7 @@ class save_tiff(PluginFunction):
 class TiffSupportModule(PluginModule):
     category = "File"
     cpp_headers = ["tiff_support.hpp"]
+    cpp_include_dirs = []
     if sys.platform == 'win32':
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
@@ -83,6 +84,7 @@ class TiffSupportModule(PluginModule):
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
+        cpp_include_dirs = ["src/libtiff"]
     elif sys.platform == 'cygwin':
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
@@ -90,6 +92,7 @@ class TiffSupportModule(PluginModule):
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
+        cpp_include_dirs = ["src/libtiff"]
     elif sys.platform == 'darwin':
         cpp_sources = glob.glob("src/libtiff/*.cpp")
         try:
@@ -97,10 +100,10 @@ class TiffSupportModule(PluginModule):
         except Exception:
             pass
         extra_compile_args = ['-Dunix']
+        cpp_include_dirs = ["src/libtiff"]
     else:
         extra_libraries = ["tiff"]
     functions = [save_tiff, tiff_info, load_tiff]
-    cpp_include_dirs = ["src/libtiff"]
     author = "Michael Droettboom and Karl MacMillan"
     url = "http://gamera.sourceforge.net/"
 
