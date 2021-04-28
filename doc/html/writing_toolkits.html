@@ -3,97 +3,469 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>writing_toolkits.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Writing Gamera toolkits</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="writing-gamera-toolkits">
+<h1 class="title">Writing Gamera toolkits</h1>
 
-
-<p>b'Writing Gamera toolkitsn=======================nnn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nn(c) 2004 Michael DroettboomnnWhat is a toolkit?n------------------nnA toolkit is a way to distribute code that uses Gamera but is notnincluded in the Gamera source tree.  This could be entirenapplications that process images and return symbolicnresults (eg. an OCR package), or simply a library of utilitynfunctions (eg. for color image processing).nnA toolkit is based on Python's generic package and module hierarchy,nwhich is described in the Modules chapter of the <a href="#id43"><span class="problematic" id="id44">`Python tutorial`__</span></a>.nn.. __: <a class="reference external" href="https://docs.python.org/2/tutorial/nnThe">https://docs.python.org/2/tutorial/nnThe</a> Gamera toolkit framework actually provides very little beyond that:nn- A special Python distutils-based framework for building Gameran  plugins more conveniently.n- Support for adding a toolkit-specific drop-down menu to the Gameran  GUI.nnIf neither of these features is necessary for your project, you mayndecide to simply release your application or library as a standardnPython package.  <a href="#id43"><span class="problematic" id="id45">`Distributing Python modules`__</span></a> in the Pythonndocumentation is a good resource for how to do that.nn.. __: <a class="reference external" href="https://docs.python.org/2/distributing/nnCreating">https://docs.python.org/2/distributing/nnCreating</a> a toolkitn------------------nnThe directory hierarchyn```````````````````````nnToolkits require a number of different files in a directorynhierarchy.  Here we assume the toolkit is called <tt class="docutils literal">my_toolkit</tt>.nn   +----------+----------------------------------------------------------------+n   | ./       | Basic information files for building the toolkit               <a href="#id3"><span class="problematic" id="id4">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | setup.py      | A Python <tt class="docutils literal">distutils</tt>-based build script.     <a href="#id5"><span class="problematic" id="id6">|</span></a>n   +----------+---------------+------------------------------------------------+n   | gamera/  | All the files needed by Gamera at runtime.                     <a href="#id7"><span class="problematic" id="id8">|</span></a>n   |          | Since Python is interpreted, these means                       <a href="#id9"><span class="problematic" id="id10">|</span></a>n   |          | Python source files.                                           <a href="#id11"><span class="problematic" id="id12">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | toolkits/     | This is where the Python source code of the    <a href="#id13"><span class="problematic" id="id14">|</span></a>n   |          | my_toolkit    | toolkit goes.                                  <a href="#id15"><span class="problematic" id="id16">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | toolkits/     | This is where the Gamera plugins for the       <a href="#id17"><span class="problematic" id="id18">|</span></a>n   |          | my_toolkit/   | toolkit go.                                    <a href="#id19"><span class="problematic" id="id20">|</span></a>n   |          | plugins/      |                                                <a href="#id21"><span class="problematic" id="id22">|</span></a>n   +----------+---------------+------------------------------------------------+n   | include/ | C++ header (<tt class="docutils literal">.hpp</tt>) files.                                   <a href="#id23"><span class="problematic" id="id24">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | plugins/      | Source code for the C++-based plugins.         <a href="#id25"><span class="problematic" id="id26">|</span></a>n   +----------+---------------+------------------------------------------------+n   | scripts/ | Command line scripts                                           <a href="#id27"><span class="problematic" id="id28">|</span></a>n   +----------+---------------+------------------------------------------------+n   | doc/     | Documentation                                                  <a href="#id29"><span class="problematic" id="id30">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | gendoc.py     | A script to generate the documentation using   <a href="#id31"><span class="problematic" id="id32">|</span></a>n   |          |               | the Gamera documentation system.               <a href="#id33"><span class="problematic" id="id34">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | src/          | The source files for the narrative             <a href="#id35"><span class="problematic" id="id36">|</span></a>n   |          |               | documentation.                                 <a href="#id37"><span class="problematic" id="id38">|</span></a>n   |          +---------------+------------------------------------------------+n   |          | html/         | The HTML output from the Gamera documentation  <a href="#id39"><span class="problematic" id="id40">|</span></a>n   |          |               | system.                                        <a href="#id41"><span class="problematic" id="id42">|</span></a>n   +----------+---------------+------------------------------------------------+nnSome toolkits may go beyond this, of course, by including <tt class="docutils literal">.cpp</tt>nfiles in a <tt class="docutils literal">src/</tt> directory or documentation in a <tt class="docutils literal">doc/</tt>ndirectory.nnThe skeleton toolkitn````````````````````nnFor convenience, a minimal skeleton of a toolkit is provided andnavailable from the files section of the <a href="#id43"><span class="problematic" id="id46">`Gamera github site`__</span></a>.nn.. __: <a class="reference external" href="https://github.com/hsnr-gamerannThis">https://github.com/hsnr-gamerannThis</a> skeleton provides the very minimum needed to create a toolkit.nYou will need to change all the references to the toolkit namen(Skeleton) throughout its source.  The <tt class="docutils literal">rename.py</tt> script isnprovided for this purpose. For example::nn  python rename.py my_toolkitnnwill rename and edit all of the files to create a new toolkit calledn``my_toolkit``.nnEditing the filesn`````````````````nnThe files included in the skeleton toolkit are self-documenting.  Theynshould require only minimal editing.  Mainly, toolkit authors will benadding their own Python modules and Gamera plugins to the toolkit.nnsetup.pyn''''''''nnYou only need to edit this file if you are doing anything more complexnthan installing Python modules and building Gamera plugins.  Forninstance, if you are building and linking to a third-party library.nSince this script is based on Python distutils, the distutilsndocumentation is the best resource for how to do that.nnMANIFEST.inn'''''''''''nnIf you need to include more data files to your toolkit distribution,nyou will need to edit this file.  The format is described in thendistutils documentation.nngamera/toolkits/my_toolkit/__init__.pyn''''''''''''''''''''''''''''''''''''''nnIf you want to add a drop-down menu to the Gamera GUI shell, you cannedit this file.  It is self-documenting.  You will probably want tonremove the example menu items that are included in the skeleton.nnThis file should also import any plugins that you want to have addednto the GUI's context menu (right-click menu).nnPluginsn'''''''nn`Writing plugins`__ is described in detail.  The Python metadatanfiles for a toolkit go in <tt class="docutils literal">gamera/toolkits/my_toolkit/plugins/</tt>, andnthe C++ source code goes in <tt class="docutils literal">include/plugins/</tt>.nn.. __: writing_plugins.htmlnnnPython modulesn''''''''''''''nnThe Python modules in your toolkit should go inn``gamera/my_toolkit/skeleton``.nnDocumentationn'''''''''''''nnOptionally, the toolkit may use the Gamera documentation system.  Seen`Documenting toolkits`_ for more information.nnBuilding and installing a toolkitn---------------------------------nnBuilding and installing toolkits is very similar to building andninstalling Gamera itself.  nn**You must ensure that Gamera is installed and working beforenattempting to build and install a Gamera toolkit. On Windows,nyou should build and install gamera from the sources beforenbuilding a toolkit to avoid possible compiler incompatibilities.**nnThe complete instructions for building Gamera toolkits is included innthe skeleton example in the INSTALL file.  You should redistributenthis file with your toolkit.nnDocumenting toolkitsn--------------------nnOptionally, toolkit writers can use the Gamera documentation system.nToolkits are also free to use another documentationnworkflow if desired, of course.nnTo document a toolkit using the Gamera documentation system, thenauthor should perform four steps: nn  1) write narrative documentation,nn  2) write plugin method documentation, nn  3) optionally write class and method documentation and nn  4) create a documentation generation script.nnWriting narrative documentationn```````````````````````````````nnThe narrative (handwritten) documentation is intended for &quot;how-to&quot;nlike documents or anything that is not simply documenting methodsnone-by-one.nnPut narrative documentation in <tt class="docutils literal">doc/src/</tt>, in <tt class="docutils literal">.txt</tt> files innreStructuredText_ format.  Each <tt class="docutils literal">.txt</tt> file will be converted into ancorresponding <tt class="docutils literal">.html</tt> when the documentation is generated.nn.. _reStructuredText: <a class="reference external" href="http://docutils.sf.net/nnOptionally">http://docutils.sf.net/nnOptionally</a>, any inline images to be included can be placed inn``doc/src/images/<tt class="docutils literal">.\n\nIt is good practice to create an ``index.txt</tt> here which will act asnan entry-point to the documentation.nnPlugin documentationn````````````````````nnDocument each plugin method in its Python docstring.  This docstringnshould occur on the line following the <tt class="docutils literal">class</tt> statement where eachn``PluginFunction`` is defined.nnOptionally, write a documentation example.  This is a snippet of codenthat will be run to generate an image that demonstrates thencapabilities of the plugin function.  nnThese steps are described in greater detail in the <a href="#id43"><span class="problematic" id="id47">`writing plugins`__</span></a>nchapter.nn.. __: writing_plugins.html#documenting-plugin-functionsnnBy default, the documentation generator will document all importednplugins.  Usually, this is the right thing to do.  However, yourntoolkit may import plugins from other toolkits or from the Gamera corenthat you do not wish to have documented.  In those cases, you cannspecify the categories of plugins you want to be documented using then``plugins`` keyword argument when calling the documentationngenerator from your <a href="#id48"><span class="problematic" id="id49">`documentation generation script`_</span></a>.nnFor example, if the plugins in your toolkit were all in the categoryn&quot;Foo&quot;, and you only want to document those, you would use:nn.. code:: Pythonnn   gendoc.gendoc(plugins=[&quot;Foo&quot;])nnnClass documentationn```````````````````nnIndividual classes and their methods can be documented as well.  Therenare two ways to do this: 1) inline with the narrative documentation,nor 2) one-class-per-file documentation.nnInline class documentationn''''''''''''''''''''''''''nnThe Gamera documentation system adds a new directive, <tt class="docutils literal">docstring</tt>, tonreStructuredText.  The directive looks up the docstring of a class,nfunction or method and inserts it inline into the document.  It takesnat least two arguments:nn   <em>module</em>n     The module that the object is in.  This may be an     dot-delimited package path, such as <tt class="docutils literal">gamera.toolkits.skeleton</tt>.n     n   <em>object</em>n      The Python object to document.nnAdditionally, any number of names may be added to the argument listnwhich will be looked up in <em>object</em> and documented.nnFor example, to document the <tt class="docutils literal">__init__</tt> and <tt class="docutils literal">display</tt> methods onnthe <tt class="docutils literal">Image</tt> class in <tt class="docutils literal">gamera.core</tt>::nn  .. docstring:: gamera.core Imagen  .. docstring:: gamera.core Image __init__ displaynnThis produces the following:nn.. admonition:: Imagenn  .. docstring:: gamera.core Imagen  .. docstring:: gamera.core Image __init__ displaynnOne-class-per-file documentationn''''''''''''''''''''''''''''''''nnTo generate one-class-per-file documentation, use then``classes`` keywoard argument when calling <tt class="docutils literal">gendoc()</tt> (See <a href="#id50"><span class="problematic" id="id51">below_</span></a>).nThis argument takes a list of 3-tuples, (<em>module</em>, <em>class</em>,n*methods*).  nn   <em>module</em>n     The module that the object is in.  This may be an     dot-delimited package path, such as <tt class="docutils literal">gamera.toolkits.skeleton</tt>.n     n   <em>class</em>n      The Python class to document.n  n   <em>members</em>n      The members to document, in order.  This may be either a list ofn      strings (<tt class="docutils literal"><span class="pre">[\'a\',</span> <span class="pre">\'b\',</span> <span class="pre">\'c\']</span></tt>) or a single string with methodn      names separated by whitespace (<tt class="docutils literal">\'a b c\'</tt>).nn.. _below: #documentation-generation-scriptnnFor example, to document the <tt class="docutils literal">__init__</tt> and <tt class="docutils literal">display</tt> methods onnthe <tt class="docutils literal">Image</tt> class in <tt class="docutils literal">gamera.core</tt>.nn.. code:: Pythonnn   gendoc.gendoc(classes=[n                 (&quot;gamera.core&quot;, &quot;Image&quot;, &quot;__init__ display&quot;)nt t ])nnThis will have the same effect as the example above, except it willnput the class documentation in its own file.nnDocumentation generation scriptn```````````````````````````````nnA small script is required that loads the toolkits' plugins and thenncalls out to the Gamera documentation system.  The examplendocumentation generation script included in the skeleton toolkitnexample is as follows:nn.. code:: Pythonnn   #!/usr/bin/env pythonnn   from gamera import gendocnn   if __name__ == '__main__':n      # Step 1:n      # Import all of the plugins to document.n      # Be careful not to load the core plugins, or theyn      # will be documented here, too.n      # If the plugins are not already installed, we'll just ignoren      # them and generate the narrative documentation.n      try:n         from gamera.toolkits.skeleton.plugins import clearn      except ImportError:n         print &quot;WARNING:&quot;n         print &quot;This <cite>skeleton</cite> toolkit must be installed before generating&quot;n         print &quot;the documentation.  For now, the system will skip generating&quot;n         print &quot;documentation for the plugins.&quot;n         printnn      # Step 2:t n      # Generate documentation for this toolkitn      # This will handle any commandline arguments if necessarynn      # The optional classes argument can be used to document classesn      # See &quot;Class documentation&quot; in the &quot;Writing toolkits&quot; chapter.n      gendoc.gendoc()nnBuilding the documentationn``````````````````````````nnOnce these three elements are in place, the documentation can bengenerated and converted to HTML.nnPrerequisitesn'''''''''''''nnGenerating documentation requires two third-party Pythonnlibraries:nn  - <a href="#id52"><span class="problematic" id="id53">docutils_</span></a> (version 0.3 or later) for handling reStructuredText documents.nn  - <a href="#id54"><span class="problematic" id="id55">SilverCity_</span></a> (version 0.9 or later) for colorizing source code.nn.. _docutils: <a class="reference external" href="http://docutils.sourceforge.net/n">http://docutils.sourceforge.net/n</a>.. _SilverCity: <a class="reference external" href="http://silvercity.sourceforge.net/nnGeneratingn''''''''''nnTo">http://silvercity.sourceforge.net/nnGeneratingn''''''''''nnTo</a> generate the documentation, go to the <tt class="docutils literal">doc</tt> directory in thenskeleton and run the <tt class="docutils literal">gendoc.py</tt> script.nnAlternatively, you can call the <tt class="docutils literal">gendoc.py</tt> script with thendocumentation directory as a commandline argument::nn   gendoc.py -d /path/to/docnnThe output will be placed in the <tt class="docutils literal">doc/html/</tt> directory.  The contents ofnthis directory can be placed on a webserver for convenient viewing.nn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id35">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id37">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id39">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-message" id="id41">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id43">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 2); <em>backlinks: <a href="#id44">1</a>, <a href="#id45">2</a>, <a href="#id46">3</a>, <a href="#id47">4</a></em></p>
-Anonymous hyperlink mismatch: 4 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id48">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id49">backlink</a></em></p>
-Unknown target name: &quot;documentation generation script&quot;.</div>
-<div class="system-message" id="id50">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id51">backlink</a></em></p>
-Unknown target name: &quot;below&quot;.</div>
-<div class="system-message" id="id52">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id53">backlink</a></em></p>
-Unknown target name: &quot;docutils&quot;.</div>
-<div class="system-message" id="id54">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_toolkits.txt</tt>, line 1); <em><a href="#id55">backlink</a></em></p>
-Unknown target name: &quot;silvercity&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#what-is-a-toolkit" id="id11">What is a toolkit?</a></li>
+<li><a class="reference internal" href="#creating-a-toolkit" id="id12">Creating a toolkit</a><ul>
+<li><a class="reference internal" href="#the-directory-hierarchy" id="id13">The directory hierarchy</a></li>
+<li><a class="reference internal" href="#the-skeleton-toolkit" id="id14">The skeleton toolkit</a></li>
+<li><a class="reference internal" href="#editing-the-files" id="id15">Editing the files</a><ul>
+<li><a class="reference internal" href="#setup-py" id="id16">setup.py</a></li>
+<li><a class="reference internal" href="#manifest-in" id="id17">MANIFEST.in</a></li>
+<li><a class="reference internal" href="#gamera-toolkits-my-toolkit-init-py" id="id18">gamera/toolkits/my_toolkit/__init__.py</a></li>
+<li><a class="reference internal" href="#plugins" id="id19">Plugins</a></li>
+<li><a class="reference internal" href="#python-modules" id="id20">Python modules</a></li>
+<li><a class="reference internal" href="#documentation" id="id21">Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-and-installing-a-toolkit" id="id22">Building and installing a toolkit</a></li>
+<li><a class="reference internal" href="#documenting-toolkits" id="id23">Documenting toolkits</a><ul>
+<li><a class="reference internal" href="#writing-narrative-documentation" id="id24">Writing narrative documentation</a></li>
+<li><a class="reference internal" href="#plugin-documentation" id="id25">Plugin documentation</a></li>
+<li><a class="reference internal" href="#class-documentation" id="id26">Class documentation</a><ul>
+<li><a class="reference internal" href="#inline-class-documentation" id="id27">Inline class documentation</a></li>
+<li><a class="reference internal" href="#one-class-per-file-documentation" id="id28">One-class-per-file documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation-generation-script" id="id29">Documentation generation script</a></li>
+<li><a class="reference internal" href="#building-the-documentation" id="id30">Building the documentation</a><ul>
+<li><a class="reference internal" href="#prerequisites" id="id31">Prerequisites</a></li>
+<li><a class="reference internal" href="#generating" id="id32">Generating</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
+<ol class="loweralpha simple" start="3">
+<li>2004 Michael Droettboom</li>
+</ol>
+<div class="section" id="what-is-a-toolkit">
+<h1><a class="toc-backref" href="#id11">What is a toolkit?</a></h1>
+<p>A toolkit is a way to distribute code that uses Gamera but is not
+included in the Gamera source tree.  This could be entire
+applications that process images and return symbolic
+results (eg. an OCR package), or simply a library of utility
+functions (eg. for color image processing).</p>
+<p>A toolkit is based on Python's generic package and module hierarchy,
+which is described in the Modules chapter of the <a class="reference external" href="https://docs.python.org/2/tutorial/">Python tutorial</a>.</p>
+<p>The Gamera toolkit framework actually provides very little beyond that:</p>
+<ul class="simple">
+<li>A special Python distutils-based framework for building Gamera
+plugins more conveniently.</li>
+<li>Support for adding a toolkit-specific drop-down menu to the Gamera
+GUI.</li>
+</ul>
+<p>If neither of these features is necessary for your project, you may
+decide to simply release your application or library as a standard
+Python package.  <a class="reference external" href="https://docs.python.org/2/distributing/">Distributing Python modules</a> in the Python
+documentation is a good resource for how to do that.</p>
+</div>
+<div class="section" id="creating-a-toolkit">
+<h1><a class="toc-backref" href="#id12">Creating a toolkit</a></h1>
+<div class="section" id="the-directory-hierarchy">
+<h2><a class="toc-backref" href="#id13">The directory hierarchy</a></h2>
+<p>Toolkits require a number of different files in a directory
+hierarchy.  Here we assume the toolkit is called <tt class="docutils literal">my_toolkit</tt>.</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr><td rowspan="2">./</td>
+<td colspan="2">Basic information files for building the toolkit</td>
+</tr>
+<tr><td>setup.py</td>
+<td>A Python <tt class="docutils literal">distutils</tt>-based build script.</td>
+</tr>
+<tr><td rowspan="3">gamera/</td>
+<td colspan="2">All the files needed by Gamera at runtime.
+Since Python is interpreted, these means
+Python source files.</td>
+</tr>
+<tr><td>toolkits/
+my_toolkit</td>
+<td>This is where the Python source code of the
+toolkit goes.</td>
+</tr>
+<tr><td>toolkits/
+my_toolkit/
+plugins/</td>
+<td>This is where the Gamera plugins for the
+toolkit go.</td>
+</tr>
+<tr><td rowspan="2">include/</td>
+<td colspan="2">C++ header (<tt class="docutils literal">.hpp</tt>) files.</td>
+</tr>
+<tr><td>plugins/</td>
+<td>Source code for the C++-based plugins.</td>
+</tr>
+<tr><td>scripts/</td>
+<td colspan="2">Command line scripts</td>
+</tr>
+<tr><td rowspan="4">doc/</td>
+<td colspan="2">Documentation</td>
+</tr>
+<tr><td>gendoc.py</td>
+<td>A script to generate the documentation using
+the Gamera documentation system.</td>
+</tr>
+<tr><td>src/</td>
+<td>The source files for the narrative
+documentation.</td>
+</tr>
+<tr><td>html/</td>
+<td>The HTML output from the Gamera documentation
+system.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Some toolkits may go beyond this, of course, by including <tt class="docutils literal">.cpp</tt>
+files in a <tt class="docutils literal">src/</tt> directory or documentation in a <tt class="docutils literal">doc/</tt>
+directory.</p>
+</div>
+<div class="section" id="the-skeleton-toolkit">
+<h2><a class="toc-backref" href="#id14">The skeleton toolkit</a></h2>
+<p>For convenience, a minimal skeleton of a toolkit is provided and
+available from the files section of the <a class="reference external" href="https://github.com/hsnr-gamera">Gamera github site</a>.</p>
+<p>This skeleton provides the very minimum needed to create a toolkit.
+You will need to change all the references to the toolkit name
+(Skeleton) throughout its source.  The <tt class="docutils literal">rename.py</tt> script is
+provided for this purpose. For example:</p>
+<pre class="literal-block">
+python rename.py my_toolkit
+</pre>
+<p>will rename and edit all of the files to create a new toolkit called
+<tt class="docutils literal">my_toolkit</tt>.</p>
+</div>
+<div class="section" id="editing-the-files">
+<h2><a class="toc-backref" href="#id15">Editing the files</a></h2>
+<p>The files included in the skeleton toolkit are self-documenting.  They
+should require only minimal editing.  Mainly, toolkit authors will be
+adding their own Python modules and Gamera plugins to the toolkit.</p>
+<div class="section" id="setup-py">
+<h3><a class="toc-backref" href="#id16">setup.py</a></h3>
+<p>You only need to edit this file if you are doing anything more complex
+than installing Python modules and building Gamera plugins.  For
+instance, if you are building and linking to a third-party library.
+Since this script is based on Python distutils, the distutils
+documentation is the best resource for how to do that.</p>
+</div>
+<div class="section" id="manifest-in">
+<h3><a class="toc-backref" href="#id17">MANIFEST.in</a></h3>
+<p>If you need to include more data files to your toolkit distribution,
+you will need to edit this file.  The format is described in the
+distutils documentation.</p>
+</div>
+<div class="section" id="gamera-toolkits-my-toolkit-init-py">
+<h3><a class="toc-backref" href="#id18">gamera/toolkits/my_toolkit/__init__.py</a></h3>
+<p>If you want to add a drop-down menu to the Gamera GUI shell, you can
+edit this file.  It is self-documenting.  You will probably want to
+remove the example menu items that are included in the skeleton.</p>
+<p>This file should also import any plugins that you want to have added
+to the GUI's context menu (right-click menu).</p>
+</div>
+<div class="section" id="plugins">
+<h3><a class="toc-backref" href="#id19">Plugins</a></h3>
+<p><a class="reference external" href="writing_plugins.html">Writing plugins</a> is described in detail.  The Python metadata
+files for a toolkit go in <tt class="docutils literal">gamera/toolkits/my_toolkit/plugins/</tt>, and
+the C++ source code goes in <tt class="docutils literal">include/plugins/</tt>.</p>
+</div>
+<div class="section" id="python-modules">
+<h3><a class="toc-backref" href="#id20">Python modules</a></h3>
+<p>The Python modules in your toolkit should go in
+<tt class="docutils literal">gamera/my_toolkit/skeleton</tt>.</p>
+</div>
+<div class="section" id="documentation">
+<h3><a class="toc-backref" href="#id21">Documentation</a></h3>
+<p>Optionally, the toolkit may use the Gamera documentation system.  See
+<a class="reference internal" href="#documenting-toolkits">Documenting toolkits</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="section" id="building-and-installing-a-toolkit">
+<h1><a class="toc-backref" href="#id22">Building and installing a toolkit</a></h1>
+<p>Building and installing toolkits is very similar to building and
+installing Gamera itself.</p>
+<p><strong>You must ensure that Gamera is installed and working before
+attempting to build and install a Gamera toolkit. On Windows,
+you should build and install gamera from the sources before
+building a toolkit to avoid possible compiler incompatibilities.</strong></p>
+<p>The complete instructions for building Gamera toolkits is included in
+the skeleton example in the INSTALL file.  You should redistribute
+this file with your toolkit.</p>
+</div>
+<div class="section" id="documenting-toolkits">
+<h1><a class="toc-backref" href="#id23">Documenting toolkits</a></h1>
+<p>Optionally, toolkit writers can use the Gamera documentation system.
+Toolkits are also free to use another documentation
+workflow if desired, of course.</p>
+<p>To document a toolkit using the Gamera documentation system, the
+author should perform four steps:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>write narrative documentation,</li>
+<li>write plugin method documentation,</li>
+<li>optionally write class and method documentation and</li>
+<li>create a documentation generation script.</li>
+</ol>
+</blockquote>
+<div class="section" id="writing-narrative-documentation">
+<h2><a class="toc-backref" href="#id24">Writing narrative documentation</a></h2>
+<p>The narrative (handwritten) documentation is intended for &quot;how-to&quot;
+like documents or anything that is not simply documenting methods
+one-by-one.</p>
+<p>Put narrative documentation in <tt class="docutils literal">doc/src/</tt>, in <tt class="docutils literal">.txt</tt> files in
+<a class="reference external" href="http://docutils.sf.net/">reStructuredText</a> format.  Each <tt class="docutils literal">.txt</tt> file will be converted into a
+corresponding <tt class="docutils literal">.html</tt> when the documentation is generated.</p>
+<p>Optionally, any inline images to be included can be placed in
+<tt class="docutils literal">doc/src/images/</tt>.</p>
+<p>It is good practice to create an <tt class="docutils literal">index.txt</tt> here which will act as
+an entry-point to the documentation.</p>
+</div>
+<div class="section" id="plugin-documentation">
+<h2><a class="toc-backref" href="#id25">Plugin documentation</a></h2>
+<p>Document each plugin method in its Python docstring.  This docstring
+should occur on the line following the <tt class="docutils literal">class</tt> statement where each
+<tt class="docutils literal">PluginFunction</tt> is defined.</p>
+<p>Optionally, write a documentation example.  This is a snippet of code
+that will be run to generate an image that demonstrates the
+capabilities of the plugin function.</p>
+<p>These steps are described in greater detail in the <a class="reference external" href="writing_plugins.html#documenting-plugin-functions">writing plugins</a>
+chapter.</p>
+<p>By default, the documentation generator will document all imported
+plugins.  Usually, this is the right thing to do.  However, your
+toolkit may import plugins from other toolkits or from the Gamera core
+that you do not wish to have documented.  In those cases, you can
+specify the categories of plugins you want to be documented using the
+<tt class="docutils literal">plugins</tt> keyword argument when calling the documentation
+generator from your <a class="reference internal" href="#documentation-generation-script">documentation generation script</a>.</p>
+<p>For example, if the plugins in your toolkit were all in the category
+&quot;Foo&quot;, and you only want to document those, you would use:</p>
+<div class="highlight"><pre><span></span><span class="n">gendoc</span><span class="o">.</span><span class="n">gendoc</span><span class="p">(</span><span class="n">plugins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Foo&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="section" id="class-documentation">
+<h2><a class="toc-backref" href="#id26">Class documentation</a></h2>
+<p>Individual classes and their methods can be documented as well.  There
+are two ways to do this: 1) inline with the narrative documentation,
+or 2) one-class-per-file documentation.</p>
+<div class="section" id="inline-class-documentation">
+<h3><a class="toc-backref" href="#id27">Inline class documentation</a></h3>
+<p>The Gamera documentation system adds a new directive, <tt class="docutils literal">docstring</tt>, to
+reStructuredText.  The directive looks up the docstring of a class,
+function or method and inserts it inline into the document.  It takes
+at least two arguments:</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>module</em></dt>
+<dd>The module that the object is in.  This may be a
+dot-delimited package path, such as <tt class="docutils literal">gamera.toolkits.skeleton</tt>.</dd>
+<dt><em>object</em></dt>
+<dd>The Python object to document.</dd>
+</dl>
+</blockquote>
+<p>Additionally, any number of names may be added to the argument list
+which will be looked up in <em>object</em> and documented.</p>
+<p>For example, to document the <tt class="docutils literal">__init__</tt> and <tt class="docutils literal">display</tt> methods on
+the <tt class="docutils literal">Image</tt> class in <tt class="docutils literal">gamera.core</tt>:</p>
+<pre class="literal-block">
+.. docstring:: gamera.core Image
+.. docstring:: gamera.core Image __init__ display
+</pre>
+<p>This produces the following:</p>
+<div class="admonition admonition-image">
+<p class="first admonition-title">Image</p>
+<div class="section" id="image">
+<h4><tt class="docutils literal">Image</tt></h4>
+<p>The Image constructor creates a new image with newly allocated underlying data.</p>
+<p>There are multiple ways to create an Image:</p>
+<blockquote>
+<ul class="simple">
+<li><strong>Image</strong> (Point <em>upper_left</em>, Point <em>lower_right</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Point <em>upper_left</em>, Size <em>size</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Point <em>upper_left</em>, Dim <em>dim</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Rect <em>rectangle</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Image <em>image</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+</ul>
+</blockquote>
+<p><strong>Deprecated forms:</strong></p>
+<blockquote>
+<ul class="simple">
+<li><strong>Image</strong> (Point <em>upper_left</em>, Dimensions <em>dimensions</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Int <em>offset_y</em>, Int <em>offset_x</em>, Int <em>nrows</em>, Int <em>ncols</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+</ul>
+</blockquote>
+<p>Note that the constructor taking an Image creates a new image with the same position
+and dimensions as the passed in image, but does not copy the data.
+(For that, use image_copy).</p>
+<dl class="docutils">
+<dt><em>pixel_type</em></dt>
+<dd>An integer value specifying the type of the pixels in the image.
+See <a class="reference external" href="image_types.html#pixel-types">pixel types</a> for more information.</dd>
+</dl>
+<dl class="docutils">
+<dt><em>storage_format</em></dt>
+<dd>An integer value specifying the method used to store the image data.
+See <a class="reference external" href="image_types.html#storage-formats">storage formats</a> for more information.</dd>
+</dl>
+</div>
+<div class="section" id="init">
+<h4><tt class="docutils literal">__init__</tt></h4>
+<p>The Image constructor creates a new image with newly allocated underlying data.</p>
+<p>There are multiple ways to create an Image:</p>
+<blockquote>
+<ul class="simple">
+<li><strong>Image</strong> (Point <em>upper_left</em>, Point <em>lower_right</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Point <em>upper_left</em>, Size <em>size</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Point <em>upper_left</em>, Dim <em>dim</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Rect <em>rectangle</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Image <em>image</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+</ul>
+</blockquote>
+<p><strong>Deprecated forms:</strong></p>
+<blockquote>
+<ul class="simple">
+<li><strong>Image</strong> (Point <em>upper_left</em>, Dimensions <em>dimensions</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+<li><strong>Image</strong> (Int <em>offset_y</em>, Int <em>offset_x</em>, Int <em>nrows</em>, Int <em>ncols</em>, Choice <em>pixel_type</em> = ONEBIT, Choice <em>format</em> = DENSE)</li>
+</ul>
+</blockquote>
+<p>Note that the constructor taking an Image creates a new image with the same position
+and dimensions as the passed in image, but does not copy the data.
+(For that, use image_copy).</p>
+<dl class="docutils">
+<dt><em>pixel_type</em></dt>
+<dd>An integer value specifying the type of the pixels in the image.
+See <a class="reference external" href="image_types.html#pixel-types">pixel types</a> for more information.</dd>
+</dl>
+<dl class="docutils">
+<dt><em>storage_format</em></dt>
+<dd>An integer value specifying the method used to store the image data.
+See <a class="reference external" href="image_types.html#storage-formats">storage formats</a> for more information.</dd>
+</dl>
+</div>
+<div class="last section" id="display">
+<h4><tt class="docutils literal">display</tt></h4>
+<p><strong>display</strong> ()</p>
+<p>Displays the image in its own window.  (See <a class="reference external" href="gui.html">Using the Gamera GUI</a>).  If the GUI
+process is not running, this method has no effect.</p>
+<img alt="images/display.png" src="images/display.png" />
+</div>
+</div>
+</div>
+<div class="section" id="one-class-per-file-documentation">
+<h3><a class="toc-backref" href="#id28">One-class-per-file documentation</a></h3>
+<p>To generate one-class-per-file documentation, use the
+<tt class="docutils literal">classes</tt> keywoard argument when calling <tt class="docutils literal">gendoc()</tt> (See <a class="reference external" href="#documentation-generation-script">below</a>).
+This argument takes a list of 3-tuples, (<em>module</em>, <em>class</em>,
+<em>methods</em>).</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>module</em></dt>
+<dd>The module that the object is in.  This may be a
+dot-delimited package path, such as <tt class="docutils literal">gamera.toolkits.skeleton</tt>.</dd>
+<dt><em>class</em></dt>
+<dd>The Python class to document.</dd>
+<dt><em>members</em></dt>
+<dd>The members to document, in order.  This may be either a list of
+strings (<tt class="docutils literal">['a', 'b', 'c']</tt>) or a single string with method
+names separated by whitespace (<tt class="docutils literal">'a b c'</tt>).</dd>
+</dl>
+</blockquote>
+<p>For example, to document the <tt class="docutils literal">__init__</tt> and <tt class="docutils literal">display</tt> methods on
+the <tt class="docutils literal">Image</tt> class in <tt class="docutils literal">gamera.core</tt>.</p>
+<div class="highlight"><pre><span></span><span class="n">gendoc</span><span class="o">.</span><span class="n">gendoc</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="p">[</span>
+              <span class="p">(</span><span class="s2">&quot;gamera.core&quot;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">,</span> <span class="s2">&quot;__init__ display&quot;</span><span class="p">)</span>
+              <span class="p">])</span>
+</pre></div>
+<p>This will have the same effect as the example above, except it will
+put the class documentation in its own file.</p>
+</div>
+</div>
+<div class="section" id="documentation-generation-script">
+<h2><a class="toc-backref" href="#id29">Documentation generation script</a></h2>
+<p>A small script is required that loads the toolkits' plugins and then
+calls out to the Gamera documentation system.  The example
+documentation generation script included in the skeleton toolkit
+example is as follows:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">gamera</span> <span class="kn">import</span> <span class="n">gendoc</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+   <span class="c1"># Step 1:</span>
+   <span class="c1"># Import all of the plugins to document.</span>
+   <span class="c1"># Be careful not to load the core plugins, or they</span>
+   <span class="c1"># will be documented here, too.</span>
+   <span class="c1"># If the plugins are not already installed, we&#39;ll just ignore</span>
+   <span class="c1"># them and generate the narrative documentation.</span>
+   <span class="k">try</span><span class="p">:</span>
+      <span class="kn">from</span> <span class="nn">gamera.toolkits.skeleton.plugins</span> <span class="kn">import</span> <span class="n">clear</span>
+   <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+      <span class="nb">print</span> <span class="s2">&quot;WARNING:&quot;</span>
+      <span class="nb">print</span> <span class="s2">&quot;This `skeleton` toolkit must be installed before generating&quot;</span>
+      <span class="nb">print</span> <span class="s2">&quot;the documentation.  For now, the system will skip generating&quot;</span>
+      <span class="nb">print</span> <span class="s2">&quot;documentation for the plugins.&quot;</span>
+      <span class="nb">print</span>
+
+   <span class="c1"># Step 2:</span>
+   <span class="c1"># Generate documentation for this toolkit</span>
+   <span class="c1"># This will handle any commandline arguments if necessary</span>
+
+   <span class="c1"># The optional classes argument can be used to document classes</span>
+   <span class="c1"># See &quot;Class documentation&quot; in the &quot;Writing toolkits&quot; chapter.</span>
+   <span class="n">gendoc</span><span class="o">.</span><span class="n">gendoc</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="building-the-documentation">
+<h2><a class="toc-backref" href="#id30">Building the documentation</a></h2>
+<p>Once these three elements are in place, the documentation can be
+generated and converted to HTML.</p>
+<div class="section" id="prerequisites">
+<h3><a class="toc-backref" href="#id31">Prerequisites</a></h3>
+<p>Generating documentation requires two third-party Python
+libraries:</p>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="http://docutils.sourceforge.net/">docutils</a> (version 0.3 or later) for handling reStructuredText documents.</li>
+<li><a class="reference external" href="http://silvercity.sourceforge.net/">SilverCity</a> (version 0.9 or later) for colorizing source code.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="generating">
+<h3><a class="toc-backref" href="#id32">Generating</a></h3>
+<p>To generate the documentation, go to the <tt class="docutils literal">doc</tt> directory in the
+skeleton and run the <tt class="docutils literal">gendoc.py</tt> script.</p>
+<p>Alternatively, you can call the <tt class="docutils literal">gendoc.py</tt> script with the
+documentation directory as a commandline argument:</p>
+<pre class="literal-block">
+gendoc.py -d /path/to/doc
+</pre>
+<p>The output will be placed in the <tt class="docutils literal">doc/html/</tt> directory.  The contents of
+this directory can be placed on a webserver for convenient viewing.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

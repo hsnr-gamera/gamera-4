@@ -3,307 +3,746 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>gui.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>The Gamera GUI</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="the-gamera-gui">
+<h1 class="title">The Gamera GUI</h1>
 
-
-<p>b'==============nThe Gamera GUIn==============nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnStarting the GUIn----------------nnThere is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your systemn(platform-specific, see <a href="#id167"><span class="problematic" id="id168">`Building and Installing Gamera`__</span></a>).  Run itnto start the Gamera GUI. nn.. __: install.htmlnn.. note:: It is possible to run Gamera image processing without then   GUI, saving the memory and runtime overhead.nnConsole windown--------------nn  .. image:: images/console.pngnnThe main Gamera console window is divided into three parts: the Pythonnconsole, the icon display and the information pane.nnPython consolen``````````````nnOn the right is a standard Python console.  You can type codenhere and it is run interactively.  Most operations that you performnusing the mouse in the GUI will generate code that is entered in theninterpreter here.  This code and be copied-and-pasted into yournfavorite programmer's editor to build Gamera image processing scripts.nnThe Python console features auto-completion.  For example, load annimage and store it in the variable name <tt class="docutils literal">image</tt>.  Type <tt class="docutils literal">image.</tt> innthe console, and a window will appear showing all of the (many)nmembers and methods of the image.nn  .. image:: images/autocompletion.pngnnIcon displayn````````````nnOn the left, all active image objects (displayed as icons.  When you load images,nthey are displayed here.nnThe icon indicates the pixel type of the image.  See <a href="#id167"><span class="problematic" id="id169">`Image types`__</span></a>nfor more information on the different image types in Gamera.  nnA magnifying glass appears over the icon if the image is a subimage ofnanother image.  It acts as a warning that any changes made to thisnimage will affect another.nn.. __: image_types.htmlnnThe icons are as follows:nn  +------------------+---------------------+-----------------------+n  | Image            | SubImage            | Description           |  n  +==================+=====================+=======================+n  | <a href="#id3"><span class="problematic" id="id4">|RGBImage|</span></a>       | <a href="#id5"><span class="problematic" id="id6">|RGBSubImage|</span></a>       | RGB (24-bit color)    <a href="#id7"><span class="problematic" id="id8">|\n  +------------------+---------------------+-----------------------+\n  | |GREYSCALEImage|</span></a> | <a href="#id9"><span class="problematic" id="id10">|GREYSCALESubImage|</span></a> | GreyScale (8-bit)     |  n  +------------------+---------------------+-----------------------+n  | <a href="#id11"><span class="problematic" id="id12">|GREY16Image|</span></a>    | <a href="#id13"><span class="problematic" id="id14">|GREY16SubImage|</span></a>    | Grey16 (16-bit)       <a href="#id15"><span class="problematic" id="id16">|\n  +------------------+---------------------+-----------------------+\n  | |FLOATImage|</span></a>     | <a href="#id17"><span class="problematic" id="id18">|FLOATSubImage|</span></a>     | Floating-point image  <a href="#id19"><span class="problematic" id="id20">|\n  +------------------+---------------------+-----------------------+\n  | |ONEBITImage|</span></a>    | <a href="#id21"><span class="problematic" id="id22">|ONEBITSubImage|</span></a>    | One-bit (binary)      <a href="#id23"><span class="problematic" id="id24">|\n  +------------------+---------------------+-----------------------+\n\n.. |RGBImage|</span></a> image:: images/icon_image_rgb.pngn.. <a href="#id25"><span class="problematic" id="id26">|GREYSCALEImage|</span></a> image:: images/icon_image_grey.pngn.. <a href="#id27"><span class="problematic" id="id28">|GREY16Image|</span></a> image:: images/icon_image_grey16.pngn.. <a href="#id29"><span class="problematic" id="id30">|FLOATImage|</span></a> image:: images/icon_image_float.pngn.. <a href="#id31"><span class="problematic" id="id32">|ONEBITImage|</span></a> image:: images/icon_image_binary.pngn.. <a href="#id33"><span class="problematic" id="id34">|RGBSubImage|</span></a> image:: images/icon_subimage_rgb.pngn.. <a href="#id35"><span class="problematic" id="id36">|GREYSCALESubImage|</span></a> image:: images/icon_subimage_grey.pngn.. <a href="#id37"><span class="problematic" id="id38">|GREY16SubImage|</span></a> image:: images/icon_subimage_grey16.pngn.. <a href="#id39"><span class="problematic" id="id40">|FLOATSubImage|</span></a> image:: images/icon_subimage_float.pngn.. <a href="#id41"><span class="problematic" id="id42">|ONEBITSubImage|</span></a> image:: images/icon_subimage_binary.pngnnThere are other things that can appear in the icon display as well:nn  +------------------+------------------------------------------+n  | <a href="#id43"><span class="problematic" id="id44">|ImageList|</span></a>      | A list of images                         <a href="#id45"><span class="problematic" id="id46">|\n  +------------------+------------------------------------------+\n  | |Cc|</span></a>             | A connected component                    <a href="#id47"><span class="problematic" id="id48">|\n  +------------------+------------------------------------------+\n  | |Classifier|</span></a>     | A classifier object                      <a href="#id49"><span class="problematic" id="id50">|\n  +------------------+------------------------------------------+\n  | |NonClassifier|</span></a>  | A non-interactive classifier object      <a href="#id51"><span class="problematic" id="id52">|\n  +------------------+------------------------------------------+\n\n.. |ImageList|</span></a> image:: images/icon_image_list.pngn.. <a href="#id53"><span class="problematic" id="id54">|Cc|</span></a> image:: images/icon_cc.pngn.. <a href="#id55"><span class="problematic" id="id56">|Classifier|</span></a> image:: images/icon_classify.pngn.. <a href="#id57"><span class="problematic" id="id58">|NonClassifier|</span></a> image:: images/icon_noninter_classify.pngnnContext menun''''''''''''nnRight-clicking on any of these icons brings up a context menu tonperform operations on an image.nn  .. image:: images/right_click_menu.pngnnAt the top of the menu, the pixel type is displayed.nnThe next two items are for creating new references and copies of thenimage.  You will be prompted for a variable name for the result.nnThe <strong>Info</strong> submenu displays basic information about the image.nnThe rest of the context menu contains plugin methods, sorted by category.  Thenplugin methods are documented <a href="#id167"><span class="problematic" id="id170">here__</span></a>.nMany of the plugin methods require arguments.  In that case, a dialognwill be displayed.  This dialog includes a brief description of thenmethod, if available.  For example the dialog for <tt class="docutils literal">erode_dilate</tt> is:nn  .. image:: images/erode_dilate_dialog.pngnnAfter entering the arguments for a plugin function, code is generatednto perform the operation and automatically run in the console:nn.. code:: Pythonnn   &gt;&gt;&gt;image.erode_dilate(5, 0, 1)nn.. __: plugins.htmlnnInformation panen````````````````nnThe information pane includes three modes, selectable via the tabs.n(These tabs will appear at the top of the information pane on Windowsnand Mac OSX).  This functionality is adapted from the <a href="#id177"><span class="problematic" id="id178">PyCrust_</span></a> projectnand should be familiar to users of that tool.nn.. _PyCrust: <a class="reference external" href="http://sourceforge.net/projects/pycrust/nnDocumentationn'''''''''''''nnThe">http://sourceforge.net/projects/pycrust/nnDocumentationn'''''''''''''nnThe</a> documentation pane displays the docstring of the object that wasnlast typed in the console window.  nnFor an example, type &quot;Image(&quot; in the console, and the docstring fornthe Image constructor will be displayed.nnNamespacen'''''''''nnThis is a &quot;namespace browser&quot; which displays the objects in thennamespace of the console in a tree like view. nnFor an example, type <tt class="docutils literal">x = 5</tt> in the console, and then find thenvariable <tt class="docutils literal">x</tt> in the locals part of the namespace tree.nnHistoryn'''''''nnHistory contains a command history that can be copied-and-pasted intonan editor to develop scripts.nnConsole menun````````````nnFile menun'''''''''nn**Open...**n  Open an image.nn**Exit**n  Exit Gamera.nnClassify menun'''''''''''''nn**Interactive Classifier**n  Create a new <a href="#id179"><span class="problematic" id="id180">`Interactive Classifier window`_</span></a>.nnToolkitsn''''''''nnSee <a href="#id167"><span class="problematic" id="id171">`Writing toolkits`__</span></a> for more information.nn.. __: writing_toolkits.htmlnnImage displayn-------------nnDouble-clicking on the image icon will display the image in its ownnwindow.  Alternatively, you can use the <tt class="docutils literal">display</tt> method:nn.. code:: Pythonnn   &gt;&gt;&gt;image.display()nn.. image:: images/display.pngnnRectangular regions of the image can be selected by clicking andndragging a bounding box on the image itself.  The selection can be modified by dragging thendrag boxes in the corners of the selection.nnRight-clicking on the image brings up the same <a href="#id181"><span class="problematic" id="id182">`context menu`_</span></a> as in the <a href="#id183"><span class="problematic" id="id184">`icon display`_</span></a>.nnThe image display toolbar has the following buttons:nn  +-----------------+--------------------------------------------------------------+n  | <a href="#id59"><span class="problematic" id="id60">|Refresh|</span></a>       | Force a refresh of the display, in case any change has       <a href="#id61"><span class="problematic" id="id62">|\n  |                 | occurred to the image.                                       |\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomIn|</span></a>        | Zoom in.                                                     <a href="#id63"><span class="problematic" id="id64">|\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomNorm|</span></a>      | Actual size.                                                 <a href="#id65"><span class="problematic" id="id66">|\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomIn|</span></a>        | Zoom out.                                                    <a href="#id67"><span class="problematic" id="id68">|\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomHighlight|</span></a> | Zoom so that the highlighted region is fit to the window     <a href="#id69"><span class="problematic" id="id70">|\n  |                 | as closely as possible.                                      |\n  +-----------------+--------------------------------------------------------------+\n  | Zoom quality    | low quality\t\t\t\t\t\t   |\n  |                 |    no interpolation                                          |\n  |                 | medium quality                                               |\n  |                 |    linear interpolation                                      |\n  |                 | high quality                                                 |\n  |                 |    spline interpolation                                      |\n  +-----------------+--------------------------------------------------------------+\n  | |NewReference|</span></a>  | Create a new subimage from the currently selected area (or   <a href="#id71"><span class="problematic" id="id72">|\n  |                 | the entire image if there is no selection.)                  |\n  +-----------------+--------------------------------------------------------------+\n  | |NewCopy|</span></a>       | Create a new copy of the currently selected area of the image|n  |                 | (or the entire image if there is no selection.)tt   <a href="#id73"><span class="problematic" id="id74">|\n  +-----------------+--------------------------------------------------------------+\n  | |Save|</span></a>          | Saves the image to a file.                                   <a href="#id75"><span class="problematic" id="id76">|\n  +-----------------+--------------------------------------------------------------+\n  | |Print|</span></a>         | Prints the image.                                            <a href="#id77"><span class="problematic" id="id78">|\n  +-----------------+--------------------------------------------------------------+\n\n.. |Refresh|</span></a> image:: images/icon_refresh.pngn.. <a href="#id79"><span class="problematic" id="id80">|ZoomIn|</span></a> image:: images/icon_zoom_in.pngn.. <a href="#id81"><span class="problematic" id="id82">|ZoomNorm|</span></a> image:: images/icon_zoom_norm.pngn.. <a href="#id83"><span class="problematic" id="id84">|ZoomOut|</span></a> image:: images/icon_zoom_out.pngn.. <a href="#id85"><span class="problematic" id="id86">|ZoomHighlight|</span></a> image:: images/icon_zoom_view.pngn.. <a href="#id87"><span class="problematic" id="id88">|NewReference|</span></a> image:: images/icon_make_view.pngn.. <a href="#id89"><span class="problematic" id="id90">|NewCopy|</span></a> image:: images/icon_image_copy.pngn.. <a href="#id91"><span class="problematic" id="id92">|Save|</span></a> image:: images/icon_save.pngn.. <a href="#id93"><span class="problematic" id="id94">|Print|</span></a> image:: images/icon_printer.pngnn.. note:: n  On Linux and OS-X, the Print command works by printing to an  PostScript file and then sends the result to <tt class="docutils literal">lpr</tt>.  Because ofn  this, it cannot properly detect the resolution of the printer.n  Therefore, a reasonable default of 720dpi is used.  Future versionsn  of wxPython may handle this better.nnMultiple image displayn----------------------nnDouble-clicking on a list of images in the icon display brings up then**multi-image display** window.  Alternatively, you can use then``display_multi`` function:nn.. code:: Pythonnn  &gt;&gt;&gt;display_multi(list_of_images)nnImages are displayed in a grid.  By default, the images are sorted sonthe grid takes up a minimum amount of total space.nn  .. image:: images/multi_display.pngnnImages can be selected by clicking on a cell in the grid.  Individual cellsncan be added to the selection by <strong>Ctrl</strong> clicking.  Ranges of cellsncan be selected by <strong>Shift</strong> clicking.nnThe <a href="#id185"><span class="problematic" id="id186">`context menu`_</span></a> can be used to perform operations on multiplenimages.  Right-clicking on a selected image brings up the context menu.nnThe multi-display toolbar has the following items:nn  +-----------------+--------------------------------------------------------------+n  | <a href="#id95"><span class="problematic" id="id96">|Refresh|</span></a>       | Force a refresh of the display, in case any change has       <a href="#id97"><span class="problematic" id="id98">|\n  |                 | occurred to the image.                                       |\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomIn|</span></a>        | Zoom in.                                                     <a href="#id99"><span class="problematic" id="id100">|\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomNorm|</span></a>      | Actual size.                                                 <a href="#id101"><span class="problematic" id="id102">|\n  +-----------------+--------------------------------------------------------------+\n  | |ZoomIn|</span></a>        | Zoom out.                                                    <a href="#id103"><span class="problematic" id="id104">|\n  +-----------------+--------------------------------------------------------------+\n  | |Label|</span></a>         | Displays a value within each cell. The value is determined by|n  |                 | the expression in the drop-down text box to the left of      <a href="#id105"><span class="problematic" id="id106">|\n  |                 | the label button.                                            |\n  |                 | Within the context of the expression, `x` represents the     |\n  |                 | image within each cell, and the expression is evaluated to   |\n  |                 | determine the result to display.                             |\n  +-----------------+--------------------------------------------------------------+\n  | |SortA|</span></a> <a href="#id107"><span class="problematic" id="id108">|SortD|</span></a> | Sorts the images in the grid based on a given property.  The <a href="#id109"><span class="problematic" id="id110">|\n  |                 | property is determined by the expression in the drop-down    |\n  |                 | text box to the left of the sort buttons.                    |\n  +-----------------+--------------------------------------------------------------+\n  | |Select|</span></a>        | Selects the image in the grid based on a given criteria.     <a href="#id111"><span class="problematic" id="id112">|\n  |                 | The criteria is determined by the expression in the drop-down|</span></a>n  |                 | text box to the left of the select button.                   |  n  |                 | Within the context of the expression, <cite>x</cite> represents the     <a href="#id113"><span class="problematic" id="id114">|\n  |                 | image within each cell.  When the expression evaluates to    |\n  |                 | ``True``, the image will be selected.                        |\n  +-----------------+--------------------------------------------------------------+\n  | |SelectAll|</span></a>     | Selects all images.                                          <a href="#id115"><span class="problematic" id="id116">|\n  +-----------------+--------------------------------------------------------------+\n\n.. |Label|</span></a> image:: images/icon_show_name.pngn.. <a href="#id117"><span class="problematic" id="id118">|SortA|</span></a> image:: images/icon_sort_asc.pngn.. <a href="#id119"><span class="problematic" id="id120">|SortD|</span></a> image:: images/icon_sort_dec.pngn.. <a href="#id121"><span class="problematic" id="id122">|Select|</span></a> image:: images/icon_select.pngn.. <a href="#id123"><span class="problematic" id="id124">|SelectAll|</span></a> image:: images/icon_select_all.pngnnInteractive classifier windown-----------------------------nnThe interactive classifier window is the most involved part of thenGamera GUI.  It is where you can train the Gamera classifier tonrecognize different symbol types.nn  .. image:: images/classifier_window.pngnnA tutorial introduction to training image data is given in then`training tutorial`__.nn.. __: training_tutorial.htmlnnConceptsn````````nnBefore the parts of the classifier window are discussed, some generalnconcepts should be understood.nnGlyph collectionsn'''''''''''''''''nnIn the classifier window, there are two sets of glyphs (connectedncomponents) involved: one in the classifier and one for the current page:nnClassifier glyphsn  The set of glyphs used by the classifier to make guesses aboutn  unknown glyphs.  The classifier glyphs work &quot;behind the scenes&quot;.nnPage glyphsn  The set of glyphs on the current page.nnWhen glyphs on the page are classified by the user, theynare copied into the classifier.  When glyphs are deleted or renamed inneither collection, they are updated in both places.nnThe number of glyphs on the page and in the classifier are displayed innthe status bar at the bottom of the window.nnnColoringn''''''''nnWhen connected components are displayed in the classifier, they arencolored according to how they were classified:nn  +----------+--------------+-----------------------------------------------------+n  | Color    | Constant     | Description                                         <a href="#id125"><span class="problematic" id="id126">|\n  +==========+==============+=====================================================+\n  | |UColor|</span></a> | UNCLASSIFIED | The connected component is completely unclassified. <a href="#id127"><span class="problematic" id="id128">|\n  | (white)  |              |                                                     |\n  +----------+--------------+-----------------------------------------------------+\n  | |AColor|</span></a> | AUTOMATIC    | The connected component was classified by the       | n  | (red)    |              | automatic classifier using training data.           <a href="#id129"><span class="problematic" id="id130">|\n  +----------+--------------+-----------------------------------------------------+\n  | |HColor|</span></a> | HEURISTIC    | The connected component was classified by some      <a href="#id131"><span class="problematic" id="id132">|\n  | (yellow) |              | heuristic (non-exemplar-based) process.             |\n  +----------+--------------+-----------------------------------------------------+\n  | |MColor|</span></a> | MANUAL       | The connected component was classified by a human.  <a href="#id133"><span class="problematic" id="id134">|\n  | (green)  |              |                                                     |\n  +----------+--------------+-----------------------------------------------------+\n\n.. |UColor|</span></a> image:: images/unclassified_color.pngn.. <a href="#id135"><span class="problematic" id="id136">|AColor|</span></a> image:: images/autoclassified_color.pngn.. <a href="#id137"><span class="problematic" id="id138">|HColor|</span></a> image:: images/heuristicclassified_color.pngn.. <a href="#id139"><span class="problematic" id="id140">|MColor|</span></a> image:: images/manualclassified_color.pngnnClass namesn'''''''''''nn&quot;Class names&quot; name a particular class of symbols.  Class names are madenup of period-delimited parts so that they can be grouped intoncategories.  Names can be invented on the fly.nnFor instance, if you were training for a subset of the characters in thenEnglish language, you might have the following class names::nn  lower.an  lower.bn  lower.cnn  upper.an  upper.bn  upper.cnn  punctuation.commannThese period-delimited parts are used to create a tree-like structurenin the classifier window that might look something like:nn  .. image:: images/symbol_table_example.pngnnSpecial class namesn...................nnSpecial class names begin with an underscore (<tt class="docutils literal">_</tt>).nn``_group``n  Glyphs trained with names beginning with <tt class="docutils literal">_group.</tt> are firstn  grouped together and then trained as a single unit.  For instance,n  you may wish to train lowercase i's (which are made up of twon  connected components) as a single logical unit.  Select both partsn  (by dragging a bounding box around them in the original imagen  display) and then train as <tt class="docutils literal">_group.lower.i</tt>.nn``_split``n  Glyphs trained with names beginning with <tt class="docutils literal">_split.</tt> are runn  through a given splitting algorithm.  For instance, glyphs thatn  need to be broken into upper and lower halves for furthern  classification of those parts would be trained asn  <tt class="docutils literal">_split.splity</tt>.  When the automatic classifier encounters glyphsn  that most closely match those trained as <tt class="docutils literal">_split</tt>, it will performn  the splitting algorithm and then continue to recursively classify its parts.nn  The splitting algorithms are documented <a href="#id167"><span class="problematic" id="id172">`here`__</span></a>.nn.. __: plugins.html#segmentationnn  New splitting algorithms can be created by <a href="#id167"><span class="problematic" id="id173">`writing plugin`__</span></a> methodsn  in the category <tt class="docutils literal">Segmentation</tt>.  nn.. __: writing_plugins.htmlnnParts of the classifier windown``````````````````````````````nnThe interactive classifier window is divided into three parts: Thensymbol table, the connected component display, and the original imagendisplay.nnSymbol tablen''''''''''''nnThe symbol table is a hierarchical tree of symbol names that arencurrently in use.  It is preloaded with <a href="#id187"><span class="problematic" id="id188">`special class names`_</span></a>.nnSymbols can be trained by typing the class name in the text box atnthe top or double-clicking on a class name in the tree.  The text boxnfeatures auto-completion (similar to the Unix shell), so you can typena partial name and then press the &lt;Tab&gt; key to attempt to complete it.nnConnected component displayn'''''''''''''''''''''''''''nnThe connected component display is made up of two collapsiblendisplays.  To expand or collapse the panes, use the <em>+</em> and <em>X</em>nbuttons in the panes' title bars.  By default, only the page glyphsnpane is displayed.nn.. note:: Training will run much slower with the classifier glyphsn          displayed.  It is recommended that you leave it closedn          unless you are interested in what is there.nnThe connected components panes behave identically to the <a href="#id189"><span class="problematic" id="id190">`multiple\nimage display`_</span></a>, with additional functionality.nnWhen connected components are selected in the page glyphs pane, nthey are highlighted in the original image display below.nnThe background of connected components are colored based on theirnclassification state.  (See <a href="#id191"><span class="problematic" id="id192">`coloring`_</span></a>).nnThere are some additional toolbar buttons:nn  +-----------------+--------------------------------------------------------------+n  | <a href="#id141"><span class="problematic" id="id142">|Delete|</span></a>        | Deletes the selected connected components.  They will be     <a href="#id143"><span class="problematic" id="id144">|\n  |                 | displayed with a red-hatching pattern to indicate they are   |\n  |                 | deleted.  Re-sorting the connected component display will    |\n  |                 | remove them completely.  Deleted glyphs are never saved to   |\n  |                 | disk.                                                        |\n  +-----------------+--------------------------------------------------------------+\n  | |NextU|</span></a> <a href="#id145"><span class="problematic" id="id146">|NextA|</span></a> | Auto-move toggles.ttttt   <a href="#id147"><span class="problematic" id="id148">|\n  |                 | Whenever a glyph is classified, the \'cursor\' will            |\n  | |NextH|</span></a> <a href="#id149"><span class="problematic" id="id150">|NextM|</span></a> | automatically move to the next glyph that matches any of the <a href="#id151"><span class="problematic" id="id152">|\n  |                 | selected types: UNCLASSIFIED, AUTOMATIC, HEURISTIC or MANUAL.|</span></a>n  +-----------------+--------------------------------------------------------------+nn.. <a href="#id153"><span class="problematic" id="id154">|Delete|</span></a> image:: images/icon_delete.pngn.. <a href="#id155"><span class="problematic" id="id156">|NextU|</span></a> image:: images/icon_next_unclass.pngn.. <a href="#id157"><span class="problematic" id="id158">|NextA|</span></a> image:: images/icon_next_autoclass.pngn.. <a href="#id159"><span class="problematic" id="id160">|NextH|</span></a> image:: images/icon_next_heurclass.pngn.. <a href="#id161"><span class="problematic" id="id162">|NextM|</span></a> image:: images/icon_next_manclass.pngnnnOriginal image displayn''''''''''''''''''''''nnThe original image display, for the most part, behaves identically tonthe standard <a href="#id193"><span class="problematic" id="id194">`image display`_</span></a>.nnClicking on a connected component will select it in the connectedncomponent display.  Dragging a bounding box around ancollection of connected components will select multiple connectedncomponents.  Additional connected components can be added to thenselection by Shift-clicking.nnThere are some additional toolbar buttons:nn  +-----------------+--------------------------------------------------------------+n  | <a href="#id163"><span class="problematic" id="id164">|Mark|</span></a>          | (Toggle) Display an animated rectangle around the            <a href="#id165"><span class="problematic" id="id166">|\n  |                 | currently selected connected component.                      |\n  +-----------------+--------------------------------------------------------------+\n\n.. |Mark|</span></a> image:: images/icon_mark_highlights.pngnnClassifier menun```````````````nnFile menun'''''''''nn.. note:: n   If you give any of the XML files a <tt class="docutils literal">.gz</tt> extension, theyn   will be transparently converted to/from Gzip-compressed files.n   This saving and loading is actually faster!nn**Open all...**n  Opens a special directory of files containing an original image, andn  contents of the editor and the classifier.  This directory should be onen  created by <strong>Save all...</strong>nn**Save all...**n  Saves all of the data necessary to restore the classifier's staten  into a special directory.  This includes the original image and then  contents of the editor and the classifier.  This special directory can ben  reloaded using <strong>Open all...</strong>.nnThe following options are used to save and load connected components in then`Gamera XML format`__.nn.. __: xml_format.htmlnn**Save by criteria...**n  For <em>expert</em> users.  Provides a dialog box to save differentn  sets of glyphs to a single XML file.nn  .. image:: images/save_by_criteria.pngnn**Classifier glyphs**n  This menu allows one to Open, Merge,n  Save, Save As or Clear the glyphs in the classifier.  (See <a href="#id195"><span class="problematic" id="id196">`glyph\n  collections`_</span></a>).nn**Page glyphs**n  This menu allows one to Open, Merge, Save, Saven  As the glyphs on the current page display.  (See <a href="#id197"><span class="problematic" id="id198">`glyph\n  collections`_</span></a>).nn**Save selected glyphs as...**n  Saves the selected glyphs to a new file.nn**Symbol names**n  Import or export a set of symbol names.  Symbol names can ben  imported from a full Gamera XML file containing images, or a symboln  name-only Gamera XML file.nnImage menun''''''''''nn**Open and segment image...**n  Loads an image from disk and then performs a given segmentationn  algorithm on it to create connected components.  The segmentationn  algorithm can be selected from the drop-down list.  (If you're notn  sure which one to use, try <tt class="docutils literal">cc_analysis</tt>.)  The connectedn  components are loaded into the page glyphs pane and then  original image is loaded into the original image display.nn**Select and segment image...**n  Select an already-loaded image from the console, and perform a givenn  segmentation algorithm on it to create connected components.  Then  segmentation algorithm can be selected from the drop-down list.  (Ifn  you're not sure which one to use, try <tt class="docutils literal">cc_analysis</tt>.)  Then  connected components are loaded into the page glyphs panen  and the original image is loaded into the original image display.nn**Select image...**n  Select an already-loaded image from the console and use it as then  original image.  This image does not have to correspond to then  contents of the page glyphs pane.nn**Save glyphs into separate files**n  Saves each of the connected components into a separate image file inn  a given directory using one of the following sets of connectedn  components:nn    - Classifier glyphs...)n    - Page glyphs...n    - Selected glyphs...nn  See <a href="#id199"><span class="problematic" id="id200">`glyph collections`_</span></a>.nnClassifier menun'''''''''''''''nn**Guess all** / <strong>Guess selected</strong>n  Classifies the glyphs using the automatic classifier.  Glyphs thatn  were classified manually are not reclassified (they must ben  unclassified first).n  n**Group and guess all** / <strong>Group and guess selected</strong>n  Classifies the glyphs using the automatic classifier, whilen  attempting to group nearby connected components to form glyphs thatn  are more similar to glyphs in the classifier.  This processn  can take considerably longer than one-by-one classification.nn  The parameters are described in greater detail in the classifier <a href="#id167"><span class="problematic" id="id174">documentation__</span></a>.nn.. __: classify.html#group-list-automaticnn**Confirm all** / <strong>Confirm selected</strong>n  Treats all automatically classified glyphs as if they were manuallyn  classified and adds them to the classifier.  Use thisn  function only when you are sure all glyphs are correctly classified.nn**Display contents**n  Displays the glyphs in the classifier in a new window.  As of thisn  writing this display is read-only and not &quot;live&quot; (i.e. it will notn  change when the contents of the classifier change).  Thisn  shortcoming should be remedied in a future version of Gamera.nn**Change set of features**n  Change which features of the connected components are used forn  classification.  The features themselves are documented <a href="#id167"><span class="problematic" id="id175">here__</span></a>.nn.. __: plugins.html#featuresnn  .. image:: images/feature_selection.pngnn**Classifier settings**n  Allows the settings specific to a particular classifier type to ben  changed, saved or loaded.nn**Create noninteractive copy**n  When training is completed (or partially completed) this functionn  will create a noninteractive copy, which is likely more optimizedn  than the interactive version (depending on the classifier type).nn**Create edited classifier**n  This option will show a dialog to create a new classifier with a modified n  training-set based on the current classifer. This modified classifier is n  produced by one of several kNN-editing algorithms which the user can chosen  from. Depending on the chosen algorithm a set of parameters is displayed whichn  can be changed by the user to tune the algorithm's results. Additionally the n  documentation for this algorithm and its parameters is displayed.n  n  .. image:: images/knn_editing.pngn  n  After confirming this dialog, the user is prompted to select a name for the n  new classifier. The classifier will then be added to the icon display in the n  console under this name.n  n  The produced classifier is usually improved either in terms of speed or n  classification accuracy, depending on the chosen algorithms and its n  parameters. For details about the algorithms, their parameters and how to n  include your own editing algorithms see the <a href="#id167"><span class="problematic" id="id176">`classifier documentation`__</span></a>.nn.. __: classify.html#improving-knn-classifiers-using-editingnnRules menun''''''''''nnUnstable.nnTODO: Write me.n'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;RGBImage&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;RGBSubImage&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+---------------------+-----------------------+n | |GREYSCALEImage&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREYSCALESubImage&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREY16Image&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREY16SubImage&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+---------------------+-----------------------+n | |FLOATImage&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;FLOATSubImage&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+---------------------+-----------------------+n | |ONEBITImage&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Undefined substitution referenced: &quot;ONEBITSubImage&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+---------------------+-----------------------+nn.. |RGBImage&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREYSCALEImage&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREY16Image&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Undefined substitution referenced: &quot;FLOATImage&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Undefined substitution referenced: &quot;ONEBITImage&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Undefined substitution referenced: &quot;RGBSubImage&quot;.</div>
-<div class="system-message" id="id35">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREYSCALESubImage&quot;.</div>
-<div class="system-message" id="id37">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
-Undefined substitution referenced: &quot;GREY16SubImage&quot;.</div>
-<div class="system-message" id="id39">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
-Undefined substitution referenced: &quot;FLOATSubImage&quot;.</div>
-<div class="system-message" id="id41">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
-Undefined substitution referenced: &quot;ONEBITSubImage&quot;.</div>
-<div class="system-message" id="id43">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id44">backlink</a></em></p>
-Undefined substitution referenced: &quot;ImageList&quot;.</div>
-<div class="system-message" id="id45">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id46">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+------------------------------------------+n | |Cc&quot;.</div>
-<div class="system-message" id="id47">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id48">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+------------------------------------------+n | |Classifier&quot;.</div>
-<div class="system-message" id="id49">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id50">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+------------------------------------------+n | |NonClassifier&quot;.</div>
-<div class="system-message" id="id51">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id52">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +------------------+------------------------------------------+nn.. |ImageList&quot;.</div>
-<div class="system-message" id="id53">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id54">backlink</a></em></p>
-Undefined substitution referenced: &quot;Cc&quot;.</div>
-<div class="system-message" id="id55">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id56">backlink</a></em></p>
-Undefined substitution referenced: &quot;Classifier&quot;.</div>
-<div class="system-message" id="id57">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id58">backlink</a></em></p>
-Undefined substitution referenced: &quot;NonClassifier&quot;.</div>
-<div class="system-message" id="id59">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id60">backlink</a></em></p>
-Undefined substitution referenced: &quot;Refresh&quot;.</div>
-<div class="system-message" id="id61">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id62">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | occurred to the image. |n +-----------------+--------------------------------------------------------------+n | |ZoomIn&quot;.</div>
-<div class="system-message" id="id63">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id64">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |ZoomNorm&quot;.</div>
-<div class="system-message" id="id65">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id66">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |ZoomIn&quot;.</div>
-<div class="system-message" id="id67">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id68">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |ZoomHighlight&quot;.</div>
-<div class="system-message" id="id69">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id70">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | as closely as possible. |n +-----------------+--------------------------------------------------------------+n | Zoom quality | low qualitytttttt |n | | no interpolation |n | | medium quality |n | | linear interpolation |n | | high quality |n | | spline interpolation |n +-----------------+--------------------------------------------------------------+n | |NewReference&quot;.</div>
-<div class="system-message" id="id71">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id72">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | the entire image if there is no selection.) |n +-----------------+--------------------------------------------------------------+n | |NewCopy&quot;.</div>
-<div class="system-message" id="id73">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id74">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |Save&quot;.</div>
-<div class="system-message" id="id75">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id76">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |Print&quot;.</div>
-<div class="system-message" id="id77">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id78">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+nn.. |Refresh&quot;.</div>
-<div class="system-message" id="id79">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id80">backlink</a></em></p>
-Undefined substitution referenced: &quot;ZoomIn&quot;.</div>
-<div class="system-message" id="id81">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id82">backlink</a></em></p>
-Undefined substitution referenced: &quot;ZoomNorm&quot;.</div>
-<div class="system-message" id="id83">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id84">backlink</a></em></p>
-Undefined substitution referenced: &quot;ZoomOut&quot;.</div>
-<div class="system-message" id="id85">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id86">backlink</a></em></p>
-Undefined substitution referenced: &quot;ZoomHighlight&quot;.</div>
-<div class="system-message" id="id87">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id88">backlink</a></em></p>
-Undefined substitution referenced: &quot;NewReference&quot;.</div>
-<div class="system-message" id="id89">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id90">backlink</a></em></p>
-Undefined substitution referenced: &quot;NewCopy&quot;.</div>
-<div class="system-message" id="id91">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id92">backlink</a></em></p>
-Undefined substitution referenced: &quot;Save&quot;.</div>
-<div class="system-message" id="id93">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id94">backlink</a></em></p>
-Undefined substitution referenced: &quot;Print&quot;.</div>
-<div class="system-message" id="id95">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id96">backlink</a></em></p>
-Undefined substitution referenced: &quot;Refresh&quot;.</div>
-<div class="system-message" id="id97">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id98">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | occurred to the image. |n +-----------------+--------------------------------------------------------------+n | |ZoomIn&quot;.</div>
-<div class="system-message" id="id99">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id100">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |ZoomNorm&quot;.</div>
-<div class="system-message" id="id101">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id102">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |ZoomIn&quot;.</div>
-<div class="system-message" id="id103">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id104">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+n | |Label&quot;.</div>
-<div class="system-message" id="id105">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id106">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | the label button. |n | | Within the context of the expression, `x` represents the |n | | image within each cell, and the expression is evaluated to |n | | determine the result to display. |n +-----------------+--------------------------------------------------------------+n | |SortA&quot;.</div>
-<div class="system-message" id="id107">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id108">backlink</a></em></p>
-Undefined substitution referenced: &quot;SortD&quot;.</div>
-<div class="system-message" id="id109">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id110">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | property is determined by the expression in the drop-down |n | | text box to the left of the sort buttons. |n +-----------------+--------------------------------------------------------------+n | |Select&quot;.</div>
-<div class="system-message" id="id111">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id112">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | The criteria is determined by the expression in the drop-down&quot;.</div>
-<div class="system-message" id="id113">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id114">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | image within each cell. When the expression evaluates to |n | | ``True``, the image will be selected. |n +-----------------+--------------------------------------------------------------+n | |SelectAll&quot;.</div>
-<div class="system-message" id="id115">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id116">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +-----------------+--------------------------------------------------------------+nn.. |Label&quot;.</div>
-<div class="system-message" id="id117">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id118">backlink</a></em></p>
-Undefined substitution referenced: &quot;SortA&quot;.</div>
-<div class="system-message" id="id119">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id120">backlink</a></em></p>
-Undefined substitution referenced: &quot;SortD&quot;.</div>
-<div class="system-message" id="id121">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id122">backlink</a></em></p>
-Undefined substitution referenced: &quot;Select&quot;.</div>
-<div class="system-message" id="id123">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id124">backlink</a></em></p>
-Undefined substitution referenced: &quot;SelectAll&quot;.</div>
-<div class="system-message" id="id125">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id126">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +==========+==============+=====================================================+n | |UColor&quot;.</div>
-<div class="system-message" id="id127">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id128">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (white) | | |n +----------+--------------+-----------------------------------------------------+n | |AColor&quot;.</div>
-<div class="system-message" id="id129">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id130">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +----------+--------------+-----------------------------------------------------+n | |HColor&quot;.</div>
-<div class="system-message" id="id131">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id132">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (yellow) | | heuristic (non-exemplar-based) process. |n +----------+--------------+-----------------------------------------------------+n | |MColor&quot;.</div>
-<div class="system-message" id="id133">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id134">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (green) | | |n +----------+--------------+-----------------------------------------------------+nn.. |UColor&quot;.</div>
-<div class="system-message" id="id135">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id136">backlink</a></em></p>
-Undefined substitution referenced: &quot;AColor&quot;.</div>
-<div class="system-message" id="id137">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id138">backlink</a></em></p>
-Undefined substitution referenced: &quot;HColor&quot;.</div>
-<div class="system-message" id="id139">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id140">backlink</a></em></p>
-Undefined substitution referenced: &quot;MColor&quot;.</div>
-<div class="system-message" id="id141">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id142">backlink</a></em></p>
-Undefined substitution referenced: &quot;Delete&quot;.</div>
-<div class="system-message" id="id143">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id144">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | displayed with a red-hatching pattern to indicate they are |n | | deleted. Re-sorting the connected component display will |n | | remove them completely. Deleted glyphs are never saved to |n | | disk. |n +-----------------+--------------------------------------------------------------+n | |NextU&quot;.</div>
-<div class="system-message" id="id145">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id146">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextA&quot;.</div>
-<div class="system-message" id="id147">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id148">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | Whenever a glyph is classified, the 'cursor' will |n | |NextH&quot;.</div>
-<div class="system-message" id="id149">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id150">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextM&quot;.</div>
-<div class="system-message" id="id151">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id152">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | selected types: UNCLASSIFIED, AUTOMATIC, HEURISTIC or MANUAL.&quot;.</div>
-<div class="system-message" id="id153">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id154">backlink</a></em></p>
-Undefined substitution referenced: &quot;Delete&quot;.</div>
-<div class="system-message" id="id155">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id156">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextU&quot;.</div>
-<div class="system-message" id="id157">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id158">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextA&quot;.</div>
-<div class="system-message" id="id159">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id160">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextH&quot;.</div>
-<div class="system-message" id="id161">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id162">backlink</a></em></p>
-Undefined substitution referenced: &quot;NextM&quot;.</div>
-<div class="system-message" id="id163">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id164">backlink</a></em></p>
-Undefined substitution referenced: &quot;Mark&quot;.</div>
-<div class="system-message" id="id165">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id166">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | | currently selected connected component. |n +-----------------+--------------------------------------------------------------+nn.. |Mark&quot;.</div>
-<div class="system-message" id="id167">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 2); <em>backlinks: <a href="#id168">1</a>, <a href="#id169">2</a>, <a href="#id170">3</a>, <a href="#id171">4</a>, <a href="#id172">5</a>, <a href="#id173">6</a>, <a href="#id174">7</a>, <a href="#id175">8</a>, <a href="#id176">9</a></em></p>
-Anonymous hyperlink mismatch: 9 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id177">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id178">backlink</a></em></p>
-Unknown target name: &quot;pycrust&quot;.</div>
-<div class="system-message" id="id179">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id180">backlink</a></em></p>
-Unknown target name: &quot;interactive classifier window&quot;.</div>
-<div class="system-message" id="id181">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id182">backlink</a></em></p>
-Unknown target name: &quot;context menu&quot;.</div>
-<div class="system-message" id="id183">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id184">backlink</a></em></p>
-Unknown target name: &quot;icon display&quot;.</div>
-<div class="system-message" id="id185">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id186">backlink</a></em></p>
-Unknown target name: &quot;context menu&quot;.</div>
-<div class="system-message" id="id187">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id188">backlink</a></em></p>
-Unknown target name: &quot;special class names&quot;.</div>
-<div class="system-message" id="id189">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id190">backlink</a></em></p>
-Unknown target name: &quot;multiplenimage display&quot;.</div>
-<div class="system-message" id="id191">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id192">backlink</a></em></p>
-Unknown target name: &quot;coloring&quot;.</div>
-<div class="system-message" id="id193">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id194">backlink</a></em></p>
-Unknown target name: &quot;image display&quot;.</div>
-<div class="system-message" id="id195">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id196">backlink</a></em></p>
-Unknown target name: &quot;glyphn collections&quot;.</div>
-<div class="system-message" id="id197">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id198">backlink</a></em></p>
-Unknown target name: &quot;glyphn collections&quot;.</div>
-<div class="system-message" id="id199">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gui.txt</tt>, line 1); <em><a href="#id200">backlink</a></em></p>
-Unknown target name: &quot;glyph collections&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#starting-the-gui" id="id14">Starting the GUI</a></li>
+<li><a class="reference internal" href="#console-window" id="id15">Console window</a><ul>
+<li><a class="reference internal" href="#python-console" id="id16">Python console</a></li>
+<li><a class="reference internal" href="#icon-display" id="id17">Icon display</a><ul>
+<li><a class="reference internal" href="#context-menu" id="id18">Context menu</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#information-pane" id="id19">Information pane</a><ul>
+<li><a class="reference internal" href="#documentation" id="id20">Documentation</a></li>
+<li><a class="reference internal" href="#namespace" id="id21">Namespace</a></li>
+<li><a class="reference internal" href="#history" id="id22">History</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#console-menu" id="id23">Console menu</a><ul>
+<li><a class="reference internal" href="#file-menu" id="id24">File menu</a></li>
+<li><a class="reference internal" href="#classify-menu" id="id25">Classify menu</a></li>
+<li><a class="reference internal" href="#toolkits" id="id26">Toolkits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image-display" id="id27">Image display</a></li>
+<li><a class="reference internal" href="#multiple-image-display" id="id28">Multiple image display</a></li>
+<li><a class="reference internal" href="#interactive-classifier-window" id="id29">Interactive classifier window</a><ul>
+<li><a class="reference internal" href="#concepts" id="id30">Concepts</a><ul>
+<li><a class="reference internal" href="#glyph-collections" id="id31">Glyph collections</a></li>
+<li><a class="reference internal" href="#coloring" id="id32">Coloring</a></li>
+<li><a class="reference internal" href="#class-names" id="id33">Class names</a><ul>
+<li><a class="reference internal" href="#special-class-names" id="id34">Special class names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parts-of-the-classifier-window" id="id35">Parts of the classifier window</a><ul>
+<li><a class="reference internal" href="#symbol-table" id="id36">Symbol table</a></li>
+<li><a class="reference internal" href="#connected-component-display" id="id37">Connected component display</a></li>
+<li><a class="reference internal" href="#original-image-display" id="id38">Original image display</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classifier-menu" id="id39">Classifier menu</a><ul>
+<li><a class="reference internal" href="#id8" id="id40">File menu</a></li>
+<li><a class="reference internal" href="#image-menu" id="id41">Image menu</a></li>
+<li><a class="reference internal" href="#id10" id="id42">Classifier menu</a></li>
+<li><a class="reference internal" href="#rules-menu" id="id43">Rules menu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
+<div class="section" id="starting-the-gui">
+<h1><a class="toc-backref" href="#id14">Starting the GUI</a></h1>
+<p>There is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your system
+(platform-specific, see <a class="reference external" href="install.html">Building and Installing Gamera</a>).  Run it
+to start the Gamera GUI.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is possible to run Gamera image processing without the
+GUI, saving the memory and runtime overhead.</p>
+</div>
+</div>
+<div class="section" id="console-window">
+<h1><a class="toc-backref" href="#id15">Console window</a></h1>
+<blockquote>
+<img alt="images/console.png" src="images/console.png" />
+</blockquote>
+<p>The main Gamera console window is divided into three parts: the Python
+console, the icon display and the information pane.</p>
+<div class="section" id="python-console">
+<h2><a class="toc-backref" href="#id16">Python console</a></h2>
+<p>On the right is a standard Python console.  You can type code
+here and it is run interactively.  Most operations that you perform
+using the mouse in the GUI will generate code that is entered in the
+interpreter here.  This code and be copied-and-pasted into your
+favorite programmer's editor to build Gamera image processing scripts.</p>
+<p>The Python console features auto-completion.  For example, load an
+image and store it in the variable name <tt class="docutils literal">image</tt>.  Type <tt class="docutils literal">image.</tt> in
+the console, and a window will appear showing all of the (many)
+members and methods of the image.</p>
+<blockquote>
+<img alt="images/autocompletion.png" src="images/autocompletion.png" />
+</blockquote>
+</div>
+<div class="section" id="icon-display">
+<h2><a class="toc-backref" href="#id17">Icon display</a></h2>
+<p>On the left, all active image objects (displayed as icons.  When you load images,
+they are displayed here.</p>
+<p>The icon indicates the pixel type of the image.  See <a class="reference external" href="image_types.html">Image types</a>
+for more information on the different image types in Gamera.</p>
+<p>A magnifying glass appears over the icon if the image is a subimage of
+another image.  It acts as a warning that any changes made to this
+image will affect another.</p>
+<p>The icons are as follows:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="34%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Image</th>
+<th class="head">SubImage</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="RGBImage" src="images/icon_image_rgb.png" /></td>
+<td><img alt="RGBSubImage" src="images/icon_subimage_rgb.png" /></td>
+<td>RGB (24-bit color)</td>
+</tr>
+<tr><td><img alt="GREYSCALEImage" src="images/icon_image_grey.png" /></td>
+<td><img alt="GREYSCALESubImage" src="images/icon_subimage_grey.png" /></td>
+<td>GreyScale (8-bit)</td>
+</tr>
+<tr><td><img alt="GREY16Image" src="images/icon_image_grey16.png" /></td>
+<td><img alt="GREY16SubImage" src="images/icon_subimage_grey16.png" /></td>
+<td>Grey16 (16-bit)</td>
+</tr>
+<tr><td><img alt="FLOATImage" src="images/icon_image_float.png" /></td>
+<td><img alt="FLOATSubImage" src="images/icon_subimage_float.png" /></td>
+<td>Floating-point image</td>
+</tr>
+<tr><td><img alt="ONEBITImage" src="images/icon_image_binary.png" /></td>
+<td><img alt="ONEBITSubImage" src="images/icon_subimage_binary.png" /></td>
+<td>One-bit (binary)</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>There are other things that can appear in the icon display as well:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><img alt="ImageList" src="images/icon_image_list.png" /></td>
+<td>A list of images</td>
+</tr>
+<tr><td><img alt="Cc" src="images/icon_cc.png" /></td>
+<td>A connected component</td>
+</tr>
+<tr><td><img alt="Classifier" src="images/icon_classify.png" /></td>
+<td>A classifier object</td>
+</tr>
+<tr><td><img alt="NonClassifier" src="images/icon_noninter_classify.png" /></td>
+<td>A non-interactive classifier object</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="section" id="context-menu">
+<h3><a class="toc-backref" href="#id18">Context menu</a></h3>
+<p>Right-clicking on any of these icons brings up a context menu to
+perform operations on an image.</p>
+<blockquote>
+<img alt="images/right_click_menu.png" src="images/right_click_menu.png" />
+</blockquote>
+<p>At the top of the menu, the pixel type is displayed.</p>
+<p>The next two items are for creating new references and copies of the
+image.  You will be prompted for a variable name for the result.</p>
+<p>The <strong>Info</strong> submenu displays basic information about the image.</p>
+<p>The rest of the context menu contains plugin methods, sorted by category.  The
+plugin methods are documented <a class="reference external" href="plugins.html">here</a>.
+Many of the plugin methods require arguments.  In that case, a dialog
+will be displayed.  This dialog includes a brief description of the
+method, if available.  For example the dialog for <tt class="docutils literal">erode_dilate</tt> is:</p>
+<blockquote>
+<img alt="images/erode_dilate_dialog.png" src="images/erode_dilate_dialog.png" />
+</blockquote>
+<p>After entering the arguments for a plugin function, code is generated
+to perform the operation and automatically run in the console:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span><span class="n">image</span><span class="o">.</span><span class="n">erode_dilate</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="information-pane">
+<h2><a class="toc-backref" href="#id19">Information pane</a></h2>
+<p>The information pane includes three modes, selectable via the tabs.
+(These tabs will appear at the top of the information pane on Windows
+and Mac OSX).  This functionality is adapted from the <a class="reference external" href="http://sourceforge.net/projects/pycrust/">PyCrust</a> project
+and should be familiar to users of that tool.</p>
+<div class="section" id="documentation">
+<h3><a class="toc-backref" href="#id20">Documentation</a></h3>
+<p>The documentation pane displays the docstring of the object that was
+last typed in the console window.</p>
+<p>For an example, type &quot;Image(&quot; in the console, and the docstring for
+the Image constructor will be displayed.</p>
+</div>
+<div class="section" id="namespace">
+<h3><a class="toc-backref" href="#id21">Namespace</a></h3>
+<p>This is a &quot;namespace browser&quot; which displays the objects in the
+namespace of the console in a tree like view.</p>
+<p>For an example, type <tt class="docutils literal">x = 5</tt> in the console, and then find the
+variable <tt class="docutils literal">x</tt> in the locals part of the namespace tree.</p>
+</div>
+<div class="section" id="history">
+<h3><a class="toc-backref" href="#id22">History</a></h3>
+<p>History contains a command history that can be copied-and-pasted into
+an editor to develop scripts.</p>
+</div>
+</div>
+<div class="section" id="console-menu">
+<h2><a class="toc-backref" href="#id23">Console menu</a></h2>
+<div class="section" id="file-menu">
+<h3><a class="toc-backref" href="#id24">File menu</a></h3>
+<dl class="docutils">
+<dt><strong>Open...</strong></dt>
+<dd>Open an image.</dd>
+<dt><strong>Exit</strong></dt>
+<dd>Exit Gamera.</dd>
+</dl>
+</div>
+<div class="section" id="classify-menu">
+<h3><a class="toc-backref" href="#id25">Classify menu</a></h3>
+<dl class="docutils">
+<dt><strong>Interactive Classifier</strong></dt>
+<dd>Create a new <a class="reference internal" href="#interactive-classifier-window">Interactive Classifier window</a>.</dd>
+</dl>
+</div>
+<div class="section" id="toolkits">
+<h3><a class="toc-backref" href="#id26">Toolkits</a></h3>
+<p>See <a class="reference external" href="writing_toolkits.html">Writing toolkits</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="section" id="image-display">
+<h1><a class="toc-backref" href="#id27">Image display</a></h1>
+<p>Double-clicking on the image icon will display the image in its own
+window.  Alternatively, you can use the <tt class="docutils literal">display</tt> method:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span><span class="n">image</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+<img alt="images/display.png" src="images/display.png" />
+<p>Rectangular regions of the image can be selected by clicking and
+dragging a bounding box on the image itself.  The selection can be modified by dragging the
+drag boxes in the corners of the selection.</p>
+<p>Right-clicking on the image brings up the same <a class="reference internal" href="#context-menu">context menu</a> as in the <a class="reference internal" href="#icon-display">icon display</a>.</p>
+<p>The image display toolbar has the following buttons:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><img alt="Refresh" src="images/icon_refresh.png" /></td>
+<td>Force a refresh of the display, in case any change has
+occurred to the image.</td>
+</tr>
+<tr><td><img alt="ZoomIn" src="images/icon_zoom_in.png" /></td>
+<td>Zoom in.</td>
+</tr>
+<tr><td><img alt="ZoomNorm" src="images/icon_zoom_norm.png" /></td>
+<td>Actual size.</td>
+</tr>
+<tr><td><img alt="ZoomIn" src="images/icon_zoom_in.png" /></td>
+<td>Zoom out.</td>
+</tr>
+<tr><td><img alt="ZoomHighlight" src="images/icon_zoom_view.png" /></td>
+<td>Zoom so that the highlighted region is fit to the window
+as closely as possible.</td>
+</tr>
+<tr><td>Zoom quality</td>
+<td><dl class="first last docutils">
+<dt>low quality</dt>
+<dd>no interpolation</dd>
+<dt>medium quality</dt>
+<dd>linear interpolation</dd>
+<dt>high quality</dt>
+<dd>spline interpolation</dd>
+</dl>
+</td>
+</tr>
+<tr><td><img alt="NewReference" src="images/icon_make_view.png" /></td>
+<td>Create a new subimage from the currently selected area (or
+the entire image if there is no selection.)</td>
+</tr>
+<tr><td><img alt="NewCopy" src="images/icon_image_copy.png" /></td>
+<td>Create a new copy of the currently selected area of the image
+(or the entire image if there is no selection.)</td>
+</tr>
+<tr><td><img alt="Save" src="images/icon_save.png" /></td>
+<td>Saves the image to a file.</td>
+</tr>
+<tr><td><img alt="Print" src="images/icon_printer.png" /></td>
+<td>Prints the image.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Linux and OS-X, the Print command works by printing to a
+PostScript file and then sends the result to <tt class="docutils literal">lpr</tt>.  Because of
+this, it cannot properly detect the resolution of the printer.
+Therefore, a reasonable default of 720dpi is used.  Future versions
+of wxPython may handle this better.</p>
+</div>
+</div>
+<div class="section" id="multiple-image-display">
+<h1><a class="toc-backref" href="#id28">Multiple image display</a></h1>
+<p>Double-clicking on a list of images in the icon display brings up the
+<strong>multi-image display</strong> window.  Alternatively, you can use the
+<tt class="docutils literal">display_multi</tt> function:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span><span class="n">display_multi</span><span class="p">(</span><span class="n">list_of_images</span><span class="p">)</span>
+</pre></div>
+<p>Images are displayed in a grid.  By default, the images are sorted so
+the grid takes up a minimum amount of total space.</p>
+<blockquote>
+<img alt="images/multi_display.png" src="images/multi_display.png" />
+</blockquote>
+<p>Images can be selected by clicking on a cell in the grid.  Individual cells
+can be added to the selection by <strong>Ctrl</strong> clicking.  Ranges of cells
+can be selected by <strong>Shift</strong> clicking.</p>
+<p>The <a class="reference internal" href="#context-menu">context menu</a> can be used to perform operations on multiple
+images.  Right-clicking on a selected image brings up the context menu.</p>
+<p>The multi-display toolbar has the following items:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><img alt="Refresh" src="images/icon_refresh.png" /></td>
+<td>Force a refresh of the display, in case any change has
+occurred to the image.</td>
+</tr>
+<tr><td><img alt="ZoomIn" src="images/icon_zoom_in.png" /></td>
+<td>Zoom in.</td>
+</tr>
+<tr><td><img alt="ZoomNorm" src="images/icon_zoom_norm.png" /></td>
+<td>Actual size.</td>
+</tr>
+<tr><td><img alt="ZoomIn" src="images/icon_zoom_in.png" /></td>
+<td>Zoom out.</td>
+</tr>
+<tr><td><img alt="Label" src="images/icon_show_name.png" /></td>
+<td>Displays a value within each cell. The value is determined by
+the expression in the drop-down text box to the left of
+the label button.
+Within the context of the expression, <cite>x</cite> represents the
+image within each cell, and the expression is evaluated to
+determine the result to display.</td>
+</tr>
+<tr><td><img alt="SortA" src="images/icon_sort_asc.png" /> <img alt="SortD" src="images/icon_sort_dec.png" /></td>
+<td>Sorts the images in the grid based on a given property.  The
+property is determined by the expression in the drop-down
+text box to the left of the sort buttons.</td>
+</tr>
+<tr><td><img alt="Select" src="images/icon_select.png" /></td>
+<td>Selects the image in the grid based on a given criteria.
+The criteria is determined by the expression in the drop-down
+text box to the left of the select button.
+Within the context of the expression, <cite>x</cite> represents the
+image within each cell.  When the expression evaluates to
+<tt class="docutils literal">True</tt>, the image will be selected.</td>
+</tr>
+<tr><td><img alt="SelectAll" src="images/icon_select_all.png" /></td>
+<td>Selects all images.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="interactive-classifier-window">
+<h1><a class="toc-backref" href="#id29">Interactive classifier window</a></h1>
+<p>The interactive classifier window is the most involved part of the
+Gamera GUI.  It is where you can train the Gamera classifier to
+recognize different symbol types.</p>
+<blockquote>
+<img alt="images/classifier_window.png" src="images/classifier_window.png" />
+</blockquote>
+<p>A tutorial introduction to training image data is given in the
+<a class="reference external" href="training_tutorial.html">training tutorial</a>.</p>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id30">Concepts</a></h2>
+<p>Before the parts of the classifier window are discussed, some general
+concepts should be understood.</p>
+<div class="section" id="glyph-collections">
+<h3><a class="toc-backref" href="#id31">Glyph collections</a></h3>
+<p>In the classifier window, there are two sets of glyphs (connected
+components) involved: one in the classifier and one for the current page:</p>
+<dl class="docutils">
+<dt>Classifier glyphs</dt>
+<dd>The set of glyphs used by the classifier to make guesses about
+unknown glyphs.  The classifier glyphs work &quot;behind the scenes&quot;.</dd>
+<dt>Page glyphs</dt>
+<dd>The set of glyphs on the current page.</dd>
+</dl>
+<p>When glyphs on the page are classified by the user, they
+are copied into the classifier.  When glyphs are deleted or renamed in
+either collection, they are updated in both places.</p>
+<p>The number of glyphs on the page and in the classifier are displayed in
+the status bar at the bottom of the window.</p>
+</div>
+<div class="section" id="coloring">
+<h3><a class="toc-backref" href="#id32">Coloring</a></h3>
+<p>When connected components are displayed in the classifier, they are
+colored according to how they were classified:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="18%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Color</th>
+<th class="head">Constant</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="UColor" src="images/unclassified_color.png" />
+(white)</td>
+<td>UNCLASSIFIED</td>
+<td>The connected component is completely unclassified.</td>
+</tr>
+<tr><td><img alt="AColor" src="images/autoclassified_color.png" />
+(red)</td>
+<td>AUTOMATIC</td>
+<td>The connected component was classified by the
+automatic classifier using training data.</td>
+</tr>
+<tr><td><img alt="HColor" src="images/heuristicclassified_color.png" />
+(yellow)</td>
+<td>HEURISTIC</td>
+<td>The connected component was classified by some
+heuristic (non-exemplar-based) process.</td>
+</tr>
+<tr><td><img alt="MColor" src="images/manualclassified_color.png" />
+(green)</td>
+<td>MANUAL</td>
+<td>The connected component was classified by a human.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="class-names">
+<h3><a class="toc-backref" href="#id33">Class names</a></h3>
+<p>&quot;Class names&quot; name a particular class of symbols.  Class names are made
+up of period-delimited parts so that they can be grouped into
+categories.  Names can be invented on the fly.</p>
+<p>For instance, if you were training for a subset of the characters in the
+English language, you might have the following class names:</p>
+<pre class="literal-block">
+lower.a
+lower.b
+lower.c
+
+upper.a
+upper.b
+upper.c
+
+punctuation.comma
+</pre>
+<p>These period-delimited parts are used to create a tree-like structure
+in the classifier window that might look something like:</p>
+<blockquote>
+<img alt="images/symbol_table_example.png" src="images/symbol_table_example.png" />
+</blockquote>
+<div class="section" id="special-class-names">
+<h4><a class="toc-backref" href="#id34">Special class names</a></h4>
+<p>Special class names begin with an underscore (<tt class="docutils literal">_</tt>).</p>
+<dl class="docutils">
+<dt><tt class="docutils literal">_group</tt></dt>
+<dd>Glyphs trained with names beginning with <tt class="docutils literal">_group.</tt> are first
+grouped together and then trained as a single unit.  For instance,
+you may wish to train lowercase i's (which are made up of two
+connected components) as a single logical unit.  Select both parts
+(by dragging a bounding box around them in the original image
+display) and then train as <tt class="docutils literal">_group.lower.i</tt>.</dd>
+<dt><tt class="docutils literal">_split</tt></dt>
+<dd><p class="first">Glyphs trained with names beginning with <tt class="docutils literal">_split.</tt> are run
+through a given splitting algorithm.  For instance, glyphs that
+need to be broken into upper and lower halves for further
+classification of those parts would be trained as
+<tt class="docutils literal">_split.splity</tt>.  When the automatic classifier encounters glyphs
+that most closely match those trained as <tt class="docutils literal">_split</tt>, it will perform
+the splitting algorithm and then continue to recursively classify its parts.</p>
+<p class="last">The splitting algorithms are documented <a class="reference external" href="plugins.html#segmentation">here</a>.</p>
+</dd>
+</dl>
+<blockquote>
+New splitting algorithms can be created by <a class="reference external" href="writing_plugins.html">writing plugin</a> methods
+in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="parts-of-the-classifier-window">
+<h2><a class="toc-backref" href="#id35">Parts of the classifier window</a></h2>
+<p>The interactive classifier window is divided into three parts: The
+symbol table, the connected component display, and the original image
+display.</p>
+<div class="section" id="symbol-table">
+<h3><a class="toc-backref" href="#id36">Symbol table</a></h3>
+<p>The symbol table is a hierarchical tree of symbol names that are
+currently in use.  It is preloaded with <a class="reference internal" href="#special-class-names">special class names</a>.</p>
+<p>Symbols can be trained by typing the class name in the text box at
+the top or double-clicking on a class name in the tree.  The text box
+features auto-completion (similar to the Unix shell), so you can type
+a partial name and then press the &lt;Tab&gt; key to attempt to complete it.</p>
+</div>
+<div class="section" id="connected-component-display">
+<h3><a class="toc-backref" href="#id37">Connected component display</a></h3>
+<p>The connected component display is made up of two collapsible
+displays.  To expand or collapse the panes, use the <em>+</em> and <em>X</em>
+buttons in the panes' title bars.  By default, only the page glyphs
+pane is displayed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Training will run much slower with the classifier glyphs
+displayed.  It is recommended that you leave it closed
+unless you are interested in what is there.</p>
+</div>
+<p>The connected components panes behave identically to the <a class="reference internal" href="#multiple-image-display">multiple
+image display</a>, with additional functionality.</p>
+<p>When connected components are selected in the page glyphs pane,
+they are highlighted in the original image display below.</p>
+<p>The background of connected components are colored based on their
+classification state.  (See <a class="reference internal" href="#coloring">coloring</a>).</p>
+<p>There are some additional toolbar buttons:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><img alt="Delete" src="images/icon_delete.png" /></td>
+<td>Deletes the selected connected components.  They will be
+displayed with a red-hatching pattern to indicate they are
+deleted.  Re-sorting the connected component display will
+remove them completely.  Deleted glyphs are never saved to
+disk.</td>
+</tr>
+<tr><td><p class="first"><img alt="NextU" src="images/icon_next_unclass.png" /> <img alt="NextA" src="images/icon_next_autoclass.png" /></p>
+<p class="last"><img alt="NextH" src="images/icon_next_heurclass.png" /> <img alt="NextM" src="images/icon_next_manclass.png" /></p>
+</td>
+<td>Auto-move toggles.
+Whenever a glyph is classified, the 'cursor' will
+automatically move to the next glyph that matches any of the
+selected types: UNCLASSIFIED, AUTOMATIC, HEURISTIC or MANUAL.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="original-image-display">
+<h3><a class="toc-backref" href="#id38">Original image display</a></h3>
+<p>The original image display, for the most part, behaves identically to
+the standard <a class="reference internal" href="#image-display">image display</a>.</p>
+<p>Clicking on a connected component will select it in the connected
+component display.  Dragging a bounding box around a
+collection of connected components will select multiple connected
+components.  Additional connected components can be added to the
+selection by Shift-clicking.</p>
+<p>There are some additional toolbar buttons:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><img alt="Mark" src="images/icon_mark_highlights.png" /></td>
+<td>(Toggle) Display an animated rectangle around the
+currently selected connected component.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+</div>
+<div class="section" id="classifier-menu">
+<h2><a class="toc-backref" href="#id39">Classifier menu</a></h2>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id40">File menu</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you give any of the XML files a <tt class="docutils literal">.gz</tt> extension, they
+will be transparently converted to/from Gzip-compressed files.
+This saving and loading is actually faster!</p>
+</div>
+<dl class="docutils">
+<dt><strong>Open all...</strong></dt>
+<dd>Opens a special directory of files containing an original image, and
+contents of the editor and the classifier.  This directory should be one
+created by <strong>Save all...</strong></dd>
+<dt><strong>Save all...</strong></dt>
+<dd>Saves all of the data necessary to restore the classifier's state
+into a special directory.  This includes the original image and the
+contents of the editor and the classifier.  This special directory can be
+reloaded using <strong>Open all...</strong>.</dd>
+</dl>
+<p>The following options are used to save and load connected components in the
+<a class="reference external" href="xml_format.html">Gamera XML format</a>.</p>
+<dl class="docutils">
+<dt><strong>Save by criteria...</strong></dt>
+<dd><p class="first">For <em>expert</em> users.  Provides a dialog box to save different
+sets of glyphs to a single XML file.</p>
+<img alt="images/save_by_criteria.png" class="last" src="images/save_by_criteria.png" />
+</dd>
+<dt><strong>Classifier glyphs</strong></dt>
+<dd>This menu allows one to Open, Merge,
+Save, Save As or Clear the glyphs in the classifier.  (See <a class="reference internal" href="#glyph-collections">glyph
+collections</a>).</dd>
+<dt><strong>Page glyphs</strong></dt>
+<dd>This menu allows one to Open, Merge, Save, Save
+As the glyphs on the current page display.  (See <a class="reference internal" href="#glyph-collections">glyph
+collections</a>).</dd>
+<dt><strong>Save selected glyphs as...</strong></dt>
+<dd>Saves the selected glyphs to a new file.</dd>
+<dt><strong>Symbol names</strong></dt>
+<dd>Import or export a set of symbol names.  Symbol names can be
+imported from a full Gamera XML file containing images, or a symbol
+name-only Gamera XML file.</dd>
+</dl>
+</div>
+<div class="section" id="image-menu">
+<h3><a class="toc-backref" href="#id41">Image menu</a></h3>
+<dl class="docutils">
+<dt><strong>Open and segment image...</strong></dt>
+<dd>Loads an image from disk and then performs a given segmentation
+algorithm on it to create connected components.  The segmentation
+algorithm can be selected from the drop-down list.  (If you're not
+sure which one to use, try <tt class="docutils literal">cc_analysis</tt>.)  The connected
+components are loaded into the page glyphs pane and the
+original image is loaded into the original image display.</dd>
+<dt><strong>Select and segment image...</strong></dt>
+<dd>Select an already-loaded image from the console, and perform a given
+segmentation algorithm on it to create connected components.  The
+segmentation algorithm can be selected from the drop-down list.  (If
+you're not sure which one to use, try <tt class="docutils literal">cc_analysis</tt>.)  The
+connected components are loaded into the page glyphs pane
+and the original image is loaded into the original image display.</dd>
+<dt><strong>Select image...</strong></dt>
+<dd>Select an already-loaded image from the console and use it as the
+original image.  This image does not have to correspond to the
+contents of the page glyphs pane.</dd>
+<dt><strong>Save glyphs into separate files</strong></dt>
+<dd><p class="first">Saves each of the connected components into a separate image file in
+a given directory using one of the following sets of connected
+components:</p>
+<blockquote>
+<ul class="simple">
+<li>Classifier glyphs...)</li>
+<li>Page glyphs...</li>
+<li>Selected glyphs...</li>
+</ul>
+</blockquote>
+<p class="last">See <a class="reference internal" href="#glyph-collections">glyph collections</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id42">Classifier menu</a></h3>
+<dl class="docutils">
+<dt><strong>Guess all</strong> / <strong>Guess selected</strong></dt>
+<dd>Classifies the glyphs using the automatic classifier.  Glyphs that
+were classified manually are not reclassified (they must be
+unclassified first).</dd>
+<dt><strong>Group and guess all</strong> / <strong>Group and guess selected</strong></dt>
+<dd><p class="first">Classifies the glyphs using the automatic classifier, while
+attempting to group nearby connected components to form glyphs that
+are more similar to glyphs in the classifier.  This process
+can take considerably longer than one-by-one classification.</p>
+<p class="last">The parameters are described in greater detail in the classifier <a class="reference external" href="classify.html#group-list-automatic">documentation</a>.</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt><strong>Confirm all</strong> / <strong>Confirm selected</strong></dt>
+<dd>Treats all automatically classified glyphs as if they were manually
+classified and adds them to the classifier.  Use this
+function only when you are sure all glyphs are correctly classified.</dd>
+<dt><strong>Display contents</strong></dt>
+<dd>Displays the glyphs in the classifier in a new window.  As of this
+writing this display is read-only and not &quot;live&quot; (i.e. it will not
+change when the contents of the classifier change).  This
+shortcoming should be remedied in a future version of Gamera.</dd>
+<dt><strong>Change set of features</strong></dt>
+<dd>Change which features of the connected components are used for
+classification.  The features themselves are documented <a class="reference external" href="plugins.html#features">here</a>.</dd>
+</dl>
+<blockquote>
+<img alt="images/feature_selection.png" src="images/feature_selection.png" />
+</blockquote>
+<dl class="docutils">
+<dt><strong>Classifier settings</strong></dt>
+<dd>Allows the settings specific to a particular classifier type to be
+changed, saved or loaded.</dd>
+<dt><strong>Create noninteractive copy</strong></dt>
+<dd>When training is completed (or partially completed) this function
+will create a noninteractive copy, which is likely more optimized
+than the interactive version (depending on the classifier type).</dd>
+<dt><strong>Create edited classifier</strong></dt>
+<dd><p class="first">This option will show a dialog to create a new classifier with a modified
+training-set based on the current classifer. This modified classifier is
+produced by one of several kNN-editing algorithms which the user can chose
+from. Depending on the chosen algorithm a set of parameters is displayed which
+can be changed by the user to tune the algorithm's results. Additionally the
+documentation for this algorithm and its parameters is displayed.</p>
+<img alt="images/knn_editing.png" src="images/knn_editing.png" />
+<p>After confirming this dialog, the user is prompted to select a name for the
+new classifier. The classifier will then be added to the icon display in the
+console under this name.</p>
+<p class="last">The produced classifier is usually improved either in terms of speed or
+classification accuracy, depending on the chosen algorithms and its
+parameters. For details about the algorithms, their parameters and how to
+include your own editing algorithms see the <a class="reference external" href="classify.html#improving-knn-classifiers-using-editing">classifier documentation</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="rules-menu">
+<h3><a class="toc-backref" href="#id43">Rules menu</a></h3>
+<p>Unstable.</p>
+<p>TODO: Write me.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

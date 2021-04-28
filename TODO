@@ -1,7 +1,8 @@
 ToDo list for Gamera
 ====================
 
- - port to python 3
+ - replace old buffer protocol (PyObject_CheckReadBuffer etc.)
+   with new buffer protocol (old protocol is phased out with Python 3.10)
  - More documentation of wrapped Vigra functions
  - More page layout analysis resp. page segmentation methods.
    E.g. text/graphics separation and more text line finding
@@ -18,5 +19,4 @@ ToDo list for Gamera
    writing and parsing library.
  - Write wrappers for external OCR engines like Tesseract OCR as
    optional plugins.
- - Add more image formats: JPEG (reading/writing), PDF (writing),
-   NIST special database 19 (reading)...
+ - Add more image formats: JPEG (reading/writing), PDF (writing)

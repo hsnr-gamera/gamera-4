@@ -3,69 +3,917 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>features.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Features</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="features">
+<h1 class="title">Features</h1>
 
-
-<p>b'nFeaturesn========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``area``n--------nn``FloatVector`` <strong>area</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">FloatVector</tt>n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnThe area of the bounding box (i.e. <em>nrows</em> * <em>ncols</em>).nn+---------------------------+n| <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|       |          |   X    <a href="#id5"><span class="problematic" id="id6">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** area()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [7000.0])\n\n\n\n``aspect_ratio``\n----------------\n\n``FloatVector`` **aspect_ratio** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nThe aspect ratio of the bounding box (i.e. *ncols* / *nrows*).\n\nThis feature is scale invariant.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |   X    <a href="#id7"><span class="problematic" id="id8">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** aspect_ratio()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.7])\n\n\n\n``black_area``\n--------------\n\n``FloatVector`` **black_area** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nThe simplest of all feature-generating functions, ``black_area``\nsimply returns the number of black pixels.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|       |     X    |   X    <a href="#id9"><span class="problematic" id="id10">|\n+-------+----------+--------+\n\n.. warning:: This feature is not scale invariant.\n\n----------\n\n**Example 1:** black_area()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [1518.0])\n\n\n\n``compactness``\n---------------\n\n``FloatVector`` **compactness** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nCompactness is the volume to surface ratio. Highly ornate connected\ncomponents have a low compactness, whereas a perfect circle has a \nhigh compactness. The present implementation of this feature in\nGamera does however not return the compactness, but its *inverse*,\ni.e. the surface to volume ratio.\n\nSince this function requires allocation and deallocation of\nmemory, it is relatively slow.  However, it has proven to be a\nvery useful feature in many cases.\n\nThis feature is not scale invariant, because, as\nthe image is scaled by *a*, the surface increases proportional to *a*\nwhile the volume grows with *a^2*.\nThis is currently not corrected for.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|       |    X     |   X    <a href="#id11"><span class="problematic" id="id12">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** compactness()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.5276679841897234])\n\n\n\n``diagonal_projection``\n-----------------------\n\n``FloatVector`` **diagonal_projection** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Andrew Hankinson\n\n\nComputes the ratio of sum of the interquartile (center plusminus half width)\nrotated projections at +/- 45 degrees.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |        <a href="#id13"><span class="problematic" id="id14">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** diagonal_projection()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.8093883357041253])\n\n\n\n``fourier_broken``\n------------------\n\n``FloatVector`` **fourier_broken** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: fourier_features.py\n:Author: Christian Brandt and Christoph Dalitz\n\n\nFourier descriptor for arbitrary (not necessarily connected) shapes\naccording to equations (18) and (19) in \n\n  C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:\n  `Fourier Descriptors for Broken Shapes`__.\n  EURASIP Journal on Advances in Signal Processing 2013:161, 2013\n \nThe coefficient c_0 is used for scale normalisation. The \nabsolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are \nreturned.\n\n    +---------------------------+\n    | **Invariant to:**         |  \n    +-------+----------+--------+\n    | scale | rotation | mirror | \n    +-------+----------+--------+\n    |   X   |     X    |        |\n    +-------+----------+--------+\n\n.. __: http://dx.doi.org/10.1186/1687-6180-2013-161\n\n\n----------\n\n**Example 1:** fourier_broken()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [1.0, 0.02142828360121643, 0.014612796315609201, 0.1495321921926191, 0.1359123070524482, 0.09670401182040583, 0.03262759415868247, 0.0237157790432664, 0.01754772234258709, 0.0067814576101620895, 0.015363120266972848, 0.021162618823014172, 0.018017956206137546, 0.01756079519393544, 0.011530544698179443, 0.0053427432030605446, 0.00415364606145243, 0.013335064359944755, 0.013186805552803925, 0.011689748562071554, 0.011607336951062768, 0.0001842312399756008, 0.002473830584174222, 0.007069049350917071, 0.006343859341554472, 0.010895894711687391, 0.010494846336294338, 0.00293067888238877, 0.001925719165360069, 0.002426025360094545, 0.0009863037535571553, 0.002197954601884808, 0.005170996123540047, 0.003123113017560981, 0.0027080016082946298, 0.0015581678913639168, 0.0016191030003190835, 0.002599033242677227, 0.0037265469302364806, 0.0016236926711151408, 0.0015624885792808387, 0.0022017602733647858, 0.0011244781683759759, 0.001793232574190955, 0.0008852954917615224, 0.0013942456903604087, 0.0011666318489265358, 0.002078467872437278])\n\n\n\n``moments``\n-----------\n\n``FloatVector`` **moments** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nReturns *moments* of the image.\n\nThe first two elements of the returned ``FloatVector`` are the \ncenter of gravity on *x* and *y* axis normalized by width and height,\nrespectively. The following seven entries are the \n*normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For their\ndefinition, see Gonzalez, Woods: &quot;Digital Image Processing&quot;,\nPrentice Hall, second edition (2002).\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |        <a href="#id15"><span class="problematic" id="id16">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** moments()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.5015848465753948, 0.5456608243169508, 0.19879033815007144, 0.4166108441912556, -0.12548447613565852, 0.006243076385811907, 0.10423298400666886, -0.04951029064645005, -0.0795276505095402])\n\n\n\n``ncols_feature``\n-----------------\n\n``FloatVector`` **ncols_feature** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nSimply the number of cols. As this feature is *not* scale\ninvariant, it is helpful for distinguishing similar symbols of\ndifferent size.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|       |          |   X    <a href="#id17"><span class="problematic" id="id18">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** ncols_feature()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [70.0])\n\n\n\n``nholes``\n----------\n\n``FloatVector`` **nholes** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nComputes for each row or column the average number of white runs not\n\ttouching the border. From these values, the average over all rows and\n\tall columns is returned.\n\nThe elements of the returned ``FloatVector`` are:\n\n0. vertical\n1. horizontal\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |   X    <a href="#id19"><span class="problematic" id="id20">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** nholes()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [1.8857142857142857, 0.96])\n\n\n\n``nholes_extended``\n-------------------\n\n``FloatVector`` **nholes_extended** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nDivides the image into four strips and then does a nholes_\nanalysis on each of those strips. This is first done vertically\nand then horizontally, resulting in a total of eight feature values.\n\nThe elements of the returned ``FloatVector`` are:\n\n0 - 3\n  vertical ``nholes`` for each of the strips in order left to right.\n4 - 7\n  horizonal ``nholes`` for each of the strips in order top to bottom.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |        <a href="#id21"><span class="problematic" id="id22">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** nholes_extended()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.17142857142857143, 2.5142857142857142, 2.742857142857143, 1.8857142857142857, 0.0, 1.6, 1.52, 0.72])\n\n\n\n``nrows_feature``\n-----------------\n\n``FloatVector`` **nrows_feature** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nSimply the number of rows. As this feature is *not* scale\ninvariant, it is helpful for distinguishing similar symbols of\ndifferent size.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|       |          |   X    <a href="#id23"><span class="problematic" id="id24">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** nrows_feature()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [100.0])\n\n\n\n``skeleton_features``\n---------------------\n\n``FloatVector`` **skeleton_features** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nGenerates a number of features based on the skeleton of an image.\nFirst, the image in skeletonized using the Lee and Chen algorithm,\nwhich guarantees that the pixels of the resulting skeleton are\nnever more than 4-connected.  Then, this skeleton is analysed for\na number of properties:\n\n0. Number of X joints (4-connected pixels)\n1. Number of T joints (3-connected pixels)\n2. Average number of bend points (pixels which do not form a horizontal or\n   vertical line with its neighbors)\n3. Number of end points (1-connected pixels)\n4. Number of *x*-axis crossings with respect to the *x*-axis through the center of mass\n5. Number of *y*-axis crossings with respect to the *y*-axis through the center of mass\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |   X    <a href="#id25"><span class="problematic" id="id26">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** skeleton_features()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [4.0, 15.0, 0.4172661870503597, 12.0, 4.0, 3.0])\n\n\n\n``top_bottom``\n--------------\n\n``FloatVector`` **top_bottom** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nFeatures useful only for segmentation-free analysis.  Currently,\nthe first feature is the first row containing a black pixel, and\nthe second feature is the last row containing a black pixel.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |   X    <a href="#id27"><span class="problematic" id="id28">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** top_bottom()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.0, 0.99])\n\n\n\n``volume``\n----------\n\n``FloatVector`` **volume** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nThe percentage of black pixels within the rectangular bounding box\nof the image.  Result in range (0, 1].\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |   X    <a href="#id29"><span class="problematic" id="id30">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** volume()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.21685714285714286])\n\n\n\n``volume16regions``\n-------------------\n\n``FloatVector`` **volume16regions** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nDivides the image into a 4 x 4 grid of 16 regions and calculates\nthe volume within each. This feature is also known as &quot;zoning&quot; method.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |        <a href="#id31"><span class="problematic" id="id32">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** volume16regions()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.0, 0.18588235294117647, 0.548235294117647, 0.06823529411764706, 0.0, 0.21777777777777776, 0.051111111111111114, 0.43555555555555553, 0.08470588235294117, 0.46352941176470586, 0.47058823529411764, 0.3270588235294118, 0.34444444444444444, 0.18222222222222223, 0.035555555555555556, 0.07777777777777778])\n\n\n\n``volume64regions``\n-------------------\n\n``FloatVector`` **volume64regions** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Michael Droettboom and Karl MacMillan\n\n\nDivides the image into an 8 x 8 grid of 64 regions and calculates\nthe volume within each. This feature is also known as &quot;zoning&quot; method.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |          |        <a href="#id33"><span class="problematic" id="id34">|\n+-------+----------+--------+\n\n----------\n\n**Example 1:** volume64regions()\n\n..  image:: images/OneBit_generic.png\n   :height: 99\n   :width: 69\n\n*result* = array(\'d\', [0.0, 0.0, 0.0, 0.009615384615384616, 0.25, 0.125, 0.0625, 0.0, 0.0, 0.0, 0.009259259259259259, 0.6581196581196581, 0.7962962962962963, 0.9401709401709402, 0.21296296296296297, 0.0, 0.0, 0.0, 0.3148148148148148, 0.19658119658119658, 0.0, 0.18803418803418803, 0.7037037037037037, 0.15384615384615385, 0.0, 0.0, 0.12962962962962962, 0.23076923076923078, 0.0, 0.008547008547008548, 0.7407407407407407, 0.18803418803418803, 0.07291666666666667, 0.0, 0.1875, 0.9807692307692307, 0.9895833333333334, 0.8557692307692307, 0.5104166666666666, 0.21153846153846154, 0.26851851851851855, 0.0, 0.5648148148148148, 0.13675213675213677, 0.1111111111111111, 0.03418803418803419, 0.42592592592592593, 0.18803418803418803, 0.42592592592592593, 0.0, 0.37962962962962965, 0.06837606837606838, 0.12037037037037036, 0.02564102564102564, 0.16666666666666666, 0.1452991452991453, 0.32407407407407407, 0.6324786324786325, 0.3055555555555556, 0.0, 0.0, 0.0, 0.0, 0.0])\n\n\n\n``zernike_moments``\n-------------------\n\n``FloatVector`` **zernike_moments** ()\n\n\n:Operates on: ``Image`` [OneBit]\n:Returns: ``FloatVector``\n:Category: Features\n:Defined in: features.py\n:Author: Robert Butz, Fabian Schmitt, Christoph Dalitz\n\n\nComputes the absolute values of the Normalized Zernike Moments up to\norder six.\n\nZernike moments are the scalar product in the complex L2\nHilbert space between the image and the complex Zernike polynomials.\nThis results in complex values, the absolute values of which are\ninvariant under image rotation and reflection. To make them additionally\nscale invariant, different normalization schemes have been suggested.\nThe present implementation normalizes the Zernike moments by\ndivision with the zeroeth geometric moment *m00*, which results\nin an approximate scale invariance according to\nS. Belkasim, E. Hassan, T. Obeidi: &quot;Explicit invariance of Cartesian\nZernike moments.&quot; Pattern Recognition Letters 28, pp. 1969-1980 (2007)\n\nThe return values are the absolute values of\n*A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.\nThe moments *A00* and *A11* are not computed because these are constant\nunder the used normalization scheme.\n\n+---------------------------+\n|</span></a> <strong>Invariant to:</strong>         |  n+-------+----------+--------+n| scale | rotation | mirror | n+-------+----------+--------+n|   X   |    X     |   X    <a href="#id3"><span class="problematic" id="id4">|</span></a>n+-------+----------+--------+nn----------nn**Example 1:** zernike_moments()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn*result* = array('d', [0.41985994859323733, 0.14446675451280785, 0.19930745874798886, 0.12285513319379245, 0.24576011020129576, 0.09126205693022849, 0.08813297730267446, 0.11505822141131866, 0.12461255166774005, 0.10456963336198771, 0.07185503783903133, 0.10729227059728876, 0.06994988520126252, 0.07362673513981027])nnnn``zernike_moments_plugin``n--------------------------nn``FloatVector`` <strong>zernike_moments_plugin</strong> (int <em>order</em> = 6)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale]n:Returns: <tt class="docutils literal">FloatVector</tt>n:Category: Featuresn:Defined in: features.pyn:Author: Christoph Dalitz, Robert Butz, Fabian SchmittnnnComputes the absolute values of the Normalized Zernike Moments up tonthe given order. This is separate from the feature <em>zernike_moments</em>,nbecause features only support onebit images, so we need a differentnfunction for greyscale images.nnZernike moments are the scalar product in the complex L2nHilbert space between the image and the complex Zernike polynomials.nThis results in complex values, the absolute values of which areninvariant under image rotation and reflection. To make them additionallynscale invariant, different normalization schemes have been suggested.nThe present implementation normalizes the Zernike moments byndivision with the zeroeth geometric moment <em>m00</em>, which resultsnin an approximate scale invariance according tonS. Belkasim, E. Hassan, T. Obeidi: &quot;Explicit invariance of CartesiannZernike moments.&quot; Pattern Recognition Letters 28, pp. 1969-1980 (2007)nnThe return values are the absolute values ofn*A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.nThe moments <em>A00</em> and <em>A11</em> are not computed because these are constantnunder the used normalization scheme.nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** area()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [7000.0])nnnn``aspect_ratio``n----------------nn``FloatVector`` **aspect_ratio** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnThe aspect ratio of the bounding box (i.e. *ncols* / *nrows*).nnThis feature is scale invariant.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** aspect_ratio()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.7])nnnn``black_area``n--------------nn``FloatVector`` **black_area** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnThe simplest of all feature-generating functions, ``black_area``nsimply returns the number of black pixels.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn.. warning:: This feature is not scale invariant.nn----------nn**Example 1:** black_area()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [1518.0])nnnn``compactness``n---------------nn``FloatVector`` **compactness** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnCompactness is the volume to surface ratio. Highly ornate connectedncomponents have a low compactness, whereas a perfect circle has a nhigh compactness. The present implementation of this feature innGamera does however not return the compactness, but its *inverse*,ni.e. the surface to volume ratio.nnSince this function requires allocation and deallocation ofnmemory, it is relatively slow. However, it has proven to be anvery useful feature in many cases.nnThis feature is not scale invariant, because, asnthe image is scaled by *a*, the surface increases proportional to *a*nwhile the volume grows with *a^2*.nThis is currently not corrected for.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** compactness()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.5276679841897234])nnnn``diagonal_projection``n-----------------------nn``FloatVector`` **diagonal_projection** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Andrew HankinsonnnnComputes the ratio of sum of the interquartile (center plusminus half width)nrotated projections at +/- 45 degrees.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** diagonal_projection()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.8093883357041253])nnnn``fourier_broken``n------------------nn``FloatVector`` **fourier_broken** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: fourier_features.pyn:Author: Christian Brandt and Christoph DalitznnnFourier descriptor for arbitrary (not necessarily connected) shapesnaccording to equations (18) and (19) in nn C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:n `Fourier Descriptors for Broken Shapes`__.n EURASIP Journal on Advances in Signal Processing 2013:161, 2013n nThe coefficient c_0 is used for scale normalisation. The nabsolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are nreturned.nn +---------------------------+n | **Invariant to:** | n +-------+----------+--------+n | scale | rotation | mirror | n +-------+----------+--------+n | X | X | |n +-------+----------+--------+nn.. __: http://dx.doi.org/10.1186/1687-6180-2013-161nnn----------nn**Example 1:** fourier_broken()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [1.0, 0.02142828360121643, 0.014612796315609201, 0.1495321921926191, 0.1359123070524482, 0.09670401182040583, 0.03262759415868247, 0.0237157790432664, 0.01754772234258709, 0.0067814576101620895, 0.015363120266972848, 0.021162618823014172, 0.018017956206137546, 0.01756079519393544, 0.011530544698179443, 0.0053427432030605446, 0.00415364606145243, 0.013335064359944755, 0.013186805552803925, 0.011689748562071554, 0.011607336951062768, 0.0001842312399756008, 0.002473830584174222, 0.007069049350917071, 0.006343859341554472, 0.010895894711687391, 0.010494846336294338, 0.00293067888238877, 0.001925719165360069, 0.002426025360094545, 0.0009863037535571553, 0.002197954601884808, 0.005170996123540047, 0.003123113017560981, 0.0027080016082946298, 0.0015581678913639168, 0.0016191030003190835, 0.002599033242677227, 0.0037265469302364806, 0.0016236926711151408, 0.0015624885792808387, 0.0022017602733647858, 0.0011244781683759759, 0.001793232574190955, 0.0008852954917615224, 0.0013942456903604087, 0.0011666318489265358, 0.002078467872437278])nnnn``moments``n-----------nn``FloatVector`` **moments** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns *moments* of the image.nnThe first two elements of the returned ``FloatVector`` are the ncenter of gravity on *x* and *y* axis normalized by width and height,nrespectively. The following seven entries are the n*normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For theirndefinition, see Gonzalez, Woods: &quot;Digital Image Processing&quot;,nPrentice Hall, second edition (2002).nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** moments()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.5015848465753948, 0.5456608243169508, 0.19879033815007144, 0.4166108441912556, -0.12548447613565852, 0.006243076385811907, 0.10423298400666886, -0.04951029064645005, -0.0795276505095402])nnnn``ncols_feature``n-----------------nn``FloatVector`` **ncols_feature** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnSimply the number of cols. As this feature is *not* scaleninvariant, it is helpful for distinguishing similar symbols ofndifferent size.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** ncols_feature()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [70.0])nnnn``nholes``n----------nn``FloatVector`` **nholes** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnComputes for each row or column the average number of white runs notnttouching the border. From these values, the average over all rows andntall columns is returned.nnThe elements of the returned ``FloatVector`` are:nn0. verticaln1. horizontalnn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** nholes()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [1.8857142857142857, 0.96])nnnn``nholes_extended``n-------------------nn``FloatVector`` **nholes_extended** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnDivides the image into four strips and then does a nholes_nanalysis on each of those strips. This is first done verticallynand then horizontally, resulting in a total of eight feature values.nnThe elements of the returned ``FloatVector`` are:nn0 - 3n vertical ``nholes`` for each of the strips in order left to right.n4 - 7n horizonal ``nholes`` for each of the strips in order top to bottom.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** nholes_extended()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.17142857142857143, 2.5142857142857142, 2.742857142857143, 1.8857142857142857, 0.0, 1.6, 1.52, 0.72])nnnn``nrows_feature``n-----------------nn``FloatVector`` **nrows_feature** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnSimply the number of rows. As this feature is *not* scaleninvariant, it is helpful for distinguishing similar symbols ofndifferent size.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** nrows_feature()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [100.0])nnnn``skeleton_features``n---------------------nn``FloatVector`` **skeleton_features** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnGenerates a number of features based on the skeleton of an image.nFirst, the image in skeletonized using the Lee and Chen algorithm,nwhich guarantees that the pixels of the resulting skeleton arennever more than 4-connected. Then, this skeleton is analysed forna number of properties:nn0. Number of X joints (4-connected pixels)n1. Number of T joints (3-connected pixels)n2. Average number of bend points (pixels which do not form a horizontal orn vertical line with its neighbors)n3. Number of end points (1-connected pixels)n4. Number of *x*-axis crossings with respect to the *x*-axis through the center of massn5. Number of *y*-axis crossings with respect to the *y*-axis through the center of massnn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** skeleton_features()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [4.0, 15.0, 0.4172661870503597, 12.0, 4.0, 3.0])nnnn``top_bottom``n--------------nn``FloatVector`` **top_bottom** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnFeatures useful only for segmentation-free analysis. Currently,nthe first feature is the first row containing a black pixel, andnthe second feature is the last row containing a black pixel.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** top_bottom()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.0, 0.99])nnnn``volume``n----------nn``FloatVector`` **volume** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnThe percentage of black pixels within the rectangular bounding boxnof the image. Result in range (0, 1].nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** volume()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.21685714285714286])nnnn``volume16regions``n-------------------nn``FloatVector`` **volume16regions** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnDivides the image into a 4 x 4 grid of 16 regions and calculatesnthe volume within each. This feature is also known as &quot;zoning&quot; method.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** volume16regions()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.0, 0.18588235294117647, 0.548235294117647, 0.06823529411764706, 0.0, 0.21777777777777776, 0.051111111111111114, 0.43555555555555553, 0.08470588235294117, 0.46352941176470586, 0.47058823529411764, 0.3270588235294118, 0.34444444444444444, 0.18222222222222223, 0.035555555555555556, 0.07777777777777778])nnnn``volume64regions``n-------------------nn``FloatVector`` **volume64regions** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Michael Droettboom and Karl MacMillannnnDivides the image into an 8 x 8 grid of 64 regions and calculatesnthe volume within each. This feature is also known as &quot;zoning&quot; method.nn+---------------------------+n&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/features.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+-------+----------+--------+nn----------nn**Example 1:** volume64regions()nn.. image:: images/OneBit_generic.pngn :height: 99n :width: 69nn*result* = array('d', [0.0, 0.0, 0.0, 0.009615384615384616, 0.25, 0.125, 0.0625, 0.0, 0.0, 0.0, 0.009259259259259259, 0.6581196581196581, 0.7962962962962963, 0.9401709401709402, 0.21296296296296297, 0.0, 0.0, 0.0, 0.3148148148148148, 0.19658119658119658, 0.0, 0.18803418803418803, 0.7037037037037037, 0.15384615384615385, 0.0, 0.0, 0.12962962962962962, 0.23076923076923078, 0.0, 0.008547008547008548, 0.7407407407407407, 0.18803418803418803, 0.07291666666666667, 0.0, 0.1875, 0.9807692307692307, 0.9895833333333334, 0.8557692307692307, 0.5104166666666666, 0.21153846153846154, 0.26851851851851855, 0.0, 0.5648148148148148, 0.13675213675213677, 0.1111111111111111, 0.03418803418803419, 0.42592592592592593, 0.18803418803418803, 0.42592592592592593, 0.0, 0.37962962962962965, 0.06837606837606838, 0.12037037037037036, 0.02564102564102564, 0.16666666666666666, 0.1452991452991453, 0.32407407407407407, 0.6324786324786325, 0.3055555555555556, 0.0, 0.0, 0.0, 0.0, 0.0])nnnn``zernike_moments``n-------------------nn``FloatVector`` **zernike_moments** ()nnn:Operates on: ``Image`` [OneBit]n:Returns: ``FloatVector``n:Category: Featuresn:Defined in: features.pyn:Author: Robert Butz, Fabian Schmitt, Christoph DalitznnnComputes the absolute values of the Normalized Zernike Moments up tonorder six.nnZernike moments are the scalar product in the complex L2nHilbert space between the image and the complex Zernike polynomials.nThis results in complex values, the absolute values of which areninvariant under image rotation and reflection. To make them additionallynscale invariant, different normalization schemes have been suggested.nThe present implementation normalizes the Zernike moments byndivision with the zeroeth geometric moment *m00*, which resultsnin an approximate scale invariance according tonS. Belkasim, E. Hassan, T. Obeidi: &quot;Explicit invariance of CartesiannZernike moments.&quot; Pattern Recognition Letters 28, pp. 1969-1980 (2007)nnThe return values are the absolute values ofn*A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.nThe moments *A00* and *A11* are not computed because these are constantnunder the used normalization scheme.nn+---------------------------+n&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#area" id="id2"><tt class="docutils literal">area</tt></a></li>
+<li><a class="reference internal" href="#aspect-ratio" id="id3"><tt class="docutils literal">aspect_ratio</tt></a></li>
+<li><a class="reference internal" href="#black-area" id="id4"><tt class="docutils literal">black_area</tt></a></li>
+<li><a class="reference internal" href="#compactness" id="id5"><tt class="docutils literal">compactness</tt></a></li>
+<li><a class="reference internal" href="#diagonal-projection" id="id6"><tt class="docutils literal">diagonal_projection</tt></a></li>
+<li><a class="reference internal" href="#fourier-broken" id="id7"><tt class="docutils literal">fourier_broken</tt></a></li>
+<li><a class="reference internal" href="#moments" id="id8"><tt class="docutils literal">moments</tt></a></li>
+<li><a class="reference internal" href="#ncols-feature" id="id9"><tt class="docutils literal">ncols_feature</tt></a></li>
+<li><a class="reference internal" href="#nholes" id="id10"><tt class="docutils literal">nholes</tt></a></li>
+<li><a class="reference internal" href="#nholes-extended" id="id11"><tt class="docutils literal">nholes_extended</tt></a></li>
+<li><a class="reference internal" href="#nrows-feature" id="id12"><tt class="docutils literal">nrows_feature</tt></a></li>
+<li><a class="reference internal" href="#skeleton-features" id="id13"><tt class="docutils literal">skeleton_features</tt></a></li>
+<li><a class="reference internal" href="#top-bottom" id="id14"><tt class="docutils literal">top_bottom</tt></a></li>
+<li><a class="reference internal" href="#volume" id="id15"><tt class="docutils literal">volume</tt></a></li>
+<li><a class="reference internal" href="#volume16regions" id="id16"><tt class="docutils literal">volume16regions</tt></a></li>
+<li><a class="reference internal" href="#volume64regions" id="id17"><tt class="docutils literal">volume64regions</tt></a></li>
+<li><a class="reference internal" href="#zernike-moments" id="id18"><tt class="docutils literal">zernike_moments</tt></a></li>
+<li><a class="reference internal" href="#zernike-moments-plugin" id="id19"><tt class="docutils literal">zernike_moments_plugin</tt></a></li>
+</ul>
 </div>
+<div class="section" id="area">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">area</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>area</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>The area of the bounding box (i.e. <em>nrows</em> * <em>ncols</em>).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> area()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [7000.0])</p>
+</div>
+<div class="section" id="aspect-ratio">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">aspect_ratio</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>aspect_ratio</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>The aspect ratio of the bounding box (i.e. <em>ncols</em> / <em>nrows</em>).</p>
+<p>This feature is scale invariant.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> aspect_ratio()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.7])</p>
+</div>
+<div class="section" id="black-area">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">black_area</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>black_area</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>The simplest of all feature-generating functions, <tt class="docutils literal">black_area</tt>
+simply returns the number of black pixels.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>X</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not scale invariant.</p>
+</div>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> black_area()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [1518.0])</p>
+</div>
+<div class="section" id="compactness">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">compactness</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>compactness</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Compactness is the volume to surface ratio. Highly ornate connected
+components have a low compactness, whereas a perfect circle has a
+high compactness. The present implementation of this feature in
+Gamera does however not return the compactness, but its <em>inverse</em>,
+i.e. the surface to volume ratio.</p>
+<p>Since this function requires allocation and deallocation of
+memory, it is relatively slow.  However, it has proven to be a
+very useful feature in many cases.</p>
+<p>This feature is not scale invariant, because, as
+the image is scaled by <em>a</em>, the surface increases proportional to <em>a</em>
+while the volume grows with <em>a^2</em>.
+This is currently not corrected for.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>X</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> compactness()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.5276679841897234])</p>
+</div>
+<div class="section" id="diagonal-projection">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">diagonal_projection</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>diagonal_projection</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Andrew Hankinson</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the ratio of sum of the interquartile (center plusminus half width)
+rotated projections at +/- 45 degrees.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> diagonal_projection()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.8093883357041253])</p>
+</div>
+<div class="section" id="fourier-broken">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">fourier_broken</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>fourier_broken</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">fourier_features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christian Brandt and Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Fourier descriptor for arbitrary (not necessarily connected) shapes
+according to equations (18) and (19) in</p>
+<blockquote>
+C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:
+<a class="reference external" href="http://dx.doi.org/10.1186/1687-6180-2013-161">Fourier Descriptors for Broken Shapes</a>.
+EURASIP Journal on Advances in Signal Processing 2013:161, 2013</blockquote>
+<p>The coefficient c_0 is used for scale normalisation. The
+absolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are
+returned.</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> fourier_broken()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [1.0, 0.02142828360121643, 0.014612796315609201, 0.1495321921926191, 0.1359123070524482, 0.09670401182040597, 0.03262759415868247, 0.023715779043266275, 0.01754772234258709, 0.0067814576101620895, 0.015363120266972848, 0.021162618823014172, 0.018017956206137543, 0.017560795193935257, 0.011530544698179445, 0.0053427432030605446, 0.00415364606145243, 0.013335064359944658, 0.013186805552803925, 0.011689748562071554, 0.011607336951062766, 0.00018423123997530705, 0.002473830584174222, 0.007069049350916601, 0.006343859341554472, 0.010895894711687391, 0.010494846336294338, 0.00293067888238877, 0.001925719165360069, 0.002426025360094545, 0.000986303753557155, 0.0021979546018848083, 0.005170996123540047, 0.003123113017560981, 0.00270800160829463, 0.0015581678913639168, 0.0016191030003190835, 0.0025990332426772266, 0.0037265469302364806, 0.0016236926711151408, 0.0015624885792808387, 0.002201760273364928, 0.0011244781683759759, 0.00179323257419093, 0.0008852954917615224, 0.0013942456903604087, 0.0011666318489265358, 0.002078467872437278])</p>
+</div>
+<div class="section" id="moments">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">moments</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>moments</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns <em>moments</em> of the image.</p>
+<p>The first two elements of the returned <tt class="docutils literal">FloatVector</tt> are the
+center of gravity on <em>x</em> and <em>y</em> axis normalized by width and height,
+respectively. The following seven entries are the
+<em>normalized central moments</em> (<em>u20,u02,u11,u30,u12,u21,u03</em>). For their
+definition, see Gonzalez, Woods: &quot;Digital Image Processing&quot;,
+Prentice Hall, second edition (2002).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> moments()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.5015848465753948, 0.5456608243169508, 0.19879033815007144, 0.4166108441912556, -0.12548447613565852, 0.006243076385811907, 0.10423298400666886, -0.04951029064645005, -0.0795276505095402])</p>
+</div>
+<div class="section" id="ncols-feature">
+<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">ncols_feature</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>ncols_feature</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Simply the number of cols. As this feature is <em>not</em> scale
+invariant, it is helpful for distinguishing similar symbols of
+different size.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> ncols_feature()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [70.0])</p>
+</div>
+<div class="section" id="nholes">
+<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">nholes</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>nholes</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Computes for each row or column the average number of white runs not</dt>
+<dd>touching the border. From these values, the average over all rows and
+all columns is returned.</dd>
+</dl>
+<p>The elements of the returned <tt class="docutils literal">FloatVector</tt> are:</p>
+<ol class="arabic simple" start="0">
+<li>vertical</li>
+<li>horizontal</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> nholes()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [1.8857142857142857, 0.96])</p>
+</div>
+<div class="section" id="nholes-extended">
+<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">nholes_extended</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>nholes_extended</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Divides the image into four strips and then does a <a class="reference internal" href="#nholes">nholes</a>
+analysis on each of those strips. This is first done vertically
+and then horizontally, resulting in a total of eight feature values.</p>
+<p>The elements of the returned <tt class="docutils literal">FloatVector</tt> are:</p>
+<dl class="docutils">
+<dt>0 - 3</dt>
+<dd>vertical <tt class="docutils literal">nholes</tt> for each of the strips in order left to right.</dd>
+<dt>4 - 7</dt>
+<dd>horizonal <tt class="docutils literal">nholes</tt> for each of the strips in order top to bottom.</dd>
+</dl>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> nholes_extended()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.17142857142857143, 2.5142857142857142, 2.742857142857143, 1.8857142857142857, 0.0, 1.6, 1.52, 0.72])</p>
+</div>
+<div class="section" id="nrows-feature">
+<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">nrows_feature</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>nrows_feature</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Simply the number of rows. As this feature is <em>not</em> scale
+invariant, it is helpful for distinguishing similar symbols of
+different size.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> nrows_feature()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [100.0])</p>
+</div>
+<div class="section" id="skeleton-features">
+<h1><a class="toc-backref" href="#id13"><tt class="docutils literal">skeleton_features</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>skeleton_features</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Generates a number of features based on the skeleton of an image.
+First, the image in skeletonized using the Lee and Chen algorithm,
+which guarantees that the pixels of the resulting skeleton are
+never more than 4-connected.  Then, this skeleton is analysed for
+a number of properties:</p>
+<ol class="arabic simple" start="0">
+<li>Number of X joints (4-connected pixels)</li>
+<li>Number of T joints (3-connected pixels)</li>
+<li>Average number of bend points (pixels which do not form a horizontal or
+vertical line with its neighbors)</li>
+<li>Number of end points (1-connected pixels)</li>
+<li>Number of <em>x</em>-axis crossings with respect to the <em>x</em>-axis through the center of mass</li>
+<li>Number of <em>y</em>-axis crossings with respect to the <em>y</em>-axis through the center of mass</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> skeleton_features()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [4.0, 15.0, 0.4172661870503597, 12.0, 4.0, 3.0])</p>
+</div>
+<div class="section" id="top-bottom">
+<h1><a class="toc-backref" href="#id14"><tt class="docutils literal">top_bottom</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>top_bottom</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Features useful only for segmentation-free analysis.  Currently,
+the first feature is the first row containing a black pixel, and
+the second feature is the last row containing a black pixel.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> top_bottom()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.0, 0.99])</p>
+</div>
+<div class="section" id="volume">
+<h1><a class="toc-backref" href="#id15"><tt class="docutils literal">volume</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>volume</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>The percentage of black pixels within the rectangular bounding box
+of the image.  Result in range (0, 1].</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> volume()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.21685714285714286])</p>
+</div>
+<div class="section" id="volume16regions">
+<h1><a class="toc-backref" href="#id16"><tt class="docutils literal">volume16regions</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>volume16regions</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Divides the image into a 4 x 4 grid of 16 regions and calculates
+the volume within each. This feature is also known as &quot;zoning&quot; method.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> volume16regions()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.0, 0.18588235294117647, 0.548235294117647, 0.06823529411764706, 0.0, 0.21777777777777776, 0.051111111111111114, 0.43555555555555553, 0.08470588235294117, 0.46352941176470586, 0.47058823529411764, 0.3270588235294118, 0.34444444444444444, 0.18222222222222223, 0.035555555555555556, 0.07777777777777778])</p>
+</div>
+<div class="section" id="volume64regions">
+<h1><a class="toc-backref" href="#id17"><tt class="docutils literal">volume64regions</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>volume64regions</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Divides the image into an 8 x 8 grid of 64 regions and calculates
+the volume within each. This feature is also known as &quot;zoning&quot; method.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> volume64regions()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.0, 0.0, 0.0, 0.009615384615384616, 0.25, 0.125, 0.0625, 0.0, 0.0, 0.0, 0.009259259259259259, 0.6581196581196581, 0.7962962962962963, 0.9401709401709402, 0.21296296296296297, 0.0, 0.0, 0.0, 0.3148148148148148, 0.19658119658119658, 0.0, 0.18803418803418803, 0.7037037037037037, 0.15384615384615385, 0.0, 0.0, 0.12962962962962962, 0.23076923076923078, 0.0, 0.008547008547008548, 0.7407407407407407, 0.18803418803418803, 0.07291666666666667, 0.0, 0.1875, 0.9807692307692307, 0.9895833333333334, 0.8557692307692307, 0.5104166666666666, 0.21153846153846154, 0.26851851851851855, 0.0, 0.5648148148148148, 0.13675213675213677, 0.1111111111111111, 0.03418803418803419, 0.42592592592592593, 0.18803418803418803, 0.42592592592592593, 0.0, 0.37962962962962965, 0.06837606837606838, 0.12037037037037036, 0.02564102564102564, 0.16666666666666666, 0.1452991452991453, 0.32407407407407407, 0.6324786324786325, 0.3055555555555556, 0.0, 0.0, 0.0, 0.0, 0.0])</p>
+</div>
+<div class="section" id="zernike-moments">
+<h1><a class="toc-backref" href="#id18"><tt class="docutils literal">zernike_moments</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>zernike_moments</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Robert Butz, Fabian Schmitt, Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the absolute values of the Normalized Zernike Moments up to
+order six.</p>
+<p>Zernike moments are the scalar product in the complex L2
+Hilbert space between the image and the complex Zernike polynomials.
+This results in complex values, the absolute values of which are
+invariant under image rotation and reflection. To make them additionally
+scale invariant, different normalization schemes have been suggested.
+The present implementation normalizes the Zernike moments by
+division with the zeroeth geometric moment <em>m00</em>, which results
+in an approximate scale invariance according to
+S. Belkasim, E. Hassan, T. Obeidi: &quot;Explicit invariance of Cartesian
+Zernike moments.&quot; Pattern Recognition Letters 28, pp. 1969-1980 (2007)</p>
+<p>The return values are the absolute values of
+<em>A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66</em>.
+The moments <em>A00</em> and <em>A11</em> are not computed because these are constant
+under the used normalization scheme.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="3"><strong>Invariant to:</strong></td>
+</tr>
+<tr><td>scale</td>
+<td>rotation</td>
+<td>mirror</td>
+</tr>
+<tr><td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> zernike_moments()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('d', [0.41985994859323733, 0.14446675451280785, 0.19930745874798883, 0.12285513319379245, 0.24576011020129576, 0.09126205693022849, 0.08813297730267446, 0.11505822141131868, 0.12461255166774005, 0.10456963336198771, 0.07185503783903133, 0.10729227059728878, 0.06994988520126254, 0.07362673513981027])</p>
+</div>
+<div class="section" id="zernike-moments-plugin">
+<h1><a class="toc-backref" href="#id19"><tt class="docutils literal">zernike_moments_plugin</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>zernike_moments_plugin</strong> (int <em>order</em> = 6)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Features</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">features.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz, Robert Butz, Fabian Schmitt</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the absolute values of the Normalized Zernike Moments up to
+the given order. This is separate from the feature <em>zernike_moments</em>,
+because features only support onebit images, so we need a different
+function for greyscale images.</p>
+<p>Zernike moments are the scalar product in the complex L2
+Hilbert space between the image and the complex Zernike polynomials.
+This results in complex values, the absolute values of which are
+invariant under image rotation and reflection. To make them additionally
+scale invariant, different normalization schemes have been suggested.
+The present implementation normalizes the Zernike moments by
+division with the zeroeth geometric moment <em>m00</em>, which results
+in an approximate scale invariance according to
+S. Belkasim, E. Hassan, T. Obeidi: &quot;Explicit invariance of Cartesian
+Zernike moments.&quot; Pattern Recognition Letters 28, pp. 1969-1980 (2007)</p>
+<p>The return values are the absolute values of
+<em>A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66</em>.
+The moments <em>A00</em> and <em>A11</em> are not computed because these are constant
+under the used normalization scheme.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

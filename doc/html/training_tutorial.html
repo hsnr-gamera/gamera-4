@@ -3,25 +3,329 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>training_tutorial.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Training tutorial</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="training-tutorial">
+<h1 class="title">Training tutorial</h1>
 
-
-<p>b'=================nTraining tutorialn=================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnThis tutorial walks through the process of creating training datanusing the Gamera GUI.  The training GUI is designed to be as flexiblenas possible, so this tutorial represents just one possible approach,nwhile introducing most of the key features and concepts.nnFor this example, we will be training on pages from then`Statistical Accounts of Scotland`__.  The demo pages used in thisntutorial will be made available through the Gamera website soon.nn.. __: <a class="reference external" href="http://edina.ac.uk/statacc/nnThe">http://edina.ac.uk/statacc/nnThe</a> goal during the run of this tutorial is to create enough trainingndata that the classifier will perform well on new pages.nnStarting the GUIn----------------nnThere is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your systemn(this location is platform-specific, see <a href="#id3"><span class="problematic" id="id4">`Building and Installing\nGamera`__</span></a>).  Run it to start the Gamera GUI.nn.. __: install.htmlnnConsole windown--------------nn  .. image:: images/tutorial_console.pngnnThe first thing displayed is the console window.  It won't be used fornanything in this tutorial, other than starting up the classifierninterface.nnClassifier windown-----------------nnFrom the console window, start the interactive classifier window.nn  <strong>Classify -&gt; Interactive Classifier</strong>  nnWhen prompted for a name for the result, simply clickn**Ok** to accept the default.  This will open an empty classifier window.nn  .. image:: images/tutorial_classifier_window.pngnnThe classifier window always starts from a clean slate: there is nondata in the classifier and it does not yet have an image to use as ansource.nnOpening and segmenting an imagen-------------------------------nnFirst, load a page image.  nn  <strong>Image -&gt; Open and segment image...</strong>nnThis loads an image into the training interface, segments it into itsnparts, and then puts those parts into the page glyphs pane in thentraining interface.nnThe method used to segment the image into its parts is user-selectable,nand will depend on the type of documents being trained.  For instance,nif the document were sheet music, the segmenter would need to firstnremove the staff lines.  Most often you will use the defaultnsegmentation method, connected component analysis (<tt class="docutils literal">cc_analysis</tt>),nwhich will separate all of the contiguous groups of black pixels on thenpage.nnFor the purposes of this tutorial, select the filename for the first pagenand use the default segmentation method <tt class="docutils literal">cc_analysis</tt>.nn   .. image:: images/tutorial_open_and_segment_image.pngnnWhen the page has been loaded, the connected components will bendisplayed in the <strong>Page glyphs</strong> pane (upper right), and the originalnimage will be in the pane below.nn   .. image:: images/tutorial_starting_training.pngnnSelecting glyphsn----------------nnGlyphs can be selected in a number of ways:nn  - By clicking and dragging across cells in the page glyphs pane.nn  - By clicking on glyphs in the original image display.nn  - By dragging a bounding box around glyphs in the original image display.nn  - Adding/removing glyphs from the selection by selecting whilen    holding down the <strong>Shift</strong> key.nnThe selection in the page glyphs pane and on the original image arenautomatically synchronized.  The status bar displayed the number ofnselected glyphs.nnExperiment with the different selection methods to get a feel for theninterface.nn   .. image:: images/tutorial_selection.pngnn   .. image:: images/tutorial_selection2.pngnnBeginning trainingn------------------nnNow, to begin training.  Training is simply the act of assigningnnames to each of the glyphs.  In Gamera, these names are made up ofndot-delimited tokens.  (See <a href="#id3"><span class="problematic" id="id5">`class names`__</span></a>.)nn.. __: gui.html#class-namesnnTo see what's happening behind the scenes as we're training, open then**Classifier glyphs** pane by pressing the <strong>+</strong> button in the <strong>Pagenglyphs</strong> title bar.nn   .. image:: images/tutorial_classifier_glyphs_pane.pngnnSince the example being used for this tutorial is text, the charactersnwill be named to conform to Unicode character names.  This will allownclass names to conveniently map to characters when OCR is output fromna Gamera-based system.  In Unicode, the character name for <tt class="docutils literal">A</tt> isn``LATIN CAPITAL LETTER A`` and for <tt class="docutils literal">a</tt> is <tt class="docutils literal">LATIN SMALL LETTER A</tt>netc..  To fit these names into Gamera's naming convention, they can benadapted to <tt class="docutils literal">latin.capital.letter.a</tt> and <tt class="docutils literal">latin.small.letter.a</tt>.nOf course, for non-textual documents, a different naming conventionnmay have to be devised.nnThe page glyphs are sorted roughly by size.  The first few glyphs arengenerally specks of dust or bits of broken characters on the page.nIt's generally easiest to start with the glyphs that make up wholencharacters and then deal with the broken characters later.nnTo classify a glyph, select it, type its name and press <strong>Enter</strong>.nnFor this example, scroll down to where the first few legitimatencharacters appear.  In the example below, the <tt class="docutils literal">w</tt> was selected, thenn``latin.small.letter.w`` was entered, followed by <strong>Enter</strong> to confirmnthe classification.nn  .. image:: images/tutorial_first_character.pngnnNote that the following things happen upon manual classification:nn  - Most importantly, the glyph is added to the classifier (as shownn    by its appearance in the classifier glyphs pane).nn  - The glyph changes color to green, which indicates that it wasn    classified by a human trainer.nn  - The class name is added to the tree of class names on the left.nn  - The status bar at the bottom is updated to show how many glyphsn    are in the classifier.nnBootstrap the classifier by continuing in this fashion forna dozen or more characters.  If you make a mistake, you can simplynreselect the glyph and give it a new class name.  Note that you cannalso select multiple glyphs and train them in one step, as illustratednin the following picture.nn  .. image:: images/tutorial_more_training.pngnnUsing auto-moven---------------nnOf course, continuing to train in this fashion gets tedious andninvolves a lot of &quot;mousing around&quot;.  The <strong>auto-move</strong> mode willnautomatically move to the next glyph after each glyph is trained.  Itnwill also guess the class of unclassified symbols automatically,nmeaning the trainer only needs to confirm or correct the classifier'snguess.nnTurn on <strong>auto-move</strong> mode by clicking the nn  .. image:: images/icon_next_unclass.pngnntoolbar button.  When this button is toggled on, the trainingninterface will automatically move to the next unclassified (white)nglyph after each manual classification is made.nnTo try it out, select an unclassified glyph to start with.  Type itsnclass name and press <strong>Enter</strong>.  The selection will automatically movento the next unclassified glyph, with a &quot;guess&quot; displayed in a boxnunderneath the glyph and automatically entered in the textbox in the uppernleft.  If this guess is correct, simply press <strong>Enter</strong> to confirm andnadd the glyph to the classifier with that class name.  If the guess isnincorrect, it may be edited and then submitted by pressing <strong>Enter</strong>.nn  .. image:: images/tutorial_auto_move.pngnnOther useful keystrokes while in <strong>auto-move</strong> mode are:nn  - <strong>F12</strong>: Skip the currently selected glyph and move on to the nextn      one.n  - <strong>F11</strong>: Back up one glyph to reclassify.nnIt's also useful to close the <strong>Classifier glyphs</strong> pane to increasentraining speed.nnWith <strong>auto-move</strong> mode and these keystrokes, it is possible to trainnquite efficiently by keeping one's hands on the keyboard.nnTraining broken charactersn--------------------------nnOccasionally, characters will be broken into multiple glyphs, neither because the ink has degraded or the imaging isnpoor.  Also, it may be that the character itself is intentionallynbroken, such as the lower case <em>i</em>.nnFor these cases, in the original image display, drag a bounding boxnaround the connected components that make up the character.  (It maynbe useful to zoom in on the image.)  Then train the collection with anclass name beginning with <tt class="docutils literal">_group.</tt>.  nnFor instance, in the following example, the parts that make up thenletter <tt class="docutils literal">N</tt> are selected, and then trained asn``_group.latin.capital.letter.n``.nn  .. image:: images/tutorial_grouping.pngnnThe union of the parts will be stored as a single glyph in the training ndataset. Note that when you later in the recognition stage want to recognizenglyphs that are broken, intentionally like the letter &quot;i&quot; or unintentionally,nyou must use the <tt class="docutils literal">group_list_automatic</tt> classifier method.nnSaving the training datan------------------------nnIt is good practice to regularly save the training data.  Use the menunitem nn  <strong>File -&gt; Classifier glyphs -&gt; Save glyphs in classifier...</strong> nnto save the training data.nn.. note:: There is no auto-save feature, so be sure to save your workn          often.nnOnce the entire page has been classified, save it to a file calledn``tutorial_page1.xml``.  nn.. note:: If you don't want to take the time to trainn          the entire page, you can load this training data from then          tutorial using the menu option <strong>File -&gt; Classifier glyphsn          -&gt; Open glyphs into classifier...</strong> and selectingn          <tt class="docutils literal">tutorial_page1.xml</tt>.nnOn to the second pagen---------------------nnOnce the first page has been trained, the next page can be loaded innby using nn  <strong>Image -&gt; Open and segment image...</strong>nnNote that the <strong>page glyphs</strong> have been replaced with the contents ofnthe new page, but the <strong>classifier glyphs</strong> (the training data)nremains the same.nnSince there is already some training data in the classifier, it won'tnneed to be bootstrapped as it was for the first page.  The existingnclassifier data can be used to classify the second page, and then thenuser can go through and correct the classifier's mistakes.nnTo run the classifier over the <strong>page glyphs</strong>, use the menu optionnn  <strong>Classifier -&gt; Group and guess all</strong>.  nnAfter some time, all of the glyphs on the page will have beennclassified, and grouped if necessary.  Note that the automaticallynclassified glyphs are displayed in red.  The glyphs on the page willnbe sorted by their class name.  Within each class name it is fairlyneasy to scan for incorrectly identified symbols.  Note that the glyphsnwithin each class name are sorted by decreasing confidence.  Often thenglyphs near the beginning will appear more like the training data andnthe glyphs near the end will be more unlike the training data.nn  .. image:: images/tutorial_second_page.pngnnOnce going through and correcting all of the classifier's mistakes, itnis good practice to &quot;reward&quot; all of its correct guesses by confirmingnthem.  <strong>Classifier -&gt; Confirm all</strong> will add all of the automaticallynclassified glyphs on the page to the classifier as if they werenmanually classified.nn*Again, don't forget to save the training data.*nnAnd another page...n-------------------nnFor the sake of this tutorial, it will be assumed that some time hasnlagged between training the second page and the third page, in ordernto demonstrate how the training process can be continued.nnClose Gamera and start it up again.  After opening the classifiernwindow, you can continue training by loading in the existing trainingninto the classifier using nn  <strong>File -&gt; Classifier glyphs -&gt; Open glyphs into classifier...</strong> nnand loading the next image using nn  <strong>Image -&gt; Open and segment image...</strong>.  nnTraining can then proceed as for the second page.  If all is goingnwell, each successive page should require less manual correction.nnOptimizing the classifiern-------------------------nnIt is impossible to say how much training data is &quot;enough&quot;, and thatnwhole question is well beyond the scope of this tutorial.nnWhen you have a representative amount of data collected, however, itnmay be a good idea to optimize the classifier.  In short, optimizationninvolves deciding the relative weight (or importance) of each of thenfeatures used for classification.nnThere are many ways to do this, but one that requires minimal manualnintervention is an optimizer based on a Genetic Algorithm (GA). Gameranincludes a GA for this purpose called <a href="#id3"><span class="problematic" id="id6">`Biollante`__</span></a>.nn.. __: ga_optimization.htmlnnThe endn-------nnThat's the gist of training with Gamera.  Of course, there are a lotnmore methodologies and tricks possible.  Enjoy!n'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/training_tutorial.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/training_tutorial.txt</tt>, line 2); <em>backlinks: <a href="#id4">1</a>, <a href="#id5">2</a>, <a href="#id6">3</a></em></p>
-Anonymous hyperlink mismatch: 3 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#starting-the-gui" id="id5">Starting the GUI</a></li>
+<li><a class="reference internal" href="#console-window" id="id6">Console window</a></li>
+<li><a class="reference internal" href="#classifier-window" id="id7">Classifier window</a></li>
+<li><a class="reference internal" href="#opening-and-segmenting-an-image" id="id8">Opening and segmenting an image</a></li>
+<li><a class="reference internal" href="#selecting-glyphs" id="id9">Selecting glyphs</a></li>
+<li><a class="reference internal" href="#beginning-training" id="id10">Beginning training</a></li>
+<li><a class="reference internal" href="#using-auto-move" id="id11">Using auto-move</a></li>
+<li><a class="reference internal" href="#training-broken-characters" id="id12">Training broken characters</a></li>
+<li><a class="reference internal" href="#saving-the-training-data" id="id13">Saving the training data</a></li>
+<li><a class="reference internal" href="#on-to-the-second-page" id="id14">On to the second page</a></li>
+<li><a class="reference internal" href="#and-another-page" id="id15">And another page...</a></li>
+<li><a class="reference internal" href="#optimizing-the-classifier" id="id16">Optimizing the classifier</a></li>
+<li><a class="reference internal" href="#the-end" id="id17">The end</a></li>
+</ul>
 </div>
+<p>This tutorial walks through the process of creating training data
+using the Gamera GUI.  The training GUI is designed to be as flexible
+as possible, so this tutorial represents just one possible approach,
+while introducing most of the key features and concepts.</p>
+<p>For this example, we will be training on pages from the
+<a class="reference external" href="http://edina.ac.uk/statacc/">Statistical Accounts of Scotland</a>.  The demo pages used in this
+tutorial will be made available through the Gamera website soon.</p>
+<p>The goal during the run of this tutorial is to create enough training
+data that the classifier will perform well on new pages.</p>
+<div class="section" id="starting-the-gui">
+<h1><a class="toc-backref" href="#id5">Starting the GUI</a></h1>
+<p>There is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your system
+(this location is platform-specific, see <a class="reference external" href="install.html">Building and Installing
+Gamera</a>).  Run it to start the Gamera GUI.</p>
+</div>
+<div class="section" id="console-window">
+<h1><a class="toc-backref" href="#id6">Console window</a></h1>
+<blockquote>
+<img alt="images/tutorial_console.png" src="images/tutorial_console.png" />
+</blockquote>
+<p>The first thing displayed is the console window.  It won't be used for
+anything in this tutorial, other than starting up the classifier
+interface.</p>
+</div>
+<div class="section" id="classifier-window">
+<h1><a class="toc-backref" href="#id7">Classifier window</a></h1>
+<p>From the console window, start the interactive classifier window.</p>
+<blockquote>
+<strong>Classify -&gt; Interactive Classifier</strong></blockquote>
+<p>When prompted for a name for the result, simply click
+<strong>Ok</strong> to accept the default.  This will open an empty classifier window.</p>
+<blockquote>
+<img alt="images/tutorial_classifier_window.png" src="images/tutorial_classifier_window.png" />
+</blockquote>
+<p>The classifier window always starts from a clean slate: there is no
+data in the classifier and it does not yet have an image to use as a
+source.</p>
+</div>
+<div class="section" id="opening-and-segmenting-an-image">
+<h1><a class="toc-backref" href="#id8">Opening and segmenting an image</a></h1>
+<p>First, load a page image.</p>
+<blockquote>
+<strong>Image -&gt; Open and segment image...</strong></blockquote>
+<p>This loads an image into the training interface, segments it into its
+parts, and then puts those parts into the page glyphs pane in the
+training interface.</p>
+<p>The method used to segment the image into its parts is user-selectable,
+and will depend on the type of documents being trained.  For instance,
+if the document were sheet music, the segmenter would need to first
+remove the staff lines.  Most often you will use the default
+segmentation method, connected component analysis (<tt class="docutils literal">cc_analysis</tt>),
+which will separate all of the contiguous groups of black pixels on the
+page.</p>
+<p>For the purposes of this tutorial, select the filename for the first page
+and use the default segmentation method <tt class="docutils literal">cc_analysis</tt>.</p>
+<blockquote>
+<img alt="images/tutorial_open_and_segment_image.png" src="images/tutorial_open_and_segment_image.png" />
+</blockquote>
+<p>When the page has been loaded, the connected components will be
+displayed in the <strong>Page glyphs</strong> pane (upper right), and the original
+image will be in the pane below.</p>
+<blockquote>
+<img alt="images/tutorial_starting_training.png" src="images/tutorial_starting_training.png" />
+</blockquote>
+</div>
+<div class="section" id="selecting-glyphs">
+<h1><a class="toc-backref" href="#id9">Selecting glyphs</a></h1>
+<p>Glyphs can be selected in a number of ways:</p>
+<blockquote>
+<ul class="simple">
+<li>By clicking and dragging across cells in the page glyphs pane.</li>
+<li>By clicking on glyphs in the original image display.</li>
+<li>By dragging a bounding box around glyphs in the original image display.</li>
+<li>Adding/removing glyphs from the selection by selecting while
+holding down the <strong>Shift</strong> key.</li>
+</ul>
+</blockquote>
+<p>The selection in the page glyphs pane and on the original image are
+automatically synchronized.  The status bar displayed the number of
+selected glyphs.</p>
+<p>Experiment with the different selection methods to get a feel for the
+interface.</p>
+<blockquote>
+<img alt="images/tutorial_selection.png" src="images/tutorial_selection.png" />
+<img alt="images/tutorial_selection2.png" src="images/tutorial_selection2.png" />
+</blockquote>
+</div>
+<div class="section" id="beginning-training">
+<h1><a class="toc-backref" href="#id10">Beginning training</a></h1>
+<p>Now, to begin training.  Training is simply the act of assigning
+names to each of the glyphs.  In Gamera, these names are made up of
+dot-delimited tokens.  (See <a class="reference external" href="gui.html#class-names">class names</a>.)</p>
+<p>To see what's happening behind the scenes as we're training, open the
+<strong>Classifier glyphs</strong> pane by pressing the <strong>+</strong> button in the <strong>Page
+glyphs</strong> title bar.</p>
+<blockquote>
+<img alt="images/tutorial_classifier_glyphs_pane.png" src="images/tutorial_classifier_glyphs_pane.png" />
+</blockquote>
+<p>Since the example being used for this tutorial is text, the characters
+will be named to conform to Unicode character names.  This will allow
+class names to conveniently map to characters when OCR is output from
+a Gamera-based system.  In Unicode, the character name for <tt class="docutils literal">A</tt> is
+<tt class="docutils literal">LATIN CAPITAL LETTER A</tt> and for <tt class="docutils literal">a</tt> is <tt class="docutils literal">LATIN SMALL LETTER A</tt>
+etc..  To fit these names into Gamera's naming convention, they can be
+adapted to <tt class="docutils literal">latin.capital.letter.a</tt> and <tt class="docutils literal">latin.small.letter.a</tt>.
+Of course, for non-textual documents, a different naming convention
+may have to be devised.</p>
+<p>The page glyphs are sorted roughly by size.  The first few glyphs are
+generally specks of dust or bits of broken characters on the page.
+It's generally easiest to start with the glyphs that make up whole
+characters and then deal with the broken characters later.</p>
+<p>To classify a glyph, select it, type its name and press <strong>Enter</strong>.</p>
+<p>For this example, scroll down to where the first few legitimate
+characters appear.  In the example below, the <tt class="docutils literal">w</tt> was selected, then
+<tt class="docutils literal">latin.small.letter.w</tt> was entered, followed by <strong>Enter</strong> to confirm
+the classification.</p>
+<blockquote>
+<img alt="images/tutorial_first_character.png" src="images/tutorial_first_character.png" />
+</blockquote>
+<p>Note that the following things happen upon manual classification:</p>
+<blockquote>
+<ul class="simple">
+<li>Most importantly, the glyph is added to the classifier (as shown
+by its appearance in the classifier glyphs pane).</li>
+<li>The glyph changes color to green, which indicates that it was
+classified by a human trainer.</li>
+<li>The class name is added to the tree of class names on the left.</li>
+<li>The status bar at the bottom is updated to show how many glyphs
+are in the classifier.</li>
+</ul>
+</blockquote>
+<p>Bootstrap the classifier by continuing in this fashion for
+a dozen or more characters.  If you make a mistake, you can simply
+reselect the glyph and give it a new class name.  Note that you can
+also select multiple glyphs and train them in one step, as illustrated
+in the following picture.</p>
+<blockquote>
+<img alt="images/tutorial_more_training.png" src="images/tutorial_more_training.png" />
+</blockquote>
+</div>
+<div class="section" id="using-auto-move">
+<h1><a class="toc-backref" href="#id11">Using auto-move</a></h1>
+<p>Of course, continuing to train in this fashion gets tedious and
+involves a lot of &quot;mousing around&quot;.  The <strong>auto-move</strong> mode will
+automatically move to the next glyph after each glyph is trained.  It
+will also guess the class of unclassified symbols automatically,
+meaning the trainer only needs to confirm or correct the classifier's
+guess.</p>
+<p>Turn on <strong>auto-move</strong> mode by clicking the</p>
+<blockquote>
+<img alt="images/icon_next_unclass.png" src="images/icon_next_unclass.png" />
+</blockquote>
+<p>toolbar button.  When this button is toggled on, the training
+interface will automatically move to the next unclassified (white)
+glyph after each manual classification is made.</p>
+<p>To try it out, select an unclassified glyph to start with.  Type its
+class name and press <strong>Enter</strong>.  The selection will automatically move
+to the next unclassified glyph, with a &quot;guess&quot; displayed in a box
+underneath the glyph and automatically entered in the textbox in the upper
+left.  If this guess is correct, simply press <strong>Enter</strong> to confirm and
+add the glyph to the classifier with that class name.  If the guess is
+incorrect, it may be edited and then submitted by pressing <strong>Enter</strong>.</p>
+<blockquote>
+<img alt="images/tutorial_auto_move.png" src="images/tutorial_auto_move.png" />
+</blockquote>
+<p>Other useful keystrokes while in <strong>auto-move</strong> mode are:</p>
+<blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><strong>F12</strong>: Skip the currently selected glyph and move on to the next</dt>
+<dd>one.</dd>
+</dl>
+</li>
+<li><strong>F11</strong>: Back up one glyph to reclassify.</li>
+</ul>
+</blockquote>
+<p>It's also useful to close the <strong>Classifier glyphs</strong> pane to increase
+training speed.</p>
+<p>With <strong>auto-move</strong> mode and these keystrokes, it is possible to train
+quite efficiently by keeping one's hands on the keyboard.</p>
+</div>
+<div class="section" id="training-broken-characters">
+<h1><a class="toc-backref" href="#id12">Training broken characters</a></h1>
+<p>Occasionally, characters will be broken into multiple glyphs,
+either because the ink has degraded or the imaging is
+poor.  Also, it may be that the character itself is intentionally
+broken, such as the lower case <em>i</em>.</p>
+<p>For these cases, in the original image display, drag a bounding box
+around the connected components that make up the character.  (It may
+be useful to zoom in on the image.)  Then train the collection with a
+class name beginning with <tt class="docutils literal">_group.</tt>.</p>
+<p>For instance, in the following example, the parts that make up the
+letter <tt class="docutils literal">N</tt> are selected, and then trained as
+<tt class="docutils literal">_group.latin.capital.letter.n</tt>.</p>
+<blockquote>
+<img alt="images/tutorial_grouping.png" src="images/tutorial_grouping.png" />
+</blockquote>
+<p>The union of the parts will be stored as a single glyph in the training
+dataset. Note that when you later in the recognition stage want to recognize
+glyphs that are broken, intentionally like the letter &quot;i&quot; or unintentionally,
+you must use the <tt class="docutils literal">group_list_automatic</tt> classifier method.</p>
+</div>
+<div class="section" id="saving-the-training-data">
+<h1><a class="toc-backref" href="#id13">Saving the training data</a></h1>
+<p>It is good practice to regularly save the training data.  Use the menu
+item</p>
+<blockquote>
+<strong>File -&gt; Classifier glyphs -&gt; Save glyphs in classifier...</strong></blockquote>
+<p>to save the training data.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is no auto-save feature, so be sure to save your work
+often.</p>
+</div>
+<p>Once the entire page has been classified, save it to a file called
+<tt class="docutils literal">tutorial_page1.xml</tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you don't want to take the time to train
+the entire page, you can load this training data from the
+tutorial using the menu option <strong>File -&gt; Classifier glyphs
+-&gt; Open glyphs into classifier...</strong> and selecting
+<tt class="docutils literal">tutorial_page1.xml</tt>.</p>
+</div>
+</div>
+<div class="section" id="on-to-the-second-page">
+<h1><a class="toc-backref" href="#id14">On to the second page</a></h1>
+<p>Once the first page has been trained, the next page can be loaded in
+by using</p>
+<blockquote>
+<strong>Image -&gt; Open and segment image...</strong></blockquote>
+<p>Note that the <strong>page glyphs</strong> have been replaced with the contents of
+the new page, but the <strong>classifier glyphs</strong> (the training data)
+remains the same.</p>
+<p>Since there is already some training data in the classifier, it won't
+need to be bootstrapped as it was for the first page.  The existing
+classifier data can be used to classify the second page, and then the
+user can go through and correct the classifier's mistakes.</p>
+<p>To run the classifier over the <strong>page glyphs</strong>, use the menu option</p>
+<blockquote>
+<strong>Classifier -&gt; Group and guess all</strong>.</blockquote>
+<p>After some time, all of the glyphs on the page will have been
+classified, and grouped if necessary.  Note that the automatically
+classified glyphs are displayed in red.  The glyphs on the page will
+be sorted by their class name.  Within each class name it is fairly
+easy to scan for incorrectly identified symbols.  Note that the glyphs
+within each class name are sorted by decreasing confidence.  Often the
+glyphs near the beginning will appear more like the training data and
+the glyphs near the end will be more unlike the training data.</p>
+<blockquote>
+<img alt="images/tutorial_second_page.png" src="images/tutorial_second_page.png" />
+</blockquote>
+<p>Once going through and correcting all of the classifier's mistakes, it
+is good practice to &quot;reward&quot; all of its correct guesses by confirming
+them.  <strong>Classifier -&gt; Confirm all</strong> will add all of the automatically
+classified glyphs on the page to the classifier as if they were
+manually classified.</p>
+<p><em>Again, don't forget to save the training data.</em></p>
+</div>
+<div class="section" id="and-another-page">
+<h1><a class="toc-backref" href="#id15">And another page...</a></h1>
+<p>For the sake of this tutorial, it will be assumed that some time has
+lagged between training the second page and the third page, in order
+to demonstrate how the training process can be continued.</p>
+<p>Close Gamera and start it up again.  After opening the classifier
+window, you can continue training by loading in the existing training
+into the classifier using</p>
+<blockquote>
+<strong>File -&gt; Classifier glyphs -&gt; Open glyphs into classifier...</strong></blockquote>
+<p>and loading the next image using</p>
+<blockquote>
+<strong>Image -&gt; Open and segment image...</strong>.</blockquote>
+<p>Training can then proceed as for the second page.  If all is going
+well, each successive page should require less manual correction.</p>
+</div>
+<div class="section" id="optimizing-the-classifier">
+<h1><a class="toc-backref" href="#id16">Optimizing the classifier</a></h1>
+<p>It is impossible to say how much training data is &quot;enough&quot;, and that
+whole question is well beyond the scope of this tutorial.</p>
+<p>When you have a representative amount of data collected, however, it
+may be a good idea to optimize the classifier.  In short, optimization
+involves deciding the relative weight (or importance) of each of the
+features used for classification.</p>
+<p>There are many ways to do this, but one that requires minimal manual
+intervention is an optimizer based on a Genetic Algorithm (GA). Gamera
+includes a GA for this purpose called <a class="reference external" href="ga_optimization.html">Biollante</a>.</p>
+</div>
+<div class="section" id="the-end">
+<h1><a class="toc-backref" href="#id17">The end</a></h1>
+<p>That's the gist of training with Gamera.  Of course, there are a lot
+more methodologies and tricks possible.  Enjoy!</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

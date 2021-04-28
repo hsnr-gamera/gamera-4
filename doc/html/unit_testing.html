@@ -3,28 +3,110 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>unit_testing.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Unit testing with Gamera</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="unit-testing-with-gamera">
+<h1 class="title">Unit testing with Gamera</h1>
 
-
-<p>b'========================nUnit testing with Gameran========================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn============nnGamera does not contain its own unit testing framework, but insteadnuses the great <a href="#id5"><span class="problematic" id="id6">`py.test`__</span></a> framework.  nn.. note::nn  <strong>py.test</strong> is still considered beta-level software, and is somewhatn  cumbersome to install (perhaps the same could be said aboutn  Gamera).  It is not required for proper operation of Gamera, and isn  only needed for those developers who wish to port Gamera to newn  platforms or write unit tests for new code.nn.. __: <a class="reference external" href="http://codespeak.net/py/dist/test.htmlnnThis">http://codespeak.net/py/dist/test.htmlnnThis</a> document does not attempt to replicate the <a href="#id5"><span class="problematic" id="id7">`py.test`__</span></a>ndocumentation, and will only discuss Gamera-specific additions.nn.. __: <a class="reference external" href="http://codespeak.net/py/dist/test.htmlnnnRunning">http://codespeak.net/py/dist/test.htmlnnnRunning</a> the provided unit testsn===============================nn1. Install and test <cite>py.test</cite> using the instructions <a href="#id5"><span class="problematic" id="id8">here__</span></a>.nn.. __: <a class="reference external" href="http://codespeak.net/py/dist/test.htmlnn2">http://codespeak.net/py/dist/test.htmlnn2</a>. From the <em>gamera/tests</em> directory, run all the unit tests with then   command::nn     py.test --tb=nonn   Alternatively, you can run an individual test, say <em>test_graph.py</em> with::nn     py.test --tb=no test_graph.pynn   In case of failures you can obtain more informationn   by omitting the option &quot;--tb=no&quot;.nn3. If you only want to run a single test function from a unit testn   script, use the &quot;keyword&quot; option &quot;-k&quot;, e.g.::nn     py.test -k test_glyphs_from_xml_gz test_xml.pynnnAdding new unit testsn=====================nnA new unit test, say <em>test_mystuff.py</em>, is added by the following steps:nn1. Create a new test script <em>test_mystuff.py</em> which imports gameran   and py.test:nn.. code:: Pythonnn   import py.testn   from gamera.core import <a href="#id3"><span class="problematic" id="id4">*</span></a>n   init_gamera()nn2. Define for each test a function with the prefix <tt class="docutils literal">test_</tt>. py.testn   will run all these functions. To verify certain results, use then   <tt class="docutils literal">assert</tt> statement, e.g.:nn.. code:: Pythonnn   def test_something():n       img = load_image(&quot;data/OneBit_generic.png&quot;)n       assert img.myplugin(3) == 42nn3. To verify that certain circumstances (e.g., wrong input data) leadn   to an exception, use <tt class="docutils literal">py.test.raises</tt>:nn.. code:: Pythonnn   def test_wronginput():n       def _fail(img):n           img.myplugin(&quot;should only be numeric&quot;)n       img = load_image(&quot;data/OneBit_generic.png&quot;)n       py.test.raises(Exception, _fail, img)nnFor more details, see the <a href="#id5"><span class="problematic" id="id9">`py.test documentation`__</span></a>.nn.. __: <a class="reference external" href="http://codespeak.net/py/dist/test.htmlnnnTesting">http://codespeak.net/py/dist/test.htmlnnnTesting</a> Gamera pluginsn======================nnThe unit test in <tt class="docutils literal">gamera/tests/test_plugins.py</tt> will load and runnthe <tt class="docutils literal">doc_example</tt> functions of all plugins available in Gamera.nTherefore, writing a unit test for a Gamera plugin is often as simplenas writing a <tt class="docutils literal">doc_example</tt> plugin with the function.  This isnexplained in <a href="#id5"><span class="problematic" id="id10">`Writing Plugins: Documenting and unit-testing Plugin\nfunctions`__</span></a>.nn.. __: writing_plugins.html#documenting-and-unit-testing-plugin-functionsn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/unit_testing.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/unit_testing.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Inline emphasis start-string without end-string.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/unit_testing.txt</tt>, line 2); <em>backlinks: <a href="#id6">1</a>, <a href="#id7">2</a>, <a href="#id8">3</a>, <a href="#id9">4</a>, <a href="#id10">5</a></em></p>
-Anonymous hyperlink mismatch: 5 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id6">Introduction</a></li>
+<li><a class="reference internal" href="#running-the-provided-unit-tests" id="id7">Running the provided unit tests</a></li>
+<li><a class="reference internal" href="#adding-new-unit-tests" id="id8">Adding new unit tests</a></li>
+<li><a class="reference internal" href="#testing-gamera-plugins" id="id9">Testing Gamera plugins</a></li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id6">Introduction</a></h1>
+<p>Gamera does not contain its own unit testing framework, but instead
+uses the great <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test</a> framework.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>py.test</strong> is still considered beta-level software, and is somewhat
+cumbersome to install (perhaps the same could be said about
+Gamera).  It is not required for proper operation of Gamera, and is
+only needed for those developers who wish to port Gamera to new
+platforms or write unit tests for new code.</p>
+</div>
+<p>This document does not attempt to replicate the <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test</a>
+documentation, and will only discuss Gamera-specific additions.</p>
+</div>
+<div class="section" id="running-the-provided-unit-tests">
+<h1><a class="toc-backref" href="#id7">Running the provided unit tests</a></h1>
+<ol class="arabic simple">
+<li>Install and test <cite>py.test</cite> using the instructions <a class="reference external" href="http://codespeak.net/py/dist/test.html">here</a>.</li>
+</ol>
+<ol class="arabic" start="2">
+<li><p class="first">From the <em>gamera/tests</em> directory, run all the unit tests with the
+command:</p>
+<pre class="literal-block">
+py.test --tb=no
+</pre>
+<p>Alternatively, you can run an individual test, say <em>test_graph.py</em> with:</p>
+<pre class="literal-block">
+py.test --tb=no test_graph.py
+</pre>
+<p>In case of failures you can obtain more information
+by omitting the option &quot;--tb=no&quot;.</p>
+</li>
+<li><p class="first">If you only want to run a single test function from a unit test
+script, use the &quot;keyword&quot; option &quot;-k&quot;, e.g.:</p>
+<pre class="literal-block">
+py.test -k test_glyphs_from_xml_gz test_xml.py
+</pre>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-new-unit-tests">
+<h1><a class="toc-backref" href="#id8">Adding new unit tests</a></h1>
+<p>A new unit test, say <em>test_mystuff.py</em>, is added by the following steps:</p>
+<ol class="arabic simple">
+<li>Create a new test script <em>test_mystuff.py</em> which imports gamera
+and py.test:</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">py.test</span>
+<span class="kn">from</span> <span class="nn">gamera.core</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">init_gamera</span><span class="p">()</span>
+</pre></div>
+<ol class="arabic simple" start="2">
+<li>Define for each test a function with the prefix <tt class="docutils literal">test_</tt>. py.test
+will run all these functions. To verify certain results, use the
+<tt class="docutils literal">assert</tt> statement, e.g.:</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_something</span><span class="p">():</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s2">&quot;data/OneBit_generic.png&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">img</span><span class="o">.</span><span class="n">myplugin</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span>
+</pre></div>
+<ol class="arabic simple" start="3">
+<li>To verify that certain circumstances (e.g., wrong input data) lead
+to an exception, use <tt class="docutils literal">py.test.raises</tt>:</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_wronginput</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">_fail</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">myplugin</span><span class="p">(</span><span class="s2">&quot;should only be numeric&quot;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s2">&quot;data/OneBit_generic.png&quot;</span><span class="p">)</span>
+    <span class="n">py</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">_fail</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+</pre></div>
+<p>For more details, see the <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test documentation</a>.</p>
+</div>
+<div class="section" id="testing-gamera-plugins">
+<h1><a class="toc-backref" href="#id9">Testing Gamera plugins</a></h1>
+<p>The unit test in <tt class="docutils literal">gamera/tests/test_plugins.py</tt> will load and run
+the <tt class="docutils literal">doc_example</tt> functions of all plugins available in Gamera.
+Therefore, writing a unit test for a Gamera plugin is often as simple
+as writing a <tt class="docutils literal">doc_example</tt> plugin with the function.  This is
+explained in <a class="reference external" href="writing_plugins.html#documenting-and-unit-testing-plugin-functions">Writing Plugins: Documenting and unit-testing Plugin
+functions</a>.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

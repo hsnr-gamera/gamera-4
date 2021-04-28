@@ -3,40 +3,349 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>kdtree.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Gamera kd-tree library</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="gamera-kd-tree-library">
+<h1 class="title">Gamera kd-tree library</h1>
 
-
-<p>b'======================nGamera kd-tree libraryn======================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn------------nnA <em>kd-tree</em> is multidimensional generalization of a binarynsearch tree. It can be used efficiently for range queries and nearestnneighbor searches, provided the dimension is not to high. In documentnanalysis problems, the dimension is typically two, so that kd-treesncan be a powerful utility for layout analysis problems.nnFor a detailed description of the present kd-tree implementation withnexamples for use cases, seenn  C. Dalitz: <a href="#id8"><span class="problematic" id="id9">`Kd-Trees for Document Layout Analysis.`__</span></a>n  In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;n  Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,n  Hochschule Niederrhein, vol. 8, pp. 39-52, Shaker Verlag (2009)nn.. __: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdfnnAdditional">http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdfnnAdditional</a> background information on kd-trees can be found in the nfollowing literature:nn- for an introduction to kd-trees and basic properties, see <a href="#id11"><span class="problematic" id="id3">[deBerg2000]_</span></a>n- more algorithms for kd-trees can be found in the original article n  <a href="#id12"><span class="problematic" id="id4">[Bentley1975]_</span></a>n- neither of the above two references covers nearest neighborn  searches in kd-trees; these are coverd in <a href="#id13"><span class="problematic" id="id5">[Friedman1977]_</span></a>nnnExamplesn--------nnHere is an example for looking up the three nearest neighbors tona given point from a set of sample points:nn.. code:: Pythonnn   from gamera.kdtree import <em>nn   points = [(1,4), (2,4), (1,5), (3,6), (8,9),n             (2,7), (4,4), (5,5), (4,6), (8,3)]n   nodes = [KdNode(p) for p in points]n   tree = KdTree(nodes)nn   # neighbors to a sample point not from the setn   point = [5,6]n   k = 3n   knn = tree.k_nearest_neighbors(point, k)n   print &quot;%i neighbors of (%i,%i):&quot; % (k,point[0], point[1]),n   for node in knn:n       print &quot;(%i,%i)&quot; % (node.point[0], node.point[1]),n   print &quot;&quot; # final newlinenn   # neighbors to a sample point from the setn   # we must query k+1 neighbors, because one of them isn   # the sample point (the first entry in the returned list)n   point = [5,5]n   k = 3n   knn = tree.k_nearest_neighbors(point, k+1)n   print &quot;%i neighbors of (%i,%i):&quot; % (k,point[0], point[1]),n   for node in knn[1:]:n       print &quot;(%i,%i)&quot; % (node.point[0], node.point[1]),n   print &quot;&quot; # final newlinennThe property *KdNode.data</em> can store an arbitrary Python objectnassociated with the point. The following example represents eachnconnected component by its middle point and stores the actualnCC with the point in the node:nn.. code:: Pythonnn   ccs = image.cc_analysis()n   nodes = [KdNode([cc.center.x,cc.center.y], cc) for cc in ccs]nnIt is also possible to search for only those neighbors that fulfilna certain predicate. To this end, you must define a function or callablenclass that takes a KdNode as input and returns <tt class="docutils literal">True</tt> when it fulfilsnthe search predicate. The following example only returns nearest neighborsnbelow the search point:nn.. code:: Pythonnn   # predicate definition as callable classn   class predicate(object):n       def __init__(self, point):n           self.point = pointn       def __call__(self, node):n           return (point[1] &gt; node.point[1])nn   # find the three nearest neighbors belown   point = (5,6)n   knn = tree.k_nearest_neighbors(point, 3, predicate(point))nnBeware however, that a search predicate can have the effect thatnless than k neighbors are returned, because too few nodes fulfilnthe predicate. In such a case, the runtime is O(n) instead of O(log(n)).nIn other words, a poorly chosen search predicate can have a considerablennegative impact on the runtime. In some cases, modifying the distance metricn(method <em>set_distance</em>) can be an alternative to a search predicaten[Dalitz09]_.nnnThe Kd-Tree Python APIn----------------------nnn``KdNode`` objectsn''''''''''''''''''nnEach <tt class="docutils literal">KdNode</tt> has two properties:nn <em>point</em>n   The geometric location of the node as a sequence of coordinaten   numbers. The coordinate numbers can be floats or ints.n   This is an immutable property, because changing the geometricn   location of nodes belonging to an already built kd-tree obviouslyn   breaks subsequent search operations.nn <em>data</em>n   An arbitrary Python object connected to the location <em>point</em>.nn.. docstring:: gamera.kdtree KdNodenn``KdTree`` objectsn''''''''''''''''''nnEach kd-tree is represented by instances of the <tt class="docutils literal">KdTree</tt> class.nEven though there are general kd-tree algorithms to add and removennodes dynamically (see <a href="#id14"><span class="problematic" id="id6">[Bentley1975]_</span></a>), the present implementationndoes not support alteration of a once built tree. This has thenconsequence that tree nodes must be passed to the constructor ofn``KdTree``.nnA <tt class="docutils literal">KdTree</tt> has the following (read only) properties:nn <em>dimension</em>n   The dimension of the kd-tree. This is automatically determinedn   by the constructor.nn.. docstring:: gamera.kdtree KdTreenn.. docstring:: gamera.kdtree KdTree set_distancenn.. docstring:: gamera.kdtree KdTree k_nearest_neighborsnnnThe Kd-Tree C++ APIn-------------------nnThe module <tt class="docutils literal">gamera.kdtree</tt> is only a thin Python wrapper aroundna C++ class <tt class="docutils literal">KdTree</tt>. This can also be used directly in C++ plugins.nnCompilation and linkagen'''''''''''''''''''''''nnThe header file <em>kdtree.hpp</em> declares the necessary structures innthe namespace <tt class="docutils literal"><span class="pre">Gamera::Kdtree</span></tt>. It is installed with the other gameranheader files, and can thus be included withnn.. code:: CPPnn   #include &quot;geostructs/kdtree.hpp&quot;n   using namespace Gamera::Kdtree;nnThe tricky part is getting your plugin module to be linked with thenactual kdtree implementation. This is achieved by adding thensource file <tt class="docutils literal">kdtree.cpp</tt> to the <tt class="docutils literal">cpp_sources</tt> property in thenplugin Python interface.nnIn the gamera core code, the following works:nn.. code:: Pythonnn   class ExampleModule(PluginModule):n       category = &quot;MyPlugins&quot;n       cpp_headers = [&quot;myplugins.hpp&quot;]n       cpp_sources = [&quot;src/geostructs/kdtree.cpp&quot;]n       functions = [myplugin1, myplugin2]n   module = ExampleModule()nnIn a toolkit, this will not work, because the path names innthe <tt class="docutils literal">cpp_sources</tt> property are relative to the locationnof the <em>setup.py</em> script. To allow for the use of the KdTree C++nclass in toolkits, the source file <em>kdtree.cpp</em> is installed togethernwith Gamera. You can thus specify this file in <tt class="docutils literal">cpp_sources</tt>nas follows:nn.. code:: Pythonnn   class ExampleModule(PluginModule):n       # ...n       import os, sys, gameran       gamera_root = os.path.dirname(gamera.__file__)n       cppfile = os.path.join(gamera_root,&quot;src/geostructs/kdtree.cpp&quot;)n       if not os.path.exists(cppfile):n           gamera_root = os.path.join(sys.exec_prefix,&quot;gamera&quot;)n           cppfile = os.path.join(gamera_root,&quot;src/geostructs/kdtree.cpp&quot;)n       cpp_sources=[cppfile]n       # ...nnQuerying the installation directory is a bit tricky, because the pythonndistutils do not install additional <em>data_files</em> in a predictable way:nthey might go into the gamera installation directory, whichncan be found out through the <em>__file__</em> property of the gamera module, ornthey might go into <em>sys.exec_prefix/gamera</em> (this is what the distutilsndocumentation says, but apparently this does not hold on all platforms).nnnUsagen'''''nnFor normal use of the kdtree, you will need the classes n``CoordPoint`` (a typedef for <tt class="docutils literal">vector&lt;double&gt;</tt>), <tt class="docutils literal">KdNode</tt>, n``KdNodeVector``, and <tt class="docutils literal">KdTree</tt>. Beside the property <tt class="docutils literal">point</tt>, an``KdNode`` can also store an arbitrary pointer as <tt class="docutils literal">data</tt>. Seenthe header file <em>kdtree.hpp</em> for details.nnHere is a usage example for a nearest neighbor search:nn.. code:: CPPnn   // set points for building the treen   KdNodeVector nodes;n   double points[][2] = {n     {1,4}, {2,4}, {1,5}, {3,6}, {8,9},n     {2,7}, {4,4}, {5,5}, {4,6}, {8,3},n     {-20,-20} // array terminatorn   };n   size_t i;n   for (i=0; points[i][0]&gt;=-1.0; i++) {n     CoordPoint p;n     p.push_back(points[i][0]);n     p.push_back(points[i][1]);n     nodes.push_back(KdNode(p));n   }nn   // build the treen   KdTree tree(&amp;nodes);nn   // find the three nearest neighbors to (5,6)n   KdNodeVector neighbors;n   CoordPoint point(2);n   point[0] = 5;n   point[1] = 6;n   tree.k_nearest_neighbors(point, 3, &amp;neighbors);nnIf you want to restrict the returned neighbors to only those fulfillingna specific search predicate, you can define your search predicate asna callable class (aka <em>functor</em>, i.e. a class with the call operatorn``operator()`` overwritten <a href="#id15"><span class="problematic" id="id7">[Stroustrup1997]_</span></a>) derived from n``KdNodePredicate`` as in the following example:nn.. code:: CPPnn   // only search for nodes on the right hand side of search pointn   struct MyPredicate : public KdNodePredicate {n     CoordPoint point(2);n     MyPredicate(CoordPoint&amp; p) {n       point = p;n     }n     bool operator()(const KdNode&amp; kn) const {n       return point[0] &lt; kn.point[0];n     }n   };nnThe call of the class only takes a single argument, the <tt class="docutils literal">KdNode</tt>, andnreturns true when this node is an admissible search result. If thisncriterion depends on some information from the actual search point (likenits <em>x</em>-component in the exampel above), this information must be passed tonthe class constructor and stored within the class.nnAn instance of this class can then be passed as the third, optional argumentnto <tt class="docutils literal">KdTree.k_nearest_neighbors</tt>:nn.. code:: CPPnn   KdNodeVector neighbors;n   CoordPoint point(2);n   point[0] = 5;n   point[1] = 6;n   MyPredicate predicate(point);n   tree.k_nearest_neighbors(point, 3, &amp;neighbors, &amp;predicate);nnnReferencesn----------nn.. [deBerg2000] M. de Berg, M. van Kreveld, M. Overmars, O. Schwarzkopf:n   <em>Computational Geometry.</em> Second edition, Springer (2000)nn.. [Bentley1975] J.L. Bentley: <em>Multidimensional Binary Search Trees Usedn   for Associative Searching.</em> Communications of the ACM 18,n   pp. 509-517 (1975)nn.. [Friedman1977] J.H. Friedman, J.L. Bentley, R.A. Finkel:n   <em>An Algorithm for Finding Best Matches in Logarithmic Expected Time.</em>n   ACM Transcations on Mathematical Software 3, pp. 209-226 (1977)nn.. [Stroustrup1997] Stroustrup, B. 1997. <em>The C++ Programmingn   Language: Third Edition.</em>  Reading, MA: Addison-Wesley.nn.. [Dalitz09] C. Dalitz: <a href="#id8"><span class="problematic" id="id10">`Kd-Trees for Document Layout Analysis.`__</span></a>n  In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;n  Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,n  Hochschule Niederrhein, vol. 8, pp. 39-52, Shaker Verlag (2009)nn.. __: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdfn">http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdfn</a>'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id8">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 2); <em>backlinks: <a href="#id9">1</a>, <a href="#id10">2</a></em></p>
-Anonymous hyperlink mismatch: 2 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id3">backlink</a></em></p>
-Unknown target name: &quot;deberg2000&quot;.</div>
-<div class="system-message" id="id12">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Unknown target name: &quot;bentley1975&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id5">backlink</a></em></p>
-Unknown target name: &quot;friedman1977&quot;.</div>
-<div class="system-message" id="id14">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Unknown target name: &quot;bentley1975&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/kdtree.txt</tt>, line 1); <em><a href="#id7">backlink</a></em></p>
-Unknown target name: &quot;stroustrup1997&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id9">Introduction</a></li>
+<li><a class="reference internal" href="#examples" id="id10">Examples</a></li>
+<li><a class="reference internal" href="#the-kd-tree-python-api" id="id11">The Kd-Tree Python API</a><ul>
+<li><a class="reference internal" href="#kdnode-objects" id="id12"><tt class="docutils literal">KdNode</tt> objects</a><ul>
+<li><a class="reference internal" href="#kdnode" id="id13"><tt class="docutils literal">KdNode</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kdtree-objects" id="id14"><tt class="docutils literal">KdTree</tt> objects</a><ul>
+<li><a class="reference internal" href="#kdtree" id="id15"><tt class="docutils literal">KdTree</tt></a></li>
+<li><a class="reference internal" href="#set-distance" id="id16"><tt class="docutils literal">set_distance</tt></a></li>
+<li><a class="reference internal" href="#k-nearest-neighbors" id="id17"><tt class="docutils literal">k_nearest_neighbors</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-kd-tree-c-api" id="id18">The Kd-Tree C++ API</a><ul>
+<li><a class="reference internal" href="#compilation-and-linkage" id="id19">Compilation and linkage</a></li>
+<li><a class="reference internal" href="#usage" id="id20">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references" id="id21">References</a></li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id9">Introduction</a></h1>
+<p>A <em>kd-tree</em> is multidimensional generalization of a binary
+search tree. It can be used efficiently for range queries and nearest
+neighbor searches, provided the dimension is not to high. In document
+analysis problems, the dimension is typically two, so that kd-trees
+can be a powerful utility for layout analysis problems.</p>
+<p>For a detailed description of the present kd-tree implementation with
+examples for use cases, see</p>
+<blockquote>
+C. Dalitz: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdf">Kd-Trees for Document Layout Analysis.</a>
+In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;
+Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
+Hochschule Niederrhein, vol. 8, pp. 39-52, Shaker Verlag (2009)</blockquote>
+<p>Additional background information on kd-trees can be found in the
+following literature:</p>
+<ul class="simple">
+<li>for an introduction to kd-trees and basic properties, see <a class="citation-reference" href="#deberg2000" id="id2">[deBerg2000]</a></li>
+<li>more algorithms for kd-trees can be found in the original article
+<a class="citation-reference" href="#bentley1975" id="id3">[Bentley1975]</a></li>
+<li>neither of the above two references covers nearest neighbor
+searches in kd-trees; these are coverd in <a class="citation-reference" href="#friedman1977" id="id4">[Friedman1977]</a></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h1><a class="toc-backref" href="#id10">Examples</a></h1>
+<p>Here is an example for looking up the three nearest neighbors to
+a given point from a set of sample points:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.kdtree</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+          <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">KdNode</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">KdTree</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+
+<span class="c1"># neighbors to a sample point not from the set</span>
+<span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">k_nearest_neighbors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> neighbors of (</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">):&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">knn</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="s2">&quot;(</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<span class="nb">print</span> <span class="s2">&quot;&quot;</span> <span class="c1"># final newline</span>
+
+<span class="c1"># neighbors to a sample point from the set</span>
+<span class="c1"># we must query k+1 neighbors, because one of them is</span>
+<span class="c1"># the sample point (the first entry in the returned list)</span>
+<span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">k_nearest_neighbors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> neighbors of (</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">):&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">knn</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+    <span class="nb">print</span> <span class="s2">&quot;(</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<span class="nb">print</span> <span class="s2">&quot;&quot;</span> <span class="c1"># final newline</span>
+</pre></div>
+<p>The property <em>KdNode.data</em> can store an arbitrary Python object
+associated with the point. The following example represents each
+connected component by its middle point and stores the actual
+CC with the point in the node:</p>
+<div class="highlight"><pre><span></span><span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
+<span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">KdNode</span><span class="p">([</span><span class="n">cc</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">cc</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="n">cc</span><span class="p">)</span> <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">ccs</span><span class="p">]</span>
+</pre></div>
+<p>It is also possible to search for only those neighbors that fulfil
+a certain predicate. To this end, you must define a function or callable
+class that takes a KdNode as input and returns <tt class="docutils literal">True</tt> when it fulfils
+the search predicate. The following example only returns nearest neighbors
+below the search point:</p>
+<div class="highlight"><pre><span></span><span class="c1"># predicate definition as callable class</span>
+<span class="k">class</span> <span class="nc">predicate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">node</span><span class="o">.</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># find the three nearest neighbors below</span>
+<span class="n">point</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">k_nearest_neighbors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">predicate</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+</pre></div>
+<p>Beware however, that a search predicate can have the effect that
+less than k neighbors are returned, because too few nodes fulfil
+the predicate. In such a case, the runtime is O(n) instead of O(log(n)).
+In other words, a poorly chosen search predicate can have a considerable
+negative impact on the runtime. In some cases, modifying the distance metric
+(method <em>set_distance</em>) can be an alternative to a search predicate
+<a class="citation-reference" href="#dalitz09" id="id5">[Dalitz09]</a>.</p>
+</div>
+<div class="section" id="the-kd-tree-python-api">
+<h1><a class="toc-backref" href="#id11">The Kd-Tree Python API</a></h1>
+<div class="section" id="kdnode-objects">
+<h2><a class="toc-backref" href="#id12"><tt class="docutils literal">KdNode</tt> objects</a></h2>
+<p>Each <tt class="docutils literal">KdNode</tt> has two properties:</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>point</em></dt>
+<dd>The geometric location of the node as a sequence of coordinate
+numbers. The coordinate numbers can be floats or ints.
+This is an immutable property, because changing the geometric
+location of nodes belonging to an already built kd-tree obviously
+breaks subsequent search operations.</dd>
+<dt><em>data</em></dt>
+<dd>An arbitrary Python object connected to the location <em>point</em>.</dd>
+</dl>
+</blockquote>
+<div class="section" id="kdnode">
+<h3><a class="toc-backref" href="#id13"><tt class="docutils literal">KdNode</tt></a></h3>
+<p><strong>KdNode</strong> (<em>point</em>, <em>data</em> = <tt class="docutils literal">None</tt>)</p>
+<p>The <tt class="docutils literal">KdNode</tt> constructor creates a new node for use in a kd-tree.</p>
+<p><em>point</em> must not be of the Gamera data type <tt class="docutils literal">Point</tt>, but a sequence of numerical values. The optional parameter <em>data</em> can be used to store arbitrary additional information connected to the location <em>point</em>.</p>
+</div>
+</div>
+<div class="section" id="kdtree-objects">
+<h2><a class="toc-backref" href="#id14"><tt class="docutils literal">KdTree</tt> objects</a></h2>
+<p>Each kd-tree is represented by instances of the <tt class="docutils literal">KdTree</tt> class.
+Even though there are general kd-tree algorithms to add and remove
+nodes dynamically (see <a class="citation-reference" href="#bentley1975" id="id6">[Bentley1975]</a>), the present implementation
+does not support alteration of a once built tree. This has the
+consequence that tree nodes must be passed to the constructor of
+<tt class="docutils literal">KdTree</tt>.</p>
+<p>A <tt class="docutils literal">KdTree</tt> has the following (read only) properties:</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>dimension</em></dt>
+<dd>The dimension of the kd-tree. This is automatically determined
+by the constructor.</dd>
+</dl>
+</blockquote>
+<div class="section" id="kdtree">
+<h3><a class="toc-backref" href="#id15"><tt class="docutils literal">KdTree</tt></a></h3>
+<p><strong>KdTree</strong> (<em>nodes</em>, <em>distance_type</em> = 2)</p>
+<p>The <tt class="docutils literal">KdTree</tt> constructor creates a new kd tree in <em>O(n*log(n))</em> time from the given list of nodes.</p>
+<p>The nodes in the list <em>nodes</em> must be of type <tt class="docutils literal">KdNode</tt>. The dimension of the tree is automatically taken from the length of <em>nodes[0].point</em>.</p>
+<p>The parameter <em>distance_type</em> specifies the distance measure that is to be used for nearest neighbor searches. It can be 0 (Linfinite or maximum norm), 1 (L1 or city block norm), or 2 (L2 or euklidean norm).</p>
+</div>
+<div class="section" id="set-distance">
+<h3><a class="toc-backref" href="#id16"><tt class="docutils literal">set_distance</tt></a></h3>
+<p><strong>set_distance</strong> (<em>distance_type</em>, <em>weights</em> = <tt class="docutils literal">None</tt>)</p>
+<p>Sets the distance metrics used in subsequent k nearest neighbor searches.</p>
+<p><em>distance_type</em> can be 0 (Linfinite or maximum norm), 1 (L1 or city block norm), or 2 (L2 or euklidean norm).</p>
+<p><em>weights</em> is a list of floating point values, where each specifies a weight for a coordinate index in the distance computation. When weights are provided, the weight list must have exactly <em>d</em> entries, where <em>d</em> is the dimension of the kdtree. When no weights are provided, all coordinates are equally weighted with 1.0.</p>
+</div>
+<div class="section" id="k-nearest-neighbors">
+<h3><a class="toc-backref" href="#id17"><tt class="docutils literal">k_nearest_neighbors</tt></a></h3>
+<p><strong>k_nearest_neighbors</strong> (<em>point</em>, <em>k</em>, <em>predicate</em> = <tt class="docutils literal">None</tt>)</p>
+<p>Returns the <em>k</em> nearest neighbors to the given <em>point</em> in O(log(n)) time. The parameter <em>point</em> must not be of Gamera's data type <tt class="docutils literal">Point</tt>, but a list or tuple of numbers representing the coordinates. <em>point</em> must be of the same dimension as the kd-tree.</p>
+<p>The result is a list of nodes ordered by distance from <em>point</em>,i.e. the closest node is the first. If your query point happens to coincide with a node, you can skip it by simply removing the first entry from the result list.</p>
+<p>The optional parameter <em>predicate</em> is a function or callable class that takes a <tt class="docutils literal">KdNode</tt> as argument and returns <tt class="docutils literal">False</tt> when this node shall not be among the returned neighbors.</p>
+</div>
+</div>
+</div>
+<div class="section" id="the-kd-tree-c-api">
+<h1><a class="toc-backref" href="#id18">The Kd-Tree C++ API</a></h1>
+<p>The module <tt class="docutils literal">gamera.kdtree</tt> is only a thin Python wrapper around
+a C++ class <tt class="docutils literal">KdTree</tt>. This can also be used directly in C++ plugins.</p>
+<div class="section" id="compilation-and-linkage">
+<h2><a class="toc-backref" href="#id19">Compilation and linkage</a></h2>
+<p>The header file <em>kdtree.hpp</em> declares the necessary structures in
+the namespace <tt class="docutils literal"><span class="pre">Gamera::Kdtree</span></tt>. It is installed with the other gamera
+header files, and can thus be included with</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;geostructs/kdtree.hpp&quot;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">Gamera</span><span class="o">::</span><span class="n">Kdtree</span><span class="p">;</span>
+</pre></div>
+<p>The tricky part is getting your plugin module to be linked with the
+actual kdtree implementation. This is achieved by adding the
+source file <tt class="docutils literal">kdtree.cpp</tt> to the <tt class="docutils literal">cpp_sources</tt> property in the
+plugin Python interface.</p>
+<p>In the gamera core code, the following works:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExampleModule</span><span class="p">(</span><span class="n">PluginModule</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;MyPlugins&quot;</span>
+    <span class="n">cpp_headers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;myplugins.hpp&quot;</span><span class="p">]</span>
+    <span class="n">cpp_sources</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;src/geostructs/kdtree.cpp&quot;</span><span class="p">]</span>
+    <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">myplugin1</span><span class="p">,</span> <span class="n">myplugin2</span><span class="p">]</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">ExampleModule</span><span class="p">()</span>
+</pre></div>
+<p>In a toolkit, this will not work, because the path names in
+the <tt class="docutils literal">cpp_sources</tt> property are relative to the location
+of the <em>setup.py</em> script. To allow for the use of the KdTree C++
+class in toolkits, the source file <em>kdtree.cpp</em> is installed together
+with Gamera. You can thus specify this file in <tt class="docutils literal">cpp_sources</tt>
+as follows:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExampleModule</span><span class="p">(</span><span class="n">PluginModule</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">gamera</span>
+    <span class="n">gamera_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">gamera</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">cppfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gamera_root</span><span class="p">,</span><span class="s2">&quot;src/geostructs/kdtree.cpp&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cppfile</span><span class="p">):</span>
+        <span class="n">gamera_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exec_prefix</span><span class="p">,</span><span class="s2">&quot;gamera&quot;</span><span class="p">)</span>
+        <span class="n">cppfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gamera_root</span><span class="p">,</span><span class="s2">&quot;src/geostructs/kdtree.cpp&quot;</span><span class="p">)</span>
+    <span class="n">cpp_sources</span><span class="o">=</span><span class="p">[</span><span class="n">cppfile</span><span class="p">]</span>
+    <span class="c1"># ...</span>
+</pre></div>
+<p>Querying the installation directory is a bit tricky, because the python
+distutils do not install additional <em>data_files</em> in a predictable way:
+they might go into the gamera installation directory, which
+can be found out through the <em>__file__</em> property of the gamera module, or
+they might go into <em>sys.exec_prefix/gamera</em> (this is what the distutils
+documentation says, but apparently this does not hold on all platforms).</p>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#id20">Usage</a></h2>
+<p>For normal use of the kdtree, you will need the classes
+<tt class="docutils literal">CoordPoint</tt> (a typedef for <tt class="docutils literal">vector&lt;double&gt;</tt>), <tt class="docutils literal">KdNode</tt>,
+<tt class="docutils literal">KdNodeVector</tt>, and <tt class="docutils literal">KdTree</tt>. Beside the property <tt class="docutils literal">point</tt>, a
+<tt class="docutils literal">KdNode</tt> can also store an arbitrary pointer as <tt class="docutils literal">data</tt>. See
+the header file <em>kdtree.hpp</em> for details.</p>
+<p>Here is a usage example for a nearest neighbor search:</p>
+<div class="highlight"><pre><span></span><span class="c1">// set points for building the tree</span>
+<span class="n">KdNodeVector</span> <span class="n">nodes</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">points</span><span class="p">[][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">},</span>
+  <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span>
+  <span class="p">{</span><span class="mi">-20</span><span class="p">,</span><span class="mi">-20</span><span class="p">}</span> <span class="c1">// array terminator</span>
+<span class="p">};</span>
+<span class="kt">size_t</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">-1.0</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">CoordPoint</span> <span class="n">p</span><span class="p">;</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]);</span>
+  <span class="n">p</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="n">nodes</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">KdNode</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// build the tree</span>
+<span class="n">KdTree</span> <span class="n">tree</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nodes</span><span class="p">);</span>
+
+<span class="c1">// find the three nearest neighbors to (5,6)</span>
+<span class="n">KdNodeVector</span> <span class="n">neighbors</span><span class="p">;</span>
+<span class="n">CoordPoint</span> <span class="nf">point</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">k_nearest_neighbors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">neighbors</span><span class="p">);</span>
+</pre></div>
+<p>If you want to restrict the returned neighbors to only those fulfilling
+a specific search predicate, you can define your search predicate as
+a callable class (aka <em>functor</em>, i.e. a class with the call operator
+<tt class="docutils literal">operator()</tt> overwritten <a class="citation-reference" href="#stroustrup1997" id="id7">[Stroustrup1997]</a>) derived from
+<tt class="docutils literal">KdNodePredicate</tt> as in the following example:</p>
+<div class="highlight"><pre><span></span><span class="c1">// only search for nodes on the right hand side of search point</span>
+<span class="k">struct</span> <span class="nc">MyPredicate</span> <span class="o">:</span> <span class="k">public</span> <span class="n">KdNodePredicate</span> <span class="p">{</span>
+  <span class="n">CoordPoint</span> <span class="nf">point</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="n">MyPredicate</span><span class="p">(</span><span class="n">CoordPoint</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kt">bool</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="n">KdNode</span><span class="o">&amp;</span> <span class="n">kn</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">kn</span><span class="p">.</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>The call of the class only takes a single argument, the <tt class="docutils literal">KdNode</tt>, and
+returns true when this node is an admissible search result. If this
+criterion depends on some information from the actual search point (like
+its <em>x</em>-component in the exampel above), this information must be passed to
+the class constructor and stored within the class.</p>
+<p>An instance of this class can then be passed as the third, optional argument
+to <tt class="docutils literal">KdTree.k_nearest_neighbors</tt>:</p>
+<div class="highlight"><pre><span></span><span class="n">KdNodeVector</span> <span class="n">neighbors</span><span class="p">;</span>
+<span class="n">CoordPoint</span> <span class="nf">point</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="n">MyPredicate</span> <span class="nf">predicate</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">k_nearest_neighbors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">neighbors</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">predicate</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h1><a class="toc-backref" href="#id21">References</a></h1>
+<table class="docutils citation" frame="void" id="deberg2000" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[deBerg2000]</a></td><td>M. de Berg, M. van Kreveld, M. Overmars, O. Schwarzkopf:
+<em>Computational Geometry.</em> Second edition, Springer (2000)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="bentley1975" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Bentley1975]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id6">2</a>)</em> J.L. Bentley: <em>Multidimensional Binary Search Trees Used
+for Associative Searching.</em> Communications of the ACM 18,
+pp. 509-517 (1975)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="friedman1977" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[Friedman1977]</a></td><td>J.H. Friedman, J.L. Bentley, R.A. Finkel:
+<em>An Algorithm for Finding Best Matches in Logarithmic Expected Time.</em>
+ACM Transcations on Mathematical Software 3, pp. 209-226 (1977)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="stroustrup1997" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[Stroustrup1997]</a></td><td>Stroustrup, B. 1997. <em>The C++ Programming
+Language: Third Edition.</em>  Reading, MA: Addison-Wesley.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="dalitz09" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[Dalitz09]</a></td><td>C. Dalitz: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-kdtree-layout.pdf">Kd-Trees for Document Layout Analysis.</a>
+In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;
+Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
+Hochschule Niederrhein, vol. 8, pp. 39-52, Shaker Verlag (2009)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

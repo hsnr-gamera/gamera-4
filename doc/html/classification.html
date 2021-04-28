@@ -3,25 +3,342 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>classification.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Classification</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="classification">
+<h1 class="title">Classification</h1>
 
-
-<p>b'nClassificationn==============nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``classify_automatic``n----------------------nn**classify_automatic** (str <em>id</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnClassifies the image as the value <em>id_name</em> and sets the statento AUTOMATIC.  Use this method when an automatic classifier has classifiednthis glyph. Note that this method does not touch the <em>confidence</em> map fornthe main id; this must be set separately.nn*id_name*n  Can come in one of two forms:nn    <strong>string</strong>n       image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.n       As in this case no confidence is provided, it is set to zero.n    <strong>list of tuples</strong>n       A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).nn       <em>confidence</em>n         A value in range (0, 1), where 0 is uncertain and 1 is certain.n       <em>class_name</em>n         A <tt class="docutils literal">.</tt>-delimited class name.nnn``classify_heuristic``n----------------------nn**classify_heuristic** (str <em>id</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnClassifies the image as the value <em>id_name</em> and sets the statento HEURISTIC.  Use this method when a heuristic process has classifiednthis glyph. This method also unsets the <em>confidence</em> map.nn*id_name*n  Can come in one of two forms:nn    <strong>string</strong>n       image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.n       As in this case no confidence is provided, it is set to 0.5.n    <strong>list of tuples</strong>n       A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).nn       <em>confidence</em>n         A value in range (0, 1), where 0 is uncertain and 1 is certain.n       <em>class_name</em>n         A <tt class="docutils literal">.</tt>-delimited class name.nnn``classify_manual``n-------------------nn**classify_manual** (str <em>id</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnClassifies the image as the value <em>id_name</em> and sets the statento MANUAL.  Use this method when an end user has classified this glyph.nThis method also unsets the <em>confidence</em> map.nn*id_name*n  Can come in one of two forms:nn    <strong>string</strong>n       image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.n       As in this case no confidence is provided, it is set to one.n    <strong>list of tuples</strong>n       A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).nn       <em>confidence</em>n         A value in range (0, 1), where 0 is uncertain and 1 is certain.n       <em>class_name</em>n         A <tt class="docutils literal">.</tt>-delimited class name.nnn``get_confidence``n------------------nnfloat <strong>get_confidence</strong> (<tt class="docutils literal">Choice</tt> [] <em>confidence_type</em> = None)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: floatn:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns the confidence of the primary class assigned to the image.n*confidence_type* can be one of the predefined <a href="#id3"><span class="problematic" id="id4">`confidence measures`__</span></a>, e.g.nn.. __: classify.html#confidencenn.. code:: Pythonnn   from gamera.gameracore import CONFIDENCE_KNNFRACTIONn   glyph.get_confidence(CONFIDENCE_KNNFRACTION)nnWhen no <em>confidence_type</em> is given, the default confidence stored withn``id_name[0]`` is returned. If the image is unclassified, -1.0 is returned.nnFor details about the confidence computation in Gamera, seenn   C. Dalitz: <a href="#id3"><span class="problematic" id="id5">`Reject Options and Confidence Measures for kNN Classifiers.`__</span></a>n   In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;n   Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,n   Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009).nn.. __: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdfnnn">http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdfnnn</a>n``get_main_id``n---------------nnstr <strong>get_main_id</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: strn:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns the primary class name assigned to the image.nnIf the image is unclassified, the result is 'UNCLASSIFIED'.nnnn``has_id_name``n---------------nn``bool`` <strong>has_id_name</strong> (str <em>id</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">bool</tt>n:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns <tt class="docutils literal">True</tt> if the image has the given classification <tt class="docutils literal">name</tt>.nnn``match_id_name``n-----------------nn**match_id_name** (str <em>regex</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Category: Classificationn:Defined in: id_name_matching.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns true if the image's main <tt class="docutils literal">id_name</tt> matches the given regularnexpression.nn*regex*n  A special-purpose regular expression as defined below.nnA special-purpose regular expression language designed fornconvenience on Gamera symbol names is used here.  It has limitednflexibility relative to Python regular expressions, and is morenakin to wildcards in command-line shells.  This language isnconverted to standard Python regular expressions (<tt class="docutils literal">re</tt> module)nfor efficiency.nn**Informal syntax definition:<strong>nn====================  =============================================nRegular expression    Descriptionn====================  =============================================n``A|B``               matches ``A`` or ``B``n``A.B|C``             matches ``A.B`` or ``A.C``n``*``                 multiple-character wildcardn``?``                 single character wildcardn``()``                grouping can be performed with parenthesesn``[a-z]``             matches any character a-zn====================  =============================================nn**Example expressions:</strong>nn========================  ====================================================  n``(upper.x)|(lower.y)``   match either <tt class="docutils literal">upper.x</tt> or <tt class="docutils literal">lower.y</tt>n``upper.x|upper.y``       careful! matches <tt class="docutils literal">upper.x.y</tt> or <tt class="docutils literal">upper.upper.y</tt>n``upper.*``               match anything in the <tt class="docutils literal">upper</tt> categoryn``upper.a|b|c``           matches <tt class="docutils literal">upper.a</tt>, <tt class="docutils literal">upper.b</tt> or <tt class="docutils literal">upper.c</tt>n``upper.capital_?``       <tt class="docutils literal">?</tt> is a single character wildcardn========================  ====================================================nnn``unclassify``n--------------nn**unclassify** ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Classificationn:Defined in: plugin.pyn:Author: Michael Droettboom and Karl MacMillannnnSets the image back to an UNCLASSIFIED state.  Use thisnwhen you are not longer sure of the identity of the image and younwant an automatic classifier to reclassify.nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classification.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classification.txt</tt>, line 2); <em>backlinks: <a href="#id4">1</a>, <a href="#id5">2</a></em></p>
-Anonymous hyperlink mismatch: 2 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#classify-automatic" id="id3"><tt class="docutils literal">classify_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-heuristic" id="id4"><tt class="docutils literal">classify_heuristic</tt></a></li>
+<li><a class="reference internal" href="#classify-manual" id="id5"><tt class="docutils literal">classify_manual</tt></a></li>
+<li><a class="reference internal" href="#get-confidence" id="id6"><tt class="docutils literal">get_confidence</tt></a></li>
+<li><a class="reference internal" href="#get-main-id" id="id7"><tt class="docutils literal">get_main_id</tt></a></li>
+<li><a class="reference internal" href="#has-id-name" id="id8"><tt class="docutils literal">has_id_name</tt></a></li>
+<li><a class="reference internal" href="#match-id-name" id="id9"><tt class="docutils literal">match_id_name</tt></a></li>
+<li><a class="reference internal" href="#unclassify" id="id10"><tt class="docutils literal">unclassify</tt></a></li>
+</ul>
 </div>
+<div class="section" id="classify-automatic">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">classify_automatic</tt></a></h1>
+<p><strong>classify_automatic</strong> (str <em>id</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Classifies the image as the value <em>id_name</em> and sets the state
+to AUTOMATIC.  Use this method when an automatic classifier has classified
+this glyph. Note that this method does not touch the <em>confidence</em> map for
+the main id; this must be set separately.</p>
+<dl class="docutils">
+<dt><em>id_name</em></dt>
+<dd><p class="first">Can come in one of two forms:</p>
+<blockquote class="last">
+<dl class="docutils">
+<dt><strong>string</strong></dt>
+<dd>image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.
+As in this case no confidence is provided, it is set to zero.</dd>
+<dt><strong>list of tuples</strong></dt>
+<dd><p class="first">A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).</p>
+<dl class="last docutils">
+<dt><em>confidence</em></dt>
+<dd>A value in range (0, 1), where 0 is uncertain and 1 is certain.</dd>
+<dt><em>class_name</em></dt>
+<dd>A <tt class="docutils literal">.</tt>-delimited class name.</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="classify-heuristic">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">classify_heuristic</tt></a></h1>
+<p><strong>classify_heuristic</strong> (str <em>id</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Classifies the image as the value <em>id_name</em> and sets the state
+to HEURISTIC.  Use this method when a heuristic process has classified
+this glyph. This method also unsets the <em>confidence</em> map.</p>
+<dl class="docutils">
+<dt><em>id_name</em></dt>
+<dd><p class="first">Can come in one of two forms:</p>
+<blockquote class="last">
+<dl class="docutils">
+<dt><strong>string</strong></dt>
+<dd>image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.
+As in this case no confidence is provided, it is set to 0.5.</dd>
+<dt><strong>list of tuples</strong></dt>
+<dd><p class="first">A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).</p>
+<dl class="last docutils">
+<dt><em>confidence</em></dt>
+<dd>A value in range (0, 1), where 0 is uncertain and 1 is certain.</dd>
+<dt><em>class_name</em></dt>
+<dd>A <tt class="docutils literal">.</tt>-delimited class name.</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="classify-manual">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">classify_manual</tt></a></h1>
+<p><strong>classify_manual</strong> (str <em>id</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Classifies the image as the value <em>id_name</em> and sets the state
+to MANUAL.  Use this method when an end user has classified this glyph.
+This method also unsets the <em>confidence</em> map.</p>
+<dl class="docutils">
+<dt><em>id_name</em></dt>
+<dd><p class="first">Can come in one of two forms:</p>
+<blockquote class="last">
+<dl class="docutils">
+<dt><strong>string</strong></dt>
+<dd>image is classified using the given <tt class="docutils literal">.</tt>-delimited class name.
+As in this case no confidence is provided, it is set to one.</dd>
+<dt><strong>list of tuples</strong></dt>
+<dd><p class="first">A list of tuples where each tuple is the pair (<em>confidence</em>, <em>class_name</em>).</p>
+<dl class="last docutils">
+<dt><em>confidence</em></dt>
+<dd>A value in range (0, 1), where 0 is uncertain and 1 is certain.</dd>
+<dt><em>class_name</em></dt>
+<dd>A <tt class="docutils literal">.</tt>-delimited class name.</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="get-confidence">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">get_confidence</tt></a></h1>
+<p>float <strong>get_confidence</strong> (<tt class="docutils literal">Choice</tt> [] <em>confidence_type</em> = None)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the confidence of the primary class assigned to the image.
+<em>confidence_type</em> can be one of the predefined <a class="reference external" href="classify.html#confidence">confidence measures</a>, e.g.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.gameracore</span> <span class="kn">import</span> <span class="n">CONFIDENCE_KNNFRACTION</span>
+<span class="n">glyph</span><span class="o">.</span><span class="n">get_confidence</span><span class="p">(</span><span class="n">CONFIDENCE_KNNFRACTION</span><span class="p">)</span>
+</pre></div>
+<p>When no <em>confidence_type</em> is given, the default confidence stored with
+<tt class="docutils literal">id_name[0]</tt> is returned. If the image is unclassified, -1.0 is returned.</p>
+<p>For details about the confidence computation in Gamera, see</p>
+<blockquote>
+C. Dalitz: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdf">Reject Options and Confidence Measures for kNN Classifiers.</a>
+In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;
+Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
+Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009).</blockquote>
+</div>
+<div class="section" id="get-main-id">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">get_main_id</tt></a></h1>
+<p>str <strong>get_main_id</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the primary class name assigned to the image.</p>
+<p>If the image is unclassified, the result is 'UNCLASSIFIED'.</p>
+</div>
+<div class="section" id="has-id-name">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">has_id_name</tt></a></h1>
+<p><tt class="docutils literal">bool</tt> <strong>has_id_name</strong> (str <em>id</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">bool</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns <tt class="docutils literal">True</tt> if the image has the given classification <tt class="docutils literal">name</tt>.</p>
+</div>
+<div class="section" id="match-id-name">
+<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">match_id_name</tt></a></h1>
+<p><strong>match_id_name</strong> (str <em>regex</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">id_name_matching.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns true if the image's main <tt class="docutils literal">id_name</tt> matches the given regular
+expression.</p>
+<dl class="docutils">
+<dt><em>regex</em></dt>
+<dd>A special-purpose regular expression as defined below.</dd>
+</dl>
+<p>A special-purpose regular expression language designed for
+convenience on Gamera symbol names is used here.  It has limited
+flexibility relative to Python regular expressions, and is more
+akin to wildcards in command-line shells.  This language is
+converted to standard Python regular expressions (<tt class="docutils literal">re</tt> module)
+for efficiency.</p>
+<p><strong>Informal syntax definition:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Regular expression</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal">A|B</tt></td>
+<td>matches <tt class="docutils literal">A</tt> or <tt class="docutils literal">B</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">A.B|C</tt></td>
+<td>matches <tt class="docutils literal">A.B</tt> or <tt class="docutils literal">A.C</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">*</tt></td>
+<td>multiple-character wildcard</td>
+</tr>
+<tr><td><tt class="docutils literal">?</tt></td>
+<td>single character wildcard</td>
+</tr>
+<tr><td><tt class="docutils literal">()</tt></td>
+<td>grouping can be performed with parentheses</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">[a-z]</span></tt></td>
+<td>matches any character a-z</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example expressions:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">(upper.x)|(lower.y)</span></tt></td>
+<td>match either <tt class="docutils literal">upper.x</tt> or <tt class="docutils literal">lower.y</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">upper.x|upper.y</tt></td>
+<td>careful! matches <tt class="docutils literal">upper.x.y</tt> or <tt class="docutils literal">upper.upper.y</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">upper.*</tt></td>
+<td>match anything in the <tt class="docutils literal">upper</tt> category</td>
+</tr>
+<tr><td><tt class="docutils literal">upper.a|b|c</tt></td>
+<td>matches <tt class="docutils literal">upper.a</tt>, <tt class="docutils literal">upper.b</tt> or <tt class="docutils literal">upper.c</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">upper.capital_?</tt></td>
+<td><tt class="docutils literal">?</tt> is a single character wildcard</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="unclassify">
+<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">unclassify</tt></a></h1>
+<p><strong>unclassify</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Classification</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">plugin.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Sets the image back to an UNCLASSIFIED state.  Use this
+when you are not longer sure of the identity of the image and you
+want an automatic classifier to reclassify.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

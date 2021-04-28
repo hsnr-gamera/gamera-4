@@ -3,25 +3,96 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>major_changes_3x.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Major changes from Gamera 2.x to Gamera 3.x</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="major-changes-from-gamera-2-x-to-gamera-3-x">
+<h1 class="title">Major changes from Gamera 2.x to Gamera 3.x</h1>
 
-
-<p>b'===========================================nMajor changes from Gamera 2.x to Gamera 3.xn===========================================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnDeprecated functionsn====================nnSome functions have been deprecated.  They will continue to work fornnow, but will be removed at some point in the future.  For moreninformation, see the <a href="#id3"><span class="problematic" id="id4">`migration guide`__</span></a>.nn.. __: migration_guide.htmlnnPlugin systemn=============nnSome more types were added to the plugin system, meaning they can benconveniently passed between Python and C++ plugins.nn  - <strong>Point</strong>nn  - <strong>FloatPoint</strong>nn  - <strong>Dim</strong>nnGraphical user interfacen========================nn- <strong>wxPython 2.6.x support</strong>:nn  Gamera now runs with the wxPython 2.6.x as well as the wxPythonn  2.4.x series.nn  Note that native Cocoa support on OSX is not currently supported,n  since as of the time of this writing, wxPython is <a href="#id3"><span class="problematic" id="id5">broken__</span></a>.nn.. __: <a class="reference external" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1194622&amp;group_id=9863&amp;atid=109863nn">http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1194622&amp;group_id=9863&amp;atid=109863nn</a>  wxPython 2.6.x is a lot closer to the native look and feel of the n  various platforms.  You may notice that the placement of somen  buttons in some dialog boxes has changed and other minor look andn  feel details.  Most of these are not due to any changes in Gameran  itself.nn- <strong>New information pane in the shell</strong> (replacing the History pane)nn  This includes three tabs, based on PyCrust:nn  - <strong>Docstring display</strong>:nn    When a function or property is typed in the shell, its docstringn    is displayed in the bottom pane.  This is less annoying than then    popup that would occasionally fill the entire screen with a longn    docstring.nn    If wxPython 2.6 and docutils is installed, the docstring isn    formatted as reStructuredText with bold and italics etc.nn  - <strong>Namespace</strong>:n  n    Browse all of the objects in the shell.nn  - <strong>History</strong>:n   n    An improved command history.nn- <strong>Docstrings in dialog boxes</strong>nn  Many dialog boxes now include docstrings where appropriate.nnGeneral sanity fixesn====================nn- There were a few places where memory leaks were happening only whenn  an exception was raised.  Many of these exceptions are now beingn  caught and the leaked objects are deleted.nn- Docstrings on C++ plugins work correctly.n'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/major_changes_3x.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/major_changes_3x.txt</tt>, line 2); <em>backlinks: <a href="#id4">1</a>, <a href="#id5">2</a></em></p>
-Anonymous hyperlink mismatch: 2 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deprecated-functions" id="id3">Deprecated functions</a></li>
+<li><a class="reference internal" href="#plugin-system" id="id4">Plugin system</a></li>
+<li><a class="reference internal" href="#graphical-user-interface" id="id5">Graphical user interface</a></li>
+<li><a class="reference internal" href="#general-sanity-fixes" id="id6">General sanity fixes</a></li>
+</ul>
 </div>
+<div class="section" id="deprecated-functions">
+<h1><a class="toc-backref" href="#id3">Deprecated functions</a></h1>
+<p>Some functions have been deprecated.  They will continue to work for
+now, but will be removed at some point in the future.  For more
+information, see the <a class="reference external" href="migration_guide.html">migration guide</a>.</p>
+</div>
+<div class="section" id="plugin-system">
+<h1><a class="toc-backref" href="#id4">Plugin system</a></h1>
+<p>Some more types were added to the plugin system, meaning they can be
+conveniently passed between Python and C++ plugins.</p>
+<blockquote>
+<ul class="simple">
+<li><strong>Point</strong></li>
+<li><strong>FloatPoint</strong></li>
+<li><strong>Dim</strong></li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="graphical-user-interface">
+<h1><a class="toc-backref" href="#id5">Graphical user interface</a></h1>
+<ul>
+<li><p class="first"><strong>wxPython 2.6.x support</strong>:</p>
+<p>Gamera now runs with the wxPython 2.6.x as well as the wxPython
+2.4.x series.</p>
+<p>Note that native Cocoa support on OSX is not currently supported,
+since as of the time of this writing, wxPython is <a class="reference external" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1194622&amp;group_id=9863&amp;atid=109863">broken</a>.</p>
+</li>
+</ul>
+<blockquote>
+wxPython 2.6.x is a lot closer to the native look and feel of the
+various platforms.  You may notice that the placement of some
+buttons in some dialog boxes has changed and other minor look and
+feel details.  Most of these are not due to any changes in Gamera
+itself.</blockquote>
+<ul>
+<li><p class="first"><strong>New information pane in the shell</strong> (replacing the History pane)</p>
+<p>This includes three tabs, based on PyCrust:</p>
+<ul>
+<li><p class="first"><strong>Docstring display</strong>:</p>
+<p>When a function or property is typed in the shell, its docstring
+is displayed in the bottom pane.  This is less annoying than the
+popup that would occasionally fill the entire screen with a long
+docstring.</p>
+<p>If wxPython 2.6 and docutils is installed, the docstring is
+formatted as reStructuredText with bold and italics etc.</p>
+</li>
+<li><p class="first"><strong>Namespace</strong>:</p>
+<p>Browse all of the objects in the shell.</p>
+</li>
+<li><p class="first"><strong>History</strong>:</p>
+<p>An improved command history.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>Docstrings in dialog boxes</strong></p>
+<p>Many dialog boxes now include docstrings where appropriate.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="general-sanity-fixes">
+<h1><a class="toc-backref" href="#id6">General sanity fixes</a></h1>
+<ul class="simple">
+<li>There were a few places where memory leaks were happening only when
+an exception was raised.  Many of these exceptions are now being
+caught and the leaked objects are deleted.</li>
+<li>Docstrings on C++ plugins work correctly.</li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

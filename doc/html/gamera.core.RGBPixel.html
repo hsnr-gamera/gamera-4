@@ -3,18 +3,126 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>gamera.core.RGBPixel.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>class RGBPixel</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="class-rgbpixel">
+<h1 class="title">class <tt class="docutils literal">RGBPixel</tt></h1>
 
-
-<p>b'class <tt class="docutils literal">RGBPixel</tt>n==================nnn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nn``RGBPixel``n------------nnIn module <tt class="docutils literal">gamera.core</tt>nn.. docstring:: gamera.core RGBPixeln   :no_title:nn.. docstring:: gamera.core RGBPixel red green blue hue saturation value cie_x cie_y cie_z cie_Lab_L cie_Lab_a cie_Lab_b cyan magenta yellownn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/gamera.core.RGBPixel.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#rgbpixel" id="id2"><tt class="docutils literal">RGBPixel</tt></a><ul>
+<li><a class="reference internal" href="#red" id="id3"><tt class="docutils literal">red</tt></a></li>
+<li><a class="reference internal" href="#green" id="id4"><tt class="docutils literal">green</tt></a></li>
+<li><a class="reference internal" href="#blue" id="id5"><tt class="docutils literal">blue</tt></a></li>
+<li><a class="reference internal" href="#hue" id="id6"><tt class="docutils literal">hue</tt></a></li>
+<li><a class="reference internal" href="#saturation" id="id7"><tt class="docutils literal">saturation</tt></a></li>
+<li><a class="reference internal" href="#value" id="id8"><tt class="docutils literal">value</tt></a></li>
+<li><a class="reference internal" href="#cie-x" id="id9"><tt class="docutils literal">cie_x</tt></a></li>
+<li><a class="reference internal" href="#cie-y" id="id10"><tt class="docutils literal">cie_y</tt></a></li>
+<li><a class="reference internal" href="#cie-z" id="id11"><tt class="docutils literal">cie_z</tt></a></li>
+<li><a class="reference internal" href="#cie-lab-l" id="id12"><tt class="docutils literal">cie_Lab_L</tt></a></li>
+<li><a class="reference internal" href="#cie-lab-a" id="id13"><tt class="docutils literal">cie_Lab_a</tt></a></li>
+<li><a class="reference internal" href="#cie-lab-b" id="id14"><tt class="docutils literal">cie_Lab_b</tt></a></li>
+<li><a class="reference internal" href="#cyan" id="id15"><tt class="docutils literal">cyan</tt></a></li>
+<li><a class="reference internal" href="#magenta" id="id16"><tt class="docutils literal">magenta</tt></a></li>
+<li><a class="reference internal" href="#yellow" id="id17"><tt class="docutils literal">yellow</tt></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="rgbpixel">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">RGBPixel</tt></a></h1>
+<p>In module <tt class="docutils literal">gamera.core</tt></p>
+<p><p>__init__(<em>red</em>, <em>green</em>, <em>blue</em>).</p>
+<p>Example: <tt class="docutils literal">RGBPixel(255, 0, 0)</tt>.</p>
+<p>Each color value is in the range 0-255 (8 bits).</p>
+<p>For more information about color operations, see the <a class="reference external" href="color.html">Color plugin docs</a>.</p>
+</p>
+<div class="section" id="red">
+<h2><a class="toc-backref" href="#id3"><tt class="docutils literal">red</tt></a></h2>
+<p>(int property)</p>
+<p>The current red value [0,255]</p>
+</div>
+<div class="section" id="green">
+<h2><a class="toc-backref" href="#id4"><tt class="docutils literal">green</tt></a></h2>
+<p>(int property)</p>
+<p>The current green value [0, 255]</p>
+</div>
+<div class="section" id="blue">
+<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">blue</tt></a></h2>
+<p>(int property)</p>
+<p>The current blue value [0, 255]</p>
+</div>
+<div class="section" id="hue">
+<h2><a class="toc-backref" href="#id6"><tt class="docutils literal">hue</tt></a></h2>
+<p>(float property)</p>
+<p>The hue [0, 1.0]</p>
+</div>
+<div class="section" id="saturation">
+<h2><a class="toc-backref" href="#id7"><tt class="docutils literal">saturation</tt></a></h2>
+<p>(float property)</p>
+<p>The saturation [0, 1.0]</p>
+</div>
+<div class="section" id="value">
+<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">value</tt></a></h2>
+<p>(float property)</p>
+<p>The value [0, 1.0]</p>
+</div>
+<div class="section" id="cie-x">
+<h2><a class="toc-backref" href="#id9"><tt class="docutils literal">cie_x</tt></a></h2>
+<p>(float property)</p>
+<p>The x value in CIE XYZ color space [0, 1.0]</p>
+</div>
+<div class="section" id="cie-y">
+<h2><a class="toc-backref" href="#id10"><tt class="docutils literal">cie_y</tt></a></h2>
+<p>(float property)</p>
+<p>The y value in CIE XYZ color space [0, 1.0]</p>
+</div>
+<div class="section" id="cie-z">
+<h2><a class="toc-backref" href="#id11"><tt class="docutils literal">cie_z</tt></a></h2>
+<p>(float property)</p>
+<p>The z value in CIE XYZ color space [0, 1.0]</p>
+</div>
+<div class="section" id="cie-lab-l">
+<h2><a class="toc-backref" href="#id12"><tt class="docutils literal">cie_Lab_L</tt></a></h2>
+<p>(float property)</p>
+<p>The L value in CIE L*a*b* color space [0, 100]</p>
+</div>
+<div class="section" id="cie-lab-a">
+<h2><a class="toc-backref" href="#id13"><tt class="docutils literal">cie_Lab_a</tt></a></h2>
+<p>(float property)</p>
+<p>The a value in CIE L*a*b* color space [-86.2, 98.3]</p>
+</div>
+<div class="section" id="cie-lab-b">
+<h2><a class="toc-backref" href="#id14"><tt class="docutils literal">cie_Lab_b</tt></a></h2>
+<p>(float property)</p>
+<p>The b value in CIE L*a*b* color space [-107.9, 94.5]</p>
+</div>
+<div class="section" id="cyan">
+<h2><a class="toc-backref" href="#id15"><tt class="docutils literal">cyan</tt></a></h2>
+<p>(int property)</p>
+<p>The cyan value [0, 255]</p>
+</div>
+<div class="section" id="magenta">
+<h2><a class="toc-backref" href="#id16"><tt class="docutils literal">magenta</tt></a></h2>
+<p>(int property)</p>
+<p>The magenta value [0, 255]</p>
+</div>
+<div class="section" id="yellow">
+<h2><a class="toc-backref" href="#id17"><tt class="docutils literal">yellow</tt></a></h2>
+<p>(int property)</p>
+<p>The yellow value [0, 255]</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

@@ -3,28 +3,319 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>xml_format.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Gamera XML format (version 2.0)</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="gamera-xml-format-version-2-0">
+<h1 class="title">Gamera XML format (version 2.0)</h1>
 
-
-<p>b'===============================nGamera XML format (version 2.0)n===============================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn------------nnThe Gamera XML format is used to store sets of small ONEBIT (binary)nimages.  This is most commonly used to store training data for anclassifier.nnSince these files tend to be quite large, Gamera supports loading andnsaving of gzipped XML files.nnXML formatn----------nnBelow is an informal description on the XML format.  A more formalndefinition is given in the <a href="#id5"><span class="problematic" id="id6">`DTD`_</span></a>.nnGamera uses Unicode internally to store symbol names, so the XML filencan be encoded in most standard encodings that Python cannautomatically convert to Unicode.  (See the Python documentation fornthe <tt class="docutils literal">codecs</tt> module).nnAll XML files created directly from Gamera are encoded in UTF-8.nn.. code:: XMLnn  &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;nn``gamera-database`` (Toplevel)n``````````````````````````````nnAt the top level is the <tt class="docutils literal"><span class="pre">gamera-database</span></tt> element.  A version mustnbe specified.  Note that the version refers to the &quot;Gamera XML filenformat&quot; version which does not correspond to the version of Gamera.nThe version documented here is <tt class="docutils literal">2.0</tt>.  Version <tt class="docutils literal">1.0</tt> was a weaknfirst attempt and is no longer supported.  We plan to make futurenversions backward and forward compatible whenever possible.nn.. code:: XMLnn  &lt;gamera-database version=&quot;2.0&quot;&gt;n    ...n  &lt;/gamera-database&gt;nn``glyphs``n''''''''''nnThe <tt class="docutils literal">glyphs</tt> element simply contains <tt class="docutils literal">glyph</tt> elements.nn.. code:: XMLnn  &lt;glyphs&gt;n    ...n  &lt;/glyphs&gt;nn``glyph``n+++++++++nnEach <tt class="docutils literal">glyph</tt> element represents a small ONEBIT (binary) image.nnIt has the following attributes that specify the bounding box, and arendirectly equivalent to the members on the image object itself:n``uly``, <tt class="docutils literal">ulx</tt>, <tt class="docutils literal">nrows</tt> and <tt class="docutils literal">ncols</tt>.nn.. code:: XMLnn   &lt;glyph uly=&quot;242&quot; ulx=&quot;1758&quot; nrows=&quot;26&quot; ncols=&quot;18&quot;&gt;n     ...n   &lt;/glyph&gt;nn``ids``n.......nnEach <tt class="docutils literal">glyph</tt> contains an <tt class="docutils literal">ids</tt> element which contains all ofnthe class names that define the glyph.  Since some classifiers willnreturn multiple class names with different confidences, <tt class="docutils literal">ids</tt> isnactually a set of <tt class="docutils literal">id</tt> elements.nn``ids`` has an attribute <tt class="docutils literal">state</tt> that defines how the glyph wasnclassified.  It can be one of {<tt class="docutils literal">UNCLASSIFIED</tt>, <tt class="docutils literal">AUTOMATIC</tt>,n``HEURISTIC``, <tt class="docutils literal">MANUAL</tt>}.nnEach <tt class="docutils literal">id</tt> element within <tt class="docutils literal">ids</tt> has two attributes:nn``name``ntThe class name, which is period-delimited by category.nn``confidence``ntA confidence value represented how sure the classifier wasntabout the identity of this glyph.  The value is in the range 0nt(not at all confident) to 1 (very confident).nn.. code:: XMLnn      &lt;ids state=&quot;AUTOMATIC&quot;&gt;n        &lt;id name=&quot;number.three&quot; confidence=&quot;1.000000&quot;/&gt;n      &lt;/ids&gt;nn``data``n........nnData contains a run-length encoded representation of the imagenitself.  This data is used to reconstruct the image when loading.  Itnconsists of decimal numbers separated by whitespace.  The numbersnalternate between the length of white runs and the length of blacknruns.  Runs &quot;wrap-over&quot; the right side of the image to the next row onnthe left side of the image.  Systems that work on Gamera XML shouldntake care not to modify the data block, as it is very easy to corruptnand there is only minimal error checking upon reloading.nn.. code:: XMLnn      &lt;data&gt;n        6 4 12 9 8 12 5 6 1 7 4 5 3 7 2 6 4 6 2 7 3 6 2 7 3 6 3 6 3 6 3 4 5 6n        4 3 4 7 5 3 2 6 7 11 7 11 8 11 6 5 1 7 2 6 4 6 2 6 4 15 3 14 4 14 4 6n        2 6 3 7 2 15 4 12 7 10 11 3 9 0 n      &lt;/data&gt;nn``features``n............nnThe <tt class="docutils literal">features</tt> element contains a set of <tt class="docutils literal">feature</tt> elements, onenfor each feature function.nn.. note:: When Gamera XML files are loaded into Gamera, the featuresn   information is discarded and regenerated.  This is so then   classifier has complete control over what features are used and hown   they are used.  The feature values are dumped to the XML file onlyn   for the benefit of third-party applications that may wish to usen   the features without using Gamera code itself.nnThe <tt class="docutils literal">features</tt> element has one attribute, <tt class="docutils literal">scaling</tt>, which is usednto define how the features should be scaled (if at all).nnEach <tt class="docutils literal">feature</tt> element has one attribute, <tt class="docutils literal">name</tt>, which is thenfeature function that generated the values.  More feature functionsncan be added by <a href="#id3"><span class="problematic" id="id4">`creating plugin methods`__</span></a> in the categoryn``Features``.nn.. __: writing_plugins.htmlnnThe <tt class="docutils literal">CDATA</tt> block of the <tt class="docutils literal">feature</tt> element contains a list ofnfloating point numbers (in decimal) that were generated by the givennfeature function.nn.. code:: XMLnn      &lt;features scaling=&quot;1.0&quot;&gt;n        &lt;feature name=&quot;area&quot;&gt;n          468.0n        &lt;/feature&gt;n        &lt;feature name=&quot;aspect_ratio&quot;&gt;n          0.692307692308n        &lt;/feature&gt;n        &lt;feature name=&quot;black_area&quot;&gt;n          294.0n        &lt;/feature&gt;n        &lt;feature name=&quot;compactness&quot;&gt;n          0.428571428571n        &lt;/feature&gt;n        &lt;feature name=&quot;moments&quot;&gt;n          0.302825261159 0.307856673241 0.0657821501667 0.149170828096n          0.0533051094428 0.008619818861 -0.000427188837948 0.000613411663867n          0.0317229010445n        &lt;/feature&gt;n        &lt;feature name=&quot;nholes&quot;&gt;n          0.944444444444 0.615384615385n        &lt;/feature&gt;n        &lt;feature name=&quot;nholes_extended&quot;&gt;n          3.0 6.0 4.0 2.0 3.0 6.0 4.0 3.0n        &lt;/feature&gt;n        &lt;feature name=&quot;skeleton_features&quot;&gt;n          3.0 10.0 0.206349206349 6.0 4.0 3.0n        &lt;/feature&gt;n        &lt;feature name=&quot;volume&quot;&gt;n          0.628205128205n        &lt;/feature&gt;n        &lt;feature name=&quot;volume16regions&quot;&gt;n          0.485714285714 0.514285714286 0.457142857143 0.8 0.771428571429n          0.685714285714 0.828571428571 0.8 0.657142857143 0.571428571429n          0.714285714286 0.685714285714 0.657142857143 0.885714285714n          0.857142857143 0.771428571429n        &lt;/feature&gt;n        &lt;feature name=&quot;volume64regions&quot;&gt;n          0.0833333333333 0.5 0.5 0.0833333333333 0.0 0.583333333333n          0.916666666667 0.416666666667 0.5 1.0 1.0 0.583333333333 0.25n          0.833333333333 1.0 0.916666666667 0.833333333333 1.0 0.916666666667n          0.833333333333 0.916666666667 1.0 1.0 1.0 0.916666666667 0.5 0.5n          0.333333333333 1.0 0.583333333333 0.416666666667 0.833333333333n          0.833333333333 0.25 0.0 0.5 0.916666666667 0.166666666667n          0.0833333333333 0.833333333333 0.75 0.833333333333 0.666666666667n          0.916666666667 1.0 0.75 0.75 1.0 0.583333333333 1.0 1.0 1.0 1.0 1.0n          1.0 0.75 0.25 0.916666666667 1.0 0.666666666667 0.583333333333 1.0n          1.0 0.416666666667n        &lt;/feature&gt;n        &lt;feature name=&quot;zernike_moments&quot;&gt;n          -10.6511384992 6.48862460298 -29.6215265124 21.4915669267n          -4.95741930842 9.70917594801 -41.1062437889 61.7375776134n          5.72778404882 5.31916863982 -16.2283589874 87.6140952777n          0.148787539745 -2.75048482171 -4.19045628996 74.7653517483n          0.403589004311 -0.403486704972 -4.89682421377 61.1321737136n          -1.01342510763 -0.526430778878 -13.8421959343 63.5845586372n          -0.188701625589 0.697880091555n        &lt;/feature&gt;n      &lt;/features&gt;nn``symbols``n'''''''''''nnThe <tt class="docutils literal">symbols</tt> element contains a set of symbol names.  This is usednto import/export symbol tables without the expense of loading glyphs.nnEach <tt class="docutils literal">symbol</tt> element contains one attribute <tt class="docutils literal">name</tt> which definesna period-delimited class name.nn.. code:: XMLnn  &lt;symbols&gt;n    &lt;symbol name=&quot;notehead.half.ledger.middle&quot; /&gt;n    &lt;symbol name=&quot;dot&quot; /&gt;n    &lt;symbol name=&quot;clef.bass&quot; /&gt;n    &lt;symbol name=&quot;accidental.doubleflat&quot; /&gt;n    &lt;symbol name=&quot;notehead.triangle.hollow&quot; /&gt;n    &lt;symbol name=&quot;bracket&quot; /&gt;n    &lt;symbol name=&quot;brace&quot; /&gt;n  &lt;/symbols&gt;nnDTDn---nnThis is the formal definition of the Gamera XML Format.nn.. code:: XMLnn  &lt;!-- DTD for gamera glyph database files n    11/18/02 Michael Droettboomn  --&gt;nn  &lt;!ELEMENT gamera-database (symbols*,glyphs*)&gt;n  &lt;!ATTLIST gamera-database version CDATA #REQUIRED&gt;nn  &lt;!ELEMENT symbols (symbol*)&gt;nn  &lt;!ELEMENT symbol EMPTY&gt;n  &lt;!ATTLIST symbol name CDATA #REQUIRED&gt;nn  &lt;!ELEMENT glyphs (glyph*)&gt;nn  &lt;!ELEMENT glyph (ids,data,features?)&gt;n  &lt;!ATTLIST glyph uly CDATA #REQUIRED&gt;n  &lt;!ATTLIST glyph ulx CDATA #REQUIRED&gt;n  &lt;!ATTLIST glyph nrows CDATA #REQUIRED&gt;n  &lt;!ATTLIST glyph ncols CDATA #REQUIRED&gt;nn  &lt;!ELEMENT ids (id*)&gt;n  &lt;!ATTLIST ids state n    (UNCLASSIFIED|HEURISTIC|AUTOMATIC|MANUAL) &quot;UNCLASSIFIED&quot;&gt;nn  &lt;!ELEMENT id EMPTY&gt;n  &lt;!ATTLIST id name CDATA &quot;UNKNOWN&quot;&gt;n  &lt;!ATTLIST id confidence CDATA &quot;1.0&quot;&gt;nn  &lt;!ELEMENT data (#PCDATA)&gt;nn  &lt;!ELEMENT features (feature*)&gt;n  &lt;!ATTLIST features scaling CDATA &quot;1.0&quot;&gt;nn  &lt;!ELEMENT feature (#PCDATA)&gt;n  &lt;!ATTLIST feature name CDATA #REQUIRED&gt;nnSaving and loading Gamera XML filesn-----------------------------------nnThe code for saving and loading Gamera XML files is inn``gamera/gamera_xml.py``.nnUse the following functions to save and load Gamera XML files:nn.. docstring:: gamera gamera_xml glyphs_from_xml glyphs_with_features_from_xml glyphs_to_xml strip_featuresn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/xml_format.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/xml_format.txt</tt>, line 2); <em><a href="#id4">backlink</a></em></p>
-Anonymous hyperlink mismatch: 1 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/xml_format.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Unknown target name: &quot;dtd&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#xml-format" id="id3">XML format</a><ul>
+<li><a class="reference internal" href="#gamera-database-toplevel" id="id4"><tt class="docutils literal"><span class="pre">gamera-database</span></tt> (Toplevel)</a><ul>
+<li><a class="reference internal" href="#glyphs" id="id5"><tt class="docutils literal">glyphs</tt></a><ul>
+<li><a class="reference internal" href="#glyph" id="id6"><tt class="docutils literal">glyph</tt></a><ul>
+<li><a class="reference internal" href="#ids" id="id7"><tt class="docutils literal">ids</tt></a></li>
+<li><a class="reference internal" href="#data" id="id8"><tt class="docutils literal">data</tt></a></li>
+<li><a class="reference internal" href="#features" id="id9"><tt class="docutils literal">features</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symbols" id="id10"><tt class="docutils literal">symbols</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dtd" id="id11">DTD</a></li>
+<li><a class="reference internal" href="#saving-and-loading-gamera-xml-files" id="id12">Saving and loading Gamera XML files</a><ul>
+<li><a class="reference internal" href="#glyphs-from-xml" id="id13"><tt class="docutils literal">glyphs_from_xml</tt></a></li>
+<li><a class="reference internal" href="#glyphs-with-features-from-xml" id="id14"><tt class="docutils literal">glyphs_with_features_from_xml</tt></a></li>
+<li><a class="reference internal" href="#glyphs-to-xml" id="id15"><tt class="docutils literal">glyphs_to_xml</tt></a></li>
+<li><a class="reference internal" href="#strip-features" id="id16"><tt class="docutils literal">strip_features</tt></a></li>
+</ul>
+</li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id2">Introduction</a></h1>
+<p>The Gamera XML format is used to store sets of small ONEBIT (binary)
+images.  This is most commonly used to store training data for a
+classifier.</p>
+<p>Since these files tend to be quite large, Gamera supports loading and
+saving of gzipped XML files.</p>
+</div>
+<div class="section" id="xml-format">
+<h1><a class="toc-backref" href="#id3">XML format</a></h1>
+<p>Below is an informal description on the XML format.  A more formal
+definition is given in the <a class="reference internal" href="#dtd">DTD</a>.</p>
+<p>Gamera uses Unicode internally to store symbol names, so the XML file
+can be encoded in most standard encodings that Python can
+automatically convert to Unicode.  (See the Python documentation for
+the <tt class="docutils literal">codecs</tt> module).</p>
+<p>All XML files created directly from Gamera are encoded in UTF-8.</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</pre></div>
+<div class="section" id="gamera-database-toplevel">
+<h2><a class="toc-backref" href="#id4"><tt class="docutils literal"><span class="pre">gamera-database</span></tt> (Toplevel)</a></h2>
+<p>At the top level is the <tt class="docutils literal"><span class="pre">gamera-database</span></tt> element.  A version must
+be specified.  Note that the version refers to the &quot;Gamera XML file
+format&quot; version which does not correspond to the version of Gamera.
+The version documented here is <tt class="docutils literal">2.0</tt>.  Version <tt class="docutils literal">1.0</tt> was a weak
+first attempt and is no longer supported.  We plan to make future
+versions backward and forward compatible whenever possible.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;gamera-database</span> <span class="na">version=</span><span class="s">&quot;2.0&quot;</span><span class="nt">&gt;</span>
+  ...
+<span class="nt">&lt;/gamera-database&gt;</span>
+</pre></div>
+<div class="section" id="glyphs">
+<h3><a class="toc-backref" href="#id5"><tt class="docutils literal">glyphs</tt></a></h3>
+<p>The <tt class="docutils literal">glyphs</tt> element simply contains <tt class="docutils literal">glyph</tt> elements.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;glyphs&gt;</span>
+  ...
+<span class="nt">&lt;/glyphs&gt;</span>
+</pre></div>
+<div class="section" id="glyph">
+<h4><a class="toc-backref" href="#id6"><tt class="docutils literal">glyph</tt></a></h4>
+<p>Each <tt class="docutils literal">glyph</tt> element represents a small ONEBIT (binary) image.</p>
+<p>It has the following attributes that specify the bounding box, and are
+directly equivalent to the members on the image object itself:
+<tt class="docutils literal">uly</tt>, <tt class="docutils literal">ulx</tt>, <tt class="docutils literal">nrows</tt> and <tt class="docutils literal">ncols</tt>.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;glyph</span> <span class="na">uly=</span><span class="s">&quot;242&quot;</span> <span class="na">ulx=</span><span class="s">&quot;1758&quot;</span> <span class="na">nrows=</span><span class="s">&quot;26&quot;</span> <span class="na">ncols=</span><span class="s">&quot;18&quot;</span><span class="nt">&gt;</span>
+  ...
+<span class="nt">&lt;/glyph&gt;</span>
+</pre></div>
+<div class="section" id="ids">
+<h5><a class="toc-backref" href="#id7"><tt class="docutils literal">ids</tt></a></h5>
+<p>Each <tt class="docutils literal">glyph</tt> contains an <tt class="docutils literal">ids</tt> element which contains all of
+the class names that define the glyph.  Since some classifiers will
+return multiple class names with different confidences, <tt class="docutils literal">ids</tt> is
+actually a set of <tt class="docutils literal">id</tt> elements.</p>
+<p><tt class="docutils literal">ids</tt> has an attribute <tt class="docutils literal">state</tt> that defines how the glyph was
+classified.  It can be one of {<tt class="docutils literal">UNCLASSIFIED</tt>, <tt class="docutils literal">AUTOMATIC</tt>,
+<tt class="docutils literal">HEURISTIC</tt>, <tt class="docutils literal">MANUAL</tt>}.</p>
+<p>Each <tt class="docutils literal">id</tt> element within <tt class="docutils literal">ids</tt> has two attributes:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal">name</tt></dt>
+<dd>The class name, which is period-delimited by category.</dd>
+<dt><tt class="docutils literal">confidence</tt></dt>
+<dd>A confidence value represented how sure the classifier was
+about the identity of this glyph.  The value is in the range 0
+(not at all confident) to 1 (very confident).</dd>
+</dl>
+<div class="highlight"><pre><span></span><span class="nt">&lt;ids</span> <span class="na">state=</span><span class="s">&quot;AUTOMATIC&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">&quot;number.three&quot;</span> <span class="na">confidence=</span><span class="s">&quot;1.000000&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ids&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="data">
+<h5><a class="toc-backref" href="#id8"><tt class="docutils literal">data</tt></a></h5>
+<p>Data contains a run-length encoded representation of the image
+itself.  This data is used to reconstruct the image when loading.  It
+consists of decimal numbers separated by whitespace.  The numbers
+alternate between the length of white runs and the length of black
+runs.  Runs &quot;wrap-over&quot; the right side of the image to the next row on
+the left side of the image.  Systems that work on Gamera XML should
+take care not to modify the data block, as it is very easy to corrupt
+and there is only minimal error checking upon reloading.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;data&gt;</span>
+  6 4 12 9 8 12 5 6 1 7 4 5 3 7 2 6 4 6 2 7 3 6 2 7 3 6 3 6 3 6 3 4 5 6
+  4 3 4 7 5 3 2 6 7 11 7 11 8 11 6 5 1 7 2 6 4 6 2 6 4 15 3 14 4 14 4 6
+  2 6 3 7 2 15 4 12 7 10 11 3 9 0
+<span class="nt">&lt;/data&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="features">
+<h5><a class="toc-backref" href="#id9"><tt class="docutils literal">features</tt></a></h5>
+<p>The <tt class="docutils literal">features</tt> element contains a set of <tt class="docutils literal">feature</tt> elements, one
+for each feature function.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When Gamera XML files are loaded into Gamera, the features
+information is discarded and regenerated.  This is so the
+classifier has complete control over what features are used and how
+they are used.  The feature values are dumped to the XML file only
+for the benefit of third-party applications that may wish to use
+the features without using Gamera code itself.</p>
+</div>
+<p>The <tt class="docutils literal">features</tt> element has one attribute, <tt class="docutils literal">scaling</tt>, which is used
+to define how the features should be scaled (if at all).</p>
+<p>Each <tt class="docutils literal">feature</tt> element has one attribute, <tt class="docutils literal">name</tt>, which is the
+feature function that generated the values.  More feature functions
+can be added by <a class="reference external" href="writing_plugins.html">creating plugin methods</a> in the category
+<tt class="docutils literal">Features</tt>.</p>
+<p>The <tt class="docutils literal">CDATA</tt> block of the <tt class="docutils literal">feature</tt> element contains a list of
+floating point numbers (in decimal) that were generated by the given
+feature function.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;features</span> <span class="na">scaling=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;area&quot;</span><span class="nt">&gt;</span>
+    468.0
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;aspect_ratio&quot;</span><span class="nt">&gt;</span>
+    0.692307692308
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;black_area&quot;</span><span class="nt">&gt;</span>
+    294.0
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;compactness&quot;</span><span class="nt">&gt;</span>
+    0.428571428571
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;moments&quot;</span><span class="nt">&gt;</span>
+    0.302825261159 0.307856673241 0.0657821501667 0.149170828096
+    0.0533051094428 0.008619818861 -0.000427188837948 0.000613411663867
+    0.0317229010445
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;nholes&quot;</span><span class="nt">&gt;</span>
+    0.944444444444 0.615384615385
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;nholes_extended&quot;</span><span class="nt">&gt;</span>
+    3.0 6.0 4.0 2.0 3.0 6.0 4.0 3.0
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;skeleton_features&quot;</span><span class="nt">&gt;</span>
+    3.0 10.0 0.206349206349 6.0 4.0 3.0
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;volume&quot;</span><span class="nt">&gt;</span>
+    0.628205128205
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;volume16regions&quot;</span><span class="nt">&gt;</span>
+    0.485714285714 0.514285714286 0.457142857143 0.8 0.771428571429
+    0.685714285714 0.828571428571 0.8 0.657142857143 0.571428571429
+    0.714285714286 0.685714285714 0.657142857143 0.885714285714
+    0.857142857143 0.771428571429
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;volume64regions&quot;</span><span class="nt">&gt;</span>
+    0.0833333333333 0.5 0.5 0.0833333333333 0.0 0.583333333333
+    0.916666666667 0.416666666667 0.5 1.0 1.0 0.583333333333 0.25
+    0.833333333333 1.0 0.916666666667 0.833333333333 1.0 0.916666666667
+    0.833333333333 0.916666666667 1.0 1.0 1.0 0.916666666667 0.5 0.5
+    0.333333333333 1.0 0.583333333333 0.416666666667 0.833333333333
+    0.833333333333 0.25 0.0 0.5 0.916666666667 0.166666666667
+    0.0833333333333 0.833333333333 0.75 0.833333333333 0.666666666667
+    0.916666666667 1.0 0.75 0.75 1.0 0.583333333333 1.0 1.0 1.0 1.0 1.0
+    1.0 0.75 0.25 0.916666666667 1.0 0.666666666667 0.583333333333 1.0
+    1.0 0.416666666667
+  <span class="nt">&lt;/feature&gt;</span>
+  <span class="nt">&lt;feature</span> <span class="na">name=</span><span class="s">&quot;zernike_moments&quot;</span><span class="nt">&gt;</span>
+    -10.6511384992 6.48862460298 -29.6215265124 21.4915669267
+    -4.95741930842 9.70917594801 -41.1062437889 61.7375776134
+    5.72778404882 5.31916863982 -16.2283589874 87.6140952777
+    0.148787539745 -2.75048482171 -4.19045628996 74.7653517483
+    0.403589004311 -0.403486704972 -4.89682421377 61.1321737136
+    -1.01342510763 -0.526430778878 -13.8421959343 63.5845586372
+    -0.188701625589 0.697880091555
+  <span class="nt">&lt;/feature&gt;</span>
+<span class="nt">&lt;/features&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="symbols">
+<h3><a class="toc-backref" href="#id10"><tt class="docutils literal">symbols</tt></a></h3>
+<p>The <tt class="docutils literal">symbols</tt> element contains a set of symbol names.  This is used
+to import/export symbol tables without the expense of loading glyphs.</p>
+<p>Each <tt class="docutils literal">symbol</tt> element contains one attribute <tt class="docutils literal">name</tt> which defines
+a period-delimited class name.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;symbols&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;notehead.half.ledger.middle&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;dot&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;clef.bass&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;accidental.doubleflat&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;notehead.triangle.hollow&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;bracket&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;symbol</span> <span class="na">name=</span><span class="s">&quot;brace&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/symbols&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dtd">
+<h1><a class="toc-backref" href="#id11">DTD</a></h1>
+<p>This is the formal definition of the Gamera XML Format.</p>
+<div class="highlight"><pre><span></span><span class="c">&lt;!-- DTD for gamera glyph database files</span>
+<span class="c">  11/18/02 Michael Droettboom</span>
+<span class="c">--&gt;</span>
+
+<span class="cp">&lt;!ELEMENT gamera-database (symbols*,glyphs*)&gt;</span>
+<span class="cp">&lt;!ATTLIST gamera-database version CDATA #REQUIRED&gt;</span>
+
+<span class="cp">&lt;!ELEMENT symbols (symbol*)&gt;</span>
+
+<span class="cp">&lt;!ELEMENT symbol EMPTY&gt;</span>
+<span class="cp">&lt;!ATTLIST symbol name CDATA #REQUIRED&gt;</span>
+
+<span class="cp">&lt;!ELEMENT glyphs (glyph*)&gt;</span>
+
+<span class="cp">&lt;!ELEMENT glyph (ids,data,features?)&gt;</span>
+<span class="cp">&lt;!ATTLIST glyph uly CDATA #REQUIRED&gt;</span>
+<span class="cp">&lt;!ATTLIST glyph ulx CDATA #REQUIRED&gt;</span>
+<span class="cp">&lt;!ATTLIST glyph nrows CDATA #REQUIRED&gt;</span>
+<span class="cp">&lt;!ATTLIST glyph ncols CDATA #REQUIRED&gt;</span>
+
+<span class="cp">&lt;!ELEMENT ids (id*)&gt;</span>
+<span class="cp">&lt;!ATTLIST ids state</span>
+<span class="cp">  (UNCLASSIFIED|HEURISTIC|AUTOMATIC|MANUAL) &quot;UNCLASSIFIED&quot;&gt;</span>
+
+<span class="cp">&lt;!ELEMENT id EMPTY&gt;</span>
+<span class="cp">&lt;!ATTLIST id name CDATA &quot;UNKNOWN&quot;&gt;</span>
+<span class="cp">&lt;!ATTLIST id confidence CDATA &quot;1.0&quot;&gt;</span>
+
+<span class="cp">&lt;!ELEMENT data (#PCDATA)&gt;</span>
+
+<span class="cp">&lt;!ELEMENT features (feature*)&gt;</span>
+<span class="cp">&lt;!ATTLIST features scaling CDATA &quot;1.0&quot;&gt;</span>
+
+<span class="cp">&lt;!ELEMENT feature (#PCDATA)&gt;</span>
+<span class="cp">&lt;!ATTLIST feature name CDATA #REQUIRED&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="saving-and-loading-gamera-xml-files">
+<h1><a class="toc-backref" href="#id12">Saving and loading Gamera XML files</a></h1>
+<p>The code for saving and loading Gamera XML files is in
+<tt class="docutils literal">gamera/gamera_xml.py</tt>.</p>
+<p>Use the following functions to save and load Gamera XML files:</p>
+<div class="section" id="glyphs-from-xml">
+<h2><a class="toc-backref" href="#id13"><tt class="docutils literal">glyphs_from_xml</tt></a></h2>
+<p><strong>glyphs_from_xml</strong> (<em>filename</em>, <em>feature_functions</em> = <tt class="docutils literal">None</tt>)</p>
+<p>Return a list of glyphs from a Gamera XML file.</p>
+</div>
+<div class="section" id="glyphs-with-features-from-xml">
+<h2><a class="toc-backref" href="#id14"><tt class="docutils literal">glyphs_with_features_from_xml</tt></a></h2>
+<p><strong>glyphs_with_features_from_xml</strong> (<em>filename</em>, <em>feature_functions</em> = <tt class="docutils literal">None</tt>)</p>
+<p>Loads glyphs from a Gamera XML file, and then generates features
+for all of those glyphs.  The set of features can be specified with the
+<em>feature_functions</em> argument (which defaults to all features).</p>
+</div>
+<div class="section" id="glyphs-to-xml">
+<h2><a class="toc-backref" href="#id15"><tt class="docutils literal">glyphs_to_xml</tt></a></h2>
+<p><strong>glyphs_to_xml</strong> (<em>filename</em>, <em>glyphs</em>, <em>with_features</em> = <tt class="docutils literal">True</tt>)</p>
+<p>Saves the given list of glyphs to a Gamera XML file.</p>
+<dl class="docutils">
+<dt><em>with_features</em></dt>
+<dd>When set to <tt class="docutils literal">True</tt>, features generated on the image are saved to the XML file.</dd>
+</dl>
+</div>
+<div class="section" id="strip-features">
+<h2><a class="toc-backref" href="#id16"><tt class="docutils literal">strip_features</tt></a></h2>
+<p><strong>strip_features</strong> (<em>input_filename</em>, <em>output_filename</em>)</p>
+<p>Strips the features from a Gamera XML file.  Provided mainly to reduce filesizes for
+files created before saving features was an option.</p>
+<dl class="docutils">
+<dt><em>input_filename</em></dt>
+<dd>The input Gamera XML filename</dd>
+<dt><em>output_filename</em></dt>
+<dd>The output Gamera XML filename</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

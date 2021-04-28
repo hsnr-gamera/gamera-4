@@ -3,82 +3,436 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>args.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Specifying arguments for plugin generation and dialog boxes</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="specifying-arguments-for-plugin-generation-and-dialog-boxes">
+<h1 class="title">Specifying arguments for plugin generation and dialog boxes</h1>
 
-
-<p>b'===========================================================nSpecifying arguments for plugin generation and dialog boxesn===========================================================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn============nnGamera includes a rich way to specify what arguments a plugin methodncan take.  This serves two main purposes:nn1. To generate the code necessary to call a C++ function from Python.nn2. To generate basic dialogs that help the user call the method from then   GUI.  (See example below.)nn.. image:: images/erode_dilate_dialog.pngnnAll of the classes necessary to make this happen are inn``gamera/args.py``, which is included in <tt class="docutils literal">gamera/plugin.py</tt>.  Youncan refer to those files for more information if necessary.nnThis document will first describe the common case of using <tt class="docutils literal">args.py</tt>nfor  <a href="#id5"><span class="problematic" id="id6">`specifying the type metadata of a plugin method`_</span></a>.  Thenn`advanced usage`_ of <tt class="docutils literal">args.py</tt> for otherncustom purposes is covered.nnSpecifying the type metadata of a plugin methodn===============================================nnSpecifying the arguments of a plugin method is done by setting then``args`` member variable of a subclass of the <tt class="docutils literal">PluginFunction</tt>nmetadata class.  This is discussed in <a href="#id3"><span class="problematic" id="id4">`Writing Gamera Plugins`__</span></a>.nn.. __: writing_plugins.htmlnnThe <tt class="docutils literal">args</tt> member must be an instance of the <tt class="docutils literal">Args</tt> class.  Then``Args`` class is constructed as:nn    Args(<em>list</em>)nnThe <em>list</em> argument is a list of <tt class="docutils literal">Arg</tt> instances, in the order thenarguments appear in the function call.  For instance, to call a C++nfunction with the following signature::nn  Image* resize_copy(T&amp; image, int nrows, int ncols, int resize_quality);nnthe <tt class="docutils literal">Args</tt> constructor call would look like::nn  args = Args([Int(&quot;nrows&quot;, default=32), Int(&quot;ncols&quot;, default=32),n               Choice(&quot;Interpolation Type&quot;, [&quot;None&quot;, &quot;Linear&quot;, &quot;Spline&quot;])])nnAs you can see, Gamera's system is a much richer type informationnsystem than C, including things such as ranges, enumerations and default values.nnThe same type objects are also used for the <tt class="docutils literal">self_type</tt> andn``return_type`` member variables in the plugin method metadata.nnThe argument typesninclude <a href="#id7"><span class="problematic" id="id8">Int_</span></a>, <a href="#id9"><span class="problematic" id="id10">Real_</span></a>, <a href="#id11"><span class="problematic" id="id12">String_</span></a>, <a href="#id13"><span class="problematic" id="id14">Class_</span></a>, <a href="#id15"><span class="problematic" id="id16">ImageType_</span></a>, <a href="#id17"><span class="problematic" id="id18">Choice_</span></a>, <a href="#id19"><span class="problematic" id="id20">ChoiceString_</span></a>, <a href="#id21"><span class="problematic" id="id22">FileOpen_</span></a>,nFileSave_, <a href="#id23"><span class="problematic" id="id24">Directory_</span></a>, <a href="#id25"><span class="problematic" id="id26">Check_</span></a>, <a href="#id27"><span class="problematic" id="id28">Region_</span></a>, <a href="#id29"><span class="problematic" id="id30">RegionMap_</span></a>,nImageInfo_, <a href="#id31"><span class="problematic" id="id32">FloatVector_</span></a>, <a href="#id33"><span class="problematic" id="id34">IntVector_</span></a>, <a href="#id35"><span class="problematic" id="id36">ImageList_</span></a>, <a href="#id37"><span class="problematic" id="id38">Info_</span></a> and <a href="#id39"><span class="problematic" id="id40">Radio_</span></a>.  Each ofnthese is discussed in greater detail below.  nnThis dialog box shows how thenmost common argument types are presented in the GUI:nn.. image:: images/arguments_dialog.pngnnIncidentally, it was produced by the following code:nn.. code:: Pythonnn   args = Args([Int(&quot;Int&quot;),n                Real(&quot;Real&quot;),n                String(&quot;String&quot;),n                Class(&quot;Class&quot;),nttImageType(ALL, &quot;ImageType&quot;),nttFileOpen(&quot;FileOpen&quot;),nttFileSave(&quot;FileSave&quot;),nttDirectory(&quot;Directory&quot;),nttRadio(&quot;Radio 1&quot;, &quot;Tastes great&quot;),nttRadio(&quot;Radio 2&quot;, &quot;Less filling&quot;),nttCheck(&quot;Check&quot;, &quot;Power&quot;),nttInfo(&quot;Info: This is just for information&quot;),nttPixel(&quot;Pixel&quot;),nttPoint(&quot;Point&quot;),nttFloatPoint(&quot;FloatPoint&quot;)])nnEnabling default values beyond the GUIn======================================nnThe <em>default</em> parameter in the <em>Args</em> specification is only usednin the GUI for the argument dialog box. If you need an actual defaultnargument for your plugin function, you must define the <tt class="docutils literal">__call__</tt> methodnin your plugin, e.g.nn.. code:: Pythonnn      # wrapper for passing a default argumentn      def __call__(self, nrows, ncols, interpolation=&quot;Linear&quot;):n          return _example.resize_copy(self, nrows, ncols, interpolation)n      __call__ = staticmethod(__call__)nn``_example`` must be replaced by the actual name of your source file plusna leading underscore.nnnPlugin types referencen======================nnIntn---nn**Int** (string <em>name</em>, tuple <em>range</em>, int <em>default</em> = <tt class="docutils literal">0</tt>)nnA signed integers argument.  Corresponds to the C <tt class="docutils literal">int</tt> type.nnOptionally, a <em>range</em> can be given as thentuple (<em>lower_bound</em>, <em>upper_bound</em>) and a <em>default</em> value.nThe latter can be set to <tt class="docutils literal">NoneDefault</tt> for forcing the defaultnto <tt class="docutils literal">None</tt> in the GUI.nn.. note:: n   Ranges and defaults are used for the benefit of the GUI only.n   There is no range-checking performed for you.nnIn the GUI, this is presented as a text entry field.nnRealn----nn**Real** (string <em>name</em>, tuple <em>range</em>, int <em>default</em> = <tt class="docutils literal">0.0</tt>)nnA real (floating-point) argument.   Corresponds to the C <tt class="docutils literal">double</tt> type.nnOptionally, a <em>range</em> can be given as thentuple (<em>lower_bound</em>, <em>upper_bound</em>), and a <em>default</em> value.nn.. note:: n   Ranges and defaults are used for the benefit of the GUI only.n   There is no range-checking performed for you.nnStringn------nn**String** (string <em>name</em>, int <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>)nnA string argument.  Corresponds to the C <tt class="docutils literal">char *</tt> or C++ <tt class="docutils literal"><span class="pre">std::string</span></tt> type.nnOptionally, a <em>default</em> value can be given.nnClassn-----nn**Class** (string <em>name</em>, PyObject <em>klass</em>, bool <em>list_of</em> = <tt class="docutils literal">False</tt>)nnClass is a general purpose argument type.  Corresponds to the Cn``PyObject <em>`` type. See `Custom data types in plugins`__ for detailsnhow to pass generic ``PyObject*`` data types to and from C++ plugins.nn.. __: plugins_custom_types.htmlnnThe given *klass</em> is any Python type (built-in or otherwise) that is to be accepted as annargument. For example, to accept any Python dictionary, use::nn  Class(&quot;dict&quot;, dict)nnIf the optional <em>list_of</em> is <tt class="docutils literal">True</tt>, then this argument refers to anPython list, in which all of its elements are instances of <em>klass</em>.nn``Class`` arguments are displayed in the GUI as a drop-down list ofninstances of that class. If you want to have <tt class="docutils literal">None</tt> as the firstnentry in this list, you can set the default to <tt class="docutils literal">NoneDefault</tt>,nwhich is a special object that translates to <tt class="docutils literal">None</tt>nwhen used as a default value.nnImageTypen---------nn**ImageType** (list <em>pixel_types</em>, string <em>name</em>, bool <em>list_of</em> = <tt class="docutils literal">False</tt>, default = <tt class="docutils literal">None</tt>)nnA Gamera <tt class="docutils literal">Image</tt>.  Corresponds to the subclasses of <tt class="docutils literal"><span class="pre">gamera::Image</span> &amp;</tt> onnthe C++ side.nnThe accepted pixel types of the image are restricted to the given listnof pixel types.  For example to accept only GreyScale and OneBitnimages::nn  ImageType([GREYSCALE, ONEBIT])nnFor convenience you can use the constant <tt class="docutils literal">ALL</tt>, which is the list ofnall pixel types.nnIf the optional <em>list_of</em> is <tt class="docutils literal">True</tt>, this argument refers to anPython list of Gamera Images, and on the C++ side will be passed in asna <tt class="docutils literal"><span class="pre">std::vector&lt;gamera::Image*&gt;</span></tt>.nnTo allow for an optional image argument, it is possible to set the <em>default</em>nargument to <tt class="docutils literal">NoneDefault</tt>, which will be translated by the GUI entry masknto <tt class="docutils literal">None</tt>. In this case, make sure that you overwrite the <tt class="docutils literal">__call__</tt>nmethod in the python plugin wrapper, so that the missing argument isncorrectly caught.nnImageListn---------nn**ImageList** (string <em>name</em>)nn``ImageList`` is a convenience alias for <tt class="docutils literal">ImageType(ALL,</tt> <em>name</em> <tt class="docutils literal">, list_of=True)</tt>.nnLike <tt class="docutils literal">Class</tt>, this argument is displayed in the GUI as a drop-down list ofninstances of image lists. If you want to have <tt class="docutils literal">None</tt> as the firstnentry in this list, you can set the default to <tt class="docutils literal">NoneDefault</tt>,nwhich is a special object that translates to <tt class="docutils literal">None</tt>nwhen used as a default value.nnnChoicen------nn**Choice** (string <em>name</em>, list <em>choices</em> = <tt class="docutils literal">[]</tt>, int <em>default</em> = <tt class="docutils literal">0</tt>)nnAn enumeration.  Corresponds to the C type <tt class="docutils literal">enum</tt> or <tt class="docutils literal">int</tt>.nnWhen an integer value is really logically a set of options, <tt class="docutils literal">Choice</tt>nshould be used so the user is presented with a drop-down list of namednoptions.  For example, from the <tt class="docutils literal">resize</tt> plugin method::nn    args = Args([Int(&quot;nrows&quot;), Int(&quot;ncols&quot;),n                 Choice(&quot;interp_type&quot;, [&quot;None&quot;, &quot;Linear&quot;, &quot;Spline&quot;])])nnIn some cases, it might be necessary to know whether the user actually hasnmade a choice. An alternative to defining a special choice index forn'no choice', you can alternatively set the default to <tt class="docutils literal">NoneDefault</tt>,nwhich is a special object that translates to <tt class="docutils literal">None</tt> when used asna default value::nn    args = Args([Choice(&quot;bla&quot;, [&quot;Choice1&quot;, &quot;Choice2&quot;], default=NoneDefault)])nnnChoiceStringn------------nn**ChoiceString** (string <em>name</em>, list <em>choices</em> = <tt class="docutils literal">[]</tt>, stringn*default* = None, strict = <tt class="docutils literal">True</tt>)nnA set of choices of strings.  Corresponds to the C type <tt class="docutils literal">char *</tt>.nnTo be used when a string argument can be one of a fixed set of values.nnIf <tt class="docutils literal">strict</tt> is <tt class="docutils literal">True</tt> (the default), the GUI will present androp-down list box of these choices.  When <tt class="docutils literal">strict</tt> is <tt class="docutils literal">False</tt>, ancombo box will be presented which will allow the user to enter in anvalue that is not in the list of choices.nnNote that outside of the GUI, the plugin system does not verify thenvalue of the string, so the plugin method must gracefully acceptnany string as input and deal with it accordingly.nnFileOpenn--------nn**FileOpen** (string <em>name</em>, string <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>, <em>extension</em> =n``&quot;<em>.</em>&quot;<tt class="docutils literal">)\n\nA filename for opening.&nbsp; Corresponds to the C ``char *</tt> or C++n``std::string`` type.nnIn the GUI, this is presented as a text box with a browse button.nWhen the browse button is pressed, a file selection dialog is presented.nn*extensions* can be specified to limit the file types that arendisplayed in the file selection dialog.  Extensions is a string withnone or more wildcard expressions separated by semicolons.  Fornexample, to display TIFF and PNG images::nn   <em>.tiff;</em>.tif;*.TIF;*.pngnnSince <tt class="docutils literal">FileOpen</tt> is used exclusively for opening files, the GUInensures that the file already exists before passing the value along tonthe underlying plugin method.nnFileSaven--------nn**FileSave** (string <em>name</em>, string <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>, <em>extension</em> =n``&quot;<em>.</em>&quot;<tt class="docutils literal">)\n\nThe counterpart to FileOpen_, except for saving <span class="pre">files.\n\nIf</span> the file already exists, the user is presented with an &quot;Are <span class="pre">you\nsure?&quot;</span> <span class="pre">dialog.\n\nDirectory\n---------\n\n**Directory**</span> (string *name*, string *default* = <span class="pre">``&quot;&quot;</span></tt>)nnA directory name.  Corresponds to the C <tt class="docutils literal">char *</tt> or C++n``std::string`` type.nnThe GUI ensures that the directory exists before passing the path namento the underlying plugin method.nnCheckn-----nn**Check** (string <em>name</em>, string <em>check_box</em> = <tt class="docutils literal">&quot;&quot;</tt>, bool <em>default</em> = <tt class="docutils literal">False</tt>)nnA boolean value.  Corresponds to the C <tt class="docutils literal">int</tt> or C++ <tt class="docutils literal">bool</tt>.nnIn the GUI, this is presented as a check box.nn*check_box* is an additional piece of text that will be placed to thenright of the check box in the GUI.nnRectn----nn**Rect** (string <em>name</em>)nnA Gamera <tt class="docutils literal">Rect</tt> object. Corresponds to <tt class="docutils literal"><span class="pre">gamera::Rect*</span></tt> on the C++ side.nnRegionn------nn**Region** (string <em>name</em>)nnA Gamera <tt class="docutils literal">Region</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::Region</span> &amp;</tt> onnthe C++ side.nnRegionMapn---------nn**RegionMap** (string <em>name</em>)nnA Gamera <tt class="docutils literal">RegionMap</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::RegionMap</span> &amp;</tt> onnthe C++ side.nnImageInfon---------nn**ImageInfo** (string <em>name</em>)nnA Gamera <tt class="docutils literal">ImageInfo</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::ImageInfo</span> &amp;</tt> onnthe C++ side.nnFloatVectorn-----------nn**FloatVector** (string <em>name</em>, int <em>length</em> = <tt class="docutils literal"><span class="pre">-1</span></tt>)nnA vector of floating-point values.  On the Python side this is ann``array('d')`` object.  On the C++ side, this is an``FloatVector <em>`` which is a typedef for ``std::vector&lt;double&gt; *``.nnThe optional *length</em> argument should be given when the length of thenargument is fixed.nnIntVectorn---------nn**IntVector** (string <em>name</em>, int <em>length</em> = <tt class="docutils literal"><span class="pre">-1</span></tt>)nnA vector of integer values.  On the Python side this is ann``array('i')`` object.  On the C++ side, this is an``IntVector <em>`` which is a typedef for ``std::vector&lt;int&gt; *``.nnThe optional *length</em> argument should be given when the length of thenargument is fixed.nnPixeln-----nn**Pixel** (string <em>name</em>)nnA pixel value corresponding to the type of the &quot;self&quot; image.  For instance,nif the method is operating on a FLOAT image, this argument will takena FLOAT value.nnSetting a default value for a pixel is generally of little use becausenthe value depends on the pixel type. You can however set the default ton``NoneDefault``, which is a special object that translates to <tt class="docutils literal">None</tt>nwhen used as a default value. This can then be queried in thenfunction, as shown in the following example::nn    args = Args([Pixel(&quot;PixelValue&quot;, default=NoneDefault)])n    def __call__(self, PixelValue=None):n        if (PixelValue == None):n            PixelValue = self.white()nnPointn-----nn**Point** (string <em>name</em>, default = (0, 0))nnA Point object for representing coordinates as unsigned integers.nThis will be displayed in the automatically-generated dialog box as anpair of numbers.nnPointVectorn-----------nn**PointVector** (string <em>name</em>)nnA Python sequence of Points.nnFloatPointn----------nn**FloatPoint** (string <em>name</em>, default = (0.0, 0.0))nnA FloatPoint object for representing coordinates as floating pointnvalues.  This will be displayed in the automatically-generated dialognbox as a pair of numbers.nnInfon----nn**Info** (string <em>name</em>)nnThis class is just for displaying information in a dialog box.  Itndoes not affect in any way the passing of arguments to a plugin.nnRadion-----nn**Radio** (string <em>name</em>)nnnAdvanced usagen==============nnWe've just seen how the <tt class="docutils literal">args.py</tt> classes are used for specifyingnplugin method metadata.  Of course, it can also be used whenever a one-linernquick-and-dirty dialog box is needed.  For more complex tasks, you maynstill need to write a dialog box using the underlying <a href="#id41"><span class="problematic" id="id42">wxPython_</span></a> toolkit.nn.. _wxPython: <a class="reference external" href="http://www.wxpython.orgnnFor">http://www.wxpython.orgnnFor</a> example, we can create a simple dialog box with code below::nn   &gt;&gt;&gt;from gamera.args import <em>n   &gt;&gt;&gt;dialog = Args([Int(&quot;your favorite number&quot;)], name=&quot;What is your favorite number?&quot;)nnThe optional *name</em> argument was used to change the title bar text.nTo display the dialog to the user, we just use the <tt class="docutils literal">.show()</tt>nmethod::nn   &gt;&gt;&gt;dialog.show()nnThis displays the following window:nn.. image:: images/arguments_example.pngnnWhen the user clicks <strong>Ok</strong>, the results are returned in a list::nn   [6]nnIf the user clicks <strong>Cancel</strong>, <tt class="docutils literal">None</tt> is returned::nn   NonennUnder the hood...n=================nnFor a detailed view of how this works, I suggest looking at the source code... [wink]nnBut seriously, to help with that it should be noted that there arenthree different source files at work here:nn``gamera/args.py``ntThe main file that defines a class for each of the argumentnttypes.  Only very basic functionality, such as storing thentrange of <tt class="docutils literal">Int</tt>, are implemented here.nn``gamera/args_wrappers.py``ntDefines how the types are converted between C++ and Python.nn``gamera/gui/args_gui.py``ntDefines how the arguments are mapped to widgets in the GUI.nnThe <tt class="docutils literal">args.py</tt> file loads the other two (if necessary) and &quot;mixes-in&quot;nthe methods in the extension classes to the core classes.n'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 2); <em><a href="#id4">backlink</a></em></p>
-Anonymous hyperlink mismatch: 1 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Unknown target name: &quot;specifying the type metadata of a plugin method&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Unknown target name: &quot;int&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Unknown target name: &quot;real&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Unknown target name: &quot;string&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Unknown target name: &quot;class&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Unknown target name: &quot;imagetype&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Unknown target name: &quot;choice&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Unknown target name: &quot;choicestring&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Unknown target name: &quot;fileopen&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Unknown target name: &quot;directory&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Unknown target name: &quot;check&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Unknown target name: &quot;region&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Unknown target name: &quot;regionmap&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Unknown target name: &quot;floatvector&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Unknown target name: &quot;intvector&quot;.</div>
-<div class="system-message" id="id35">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
-Unknown target name: &quot;imagelist&quot;.</div>
-<div class="system-message" id="id37">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
-Unknown target name: &quot;info&quot;.</div>
-<div class="system-message" id="id39">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
-Unknown target name: &quot;radio&quot;.</div>
-<div class="system-message" id="id41">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/args.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
-Unknown target name: &quot;wxpython&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
+<li><a class="reference internal" href="#specifying-the-type-metadata-of-a-plugin-method" id="id4">Specifying the type metadata of a plugin method</a></li>
+<li><a class="reference internal" href="#enabling-default-values-beyond-the-gui" id="id5">Enabling default values beyond the GUI</a></li>
+<li><a class="reference internal" href="#plugin-types-reference" id="id6">Plugin types reference</a><ul>
+<li><a class="reference internal" href="#int" id="id7">Int</a></li>
+<li><a class="reference internal" href="#real" id="id8">Real</a></li>
+<li><a class="reference internal" href="#string" id="id9">String</a></li>
+<li><a class="reference internal" href="#class" id="id10">Class</a></li>
+<li><a class="reference internal" href="#imagetype" id="id11">ImageType</a></li>
+<li><a class="reference internal" href="#imagelist" id="id12">ImageList</a></li>
+<li><a class="reference internal" href="#choice" id="id13">Choice</a></li>
+<li><a class="reference internal" href="#choicestring" id="id14">ChoiceString</a></li>
+<li><a class="reference internal" href="#fileopen" id="id15">FileOpen</a></li>
+<li><a class="reference internal" href="#filesave" id="id16">FileSave</a></li>
+<li><a class="reference internal" href="#directory" id="id17">Directory</a></li>
+<li><a class="reference internal" href="#check" id="id18">Check</a></li>
+<li><a class="reference internal" href="#rect" id="id19">Rect</a></li>
+<li><a class="reference internal" href="#region" id="id20">Region</a></li>
+<li><a class="reference internal" href="#regionmap" id="id21">RegionMap</a></li>
+<li><a class="reference internal" href="#imageinfo" id="id22">ImageInfo</a></li>
+<li><a class="reference internal" href="#floatvector" id="id23">FloatVector</a></li>
+<li><a class="reference internal" href="#intvector" id="id24">IntVector</a></li>
+<li><a class="reference internal" href="#pixel" id="id25">Pixel</a></li>
+<li><a class="reference internal" href="#point" id="id26">Point</a></li>
+<li><a class="reference internal" href="#pointvector" id="id27">PointVector</a></li>
+<li><a class="reference internal" href="#floatpoint" id="id28">FloatPoint</a></li>
+<li><a class="reference internal" href="#info" id="id29">Info</a></li>
+<li><a class="reference internal" href="#radio" id="id30">Radio</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-usage" id="id31">Advanced usage</a></li>
+<li><a class="reference internal" href="#under-the-hood" id="id32">Under the hood...</a></li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id3">Introduction</a></h1>
+<p>Gamera includes a rich way to specify what arguments a plugin method
+can take.  This serves two main purposes:</p>
+<ol class="arabic simple">
+<li>To generate the code necessary to call a C++ function from Python.</li>
+<li>To generate basic dialogs that help the user call the method from the
+GUI.  (See example below.)</li>
+</ol>
+<img alt="images/erode_dilate_dialog.png" src="images/erode_dilate_dialog.png" />
+<p>All of the classes necessary to make this happen are in
+<tt class="docutils literal">gamera/args.py</tt>, which is included in <tt class="docutils literal">gamera/plugin.py</tt>.  You
+can refer to those files for more information if necessary.</p>
+<p>This document will first describe the common case of using <tt class="docutils literal">args.py</tt>
+for  <a class="reference internal" href="#specifying-the-type-metadata-of-a-plugin-method">specifying the type metadata of a plugin method</a>.  Then
+<a class="reference internal" href="#advanced-usage">advanced usage</a> of <tt class="docutils literal">args.py</tt> for other
+custom purposes is covered.</p>
+</div>
+<div class="section" id="specifying-the-type-metadata-of-a-plugin-method">
+<h1><a class="toc-backref" href="#id4">Specifying the type metadata of a plugin method</a></h1>
+<p>Specifying the arguments of a plugin method is done by setting the
+<tt class="docutils literal">args</tt> member variable of a subclass of the <tt class="docutils literal">PluginFunction</tt>
+metadata class.  This is discussed in <a class="reference external" href="writing_plugins.html">Writing Gamera Plugins</a>.</p>
+<p>The <tt class="docutils literal">args</tt> member must be an instance of the <tt class="docutils literal">Args</tt> class.  The
+<tt class="docutils literal">Args</tt> class is constructed as:</p>
+<blockquote>
+Args(<em>list</em>)</blockquote>
+<p>The <em>list</em> argument is a list of <tt class="docutils literal">Arg</tt> instances, in the order the
+arguments appear in the function call.  For instance, to call a C++
+function with the following signature:</p>
+<pre class="literal-block">
+Image* resize_copy(T&amp; image, int nrows, int ncols, int resize_quality);
+</pre>
+<p>the <tt class="docutils literal">Args</tt> constructor call would look like:</p>
+<pre class="literal-block">
+args = Args([Int(&quot;nrows&quot;, default=32), Int(&quot;ncols&quot;, default=32),
+             Choice(&quot;Interpolation Type&quot;, [&quot;None&quot;, &quot;Linear&quot;, &quot;Spline&quot;])])
+</pre>
+<p>As you can see, Gamera's system is a much richer type information
+system than C, including things such as ranges, enumerations and default values.</p>
+<p>The same type objects are also used for the <tt class="docutils literal">self_type</tt> and
+<tt class="docutils literal">return_type</tt> member variables in the plugin method metadata.</p>
+<p>The argument types
+include <a class="reference internal" href="#int">Int</a>, <a class="reference internal" href="#real">Real</a>, <a class="reference internal" href="#string">String</a>, <a class="reference internal" href="#class">Class</a>, <a class="reference internal" href="#imagetype">ImageType</a>, <a class="reference internal" href="#choice">Choice</a>, <a class="reference internal" href="#choicestring">ChoiceString</a>, <a class="reference internal" href="#fileopen">FileOpen</a>,
+<a class="reference internal" href="#filesave">FileSave</a>, <a class="reference internal" href="#directory">Directory</a>, <a class="reference internal" href="#check">Check</a>, <a class="reference internal" href="#region">Region</a>, <a class="reference internal" href="#regionmap">RegionMap</a>,
+<a class="reference internal" href="#imageinfo">ImageInfo</a>, <a class="reference internal" href="#floatvector">FloatVector</a>, <a class="reference internal" href="#intvector">IntVector</a>, <a class="reference internal" href="#imagelist">ImageList</a>, <a class="reference internal" href="#info">Info</a> and <a class="reference internal" href="#radio">Radio</a>.  Each of
+these is discussed in greater detail below.</p>
+<p>This dialog box shows how the
+most common argument types are presented in the GUI:</p>
+<img alt="images/arguments_dialog.png" src="images/arguments_dialog.png" />
+<p>Incidentally, it was produced by the following code:</p>
+<div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="n">Args</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;Int&quot;</span><span class="p">),</span>
+             <span class="n">Real</span><span class="p">(</span><span class="s2">&quot;Real&quot;</span><span class="p">),</span>
+             <span class="n">String</span><span class="p">(</span><span class="s2">&quot;String&quot;</span><span class="p">),</span>
+             <span class="n">Class</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">),</span>
+             <span class="n">ImageType</span><span class="p">(</span><span class="n">ALL</span><span class="p">,</span> <span class="s2">&quot;ImageType&quot;</span><span class="p">),</span>
+             <span class="n">FileOpen</span><span class="p">(</span><span class="s2">&quot;FileOpen&quot;</span><span class="p">),</span>
+             <span class="n">FileSave</span><span class="p">(</span><span class="s2">&quot;FileSave&quot;</span><span class="p">),</span>
+             <span class="n">Directory</span><span class="p">(</span><span class="s2">&quot;Directory&quot;</span><span class="p">),</span>
+             <span class="n">Radio</span><span class="p">(</span><span class="s2">&quot;Radio 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Tastes great&quot;</span><span class="p">),</span>
+             <span class="n">Radio</span><span class="p">(</span><span class="s2">&quot;Radio 2&quot;</span><span class="p">,</span> <span class="s2">&quot;Less filling&quot;</span><span class="p">),</span>
+             <span class="n">Check</span><span class="p">(</span><span class="s2">&quot;Check&quot;</span><span class="p">,</span> <span class="s2">&quot;Power&quot;</span><span class="p">),</span>
+             <span class="n">Info</span><span class="p">(</span><span class="s2">&quot;Info: This is just for information&quot;</span><span class="p">),</span>
+             <span class="n">Pixel</span><span class="p">(</span><span class="s2">&quot;Pixel&quot;</span><span class="p">),</span>
+             <span class="n">Point</span><span class="p">(</span><span class="s2">&quot;Point&quot;</span><span class="p">),</span>
+             <span class="n">FloatPoint</span><span class="p">(</span><span class="s2">&quot;FloatPoint&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<div class="section" id="enabling-default-values-beyond-the-gui">
+<h1><a class="toc-backref" href="#id5">Enabling default values beyond the GUI</a></h1>
+<p>The <em>default</em> parameter in the <em>Args</em> specification is only used
+in the GUI for the argument dialog box. If you need an actual default
+argument for your plugin function, you must define the <tt class="docutils literal">__call__</tt> method
+in your plugin, e.g.</p>
+<div class="highlight"><pre><span></span><span class="c1"># wrapper for passing a default argument</span>
+<span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;Linear&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_example</span><span class="o">.</span><span class="n">resize_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">)</span>
+<span class="fm">__call__</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="fm">__call__</span><span class="p">)</span>
+</pre></div>
+<p><tt class="docutils literal">_example</tt> must be replaced by the actual name of your source file plus
+a leading underscore.</p>
+</div>
+<div class="section" id="plugin-types-reference">
+<h1><a class="toc-backref" href="#id6">Plugin types reference</a></h1>
+<div class="section" id="int">
+<h2><a class="toc-backref" href="#id7">Int</a></h2>
+<p><strong>Int</strong> (string <em>name</em>, tuple <em>range</em>, int <em>default</em> = <tt class="docutils literal">0</tt>)</p>
+<p>A signed integers argument.  Corresponds to the C <tt class="docutils literal">int</tt> type.</p>
+<p>Optionally, a <em>range</em> can be given as the
+tuple (<em>lower_bound</em>, <em>upper_bound</em>) and a <em>default</em> value.
+The latter can be set to <tt class="docutils literal">NoneDefault</tt> for forcing the default
+to <tt class="docutils literal">None</tt> in the GUI.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ranges and defaults are used for the benefit of the GUI only.
+There is no range-checking performed for you.</p>
+</div>
+<p>In the GUI, this is presented as a text entry field.</p>
+</div>
+<div class="section" id="real">
+<h2><a class="toc-backref" href="#id8">Real</a></h2>
+<p><strong>Real</strong> (string <em>name</em>, tuple <em>range</em>, int <em>default</em> = <tt class="docutils literal">0.0</tt>)</p>
+<p>A real (floating-point) argument.   Corresponds to the C <tt class="docutils literal">double</tt> type.</p>
+<p>Optionally, a <em>range</em> can be given as the
+tuple (<em>lower_bound</em>, <em>upper_bound</em>), and a <em>default</em> value.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ranges and defaults are used for the benefit of the GUI only.
+There is no range-checking performed for you.</p>
+</div>
+</div>
+<div class="section" id="string">
+<h2><a class="toc-backref" href="#id9">String</a></h2>
+<p><strong>String</strong> (string <em>name</em>, int <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>)</p>
+<p>A string argument.  Corresponds to the C <tt class="docutils literal">char *</tt> or C++ <tt class="docutils literal"><span class="pre">std::string</span></tt> type.</p>
+<p>Optionally, a <em>default</em> value can be given.</p>
+</div>
+<div class="section" id="class">
+<h2><a class="toc-backref" href="#id10">Class</a></h2>
+<p><strong>Class</strong> (string <em>name</em>, PyObject <em>klass</em>, bool <em>list_of</em> = <tt class="docutils literal">False</tt>)</p>
+<p>Class is a general purpose argument type.  Corresponds to the C
+<tt class="docutils literal">PyObject *</tt> type. See <a class="reference external" href="plugins_custom_types.html">Custom data types in plugins</a> for details
+how to pass generic <tt class="docutils literal">PyObject*</tt> data types to and from C++ plugins.</p>
+<p>The given <em>klass</em> is any Python type (built-in or otherwise) that is to be accepted as an
+argument. For example, to accept any Python dictionary, use:</p>
+<pre class="literal-block">
+Class(&quot;dict&quot;, dict)
+</pre>
+<p>If the optional <em>list_of</em> is <tt class="docutils literal">True</tt>, then this argument refers to a
+Python list, in which all of its elements are instances of <em>klass</em>.</p>
+<p><tt class="docutils literal">Class</tt> arguments are displayed in the GUI as a drop-down list of
+instances of that class. If you want to have <tt class="docutils literal">None</tt> as the first
+entry in this list, you can set the default to <tt class="docutils literal">NoneDefault</tt>,
+which is a special object that translates to <tt class="docutils literal">None</tt>
+when used as a default value.</p>
+</div>
+<div class="section" id="imagetype">
+<h2><a class="toc-backref" href="#id11">ImageType</a></h2>
+<p><strong>ImageType</strong> (list <em>pixel_types</em>, string <em>name</em>, bool <em>list_of</em> = <tt class="docutils literal">False</tt>, default = <tt class="docutils literal">None</tt>)</p>
+<p>A Gamera <tt class="docutils literal">Image</tt>.  Corresponds to the subclasses of <tt class="docutils literal"><span class="pre">gamera::Image</span> &amp;</tt> on
+the C++ side.</p>
+<p>The accepted pixel types of the image are restricted to the given list
+of pixel types.  For example to accept only GreyScale and OneBit
+images:</p>
+<pre class="literal-block">
+ImageType([GREYSCALE, ONEBIT])
+</pre>
+<p>For convenience you can use the constant <tt class="docutils literal">ALL</tt>, which is the list of
+all pixel types.</p>
+<p>If the optional <em>list_of</em> is <tt class="docutils literal">True</tt>, this argument refers to a
+Python list of Gamera Images, and on the C++ side will be passed in as
+a <tt class="docutils literal"><span class="pre">std::vector&lt;gamera::Image*&gt;</span></tt>.</p>
+<p>To allow for an optional image argument, it is possible to set the <em>default</em>
+argument to <tt class="docutils literal">NoneDefault</tt>, which will be translated by the GUI entry mask
+to <tt class="docutils literal">None</tt>. In this case, make sure that you overwrite the <tt class="docutils literal">__call__</tt>
+method in the python plugin wrapper, so that the missing argument is
+correctly caught.</p>
+</div>
+<div class="section" id="imagelist">
+<h2><a class="toc-backref" href="#id12">ImageList</a></h2>
+<p><strong>ImageList</strong> (string <em>name</em>)</p>
+<p><tt class="docutils literal">ImageList</tt> is a convenience alias for <tt class="docutils literal">ImageType(ALL,</tt> <em>name</em> <tt class="docutils literal">, list_of=True)</tt>.</p>
+<p>Like <tt class="docutils literal">Class</tt>, this argument is displayed in the GUI as a drop-down list of
+instances of image lists. If you want to have <tt class="docutils literal">None</tt> as the first
+entry in this list, you can set the default to <tt class="docutils literal">NoneDefault</tt>,
+which is a special object that translates to <tt class="docutils literal">None</tt>
+when used as a default value.</p>
+</div>
+<div class="section" id="choice">
+<h2><a class="toc-backref" href="#id13">Choice</a></h2>
+<p><strong>Choice</strong> (string <em>name</em>, list <em>choices</em> = <tt class="docutils literal">[]</tt>, int <em>default</em> = <tt class="docutils literal">0</tt>)</p>
+<p>An enumeration.  Corresponds to the C type <tt class="docutils literal">enum</tt> or <tt class="docutils literal">int</tt>.</p>
+<p>When an integer value is really logically a set of options, <tt class="docutils literal">Choice</tt>
+should be used so the user is presented with a drop-down list of named
+options.  For example, from the <tt class="docutils literal">resize</tt> plugin method:</p>
+<pre class="literal-block">
+args = Args([Int(&quot;nrows&quot;), Int(&quot;ncols&quot;),
+             Choice(&quot;interp_type&quot;, [&quot;None&quot;, &quot;Linear&quot;, &quot;Spline&quot;])])
+</pre>
+<p>In some cases, it might be necessary to know whether the user actually has
+made a choice. An alternative to defining a special choice index for
+'no choice', you can alternatively set the default to <tt class="docutils literal">NoneDefault</tt>,
+which is a special object that translates to <tt class="docutils literal">None</tt> when used as
+a default value:</p>
+<pre class="literal-block">
+args = Args([Choice(&quot;bla&quot;, [&quot;Choice1&quot;, &quot;Choice2&quot;], default=NoneDefault)])
+</pre>
+</div>
+<div class="section" id="choicestring">
+<h2><a class="toc-backref" href="#id14">ChoiceString</a></h2>
+<p><strong>ChoiceString</strong> (string <em>name</em>, list <em>choices</em> = <tt class="docutils literal">[]</tt>, string
+<em>default</em> = None, strict = <tt class="docutils literal">True</tt>)</p>
+<p>A set of choices of strings.  Corresponds to the C type <tt class="docutils literal">char *</tt>.</p>
+<p>To be used when a string argument can be one of a fixed set of values.</p>
+<p>If <tt class="docutils literal">strict</tt> is <tt class="docutils literal">True</tt> (the default), the GUI will present a
+drop-down list box of these choices.  When <tt class="docutils literal">strict</tt> is <tt class="docutils literal">False</tt>, a
+combo box will be presented which will allow the user to enter in a
+value that is not in the list of choices.</p>
+<p>Note that outside of the GUI, the plugin system does not verify the
+value of the string, so the plugin method must gracefully accept
+any string as input and deal with it accordingly.</p>
+</div>
+<div class="section" id="fileopen">
+<h2><a class="toc-backref" href="#id15">FileOpen</a></h2>
+<p><strong>FileOpen</strong> (string <em>name</em>, string <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>, <em>extension</em> =
+<tt class="docutils literal"><span class="pre">&quot;*.*&quot;</span></tt>)</p>
+<p>A filename for opening.  Corresponds to the C <tt class="docutils literal">char *</tt> or C++
+<tt class="docutils literal"><span class="pre">std::string</span></tt> type.</p>
+<p>In the GUI, this is presented as a text box with a browse button.
+When the browse button is pressed, a file selection dialog is presented.</p>
+<p><em>extensions</em> can be specified to limit the file types that are
+displayed in the file selection dialog.  Extensions is a string with
+one or more wildcard expressions separated by semicolons.  For
+example, to display TIFF and PNG images:</p>
+<pre class="literal-block">
+*.tiff;*.tif;*.TIF;*.png
+</pre>
+<p>Since <tt class="docutils literal">FileOpen</tt> is used exclusively for opening files, the GUI
+ensures that the file already exists before passing the value along to
+the underlying plugin method.</p>
+</div>
+<div class="section" id="filesave">
+<h2><a class="toc-backref" href="#id16">FileSave</a></h2>
+<p><strong>FileSave</strong> (string <em>name</em>, string <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>, <em>extension</em> =
+<tt class="docutils literal"><span class="pre">&quot;*.*&quot;</span></tt>)</p>
+<p>The counterpart to <a class="reference internal" href="#fileopen">FileOpen</a>, except for saving files.</p>
+<p>If the file already exists, the user is presented with an &quot;Are you
+sure?&quot; dialog.</p>
+</div>
+<div class="section" id="directory">
+<h2><a class="toc-backref" href="#id17">Directory</a></h2>
+<p><strong>Directory</strong> (string <em>name</em>, string <em>default</em> = <tt class="docutils literal">&quot;&quot;</tt>)</p>
+<p>A directory name.  Corresponds to the C <tt class="docutils literal">char *</tt> or C++
+<tt class="docutils literal"><span class="pre">std::string</span></tt> type.</p>
+<p>The GUI ensures that the directory exists before passing the path name
+to the underlying plugin method.</p>
+</div>
+<div class="section" id="check">
+<h2><a class="toc-backref" href="#id18">Check</a></h2>
+<p><strong>Check</strong> (string <em>name</em>, string <em>check_box</em> = <tt class="docutils literal">&quot;&quot;</tt>, bool <em>default</em> = <tt class="docutils literal">False</tt>)</p>
+<p>A boolean value.  Corresponds to the C <tt class="docutils literal">int</tt> or C++ <tt class="docutils literal">bool</tt>.</p>
+<p>In the GUI, this is presented as a check box.</p>
+<p><em>check_box</em> is an additional piece of text that will be placed to the
+right of the check box in the GUI.</p>
+</div>
+<div class="section" id="rect">
+<h2><a class="toc-backref" href="#id19">Rect</a></h2>
+<p><strong>Rect</strong> (string <em>name</em>)</p>
+<p>A Gamera <tt class="docutils literal">Rect</tt> object. Corresponds to <tt class="docutils literal"><span class="pre">gamera::Rect*</span></tt> on the C++ side.</p>
+</div>
+<div class="section" id="region">
+<h2><a class="toc-backref" href="#id20">Region</a></h2>
+<p><strong>Region</strong> (string <em>name</em>)</p>
+<p>A Gamera <tt class="docutils literal">Region</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::Region</span> &amp;</tt> on
+the C++ side.</p>
+</div>
+<div class="section" id="regionmap">
+<h2><a class="toc-backref" href="#id21">RegionMap</a></h2>
+<p><strong>RegionMap</strong> (string <em>name</em>)</p>
+<p>A Gamera <tt class="docutils literal">RegionMap</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::RegionMap</span> &amp;</tt> on
+the C++ side.</p>
+</div>
+<div class="section" id="imageinfo">
+<h2><a class="toc-backref" href="#id22">ImageInfo</a></h2>
+<p><strong>ImageInfo</strong> (string <em>name</em>)</p>
+<p>A Gamera <tt class="docutils literal">ImageInfo</tt> object.  Corresponds to <tt class="docutils literal"><span class="pre">gamera::ImageInfo</span> &amp;</tt> on
+the C++ side.</p>
+</div>
+<div class="section" id="floatvector">
+<h2><a class="toc-backref" href="#id23">FloatVector</a></h2>
+<p><strong>FloatVector</strong> (string <em>name</em>, int <em>length</em> = <tt class="docutils literal"><span class="pre">-1</span></tt>)</p>
+<p>A vector of floating-point values.  On the Python side this is an
+<tt class="docutils literal"><span class="pre">array('d')</span></tt> object.  On the C++ side, this is a
+<tt class="docutils literal">FloatVector *</tt> which is a typedef for <tt class="docutils literal"><span class="pre">std::vector&lt;double&gt;</span> *</tt>.</p>
+<p>The optional <em>length</em> argument should be given when the length of the
+argument is fixed.</p>
+</div>
+<div class="section" id="intvector">
+<h2><a class="toc-backref" href="#id24">IntVector</a></h2>
+<p><strong>IntVector</strong> (string <em>name</em>, int <em>length</em> = <tt class="docutils literal"><span class="pre">-1</span></tt>)</p>
+<p>A vector of integer values.  On the Python side this is an
+<tt class="docutils literal"><span class="pre">array('i')</span></tt> object.  On the C++ side, this is a
+<tt class="docutils literal">IntVector *</tt> which is a typedef for <tt class="docutils literal"><span class="pre">std::vector&lt;int&gt;</span> *</tt>.</p>
+<p>The optional <em>length</em> argument should be given when the length of the
+argument is fixed.</p>
+</div>
+<div class="section" id="pixel">
+<h2><a class="toc-backref" href="#id25">Pixel</a></h2>
+<p><strong>Pixel</strong> (string <em>name</em>)</p>
+<p>A pixel value corresponding to the type of the &quot;self&quot; image.  For instance,
+if the method is operating on a FLOAT image, this argument will take
+a FLOAT value.</p>
+<p>Setting a default value for a pixel is generally of little use because
+the value depends on the pixel type. You can however set the default to
+<tt class="docutils literal">NoneDefault</tt>, which is a special object that translates to <tt class="docutils literal">None</tt>
+when used as a default value. This can then be queried in the
+function, as shown in the following example:</p>
+<pre class="literal-block">
+args = Args([Pixel(&quot;PixelValue&quot;, default=NoneDefault)])
+def __call__(self, PixelValue=None):
+    if (PixelValue == None):
+        PixelValue = self.white()
+</pre>
+</div>
+<div class="section" id="point">
+<h2><a class="toc-backref" href="#id26">Point</a></h2>
+<p><strong>Point</strong> (string <em>name</em>, default = (0, 0))</p>
+<p>A Point object for representing coordinates as unsigned integers.
+This will be displayed in the automatically-generated dialog box as a
+pair of numbers.</p>
+</div>
+<div class="section" id="pointvector">
+<h2><a class="toc-backref" href="#id27">PointVector</a></h2>
+<p><strong>PointVector</strong> (string <em>name</em>)</p>
+<p>A Python sequence of Points.</p>
+</div>
+<div class="section" id="floatpoint">
+<h2><a class="toc-backref" href="#id28">FloatPoint</a></h2>
+<p><strong>FloatPoint</strong> (string <em>name</em>, default = (0.0, 0.0))</p>
+<p>A FloatPoint object for representing coordinates as floating point
+values.  This will be displayed in the automatically-generated dialog
+box as a pair of numbers.</p>
+</div>
+<div class="section" id="info">
+<h2><a class="toc-backref" href="#id29">Info</a></h2>
+<p><strong>Info</strong> (string <em>name</em>)</p>
+<p>This class is just for displaying information in a dialog box.  It
+does not affect in any way the passing of arguments to a plugin.</p>
+</div>
+<div class="section" id="radio">
+<h2><a class="toc-backref" href="#id30">Radio</a></h2>
+<p><strong>Radio</strong> (string <em>name</em>)</p>
+</div>
+</div>
+<div class="section" id="advanced-usage">
+<h1><a class="toc-backref" href="#id31">Advanced usage</a></h1>
+<p>We've just seen how the <tt class="docutils literal">args.py</tt> classes are used for specifying
+plugin method metadata.  Of course, it can also be used whenever a one-liner
+quick-and-dirty dialog box is needed.  For more complex tasks, you may
+still need to write a dialog box using the underlying <a class="reference external" href="http://www.wxpython.org">wxPython</a> toolkit.</p>
+<p>For example, we can create a simple dialog box with code below:</p>
+<pre class="literal-block">
+&gt;&gt;&gt;from gamera.args import *
+&gt;&gt;&gt;dialog = Args([Int(&quot;your favorite number&quot;)], name=&quot;What is your favorite number?&quot;)
+</pre>
+<p>The optional <em>name</em> argument was used to change the title bar text.
+To display the dialog to the user, we just use the <tt class="docutils literal">.show()</tt>
+method:</p>
+<pre class="literal-block">
+&gt;&gt;&gt;dialog.show()
+</pre>
+<p>This displays the following window:</p>
+<img alt="images/arguments_example.png" src="images/arguments_example.png" />
+<p>When the user clicks <strong>Ok</strong>, the results are returned in a list:</p>
+<pre class="literal-block">
+[6]
+</pre>
+<p>If the user clicks <strong>Cancel</strong>, <tt class="docutils literal">None</tt> is returned:</p>
+<pre class="literal-block">
+None
+</pre>
+</div>
+<div class="section" id="under-the-hood">
+<h1><a class="toc-backref" href="#id32">Under the hood...</a></h1>
+<p>For a detailed view of how this works, I suggest looking at the source code... [wink]</p>
+<p>But seriously, to help with that it should be noted that there are
+three different source files at work here:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal">gamera/args.py</tt></dt>
+<dd>The main file that defines a class for each of the argument
+types.  Only very basic functionality, such as storing the
+range of <tt class="docutils literal">Int</tt>, are implemented here.</dd>
+<dt><tt class="docutils literal">gamera/args_wrappers.py</tt></dt>
+<dd>Defines how the types are converted between C++ and Python.</dd>
+<dt><tt class="docutils literal">gamera/gui/args_gui.py</tt></dt>
+<dd>Defines how the arguments are mapped to widgets in the GUI.</dd>
+</dl>
+<p>The <tt class="docutils literal">args.py</tt> file loads the other two (if necessary) and &quot;mixes-in&quot;
+the methods in the extension classes to the core classes.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

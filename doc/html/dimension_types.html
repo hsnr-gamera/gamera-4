@@ -3,18 +3,400 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>dimension_types.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Dimension classes</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="dimension-classes">
+<h1 class="title">Dimension classes</h1>
 
-
-<p>b'=================nDimension classesn=================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnThis is a reference chapter for the various classes that manage coordinates, dimensions and bounding boxes.nnPointn-----nn.. docstring:: gamera.core Pointn   :no_title:nn__init__n''''''''nn**Point** (Int <em>x</em>, Int <em>y</em>)nn.. docstring:: gamera.core Point x y movennSizen----nn.. docstring:: gamera.core Sizen   :no_title:nn__init__n''''''''nn**Size** (Int <em>width</em>, Int <em>height</em>)nn.. docstring:: gamera.core Size width heightnnDimn---nn.. docstring:: gamera.core Dimn   :no_title:nn__init__n''''''''nn**Dim** (Int <em>ncols</em>, Int <em>nrows</em>)nn.. docstring:: gamera.core Dim ncols nrowsnnRectn----nn.. docstring:: gamera.core Rectn   :no_title:nnPosition and dimensionsn'''''''''''''''''''''''nn.. docstring:: gamera.core Rect ul ul_x ul_y ur ur_x ur_y lr lr_x lr_y ll ll_x ll_y size nrows ncols width height offset_x offset_y nnCentern''''''nn.. docstring:: gamera.core Rect center center_x center_y nnContainmentn'''''''''''nn.. docstring:: gamera.core Rect contains_x contains_y contains_point contains_rect nnIntersectionn''''''''''''nn.. docstring:: gamera.core Rect intersects intersects_x intersects_y intersection nnUnionn'''''nn.. docstring:: gamera.core Rect union union_rects nnDistancen''''''''nn.. docstring:: gamera.core Rect distance_euclid distance_bb distance_cx distance_cyn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/dimension_types.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#point" id="id11">Point</a><ul>
+<li><a class="reference internal" href="#init" id="id12">__init__</a><ul>
+<li><a class="reference internal" href="#x" id="id13"><tt class="docutils literal">x</tt></a></li>
+<li><a class="reference internal" href="#y" id="id14"><tt class="docutils literal">y</tt></a></li>
+<li><a class="reference internal" href="#move" id="id15"><tt class="docutils literal">move</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#size" id="id16">Size</a><ul>
+<li><a class="reference internal" href="#id1" id="id17">__init__</a><ul>
+<li><a class="reference internal" href="#width" id="id18"><tt class="docutils literal">width</tt></a></li>
+<li><a class="reference internal" href="#height" id="id19"><tt class="docutils literal">height</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dim" id="id20">Dim</a><ul>
+<li><a class="reference internal" href="#id2" id="id21">__init__</a><ul>
+<li><a class="reference internal" href="#ncols" id="id22"><tt class="docutils literal">ncols</tt></a></li>
+<li><a class="reference internal" href="#nrows" id="id23"><tt class="docutils literal">nrows</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rect" id="id24">Rect</a><ul>
+<li><a class="reference internal" href="#position-and-dimensions" id="id25">Position and dimensions</a><ul>
+<li><a class="reference internal" href="#ul" id="id26"><tt class="docutils literal">ul</tt></a></li>
+<li><a class="reference internal" href="#ul-x" id="id27"><tt class="docutils literal">ul_x</tt></a></li>
+<li><a class="reference internal" href="#ul-y" id="id28"><tt class="docutils literal">ul_y</tt></a></li>
+<li><a class="reference internal" href="#ur" id="id29"><tt class="docutils literal">ur</tt></a></li>
+<li><a class="reference internal" href="#ur-x" id="id30"><tt class="docutils literal">ur_x</tt></a></li>
+<li><a class="reference internal" href="#ur-y" id="id31"><tt class="docutils literal">ur_y</tt></a></li>
+<li><a class="reference internal" href="#lr" id="id32"><tt class="docutils literal">lr</tt></a></li>
+<li><a class="reference internal" href="#lr-x" id="id33"><tt class="docutils literal">lr_x</tt></a></li>
+<li><a class="reference internal" href="#lr-y" id="id34"><tt class="docutils literal">lr_y</tt></a></li>
+<li><a class="reference internal" href="#ll" id="id35"><tt class="docutils literal">ll</tt></a></li>
+<li><a class="reference internal" href="#ll-x" id="id36"><tt class="docutils literal">ll_x</tt></a></li>
+<li><a class="reference internal" href="#ll-y" id="id37"><tt class="docutils literal">ll_y</tt></a></li>
+<li><a class="reference internal" href="#id3" id="id38"><tt class="docutils literal">size</tt></a></li>
+<li><a class="reference internal" href="#id4" id="id39"><tt class="docutils literal">nrows</tt></a></li>
+<li><a class="reference internal" href="#id5" id="id40"><tt class="docutils literal">ncols</tt></a></li>
+<li><a class="reference internal" href="#id6" id="id41"><tt class="docutils literal">width</tt></a></li>
+<li><a class="reference internal" href="#id7" id="id42"><tt class="docutils literal">height</tt></a></li>
+<li><a class="reference internal" href="#offset-x" id="id43"><tt class="docutils literal">offset_x</tt></a></li>
+<li><a class="reference internal" href="#offset-y" id="id44"><tt class="docutils literal">offset_y</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#center" id="id45">Center</a><ul>
+<li><a class="reference internal" href="#id8" id="id46"><tt class="docutils literal">center</tt></a></li>
+<li><a class="reference internal" href="#center-x" id="id47"><tt class="docutils literal">center_x</tt></a></li>
+<li><a class="reference internal" href="#center-y" id="id48"><tt class="docutils literal">center_y</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#containment" id="id49">Containment</a><ul>
+<li><a class="reference internal" href="#contains-x" id="id50"><tt class="docutils literal">contains_x</tt></a></li>
+<li><a class="reference internal" href="#contains-y" id="id51"><tt class="docutils literal">contains_y</tt></a></li>
+<li><a class="reference internal" href="#contains-point" id="id52"><tt class="docutils literal">contains_point</tt></a></li>
+<li><a class="reference internal" href="#contains-rect" id="id53"><tt class="docutils literal">contains_rect</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#intersection" id="id54">Intersection</a><ul>
+<li><a class="reference internal" href="#intersects" id="id55"><tt class="docutils literal">intersects</tt></a></li>
+<li><a class="reference internal" href="#intersects-x" id="id56"><tt class="docutils literal">intersects_x</tt></a></li>
+<li><a class="reference internal" href="#intersects-y" id="id57"><tt class="docutils literal">intersects_y</tt></a></li>
+<li><a class="reference internal" href="#id9" id="id58"><tt class="docutils literal">intersection</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#union" id="id59">Union</a><ul>
+<li><a class="reference internal" href="#id10" id="id60"><tt class="docutils literal">union</tt></a></li>
+<li><a class="reference internal" href="#union-rects" id="id61"><tt class="docutils literal">union_rects</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distance" id="id62">Distance</a><ul>
+<li><a class="reference internal" href="#distance-euclid" id="id63"><tt class="docutils literal">distance_euclid</tt></a></li>
+<li><a class="reference internal" href="#distance-bb" id="id64"><tt class="docutils literal">distance_bb</tt></a></li>
+<li><a class="reference internal" href="#distance-cx" id="id65"><tt class="docutils literal">distance_cx</tt></a></li>
+<li><a class="reference internal" href="#distance-cy" id="id66"><tt class="docutils literal">distance_cy</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This is a reference chapter for the various classes that manage coordinates, dimensions and bounding boxes.</p>
+<div class="section" id="point">
+<h1><a class="toc-backref" href="#id11">Point</a></h1>
+<p><p>__init__(Int <em>x</em>, Int <em>y</em>)</p>
+<p>Point stores an (<em>x</em>, <em>y</em>) coordinate point. On the C++ side, the
+coordinates are unsigned integers, so that you cannot use negative
+<em>x</em> or <em>y</em> values.</p>
+<p>Most functions that take a Point as an argument can also take a
+2-element sequence.  For example, the following are all equivalent:</p>
+<div class="highlight"><pre><span></span><span class="n">px</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">px</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">px</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+</pre></div>
+<p>From the numeric operators, only <em>+</em> and <em>+=</em> are implemented, because
+subtraction would cause problems when the result is negative.
+On the C++ side, the comparison operator <em>&lt;</em> is also implemented, which does
+not make real sense, but allows Points to be used as keys in maps and sets.</p>
+</p>
+<div class="section" id="init">
+<h2><a class="toc-backref" href="#id12">__init__</a></h2>
+<p><strong>Point</strong> (Int <em>x</em>, Int <em>y</em>)</p>
+<div class="section" id="x">
+<h3><a class="toc-backref" href="#id13"><tt class="docutils literal">x</tt></a></h3>
+<p>(int property)</p>
+<p>The current x value</p>
+</div>
+<div class="section" id="y">
+<h3><a class="toc-backref" href="#id14"><tt class="docutils literal">y</tt></a></h3>
+<p>(int property)</p>
+<p>The current y value</p>
+</div>
+<div class="section" id="move">
+<h3><a class="toc-backref" href="#id15"><tt class="docutils literal">move</tt></a></h3>
+<p><strong>move</strong> (<em>x</em>, <em>y</em>)</p>
+<p>Moves the point by the given <em>x</em>, <em>y</em> coordinate, i.e. the vector (<em>x</em>, <em>y</em>) is added to the point. The following two lines are equivalent:</p>
+<div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">+=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="size">
+<h1><a class="toc-backref" href="#id16">Size</a></h1>
+<p><p>Size stores a size (<em>width</em>, <em>height</em>). This is almost the same as <tt class="docutils literal">Dim</tt>, but stores the number of columns/rows minus one:</p>
+<p><em>width</em> == <em>ncols</em> - 1</p>
+<p><em>height</em> == <em>nrows</em> - 1</p>
+</p>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id17">__init__</a></h2>
+<p><strong>Size</strong> (Int <em>width</em>, Int <em>height</em>)</p>
+<div class="section" id="width">
+<h3><a class="toc-backref" href="#id18"><tt class="docutils literal">width</tt></a></h3>
+<p>(int property)</p>
+<p>The width of an object is the right boundary minus the left. This is the same as the number of columns <em>minus one.</em></p>
+</div>
+<div class="section" id="height">
+<h3><a class="toc-backref" href="#id19"><tt class="docutils literal">height</tt></a></h3>
+<p>(int property)</p>
+<p>The height of an object is the lower boundary minus the upper boundary (remember that <em>y</em> is counted in the negative direction). This is the same as the number of rows <em>minus one</em>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="dim">
+<h1><a class="toc-backref" href="#id20">Dim</a></h1>
+<p><p>__init__(Int <em>ncols</em>, Int <em>nrows</em>)</p>
+<p>Dim stores a dimension (<em>ncols</em>, <em>nrows</em>)</p>
+</p>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id21">__init__</a></h2>
+<p><strong>Dim</strong> (Int <em>ncols</em>, Int <em>nrows</em>)</p>
+<div class="section" id="ncols">
+<h3><a class="toc-backref" href="#id22"><tt class="docutils literal">ncols</tt></a></h3>
+<p>(int property get/set)</p>
+<p>the current number of columns</p>
+</div>
+<div class="section" id="nrows">
+<h3><a class="toc-backref" href="#id23"><tt class="docutils literal">nrows</tt></a></h3>
+<p>(int property get/set)</p>
+<p>The current number of rows</p>
+</div>
+</div>
+</div>
+<div class="section" id="rect">
+<h1><a class="toc-backref" href="#id24">Rect</a></h1>
+<p><p>There are a number of ways to initialize a <tt class="docutils literal">Rect</tt> object:</p>
+<blockquote>
+<ul class="simple">
+<li><strong>Rect</strong> (Point <em>upper_left</em>, Point <em>lower_right</em>)</li>
+<li><strong>Rect</strong> (Point <em>upper_left</em>, Size <em>size</em>)</li>
+<li><strong>Rect</strong> (Point <em>upper_left</em>, Dim <em>dim</em>)</li>
+<li><strong>Rect</strong> (Rect <em>rectangle</em>)</li>
+</ul>
+</blockquote>
+<p>The <tt class="docutils literal">Rect</tt> class manages bounding boxes, and has a number of methods to modify and analyse those bounding boxes.</p>
+</p>
+<div class="section" id="position-and-dimensions">
+<h2><a class="toc-backref" href="#id25">Position and dimensions</a></h2>
+<div class="section" id="ul">
+<h3><a class="toc-backref" href="#id26"><tt class="docutils literal">ul</tt></a></h3>
+<p>(Point property)</p>
+<p>The upper-left coordinate of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ul-x">
+<h3><a class="toc-backref" href="#id27"><tt class="docutils literal">ul_x</tt></a></h3>
+<p>(int property)</p>
+<p>The left edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ul-y">
+<h3><a class="toc-backref" href="#id28"><tt class="docutils literal">ul_y</tt></a></h3>
+<p>(int property)</p>
+<p>The upper edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ur">
+<h3><a class="toc-backref" href="#id29"><tt class="docutils literal">ur</tt></a></h3>
+<p>(Point property)</p>
+<p>The upper-right coordinate of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ur-x">
+<h3><a class="toc-backref" href="#id30"><tt class="docutils literal">ur_x</tt></a></h3>
+<p>(int property)</p>
+<p>The right edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ur-y">
+<h3><a class="toc-backref" href="#id31"><tt class="docutils literal">ur_y</tt></a></h3>
+<p>(int property)</p>
+<p>The upper edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="lr">
+<h3><a class="toc-backref" href="#id32"><tt class="docutils literal">lr</tt></a></h3>
+<p>(Point property)</p>
+<p>The lower-right coordinate of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="lr-x">
+<h3><a class="toc-backref" href="#id33"><tt class="docutils literal">lr_x</tt></a></h3>
+<p>(int property)</p>
+<p>The right edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="lr-y">
+<h3><a class="toc-backref" href="#id34"><tt class="docutils literal">lr_y</tt></a></h3>
+<p>(int property)</p>
+<p>The lower edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ll">
+<h3><a class="toc-backref" href="#id35"><tt class="docutils literal">ll</tt></a></h3>
+<p>(Point property)</p>
+<p>The lower-left coordinate of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ll-x">
+<h3><a class="toc-backref" href="#id36"><tt class="docutils literal">ll_x</tt></a></h3>
+<p>(int property)</p>
+<p>The left edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="ll-y">
+<h3><a class="toc-backref" href="#id37"><tt class="docutils literal">ll_y</tt></a></h3>
+<p>(int property)</p>
+<p>The lower edge of the rectangle in logical coordinate space.</p>
+</div>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id38"><tt class="docutils literal">size</tt></a></h3>
+<p>(Size property)</p>
+<p>The size of the rectangle.  Equivalent to <tt class="docutils literal">Size(image.width, image.height)</tt>.</p>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id39"><tt class="docutils literal">nrows</tt></a></h3>
+<p>(int property)</p>
+<p>The number of rows in the rectangle.</p>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id40"><tt class="docutils literal">ncols</tt></a></h3>
+<p>(int property)</p>
+<p>The number of columns in the rectangle.</p>
+</div>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id41"><tt class="docutils literal">width</tt></a></h3>
+<p>(int property)</p>
+<p>The width of the rectangle. Equivalent to <tt class="docutils literal">ncols - 1</tt>.</p>
+</div>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id42"><tt class="docutils literal">height</tt></a></h3>
+<p>(int property)</p>
+<p>The height of the rectangle. Equivalent to <tt class="docutils literal">nrows - 1</tt>.</p>
+</div>
+<div class="section" id="offset-x">
+<h3><a class="toc-backref" href="#id43"><tt class="docutils literal">offset_x</tt></a></h3>
+<p>(int property)</p>
+<p>The left edge of the rectangle in the logical coordinate space.</p>
+</div>
+<div class="section" id="offset-y">
+<h3><a class="toc-backref" href="#id44"><tt class="docutils literal">offset_y</tt></a></h3>
+<p>(int property)</p>
+<p>The upper edge of the rectable in the logical coordinate space.</p>
+</div>
+</div>
+<div class="section" id="center">
+<h2><a class="toc-backref" href="#id45">Center</a></h2>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id46"><tt class="docutils literal">center</tt></a></h3>
+<p>(Point property)</p>
+<p>The coordinate at the exact center of the rectangle in the logical coordinate space.</p>
+</div>
+<div class="section" id="center-x">
+<h3><a class="toc-backref" href="#id47"><tt class="docutils literal">center_x</tt></a></h3>
+<p>(int property)</p>
+<p>The x-location at the exact center of the rectangle in the logical coordinate space.</p>
+</div>
+<div class="section" id="center-y">
+<h3><a class="toc-backref" href="#id48"><tt class="docutils literal">center_y</tt></a></h3>
+<p>(int property)</p>
+<p>The y-location at the exact center of the rectangle in the logical coordinate space.</p>
+</div>
+</div>
+<div class="section" id="containment">
+<h2><a class="toc-backref" href="#id49">Containment</a></h2>
+<div class="section" id="contains-x">
+<h3><a class="toc-backref" href="#id50"><tt class="docutils literal">contains_x</tt></a></h3>
+<p>bool <strong>contains_x</strong> (Int <em>x</em>)</p>
+<p><tt class="docutils literal">True</tt> if the rectangle contains the given x-value in logical coordinate space.</p>
+</div>
+<div class="section" id="contains-y">
+<h3><a class="toc-backref" href="#id51"><tt class="docutils literal">contains_y</tt></a></h3>
+<p>bool <strong>contains_y</strong> (Int <em>y</em>)</p>
+<p><tt class="docutils literal">True</tt> if the rectangle contains the given y-value in logical coordinate space.</p>
+</div>
+<div class="section" id="contains-point">
+<h3><a class="toc-backref" href="#id52"><tt class="docutils literal">contains_point</tt></a></h3>
+<p>bool <strong>contains_point</strong> (Point <em>point</em>)</p>
+<p><tt class="docutils literal">True</tt> if the rectangle contains the given <tt class="docutils literal">Point</tt> in logical coordinate space</p>
+</div>
+<div class="section" id="contains-rect">
+<h3><a class="toc-backref" href="#id53"><tt class="docutils literal">contains_rect</tt></a></h3>
+<p>bool <strong>contains_rect</strong> (Rect <em>other</em>)</p>
+<p><tt class="docutils literal">True</tt> if rectangle completely contains the given rectangle in logical coordinate space.</p>
+</div>
+</div>
+<div class="section" id="intersection">
+<h2><a class="toc-backref" href="#id54">Intersection</a></h2>
+<div class="section" id="intersects">
+<h3><a class="toc-backref" href="#id55"><tt class="docutils literal">intersects</tt></a></h3>
+<p>bool <strong>intersects</strong> (Rect <em>other</em>)</p>
+<p><tt class="docutils literal">True</tt> if rectangle intersects with the given rectangle.</p>
+</div>
+<div class="section" id="intersects-x">
+<h3><a class="toc-backref" href="#id56"><tt class="docutils literal">intersects_x</tt></a></h3>
+<p>bool <strong>intersects_x</strong> (Rect <em>other</em>)</p>
+<p><tt class="docutils literal">True</tt> if rectangle intersects the given rectangle in the <em>x</em> direction (completely ignoring the <em>y</em> direction).  (<tt class="docutils literal">True</tt> if the two rectangles are merely &quot;vertically aligned&quot;.)</p>
+</div>
+<div class="section" id="intersects-y">
+<h3><a class="toc-backref" href="#id57"><tt class="docutils literal">intersects_y</tt></a></h3>
+<p>bool <strong>intersects_y</strong> (Rect <em>other</em>)</p>
+<p><tt class="docutils literal">True</tt> if rectangle intersects the given rectangle in the <em>y</em> direction (completely ignoring the <em>x</em> direction).  (<tt class="docutils literal">True</tt> if the two rectangles are merely &quot;horizontally aligned&quot;.)</p>
+</div>
+<div class="section" id="id9">
+<h3><a class="toc-backref" href="#id58"><tt class="docutils literal">intersection</tt></a></h3>
+<p>bool <strong>intersection</strong> (Rect <em>other</em>)</p>
+<p>Returns a new Rect that is the intersection of <tt class="docutils literal">self</tt> and the given Rect object.</p>
+</div>
+</div>
+<div class="section" id="union">
+<h2><a class="toc-backref" href="#id59">Union</a></h2>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id60"><tt class="docutils literal">union</tt></a></h3>
+<p><strong>union</strong> (Rect <em>other</em>)</p>
+<p>Expands the rectangle to include the given rectangle and itself.</p>
+</div>
+<div class="section" id="union-rects">
+<h3><a class="toc-backref" href="#id61"><tt class="docutils literal">union_rects</tt></a></h3>
+<p>Rect <strong>union_rects</strong> (RectList <em>rects</em>)</p>
+<p>Returns a new rectangle that encloses all of the given rectangles in a list.</p>
+</div>
+</div>
+<div class="section" id="distance">
+<h2><a class="toc-backref" href="#id62">Distance</a></h2>
+<div class="section" id="distance-euclid">
+<h3><a class="toc-backref" href="#id63"><tt class="docutils literal">distance_euclid</tt></a></h3>
+<p>float <strong>distance_euclid</strong> (Rect <em>other</em>)</p>
+<p>Returns the Euclidean distance between the center points of this rectangle and the given rectangle.</p>
+</div>
+<div class="section" id="distance-bb">
+<h3><a class="toc-backref" href="#id64"><tt class="docutils literal">distance_bb</tt></a></h3>
+<p>float <strong>distance_bb</strong> (Rect <em>other</em>)</p>
+<p>Returns the closest (Euclidean) distance between the edges of this rectangle and the edges of the given rectangle.</p>
+</div>
+<div class="section" id="distance-cx">
+<h3><a class="toc-backref" href="#id65"><tt class="docutils literal">distance_cx</tt></a></h3>
+<p>int <strong>distance_cx</strong> (Rect <em>other</em>)</p>
+<p>Returns the distance of the center points of this rectangle and the given rectangle in the horizontal direction.</p>
+</div>
+<div class="section" id="distance-cy">
+<h3><a class="toc-backref" href="#id66"><tt class="docutils literal">distance_cy</tt></a></h3>
+<p>int <strong>distance_cy</strong> (Rect <em>other</em>)</p>
+<p>Returns the distance of the center points of this rectangle and the given rectangle in the vertical direction.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

@@ -3,27 +3,327 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>runlength.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Runlength</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="runlength">
+<h1 class="title">Runlength</h1>
 
-
-<p>b'nRunlengthn=========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``filter_narrow_runs``n----------------------nn**filter_narrow_runs** (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnRemoves horizontal runs in the given <em>color</em> narrower than a givenn*length*.nn----------nn**Example 1:** filter_narrow_runs(3, &quot;black&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/filter_narrow_runs_plugin_00.pngn   :height: 99n   :width: 69nnnn``filter_short_runs``n---------------------nn**filter_short_runs** (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnRemoves vertical runs in the given <em>color</em> shorter than a givenn*length*.nn----------nn**Example 1:** filter_short_runs(3, &quot;black&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/filter_short_runs_plugin_00.pngn   :height: 99n   :width: 69nnnn``filter_tall_runs``n--------------------nn**filter_tall_runs** (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnRemoves vertical runs in the given <em>color</em> taller than a givenn*length*.nn----------nn**Example 1:** filter_tall_runs(3, &quot;black&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/filter_tall_runs_plugin_00.pngn   :height: 99n   :width: 69nnnn``filter_wide_runs``n--------------------nn**filter_wide_runs** (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnRemoves horizontal runs in the given <em>color</em> wider than a givenn*length*.nn----------nn**Example 1:** filter_wide_runs(3, &quot;black&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/filter_wide_runs_plugin_00.pngn   :height: 99n   :width: 69nnnn``from_rle``n------------nn**from_rle** (str <em>runs</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnDecodes a string-based run-length encoded version of the image.nnThe numbers alternate between &quot;length of black run&quot; and &quot;length ofnwhite run&quot;.  Runs go left-to-right, top-to-bottom.  Runs rollovernthe right hand edge and continue on the left edge of the next run.nnTo encode an RLE string, use <a href="#id3"><span class="problematic" id="id4">to_rle_</span></a>.nnn``iterate_runs``n----------------nnobject <strong>iterate_runs</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: objectn:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns nested iterators over the runs in the given <em>color</em> andn*direction*.nnEach run is returned as a Rect object.nnFor example, to iterate over all runs:nn.. code:: Pythonnn  for row in image.iterate_black_horizontal_runs():n  # All the runs in each rown  for run in row:n      print runnnn``most_frequent_run``n---------------------nnint <strong>most_frequent_run</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: intn:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns the length of the most frequently occurring run of pixelsnin the given color and given direction.nn----------nn**Example 1:** most_frequent_run(&quot;black&quot;, &quot;horizontal&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn*result* = 9nnnn``most_frequent_runs``n----------------------nnobject <strong>most_frequent_runs</strong> (int <em>n</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: objectn:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom, after an idea by Christoph DalitznnnReturns the lengths of the <em>n</em> most frequently occurring runs innthe given <em>color</em> and <em>direction</em>.nn*n*n  The number of runlengths to return.  If <em>n</em> &lt; 0, all runlengthsn  will be returned.nnThe return value is a list of 2-tuples.  The first element in thentuple is the run length, and the second element is its frequency.nThe list is sorted by descending frequency.nn----------nn**Example 1:** most_frequent_runs(5, &quot;black&quot;, &quot;horizontal&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn*result* = [(9, 32), (7, 22), (8, 22), (5, 19), (4, 15)]nnnn``run_histogram``n-----------------nn``IntVector`` <strong>run_histogram</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">IntVector</tt>n:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns the histogram of runlengths in the given <em>color</em> andn*direction*.nn*return_value*n  The return value is an integer array.  Each index in the arrayn  corresponds to a particular run length, and the value at thatn  index is the number of times that that run length occurs in then  image.nn----------nn**Example 1:** run_histogram(&quot;black&quot;, &quot;horizontal&quot;)nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn*result* = array('i', [0, 11, 10, 6, 15, 19, 10, 22, 22, 32, 9, 14, 5, 3, 2, 2, 1, 1, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])nnnn``runlength_from_point``n------------------------nnint <strong>runlength_from_point</strong> (<tt class="docutils literal">FloatPoint</tt> <em>point</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [top|bottom|left|right] <em>direction</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: intn:Category: Runlengthn:Defined in: runlength.pyn:Author: Fabian Schmitt and Christoph DalitznnnReturns the runlength of <em>color</em> in the direction <em>direction</em> startingnfrom one pixel after <em>point</em>.nnn``to_rle``n----------nnstr <strong>to_rle</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: strn:Category: Runlengthn:Defined in: runlength.pyn:Author: Michael Droettboom and Karl MacMillannnnEncodes a string-based run-length encoded version of the image.nnThe numbers alternate between &quot;length of black run&quot; and &quot;length ofnwhite run&quot;.  Runs go left-to-right, top-to-bottom.  Runs rollovernthe right hand edge and continue on the left edge of the next run.nnTo decode an RLE string, use <a href="#id5"><span class="problematic" id="id6">from_rle_</span></a>.nn----------nn**Example 1:** to_rle()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn*result* = '42 12 56 17 53 19 61 10 63 9 63 8 64 7 64 7 64 7 64 7 64 7 63 7 64 6 64 7 64 6 65 6 64 6 63 7 63 7 65 5 65 4 66 5 65 5 65 5 64 5 65 5 53 2 10 4 52 4 9 4 52 4 9 5 51 4 9 5 30 5 15 7 7 5 28 8 14 9 5 6 27 7 14 12 2 6 26 8 14 19 28 7 14 5 2 13 28 7 14 6 2 11 29 7 13 8 2 9 30 7 13 9 5 4 31 8 12 10 39 8 11 12 39 7 11 13 38 7 10 5 1 9 10 1 26 7 10 4 3 9 10 2 24 8 8 5 4 9 9 3 24 7 8 4 6 9 10 1 24 8 8 3 7 9 35 7 20 8 34 8 20 8 34 8 19 9 33 9 19 9 33 8 20 9 33 8 20 9 33 8 21 8 32 9 20 9 32 9 20 9 10 1 19 11 20 9 9 2 20 10 20 9 9 2 21 9 20 9 9 2 21 9 20 9 9 2 21 9 20 9 9 2 21 10 19 9 9 1 22 10 19 9 9 1 22 10 19 9 9 1 22 11 18 9 9 1 23 10 18 9 9 1 23 10 18 9 33 10 18 8 34 11 17 8 35 11 16 8 35 11 16 8 35 11 16 8 36 11 15 7 37 11 15 5 33 2 5 11 14 3 33 3 6 12 12 3 33 3 8 11 10 4 17 1 16 2 10 12 6 5 17 5 13 1 11 13 4 4 18 5 27 14 1 4 18 6 29 15 17 8 31 16 10 11 34 35 36 33 39 29 43 25 47 21 52 15 62 4 329 4 36 2 30 4 31 5 32 6 25 5 35 6 21 7 39 11 6 11 46 21 52 14 66 1 27 0 'nnnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/runlength.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/runlength.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Unknown target name: &quot;to_rle&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/runlength.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Unknown target name: &quot;from_rle&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#filter-narrow-runs" id="id1"><tt class="docutils literal">filter_narrow_runs</tt></a></li>
+<li><a class="reference internal" href="#filter-short-runs" id="id2"><tt class="docutils literal">filter_short_runs</tt></a></li>
+<li><a class="reference internal" href="#filter-tall-runs" id="id3"><tt class="docutils literal">filter_tall_runs</tt></a></li>
+<li><a class="reference internal" href="#filter-wide-runs" id="id4"><tt class="docutils literal">filter_wide_runs</tt></a></li>
+<li><a class="reference internal" href="#from-rle" id="id5"><tt class="docutils literal">from_rle</tt></a></li>
+<li><a class="reference internal" href="#iterate-runs" id="id6"><tt class="docutils literal">iterate_runs</tt></a></li>
+<li><a class="reference internal" href="#most-frequent-run" id="id7"><tt class="docutils literal">most_frequent_run</tt></a></li>
+<li><a class="reference internal" href="#most-frequent-runs" id="id8"><tt class="docutils literal">most_frequent_runs</tt></a></li>
+<li><a class="reference internal" href="#run-histogram" id="id9"><tt class="docutils literal">run_histogram</tt></a></li>
+<li><a class="reference internal" href="#runlength-from-point" id="id10"><tt class="docutils literal">runlength_from_point</tt></a></li>
+<li><a class="reference internal" href="#to-rle" id="id11"><tt class="docutils literal">to_rle</tt></a></li>
+</ul>
 </div>
+<div class="section" id="filter-narrow-runs">
+<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">filter_narrow_runs</tt></a></h1>
+<p><strong>filter_narrow_runs</strong> (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Removes horizontal runs in the given <em>color</em> narrower than a given
+<em>length</em>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> filter_narrow_runs(3, &quot;black&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/filter_narrow_runs_plugin_00.png" src="images/filter_narrow_runs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="filter-short-runs">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">filter_short_runs</tt></a></h1>
+<p><strong>filter_short_runs</strong> (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Removes vertical runs in the given <em>color</em> shorter than a given
+<em>length</em>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> filter_short_runs(3, &quot;black&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/filter_short_runs_plugin_00.png" src="images/filter_short_runs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="filter-tall-runs">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">filter_tall_runs</tt></a></h1>
+<p><strong>filter_tall_runs</strong> (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Removes vertical runs in the given <em>color</em> taller than a given
+<em>length</em>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> filter_tall_runs(3, &quot;black&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/filter_tall_runs_plugin_00.png" src="images/filter_tall_runs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="filter-wide-runs">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">filter_wide_runs</tt></a></h1>
+<p><strong>filter_wide_runs</strong> (int <em>length</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Removes horizontal runs in the given <em>color</em> wider than a given
+<em>length</em>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> filter_wide_runs(3, &quot;black&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/filter_wide_runs_plugin_00.png" src="images/filter_wide_runs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="from-rle">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">from_rle</tt></a></h1>
+<p><strong>from_rle</strong> (str <em>runs</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Decodes a string-based run-length encoded version of the image.</p>
+<p>The numbers alternate between &quot;length of black run&quot; and &quot;length of
+white run&quot;.  Runs go left-to-right, top-to-bottom.  Runs rollover
+the right hand edge and continue on the left edge of the next run.</p>
+<p>To encode an RLE string, use <a class="reference internal" href="#to-rle">to_rle</a>.</p>
+</div>
+<div class="section" id="iterate-runs">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">iterate_runs</tt></a></h1>
+<p>object <strong>iterate_runs</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns nested iterators over the runs in the given <em>color</em> and
+<em>direction</em>.</p>
+<p>Each run is returned as a Rect object.</p>
+<p>For example, to iterate over all runs:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">iterate_black_horizontal_runs</span><span class="p">():</span>
+<span class="c1"># All the runs in each row</span>
+<span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="n">run</span>
+</pre></div>
+</div>
+<div class="section" id="most-frequent-run">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">most_frequent_run</tt></a></h1>
+<p>int <strong>most_frequent_run</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the length of the most frequently occurring run of pixels
+in the given color and given direction.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> most_frequent_run(&quot;black&quot;, &quot;horizontal&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = 9</p>
+</div>
+<div class="section" id="most-frequent-runs">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">most_frequent_runs</tt></a></h1>
+<p>object <strong>most_frequent_runs</strong> (int <em>n</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom, after an idea by Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the lengths of the <em>n</em> most frequently occurring runs in
+the given <em>color</em> and <em>direction</em>.</p>
+<dl class="docutils">
+<dt><em>n</em></dt>
+<dd>The number of runlengths to return.  If <em>n</em> &lt; 0, all runlengths
+will be returned.</dd>
+</dl>
+<p>The return value is a list of 2-tuples.  The first element in the
+tuple is the run length, and the second element is its frequency.
+The list is sorted by descending frequency.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> most_frequent_runs(5, &quot;black&quot;, &quot;horizontal&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = [(9, 32), (7, 22), (8, 22), (5, 19), (4, 15)]</p>
+</div>
+<div class="section" id="run-histogram">
+<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">run_histogram</tt></a></h1>
+<p><tt class="docutils literal">IntVector</tt> <strong>run_histogram</strong> (<tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [horizontal|vertical] <em>direction</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">IntVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the histogram of runlengths in the given <em>color</em> and
+<em>direction</em>.</p>
+<dl class="docutils">
+<dt><em>return_value</em></dt>
+<dd>The return value is an integer array.  Each index in the array
+corresponds to a particular run length, and the value at that
+index is the number of times that that run length occurs in the
+image.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> run_histogram(&quot;black&quot;, &quot;horizontal&quot;)</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = array('i', [0, 11, 10, 6, 15, 19, 10, 22, 22, 32, 9, 14, 5, 3, 2, 2, 1, 1, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</p>
+</div>
+<div class="section" id="runlength-from-point">
+<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">runlength_from_point</tt></a></h1>
+<p>int <strong>runlength_from_point</strong> (<tt class="docutils literal">FloatPoint</tt> <em>point</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [black|white] <em>color</em>, <tt class="docutils literal">ChoiceString(strict)</tt> [top|bottom|left|right] <em>direction</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Fabian Schmitt and Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the runlength of <em>color</em> in the direction <em>direction</em> starting
+from one pixel after <em>point</em>.</p>
+</div>
+<div class="section" id="to-rle">
+<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">to_rle</tt></a></h1>
+<p>str <strong>to_rle</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Runlength</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">runlength.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Encodes a string-based run-length encoded version of the image.</p>
+<p>The numbers alternate between &quot;length of black run&quot; and &quot;length of
+white run&quot;.  Runs go left-to-right, top-to-bottom.  Runs rollover
+the right hand edge and continue on the left edge of the next run.</p>
+<p>To decode an RLE string, use <a class="reference internal" href="#from-rle">from_rle</a>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> to_rle()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<p><em>result</em> = '42 12 56 17 53 19 61 10 63 9 63 8 64 7 64 7 64 7 64 7 64 7 63 7 64 6 64 7 64 6 65 6 64 6 63 7 63 7 65 5 65 4 66 5 65 5 65 5 64 5 65 5 53 2 10 4 52 4 9 4 52 4 9 5 51 4 9 5 30 5 15 7 7 5 28 8 14 9 5 6 27 7 14 12 2 6 26 8 14 19 28 7 14 5 2 13 28 7 14 6 2 11 29 7 13 8 2 9 30 7 13 9 5 4 31 8 12 10 39 8 11 12 39 7 11 13 38 7 10 5 1 9 10 1 26 7 10 4 3 9 10 2 24 8 8 5 4 9 9 3 24 7 8 4 6 9 10 1 24 8 8 3 7 9 35 7 20 8 34 8 20 8 34 8 19 9 33 9 19 9 33 8 20 9 33 8 20 9 33 8 21 8 32 9 20 9 32 9 20 9 10 1 19 11 20 9 9 2 20 10 20 9 9 2 21 9 20 9 9 2 21 9 20 9 9 2 21 9 20 9 9 2 21 10 19 9 9 1 22 10 19 9 9 1 22 10 19 9 9 1 22 11 18 9 9 1 23 10 18 9 9 1 23 10 18 9 33 10 18 8 34 11 17 8 35 11 16 8 35 11 16 8 35 11 16 8 36 11 15 7 37 11 15 5 33 2 5 11 14 3 33 3 6 12 12 3 33 3 8 11 10 4 17 1 16 2 10 12 6 5 17 5 13 1 11 13 4 4 18 5 27 14 1 4 18 6 29 15 17 8 31 16 10 11 34 35 36 33 39 29 43 25 47 21 52 15 62 4 329 4 36 2 30 4 31 5 32 6 25 5 35 6 21 7 39 11 6 11 46 21 52 14 66 1 27 0 '</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

@@ -3,102 +3,380 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>combine.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Combine</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="combine">
+<h1 class="title">Combine</h1>
 
-
-<p>b'nCombinen=======nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnnArithmeticn----------nn``add_images``n``````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>add_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Combine/Arithmeticn:Defined in: arithmetic.pyn:Author: Michael Droettboomnn*All images passed in (including self) must have the same pixel type.*nnnnAdds the corresponding pixels of two images together.nnThe two images must be the same type.nnSince it would be difficult to determine what exactly to do if thenimages are a different size, the two images must be the same size.nUse .subimage on either image to crop appropriately if necessarynfor your specific case.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nn----------nn**Example 1:** add_imagesnn|add_images_plugin_00_00| <a href="#id3"><span class="problematic" id="id4">|add_images_plugin_00_01|</span></a> <a href="#id5"><span class="problematic" id="id6">|add_images_plugin_00_02|</span></a> nn.. <a href="#id7"><span class="problematic" id="id8">|add_images_plugin_00_00|</span></a> image:: images/add_images_plugin_00_00.pngn   :height: 67n   :width: 96nn.. <a href="#id9"><span class="problematic" id="id10">|add_images_plugin_00_01|</span></a> image:: images/add_images_plugin_00_01.pngn   :height: 67n   :width: 96nn.. <a href="#id11"><span class="problematic" id="id12">|add_images_plugin_00_02|</span></a> image:: images/add_images_plugin_00_02.pngn   :height: 67n   :width: 96nnnn``divide_images``n`````````````````nn``Image`` [GreyScale|Grey16|Float] <strong>divide_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Category: Combine/Arithmeticn:Defined in: arithmetic.pyn:Author: Michael Droettboomnn*All images passed in (including self) must have the same pixel type.*nnnnDivides the pixels of the current image by the pixels of anothernimage.nnThe two images must be the same type.nnSince it would be difficult to determine what exactly to do if thenimages are a different size, the two images must be the same size.nUse .subimage on either image to crop appropriately if necessarynfor your specific case.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nnn``multiply_images``n```````````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>multiply_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Combine/Arithmeticn:Defined in: arithmetic.pyn:Author: Michael Droettboomnn*All images passed in (including self) must have the same pixel type.*nnnnMultiplies the corresponding pixels of two images together.nnNote that this does not work on labeled ONEBIT images, because allnpixel values in the returned image are reset to one or zero in this case.nnSince it would be difficult to determine what exactly to do if thenimages are a different size, the two images must be the same size.nUse .subimage on either image to crop appropriately if necessarynfor your specific case.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nnn``subtract_images``n```````````````````nn``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>subtract_images</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Category: Combine/Arithmeticn:Defined in: arithmetic.pyn:Author: Michael Droettboomnn*All images passed in (including self) must have the same pixel type.*nnnnAdds the pixels of another image from the current image.nnThe two images must be the same type.nnSince it would be difficult to determine what exactly to do if thenimages are a different size, the two images must be the same size.nUse .subimage on either image to crop appropriately if necessarynfor your specific case.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nn----------nn**Example 1:** subtract_imagesnn|subtract_images_plugin_00_00| <a href="#id13"><span class="problematic" id="id14">|subtract_images_plugin_00_01|</span></a> <a href="#id15"><span class="problematic" id="id16">|subtract_images_plugin_00_02|</span></a> nn.. <a href="#id17"><span class="problematic" id="id18">|subtract_images_plugin_00_00|</span></a> image:: images/subtract_images_plugin_00_00.pngn   :height: 67n   :width: 96nn.. <a href="#id19"><span class="problematic" id="id20">|subtract_images_plugin_00_01|</span></a> image:: images/subtract_images_plugin_00_01.pngn   :height: 67n   :width: 96nn.. <a href="#id21"><span class="problematic" id="id22">|subtract_images_plugin_00_02|</span></a> image:: images/subtract_images_plugin_00_02.pngn   :height: 67n   :width: 96nnnnnLogicaln-------nn``and_image``n`````````````nn``Image`` [OneBit] <strong>and_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Combine/Logicaln:Defined in: logical.pyn:Author: Michael DroettboomnnnPerform the AND operation on two images.nnSince it would be difficult to determine what exactly to do if the imagesnare a different size, the two images must be the same size.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nnSee <a href="#id53"><span class="problematic" id="id54">or_image_</span></a> for some usage examples.nn----------nn**Example 1:** and_imagenn|and_image_plugin_00_00| <a href="#id23"><span class="problematic" id="id24">|and_image_plugin_00_01|</span></a> <a href="#id25"><span class="problematic" id="id26">|and_image_plugin_00_02|</span></a> nn.. <a href="#id27"><span class="problematic" id="id28">|and_image_plugin_00_00|</span></a> image:: images/and_image_plugin_00_00.pngn   :height: 67n   :width: 69nn.. <a href="#id29"><span class="problematic" id="id30">|and_image_plugin_00_01|</span></a> image:: images/and_image_plugin_00_01.pngn   :height: 67n   :width: 69nn.. <a href="#id31"><span class="problematic" id="id32">|and_image_plugin_00_02|</span></a> image:: images/and_image_plugin_00_02.pngn   :height: 67n   :width: 69nnnn``or_image``n````````````nn``Image`` [OneBit] <strong>or_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Combine/Logicaln:Defined in: logical.pyn:Author: Michael DroettboomnnnPerform the OR operation on two images.nnSince it would be difficult to determine what exactly to do if thenimages are a different size, the two images must be the same size.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nnUsage examples:nnUsing logical functions in different ways will generally involvencreating temporary subimages for regions of interest.  Subimages arenvery lightweight objects that keep track of a bounding box and refernto the underlying data, therefore creating/destroying a number ofnthese on the fly should not have a significant impact onnperformance.nnPadding an image.nn.. code:: Pythonnn  def pad_image(image, padding):n    new_image = Image(0, 0,n                      image.nrows + padding * 2, image.ncols + padding * 2,n                      ONEBIT, DENSE)n    new_image.subimage((padding, padding), Dim(image.nrows, image.ncols)).or_image(image, True)n    return new_imagennStamping an image over a larger image.  Use subimage to change thendestination of the stamp.nn.. code:: Pythonnn  # stamp: a small stamp imagen  # paper: a larger destination imagen  for x in range(0, 100, 10):n    paper.subimage(0, x, stamp.nrows, stamp.ncols).or_image(stamp, True)nnPutting part of a source image on the upper-left corner of andestination image.nn.. code:: Pythonnn  # src: a source imagen  # dest: a destination imagen  dest.or_image(src.subimage(50, 50, 25, 25), True)nnRemoving a connected component from its original image.nn.. code:: Pythonnn  # src: the original imagen  # cc: a cc on that imagen  src.clip_image(cc).xor_image(cc, True)nn----------nn**Example 1:** or_imagenn|or_image_plugin_00_00| <a href="#id33"><span class="problematic" id="id34">|or_image_plugin_00_01|</span></a> <a href="#id35"><span class="problematic" id="id36">|or_image_plugin_00_02|</span></a> nn.. <a href="#id37"><span class="problematic" id="id38">|or_image_plugin_00_00|</span></a> image:: images/or_image_plugin_00_00.pngn   :height: 67n   :width: 69nn.. <a href="#id39"><span class="problematic" id="id40">|or_image_plugin_00_01|</span></a> image:: images/or_image_plugin_00_01.pngn   :height: 67n   :width: 69nn.. <a href="#id41"><span class="problematic" id="id42">|or_image_plugin_00_02|</span></a> image:: images/or_image_plugin_00_02.pngn   :height: 67n   :width: 69nnnn``xor_image``n`````````````nn``Image`` [OneBit] <strong>xor_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Combine/Logicaln:Defined in: logical.pyn:Author: Michael DroettboomnnnPerform the XOR operation on two images.nnSince it would be difficult to determine what exactly to do if the imagesnare a different size, the two images must be the same size.nn*in_place*n  If true, the operation will be performed in-place, changing then  contents of the current image.nnSee <a href="#id55"><span class="problematic" id="id56">or_image_</span></a> for some usage examples.nn----------nn**Example 1:** xor_imagenn|xor_image_plugin_00_00| <a href="#id43"><span class="problematic" id="id44">|xor_image_plugin_00_01|</span></a> <a href="#id45"><span class="problematic" id="id46">|xor_image_plugin_00_02|</span></a> nn.. <a href="#id47"><span class="problematic" id="id48">|xor_image_plugin_00_00|</span></a> image:: images/xor_image_plugin_00_00.pngn   :height: 67n   :width: 69nn.. <a href="#id49"><span class="problematic" id="id50">|xor_image_plugin_00_01|</span></a> image:: images/xor_image_plugin_00_01.pngn   :height: 67n   :width: 69nn.. <a href="#id51"><span class="problematic" id="id52">|xor_image_plugin_00_02|</span></a> image:: images/xor_image_plugin_00_02.pngn   :height: 67n   :width: 69nnnn``diff_images``n---------------nn``Image`` [RGB] <strong>diff_images</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [RGB]n:Category: Combinen:Defined in: image_utilities.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns a color image representing the difference of two imagesnfollowing the conventions of a number of Unix diff visualizationntools, such as CVS web.  Pixels in both images are black.  Pixelsnin 'self' but not in the given image (&quot;deleted&quot; pixels) are red.nPixels in the given image but not in self (&quot;inserted&quot; pixels)nare green.nnn``mask``n--------nn``Image`` [GreyScale|RGB] <strong>mask</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>mask</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|RGB]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|RGB]n:Category: Combinen:Defined in: image_utilities.pyn:Author: Michael Droettboom and Karl MacMillannnnMasks an image using the given ONEBIT image.  Parts of the ONEBITnimage that are white will be changed to white in the resultingnimage.nnThe images must be the same size.nnn``union_images``n----------------nn``Image`` [OneBit] <strong>union_images</strong> ([object <em>list_of_images</em>])nnn:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Combinen:Defined in: image_utilities.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns an image that is the union of the given list of connectedncomponents.nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;add_images_plugin_00_01&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;add_images_plugin_00_02&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;add_images_plugin_00_00&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;add_images_plugin_00_01&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;add_images_plugin_00_02&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;subtract_images_plugin_00_01&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;subtract_images_plugin_00_02&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;subtract_images_plugin_00_00&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Undefined substitution referenced: &quot;subtract_images_plugin_00_01&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Undefined substitution referenced: &quot;subtract_images_plugin_00_02&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Undefined substitution referenced: &quot;and_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Undefined substitution referenced: &quot;and_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Undefined substitution referenced: &quot;and_image_plugin_00_00&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Undefined substitution referenced: &quot;and_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Undefined substitution referenced: &quot;and_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Undefined substitution referenced: &quot;or_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id35">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
-Undefined substitution referenced: &quot;or_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id37">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
-Undefined substitution referenced: &quot;or_image_plugin_00_00&quot;.</div>
-<div class="system-message" id="id39">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
-Undefined substitution referenced: &quot;or_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id41">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
-Undefined substitution referenced: &quot;or_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id43">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id44">backlink</a></em></p>
-Undefined substitution referenced: &quot;xor_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id45">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id46">backlink</a></em></p>
-Undefined substitution referenced: &quot;xor_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id47">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id48">backlink</a></em></p>
-Undefined substitution referenced: &quot;xor_image_plugin_00_00&quot;.</div>
-<div class="system-message" id="id49">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id50">backlink</a></em></p>
-Undefined substitution referenced: &quot;xor_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id51">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id52">backlink</a></em></p>
-Undefined substitution referenced: &quot;xor_image_plugin_00_02&quot;.</div>
-<div class="system-message" id="id53">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id54">backlink</a></em></p>
-Unknown target name: &quot;or_image&quot;.</div>
-<div class="system-message" id="id55">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/combine.txt</tt>, line 1); <em><a href="#id56">backlink</a></em></p>
-Unknown target name: &quot;or_image&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#arithmetic" id="id1">Arithmetic</a><ul>
+<li><a class="reference internal" href="#add-images" id="id2"><tt class="docutils literal">add_images</tt></a></li>
+<li><a class="reference internal" href="#divide-images" id="id3"><tt class="docutils literal">divide_images</tt></a></li>
+<li><a class="reference internal" href="#multiply-images" id="id4"><tt class="docutils literal">multiply_images</tt></a></li>
+<li><a class="reference internal" href="#subtract-images" id="id5"><tt class="docutils literal">subtract_images</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logical" id="id6">Logical</a><ul>
+<li><a class="reference internal" href="#and-image" id="id7"><tt class="docutils literal">and_image</tt></a></li>
+<li><a class="reference internal" href="#or-image" id="id8"><tt class="docutils literal">or_image</tt></a></li>
+<li><a class="reference internal" href="#xor-image" id="id9"><tt class="docutils literal">xor_image</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#diff-images" id="id10"><tt class="docutils literal">diff_images</tt></a></li>
+<li><a class="reference internal" href="#mask" id="id11"><tt class="docutils literal">mask</tt></a></li>
+<li><a class="reference internal" href="#union-images" id="id12"><tt class="docutils literal">union_images</tt></a></li>
+</ul>
 </div>
+<div class="section" id="arithmetic">
+<h1><a class="toc-backref" href="#id1">Arithmetic</a></h1>
+<div class="section" id="add-images">
+<h2><a class="toc-backref" href="#id2"><tt class="docutils literal">add_images</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>add_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Arithmetic</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">arithmetic.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p><em>All images passed in (including self) must have the same pixel type.</em></p>
+<p>Adds the corresponding pixels of two images together.</p>
+<p>The two images must be the same type.</p>
+<p>Since it would be difficult to determine what exactly to do if the
+images are a different size, the two images must be the same size.
+Use .subimage on either image to crop appropriately if necessary
+for your specific case.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> add_images</p>
+<p><img alt="add_images_plugin_00_00" src="images/add_images_plugin_00_00.png" style="width: 96px; height: 67px;" /> <img alt="add_images_plugin_00_01" src="images/add_images_plugin_00_01.png" style="width: 96px; height: 67px;" /> <img alt="add_images_plugin_00_02" src="images/add_images_plugin_00_02.png" style="width: 96px; height: 67px;" /></p>
+</div>
+<div class="section" id="divide-images">
+<h2><a class="toc-backref" href="#id3"><tt class="docutils literal">divide_images</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>divide_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Arithmetic</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">arithmetic.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p><em>All images passed in (including self) must have the same pixel type.</em></p>
+<p>Divides the pixels of the current image by the pixels of another
+image.</p>
+<p>The two images must be the same type.</p>
+<p>Since it would be difficult to determine what exactly to do if the
+images are a different size, the two images must be the same size.
+Use .subimage on either image to crop appropriately if necessary
+for your specific case.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+</div>
+<div class="section" id="multiply-images">
+<h2><a class="toc-backref" href="#id4"><tt class="docutils literal">multiply_images</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>multiply_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Arithmetic</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">arithmetic.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p><em>All images passed in (including self) must have the same pixel type.</em></p>
+<p>Multiplies the corresponding pixels of two images together.</p>
+<p>Note that this does not work on labeled ONEBIT images, because all
+pixel values in the returned image are reset to one or zero in this case.</p>
+<p>Since it would be difficult to determine what exactly to do if the
+images are a different size, the two images must be the same size.
+Use .subimage on either image to crop appropriately if necessary
+for your specific case.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+</div>
+<div class="section" id="subtract-images">
+<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">subtract_images</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>subtract_images</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Arithmetic</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">arithmetic.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p><em>All images passed in (including self) must have the same pixel type.</em></p>
+<p>Adds the pixels of another image from the current image.</p>
+<p>The two images must be the same type.</p>
+<p>Since it would be difficult to determine what exactly to do if the
+images are a different size, the two images must be the same size.
+Use .subimage on either image to crop appropriately if necessary
+for your specific case.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> subtract_images</p>
+<p><img alt="subtract_images_plugin_00_00" src="images/subtract_images_plugin_00_00.png" style="width: 96px; height: 67px;" /> <img alt="subtract_images_plugin_00_01" src="images/subtract_images_plugin_00_01.png" style="width: 96px; height: 67px;" /> <img alt="subtract_images_plugin_00_02" src="images/subtract_images_plugin_00_02.png" style="width: 96px; height: 67px;" /></p>
+</div>
+</div>
+<div class="section" id="logical">
+<h1><a class="toc-backref" href="#id6">Logical</a></h1>
+<div class="section" id="and-image">
+<h2><a class="toc-backref" href="#id7"><tt class="docutils literal">and_image</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>and_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Logical</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">logical.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Perform the AND operation on two images.</p>
+<p>Since it would be difficult to determine what exactly to do if the images
+are a different size, the two images must be the same size.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+<p>See <a class="reference internal" href="#or-image">or_image</a> for some usage examples.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> and_image</p>
+<p><img alt="and_image_plugin_00_00" src="images/and_image_plugin_00_00.png" style="width: 69px; height: 67px;" /> <img alt="and_image_plugin_00_01" src="images/and_image_plugin_00_01.png" style="width: 69px; height: 67px;" /> <img alt="and_image_plugin_00_02" src="images/and_image_plugin_00_02.png" style="width: 69px; height: 67px;" /></p>
+</div>
+<div class="section" id="or-image">
+<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">or_image</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>or_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Logical</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">logical.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Perform the OR operation on two images.</p>
+<p>Since it would be difficult to determine what exactly to do if the
+images are a different size, the two images must be the same size.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+<p>Usage examples:</p>
+<p>Using logical functions in different ways will generally involve
+creating temporary subimages for regions of interest.  Subimages are
+very lightweight objects that keep track of a bounding box and refer
+to the underlying data, therefore creating/destroying a number of
+these on the fly should not have a significant impact on
+performance.</p>
+<p>Padding an image.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pad_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+  <span class="n">new_image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="n">image</span><span class="o">.</span><span class="n">nrows</span> <span class="o">+</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">ncols</span> <span class="o">+</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">ONEBIT</span><span class="p">,</span> <span class="n">DENSE</span><span class="p">)</span>
+  <span class="n">new_image</span><span class="o">.</span><span class="n">subimage</span><span class="p">((</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">ncols</span><span class="p">))</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">new_image</span>
+</pre></div>
+<p>Stamping an image over a larger image.  Use subimage to change the
+destination of the stamp.</p>
+<div class="highlight"><pre><span></span><span class="c1"># stamp: a small stamp image</span>
+<span class="c1"># paper: a larger destination image</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+  <span class="n">paper</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">ncols</span><span class="p">)</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">stamp</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+<p>Putting part of a source image on the upper-left corner of a
+destination image.</p>
+<div class="highlight"><pre><span></span><span class="c1"># src: a source image</span>
+<span class="c1"># dest: a destination image</span>
+<span class="n">dest</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+<p>Removing a connected component from its original image.</p>
+<div class="highlight"><pre><span></span><span class="c1"># src: the original image</span>
+<span class="c1"># cc: a cc on that image</span>
+<span class="n">src</span><span class="o">.</span><span class="n">clip_image</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">xor_image</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> or_image</p>
+<p><img alt="or_image_plugin_00_00" src="images/or_image_plugin_00_00.png" style="width: 69px; height: 67px;" /> <img alt="or_image_plugin_00_01" src="images/or_image_plugin_00_01.png" style="width: 69px; height: 67px;" /> <img alt="or_image_plugin_00_02" src="images/or_image_plugin_00_02.png" style="width: 69px; height: 67px;" /></p>
+</div>
+<div class="section" id="xor-image">
+<h2><a class="toc-backref" href="#id9"><tt class="docutils literal">xor_image</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>xor_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine/Logical</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">logical.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Perform the XOR operation on two images.</p>
+<p>Since it would be difficult to determine what exactly to do if the images
+are a different size, the two images must be the same size.</p>
+<dl class="docutils">
+<dt><em>in_place</em></dt>
+<dd>If true, the operation will be performed in-place, changing the
+contents of the current image.</dd>
+</dl>
+<p>See <a class="reference internal" href="#or-image">or_image</a> for some usage examples.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> xor_image</p>
+<p><img alt="xor_image_plugin_00_00" src="images/xor_image_plugin_00_00.png" style="width: 69px; height: 67px;" /> <img alt="xor_image_plugin_00_01" src="images/xor_image_plugin_00_01.png" style="width: 69px; height: 67px;" /> <img alt="xor_image_plugin_00_02" src="images/xor_image_plugin_00_02.png" style="width: 69px; height: 67px;" /></p>
+</div>
+</div>
+<div class="section" id="diff-images">
+<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">diff_images</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [RGB] <strong>diff_images</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [RGB]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">image_utilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a color image representing the difference of two images
+following the conventions of a number of Unix diff visualization
+tools, such as CVS web.  Pixels in both images are black.  Pixels
+in 'self' but not in the given image (&quot;deleted&quot; pixels) are red.
+Pixels in the given image but not in self (&quot;inserted&quot; pixels)
+are green.</p>
+</div>
+<div class="section" id="mask">
+<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">mask</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|RGB] <strong>mask</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>mask</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|RGB]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|RGB]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">image_utilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Masks an image using the given ONEBIT image.  Parts of the ONEBIT
+image that are white will be changed to white in the resulting
+image.</p>
+<p>The images must be the same size.</p>
+</div>
+<div class="section" id="union-images">
+<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">union_images</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>union_images</strong> ([object <em>list_of_images</em>])</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Combine</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">image_utilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an image that is the union of the given list of connected
+components.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

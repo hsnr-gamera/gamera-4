@@ -3,37 +3,727 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>writing_plugins.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Writing Gamera Plugins</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="writing-gamera-plugins">
+<h1 class="title">Writing Gamera Plugins</h1>
 
-
-<p>b'======================nWriting Gamera Pluginsn======================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn============nnThe functionality of Gamera can be extended by writing plugins inneither C++ or Python.  A plugin is simply a set of methods (which arenautomagically added to the <tt class="docutils literal">Image</tt> class) or free-standingnfunctions.  Plugins are technically just Python modules, but with moreninformation that allows for easier wrapping and compilation of C++nmethods and to support all kinds of automatic things in the graphicalnuser interface.nnPlugins can also be grouped together, with other tools, into toolkits.nToolkits provide higher-level workflow framework for end-to-endndocument recognition by joining together a number of steps fromnvarious plugins.  Toolkits are a whole other discussion, so see then`writing Gamera toolkits`__ for more information.nn.. __: writing_toolkits.htmlnnBefore writing any plugin, you should make sure there isn't already anplugin included that does what you want.  Look at the <a href="#id4"><span class="problematic" id="id5">`list of plugins\nincluded with Gamera`__</span></a>.nn.. __: plugins.htmlnnThe files involvedn------------------nnEach plugin is made up of two files: nn1. A Python file that describes each method in the plugin and then   plugin itself.  If any methods are &quot;pure Python&quot;, they can also ben   defined here, or they can just delegate to functions in othern   Python modules.nn2. Optionally, a C++ header file containing implementations of any C++n   methods of the plugin.  This is a header file (<tt class="docutils literal">.hpp</tt>) and not ann   implementation file (<tt class="docutils literal">.cpp</tt>) because the code you write will be templatizedn   and the concrete methods and the glue code connecting to Python ton   C++ will be generated automatically at compile time by the Gameran   build system.  (What templates are is beyond the scope of thisn   document, but it's covered very well in <a href="#id10"><span class="problematic" id="id3">[Stroustrup1997]_</span></a>.)nnPlugins in the Gamera source treen`````````````````````````````````nThe Python metadata files are stored in <tt class="docutils literal">./gamera/plugins/</tt> and thenC++ source files are stored in <tt class="docutils literal">./include/plugins</tt>.nnIf you keep these files in the proper directories, they will benautomatically picked up by the build system and compiled.  When Gameranis started up, it will search the <tt class="docutils literal">./gamera/plugins</tt> directory and loadnall plugins.nnPlugins in a toolkitn````````````````````nnIn a toolkit, the Python metadata files are stored inn``./gamera/toolkits/my_toolkit/plugins/`` and the C++ source files arenstored in <tt class="docutils literal">./include/plugins</tt>, both rooted at the top of yourntoolkit directory.nnPlugin modules included in toolkits will have to be explicitlynimported before they are available.nnA simple examplen================nnPlugin metadatan---------------nnLet's look at a simple metadata file, <tt class="docutils literal">example.py</tt>.  Each method isndescribed by creating a class that inherits fromn``gamera.plugin.PluginFunction`` and defining a number of specialnmembers.  The whole plugin is described by a class that inherits fromn``gamera.plugin.PluginModule``:nn.. code:: Pythonnn  from gamera.plugin import <em>n  import _examplenn  # C++ methodn  class volume(PluginFunction):n      &quot;&quot;&quot;n      Returns the ratio of black pixels to white pixels within then      bounding box of the image.n      &quot;&quot;&quot;n      self_type = ImageType([ONEBIT])n      return_type = Float(&quot;volume&quot;)n      doc_examples = [(ONEBIT,)]nn  class ExampleModule(PluginModule):n      category = &quot;Example&quot;n      cpp_headers=[&quot;example.hpp&quot;]n      functions = [volume]n      author = &quot;Michael Droettboom and Karl MacMillan&quot;n      url = &quot;http://gamera.informatik.hsnr.de/&quot;n  module = ExampleModule()nnOkay, now let's break it down.nnThe ``gamera.plugin`` module contains all of the utilities necessary toncreate Gamera plugins, so the first thing we do is import it:nn.. code:: Pythonnn  from gamera.plugin import *nnNext, we import the C++ (compiled object file) side of the plugin,n(described in the next section) which *always</em> has the same name asnthe Python metadata module, except with a leading underscore:nn.. code:: Pythonnn  import _examplennLet's start by describing a minimal C++ method.  All methods andnfunctions in a plugin are described using a class that inherits fromn``gamera.plugin.PluginFunction``:nn.. code:: Pythonnn  # C++ methodn  class volume(PluginFunction):nnEach plugin can (and should) be documented in the usual <a href="#id4"><span class="problematic" id="id6">`Python\ndocstring`__</span></a> way:nn.. code:: Pythonnn      &quot;&quot;&quot;n      Returns the ratio of black pixels to white pixels within then      bounding box of the image.n      &quot;&quot;&quot;nn.. __: http://www.python.org/doc/current/tut/node6.htmlnnOn a related note, you can also have the documentation systemn(<tt class="docutils literal">doc/gendoc.py</tt>) generate an example automatically.  Seen`documenting and unit-testing Plugin functions`_. nnNext, we define <tt class="docutils literal">self_type</tt>, which is the type of object this methodncan be called on.  If <tt class="docutils literal">self_type</tt> is an <tt class="docutils literal">ImageType</tt>, the methodnwill automatically be added to all <tt class="docutils literal">Image</tt> objects in Gameranwhenever the plugin is imported.  Within the <tt class="docutils literal">ImageType</tt> specifier,nyou can choose which types of pixels are supported using a list ofnpixel type names. Valid options are <tt class="docutils literal">ONEBIT</tt>, <tt class="docutils literal">GREYSCALE</tt>,n``GREY16``, <tt class="docutils literal">FLOAT</tt> and <tt class="docutils literal">RGB</tt> (these are all constants importednfrom the <tt class="docutils literal">gamera.plugin module</tt>):nn.. code:: Pythonnn      self_type = ImageType([ONEBIT])nnYou can also optionally define <tt class="docutils literal">return_type</tt>.  This specifier isnused to generate a variable name for the result in the GUI, and so thenC++ wrapping mechanism knows how to return the result to Python.  Ifnyou don't specify a return type, Gamera assumes there is no returnnresult:nn.. code:: Pythonnn      return_type = Float(&quot;volume&quot;)nnObviously, this is a very simple plugin method with no arguments.nSome more involved examples are given below.  In the meantime, let'snlook at how this method is contained in a plugin module.nnFor each plugin module, you also need a class to describe the entirenplugin.  There may be <em>only one</em> of these classes per plugin.  This isndone in a similar manner to how the methods are described.nnThere is a class that inherits from <tt class="docutils literal">gamera.plugin.PluginModule</tt>:nn.. code:: Pythonnn  class ExampleModule(PluginModule):nnYou can specify a category for the plugin's methods onnthe context (right-click) menu in the GUI:nn.. code:: Pythonnn    category = &quot;Example&quot;nnIf you have any C++ methods (which we do in this case), you mustnspecify the C++ header files to include which contain thencorresponding method's source code:nn.. code:: Pythonnn    cpp_headers=[&quot;example.hpp&quot;]nnYou must also list all of the plugins and methods in the file so theyncan be generated and loaded:nn.. code:: Pythonnn    functions = [volume]nnOptionally, the author names and a URL for more information can benspecified:nn.. code:: Pythonnn    author = &quot;Michael Droettboom and Karl MacMillan&quot;n    url = &quot;http://gamera.informatik.hsnr.de/&quot;nnLastly, we create an instance of this class so the module loader canndo its work:nn.. code:: Pythonnn  module = ExampleModule()nnC++ coden--------nnSince the <tt class="docutils literal">volume</tt> method needs to look at individual pixels, it isnlikely going to be much faster written in C++ than in Python.  Belownis the corresponding <tt class="docutils literal">example.hpp</tt> that contains the C++nimplementation:nn.. code:: CPPnn  #include &quot;gamera.hpp&quot;nn  using namespace Gamera;nn  template&lt;class T&gt;n  float volume(const T &amp;m) {n    unsigned int count = 0;n    typename T::const_vec_iterator i = m.vec_begin();n    for (; i != m.vec_end(); i++)n      if (is_black(<em>i))n        count++;n    return (feature_t(count) / (m.nrows() * m.ncols()));n  }nnMost of the declarations needed for Gamera are in ``gamera.hpp``, andnall of that stuff is in the ``Gamera`` namespace, to prevent namencollisions.  You may find it most convenient to just put ``usingnnamespace Gamera`` at the top of your plugin file, rather thannspecifying ``Gamera::...`` everywhere:nn.. code:: CPPnn  #include &quot;gamera.hpp&quot;n n  using namespace Gamera;nnNext we get to the function itself.  Note that it is templatized.nSince it is our goal to write a single algorithm that may work onnmultiple image types, *all</em> plugin methods are templatized, and theninstantiations of these templates are generated by the Gamera buildnsystem at compile-time based on the <tt class="docutils literal">self_type</tt> specifier in thenmethod metadata class (that we specified in <tt class="docutils literal">example.py</tt>).  See hownthe first argument <tt class="docutils literal">self</tt> is templatized as <tt class="docutils literal">T</tt> so that anyn(image) type can be passed in.  The body of the function used then`Gamera C++ Image API`__ to access and examine the individual pixels:nn.. code:: CPPnn    template&lt;class T&gt;n    float volume(const T &amp;m) {n      unsigned int count = 0;n      typename T::const_vec_iterator i = m.vec_begin();n      for (; i != m.vec_end(); i++)n        if (is_black(<em>i))n          count++;n      return (feature_t(count) / (m.nrows() * m.ncols()));n    }nn.. __: image_api.htmlnnBuilding the pluginn-------------------nnOkay, so now we're done with the minimal plugin, but obviouslynsomething more has to happen in order to access the C++ code from Python.nFortunately, that is all done automatically by the Gamera buildnsystem.  If the ``example.py`` is placed in the ``./gamera/plugins``ndirectory, the build system will automatically find it, use thenmetadata to generate a *wrapper</em> to access <tt class="docutils literal">example.hpp</tt>, and compileneverything.  The next time Gamera is run, the plugin willnautomatically be loaded.  The plugin author does not have to learnnabout the intricacies of the <a href="#id4"><span class="problematic" id="id7">`Python/C API`__</span></a>.nn.. __: <a class="reference external" href="http://www.python.org/doc/current/api/api.htmlnnBut">http://www.python.org/doc/current/api/api.htmlnnBut</a>, for the sake of some sick curiosity, the generated code looksnsomething like:nn.. code:: CPPnn  #include &lt;string&gt;n  #include &lt;stdexcept&gt;n  #include &quot;Python.h&quot;n  #include &lt;list&gt;n  #include &quot;gameramodule.hpp&quot;nn  init_features (void)n  {n    Py_InitModule (&quot;_features&quot;, _features_methods);n  }nn  #include &quot;features.hpp&quot;n n  using namespace Gamera;nn  extern &quot;C&quot;n  {n    void init_example (void);n    static PyObject <em>call_volume (PyObject * self, PyObject * args);n    static PyMethodDef _features_methods[] =n      { {&quot;volume&quot;, call_volume, METH_VARARGS} };nn    static PyObject *call_volume(PyObject * self, PyObject * args)n    {n      PyObject *real_self;n      Image *real_self_image;nn      FloatVector *return_value = 0;nn      if (PyArg_ParseTuple(args, &quot;O&quot;, &amp;real_self) &lt;= 0)n        return 0;n      if (!is_ImageObject(real_self)) {ntPyErr_SetString(PyExc_TypeError, &quot;Object is not an image as expected!&quot;);ntreturn 0;n      }n      real_self_image = ((Image *) ((RectObject *) real_self)-&gt;m_x);n      image_get_fv(real_self, &amp;real_self_image-&gt;features, &amp;real_self_image-&gt;features_len);n      try {n      switch (get_image_combination (real_self)) {ntcase ONEBITRLEIMAGEVIEW:nt  return_value = volume(*((OneBitRleImageView *) real_self_image));nt  break;ntcase RLECC:nt  return_value = volume(*((RleCc *) real_self_image));nt  break;ntcase CC:nt  return_value = volume(*((Cc *) real_self_image));nt  break;ntcase ONEBITIMAGEVIEW:nt  return_value = volume (*((OneBitImageView *) real_self_image));nt  break;ntdefault:nt  PyErr_SetString (PyExc_TypeError,nttt   &quot;Image types do not match function signature.&quot;);nt  return 0;nt}n      }n      catch (std::exception &amp; e)n      {n        PyErr_SetString (PyExc_RuntimeError, e.what());n        return 0;n      }n      PyObject *array_init = get_ArrayInit();n      if (array_init == 0)n        return 0;n      PyObject *str = PyString_FromStringAndSize((char *) (&amp;((*return_value)[0])),nttt     t  return_value-&gt;size () * sizeof (double));n      PyObject *array = PyObject_CallFunction(array_init, &quot;sO&quot;, &quot;d&quot;, str);n      delete return_value;n      return array;n    }n    DL_EXPORT (void) init_example (void)n    {n      Py_InitModule (&quot;_example&quot;, _example_methods);n    }n  }nn**Aren't you glad you don't have to write something like that everyntime!*</em>nnAdvanced featuresn=================nnSpecifying argumentsn--------------------nnOf course, many plugin methods will need to have arguments.  See thisn``resize_copy`` method, for example:nn.. code:: Pythonnn  # C++ image method with some argumentsn  class resize_copy(PluginFunction):n      &quot;&quot;&quot;n      Copies and resizes an image. In addition to size the type ofn      interpolation can be specified to allow tradeoffs between speedn      and quality.n      &quot;&quot;&quot;n      category = &quot;Utility/Copy&quot;n      self_type = ImageType([ONEBIT, GREYSCALE, GREY16, FLOAT, RGB])n      args = Args([Int(&quot;nrows&quot;), Int(&quot;ncols&quot;),n                  Choice(&quot;Interpolation Type&quot;, [&quot;None&quot;, &quot;Linear&quot;, &quot;Spline&quot;])])n      return_type = ImageType([ONEBIT, GREYSCALE, GREY16, FLOAT, RGB])nnAnd the corresponding C++ declaration:nn.. code:: CPPnn  template&lt;class T&gt;n  Image* resize_copy(T&amp; image, int nrows, int ncols, int resize_quality);nnThe <tt class="docutils literal">args</tt> member variable specifies a list of the arguments thatnare passable to the method.  Note that this does not include the firstn&quot;argument&quot; to the C++ function, which always corresponds ton``self_type``.  This specification is used to generate wrapper code,nand also to generate dialog boxes in the GUI.  The format of thesenargument lists are documented in <a href="#id4"><span class="problematic" id="id8">`Specifying arguments`__</span></a>.nn.. __: args.htmlnnThe <em>args</em> parameter in the plugin prototype allows the specification ofndefault values for arguments. These are however used only in the GUI fornthe argument dialog box. If you need an actual default argument for yournplugin function, you must define the <tt class="docutils literal">__call__</tt> method in your plugin, e.g.nn.. code:: Pythonnn      # wrapper for passing a default argumentn      def __call__(self, nrows, ncols, interpolation=&quot;Linear&quot;):n          return _example.resize_copy(self, nrows, ncols, interpolation)n    __call__ = staticmethod(__call__)nn``_example`` must be replaced by the actual name of your source file plusna leading underscore.nnFree functionsn--------------nnIt doesn't always make sense to have everything be a method of images.nFor example, you may want to create a function that requires a list ofnimages as input.  Fortunately, you can still use the plugin system tonautomate the wrapping/building process, while foregoing the automaticninclusion of the method in the Image class and on the right-clickncontext menu. It's as simple as setting <tt class="docutils literal">self_type</tt> to <tt class="docutils literal">None</tt> innthe metadata object:nn.. code:: Pythonnn  # C++ free functionn  class union_images(PluginFunction):n      &quot;&quot;&quot;n      Creates a new image by overlaying all the images in the given list.n      &quot;&quot;&quot;n      self_type = Nonen      args = Args([ImageList('list_of_images')])n      return_type = ImageType([ONEBIT])nnAs these functions are not image methods, but standalone <em>callable</em> classes,nyou additionally must create an instance of this class in the same pythonnmetadata <a class="reference external" href="file:nn">file:nn</a>.. code:: Pythonnn  union_images = union_images()nnPure Python methodsn-------------------nnSometimes there is not much efficiency to be gained by writing thenplugin method in C++, or you want the flexibility of Python fornexperimentation.  In that case you can implement the method in purenPython.  Everything else is the same, except you add a <tt class="docutils literal">__call__</tt>nmethod with the Python implementation.  It is important that thisnmethod is a <tt class="docutils literal">staticmethod</tt>, since the first <tt class="docutils literal">self</tt> argument isngoing to be an <tt class="docutils literal">Image</tt> object and not a <tt class="docutils literal">PluginFunction</tt> object:nn.. code:: Pythonnn  # Python image methodn  class area(PluginFunction):n      &quot;&quot;&quot;n      Returns the aspect ratio of the bounding box of the image.n      &quot;&quot;&quot;n      self_type = ImageType([ONEBIT, GREYSCALE, GREY16, FLOAT, RGB])n      return_type = Float(&quot;area&quot;)n      pure_python = Truen      def __call__(self):n          return float(self.ncols) / float(self.nrows)n      __call__ = staticmethod(__call__)nnFree pure Python functionsn--------------------------nnSince the plugin modules are also just regular Python modulesnunderneath, it is of course possible to just add ordinary Pythonnfunctions as well:nn.. code:: Pythonnn  # Python free functionn  def filter_small_images(l):n      return [x for x in l if x.ncols &gt; 2 and x.nrows &gt; 2]nnRaising exceptionsn------------------nnThe convention in Gamera is to use exceptions for error conditionsnrather than by using error codes.nnC++ exceptions are automatically propagated to Python.  (All C++nexception types will be converted to Python <tt class="docutils literal">RuntimeError</tt>.)nn.. code:: CPPnn   throw std::runtime_error(&quot;Input is out of range&quot;);nnFrom pure Python functions, the standard Python exception mechanismncan be used:nn.. code:: Pythonnn   raise RuntimeError(&quot;Input is out of range&quot;)nnProgress barsn-------------nnThis section describes how to display a progress bar dialog from anlong-running plugin. When the GUI is running, the progressnwill be displayed in a window:nn  .. image:: images/progress_bar.pngnnIt is also possible to display a progress bar made from text charactersnin the console, when the GUI is not running. To make it appear, setnthe config option <em>progress_bar</em> to <tt class="docutils literal">True</tt> as follows:nn.. code:: Pythonnn   from gamera.config import confign   config.set(&quot;progress_bar&quot;,True)nnProgress bars will add some overhead when displayed, so theynonly make sense for plugins that take a long time to complete.nSupporting progress bars adds very minimal overhead when they are notndisplayed.nnnProgress Bars in Pythonn```````````````````````nnTo create a progress bar that is a message box in the GUI andna text line in a non GUI script, you can use the <tt class="docutils literal">ProgressFactory</tt>:nn.. code:: Pythonnn   from gamera.util import ProgressFactoryn   progress = ProgressFactory(&quot;Title&quot;, length, numsteps=0)nnwhere <em>length</em> is the total number of which the progress fraction is tonbe shown. The optional argument <em>numsteps</em> can be useful to reducenthe overhead by only updating the progress bar in <em>numsteps</em> discrete steps;nwhen zero, every update call will result in an update of the progress bar.nnTo update the progress bar, there are two alternative methods:nnn - <tt class="docutils literal">.step()</tt> increases the progress counter by one. Whether then   displayed progress bar actually is updated depends on <em>numsteps</em>.nn - <tt class="docutils literal">.update(steps, length)</tt> sets the progress bar to then   <em>steps</em>/<em>length</em> fraction.nnnProgress Bars in C++ Pluginsn````````````````````````````nnTo create a plugin method with a progress bar, simply set then``progress_bar`` member to the message that will be displayed in thenprogress box.nn.. code:: Pythonnn  class cc_analysis(Segmenter):n    ...n    progress_bar = &quot;Generating connected components&quot;n    ...nnAdd an extra argument to the C++ function that takes an object of typen``ProgressBar``.  This can be a default argument, to make it easier toncall the plugin function code without requiring a <tt class="docutils literal">ProgressBar</tt> instance.nCreating a <tt class="docutils literal">ProgressBar</tt> with no constructor arguments creates andummy <tt class="docutils literal">ProgressBar</tt> object where all methods are ignored.nn.. code:: CPPnn  template&lt;class T&gt;n  ImageList* cc_analysis(T&amp; image, ProgressBar progress_bar = ProgressBar()) {n    ...n  }nnThe progress bar window will automatically disappear when the function returns.nnThere are essentially two ways to update the progress bar:nn - Call <tt class="docutils literal"><span class="pre">.set_length(*length*)</span></tt> to set the number of steps that will ben   performed, and then call <tt class="docutils literal">.step()</tt> to increase the step.nn - Call <tt class="docutils literal"><span class="pre">.update(*num*,</span> *den*)</tt> to say that <em>num</em> of <em>den</em> stepsn   have completed.  <tt class="docutils literal">.update</tt> is useful when the number of steps cann   not be pre-determined.nnnDocumenting and unit-testing Plugin functionsn---------------------------------------------nnThe docstring of each <tt class="docutils literal">PluginFunction</tt> class is used like a regularnPython docstring, but also has the following advantages in Gamera:n n  - It will be included in the automatically generated HTMLn    documentation.nn  - It is displayed in the Documentation pane in the Gamera shelln    window.nn  - It is displayed in the automatically-generated dialog box for then    plugin.nnThe docstrings should be formatted in <a href="#id11"><span class="problematic" id="id12">reStructuredText_</span></a>, which isnbecoming a de-facto Python standard for documentation, as well asnbeing rather easy to read and use.nn.. _reStructuredText: <a class="reference external" href="http://structuredtext.sourceforge.netnnThe">http://structuredtext.sourceforge.netnnThe</a> Gamera documentation can be regenerated by going to the <tt class="docutils literal">doc</tt>ndirectory (in the source distribution) and running the <tt class="docutils literal">gendoc.py</tt>nscript::nn  python gendoc.pynnIn addition to text, image examples can be generated on-the-fly andnincluded in the documentation using the <tt class="docutils literal">doc_examples</tt> member.  Then``doc_examples`` mechanism is also used to write rudimentarynunit-tests for Gamera's <a href="#id4"><span class="problematic" id="id9">`unit-testing framework`__</span></a>.nn.. __: unit_testing.htmlnnThe <tt class="docutils literal">doc_examples</tt> member is a list of tuples or functions:nn- If the element is a tuple, it is a list of arguments that will ben  passed into the plugin method to create an example.  Where imagen  arguments are expected, image type identifiers can be used, whichn  will load a standard image from disk and use it.  For example::nn    (ONEBIT, 52, 32)nn  will use the standard OneBit image and the arguments of <tt class="docutils literal">52, 32</tt>.nn- If the element is a function, that function will be called to createn  the example.  The function will be passed one argument, <tt class="docutils literal">images</tt>,n  which is a dictionary of the standard Gamera example images.  Anyn  images or values returned will be included in the documentation.n  Any exceptions raised by the function will be logged by then  unit-testing framework when it is run.  For example the followingn  loads the standard RGB and GreyScale images, clips themn  appropriately, adds them together, and then returns all of them forn  inclusion in the documentation.nn.. code:: Pythonnn    def __doc_example1__(images):n        rgb = images[RGB]n        greyscale = images[GREYSCALE]n        clipped = rgb.clip_image(greyscale)n        return [clipped, greyscale, nt        clipped.add_images(greyscale.to_rgb(), False)]n    doc_examples = [__doc_example1__]nnnExamplesn````````nnThe following <tt class="docutils literal">doc_examples</tt> specifier (from <a href="#id13"><span class="problematic" id="id14">simple_sharpen_</span></a>)nproduces two examples, one on the standard GREYSCALE image, andnanother on the standard RGB image, using different values for then*sharpening_factor*.nn.. code:: Pythonnn  doc_examples = [(GREYSCALE, 1.0), (RGB, 3.0)]nn.. _simple_sharpen: convolution.html#simple-sharpennnFor <a href="#id15"><span class="problematic" id="id16">draw_bezier_</span></a>, a custom example function was used, which doesnnot load a standard image.nn.. code:: Pythonnn  def __doc_example1__(images):n      from random import randintn      from gamera.core import Image, Dimn      image = Image((0, 0), Dim(100, 100), RGB, DENSE)n      for i in range(10):n          image.draw_bezier((randint(0, 100), randint(0, 100)),n                            (randint(0, 100), randint(0, 100)),n                            (randint(0, 100), randint(0, 100)),n                            (randint(0, 100), randint(0, 100)),n                            RGBPixel(randint(0, 255), n              t            randint(0,255), n ttt    randint(0, 255)))n      return imagen  doc_examples = [__doc_example1__]nn.. _draw_bezier: draw.html#draw-beziernnnFeature generators: A special kind of pluginn============================================nnPlugin methods that take an image as input and generate some floatingnpoint features from it are called &quot;feature generators&quot;.  The resultingnfloating point features are used by the classifier to classify images.nnFor efficiency reasons, feature generator functions are implementednslightly differently from a regular <tt class="docutils literal">PluginFunction</tt>.  Rather thannreturning the features as a return value, which would require a memoryncopy into the image's feature vector, feature generators writendirectly to a buffer that is passed in as an argument.nnAs an example, let's look at the <tt class="docutils literal">nholes</tt> feature generator.  ThenPython metadata is the same as you would expect, except the membern``feature_function`` is set to <tt class="docutils literal">True</tt>.  This will tell the buildnsystem to treat this plugin method as a feature generator with thendifferent return value behavior.  The <tt class="docutils literal">return_type</tt> must be an``FloatVector``, where <tt class="docutils literal">length</tt> indicates the number of featurenvalues that are generated.nn.. code:: Pythonnn   class nholes(PluginFunction):n       &quot;&quot;&quot;n       Returns the average number of transitions from white to blackn       in each row or column.n   n       The elements of the returned <tt class="docutils literal">FloatVector</tt> are:nn       0. verticaln       1. horizontaln       n       These features are scale invariant.n       &quot;&quot;&quot;n       self_type = ImageType([ONEBIT])n       return_type = FloatVector(length=2)n       feature_function = Truen       doc_examples = [(ONEBIT,)]nnOn the C++ side, the function takes two arguments: the image, and anpointer to a floating point buffer.  Note that the return type is <tt class="docutils literal">void</tt>.nn.. code:: CPPnn  template&lt;class T&gt;n  void nholes(T &amp;m, feature_t* buf) {n    int vert, horiz;n    n    vert = nholes_1d(m.col_begin(), m.col_end());n    horiz = nholes_1d(m.row_begin(), m.row_end());n    n    <em>(buf++) = (feature_t)vert / m.ncols();n    *buf = (feature_t)horiz / m.nrows();n  }nn(The C++ function ``nholes_1d`` is where all the real work gets done,nand is not important for this illustration.)  Note how the result of thenfunction is copied directly into the buffer.  nn.. note:: It is extremely important not to write more values to then  buffer than is defined in the metadata ``return_value``.  Doing son  could cause Python/Gamera to behave erratically or segfault.nnIt is also possible to write a feature generator in pure Python.nn.. code:: Pythonnn   class nholes(PluginFunction):n       self_type = ImageType([ONEBIT])n       return_type = FloatVector(length=2)n       feature_function = Truen       doc_examples = [(ONEBIT,)]nn       def __call__(self, index):n           buffer = self.featuresn       n           # Do some processing to get values...nt                 nt   buffer[index] = result1n           buffer[index + 1] = result2  n       __call__ = staticmethod(__call__)nnnFurther readingn===============nn- `Writing C++ plugin methods that processes Gamera images`__nn.. __: image_api.htmlnn- `Specifying arguments`__nn.. __: args.htmlnn- `Passing/returning custom data types to/from plugins`__nn.. __: plugins_custom_types.htmlnn- `Grouping plugins together into toolkits`__nn.. __: writing_toolkits.htmlnn- And of course, there's lots of examples in the Gamera code itself!nnReferencesn==========nn.. [Stroustrup1997] Stroustrup, B. 1997. *The C++ Programmingn   Language: Third Edition.</em>  Reading, MA: Addison-Wesley.nn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id4">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 2); <em>backlinks: <a href="#id5">1</a>, <a href="#id6">2</a>, <a href="#id7">3</a>, <a href="#id8">4</a>, <a href="#id9">5</a></em></p>
-Anonymous hyperlink mismatch: 5 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id10">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 1); <em><a href="#id3">backlink</a></em></p>
-Unknown target name: &quot;stroustrup1997&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Unknown target name: &quot;restructuredtext&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Unknown target name: &quot;simple_sharpen&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/writing_plugins.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Unknown target name: &quot;draw_bezier&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id13">Introduction</a><ul>
+<li><a class="reference internal" href="#the-files-involved" id="id14">The files involved</a><ul>
+<li><a class="reference internal" href="#plugins-in-the-gamera-source-tree" id="id15">Plugins in the Gamera source tree</a></li>
+<li><a class="reference internal" href="#plugins-in-a-toolkit" id="id16">Plugins in a toolkit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-simple-example" id="id17">A simple example</a><ul>
+<li><a class="reference internal" href="#plugin-metadata" id="id18">Plugin metadata</a></li>
+<li><a class="reference internal" href="#c-code" id="id19">C++ code</a></li>
+<li><a class="reference internal" href="#building-the-plugin" id="id20">Building the plugin</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-features" id="id21">Advanced features</a><ul>
+<li><a class="reference internal" href="#specifying-arguments" id="id22">Specifying arguments</a></li>
+<li><a class="reference internal" href="#free-functions" id="id23">Free functions</a></li>
+<li><a class="reference internal" href="#pure-python-methods" id="id24">Pure Python methods</a></li>
+<li><a class="reference internal" href="#free-pure-python-functions" id="id25">Free pure Python functions</a></li>
+<li><a class="reference internal" href="#raising-exceptions" id="id26">Raising exceptions</a></li>
+<li><a class="reference internal" href="#progress-bars" id="id27">Progress bars</a><ul>
+<li><a class="reference internal" href="#progress-bars-in-python" id="id28">Progress Bars in Python</a></li>
+<li><a class="reference internal" href="#progress-bars-in-c-plugins" id="id29">Progress Bars in C++ Plugins</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documenting-and-unit-testing-plugin-functions" id="id30">Documenting and unit-testing Plugin functions</a><ul>
+<li><a class="reference internal" href="#examples" id="id31">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#feature-generators-a-special-kind-of-plugin" id="id32">Feature generators: A special kind of plugin</a></li>
+<li><a class="reference internal" href="#further-reading" id="id33">Further reading</a></li>
+<li><a class="reference internal" href="#references" id="id34">References</a></li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id13">Introduction</a></h1>
+<p>The functionality of Gamera can be extended by writing plugins in
+either C++ or Python.  A plugin is simply a set of methods (which are
+automagically added to the <tt class="docutils literal">Image</tt> class) or free-standing
+functions.  Plugins are technically just Python modules, but with more
+information that allows for easier wrapping and compilation of C++
+methods and to support all kinds of automatic things in the graphical
+user interface.</p>
+<p>Plugins can also be grouped together, with other tools, into toolkits.
+Toolkits provide higher-level workflow framework for end-to-end
+document recognition by joining together a number of steps from
+various plugins.  Toolkits are a whole other discussion, so see the
+<a class="reference external" href="writing_toolkits.html">writing Gamera toolkits</a> for more information.</p>
+<p>Before writing any plugin, you should make sure there isn't already a
+plugin included that does what you want.  Look at the <a class="reference external" href="plugins.html">list of plugins
+included with Gamera</a>.</p>
+<div class="section" id="the-files-involved">
+<h2><a class="toc-backref" href="#id14">The files involved</a></h2>
+<p>Each plugin is made up of two files:</p>
+<ol class="arabic simple">
+<li>A Python file that describes each method in the plugin and the
+plugin itself.  If any methods are &quot;pure Python&quot;, they can also be
+defined here, or they can just delegate to functions in other
+Python modules.</li>
+<li>Optionally, a C++ header file containing implementations of any C++
+methods of the plugin.  This is a header file (<tt class="docutils literal">.hpp</tt>) and not an
+implementation file (<tt class="docutils literal">.cpp</tt>) because the code you write will be templatized
+and the concrete methods and the glue code connecting to Python to
+C++ will be generated automatically at compile time by the Gamera
+build system.  (What templates are is beyond the scope of this
+document, but it's covered very well in <a class="citation-reference" href="#stroustrup1997" id="id3">[Stroustrup1997]</a>.)</li>
+</ol>
+<div class="section" id="plugins-in-the-gamera-source-tree">
+<h3><a class="toc-backref" href="#id15">Plugins in the Gamera source tree</a></h3>
+<p>The Python metadata files are stored in <tt class="docutils literal">./gamera/plugins/</tt> and the
+C++ source files are stored in <tt class="docutils literal">./include/plugins</tt>.</p>
+<p>If you keep these files in the proper directories, they will be
+automatically picked up by the build system and compiled.  When Gamera
+is started up, it will search the <tt class="docutils literal">./gamera/plugins</tt> directory and load
+all plugins.</p>
+</div>
+<div class="section" id="plugins-in-a-toolkit">
+<h3><a class="toc-backref" href="#id16">Plugins in a toolkit</a></h3>
+<p>In a toolkit, the Python metadata files are stored in
+<tt class="docutils literal">./gamera/toolkits/my_toolkit/plugins/</tt> and the C++ source files are
+stored in <tt class="docutils literal">./include/plugins</tt>, both rooted at the top of your
+toolkit directory.</p>
+<p>Plugin modules included in toolkits will have to be explicitly
+imported before they are available.</p>
+</div>
+</div>
+</div>
+<div class="section" id="a-simple-example">
+<h1><a class="toc-backref" href="#id17">A simple example</a></h1>
+<div class="section" id="plugin-metadata">
+<h2><a class="toc-backref" href="#id18">Plugin metadata</a></h2>
+<p>Let's look at a simple metadata file, <tt class="docutils literal">example.py</tt>.  Each method is
+described by creating a class that inherits from
+<tt class="docutils literal">gamera.plugin.PluginFunction</tt> and defining a number of special
+members.  The whole plugin is described by a class that inherits from
+<tt class="docutils literal">gamera.plugin.PluginModule</tt>:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugin</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">_example</span>
+
+<span class="c1"># C++ method</span>
+<span class="k">class</span> <span class="nc">volume</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the ratio of black pixels to white pixels within the</span>
+<span class="sd">    bounding box of the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;volume&quot;</span><span class="p">)</span>
+    <span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ONEBIT</span><span class="p">,)]</span>
+
+<span class="k">class</span> <span class="nc">ExampleModule</span><span class="p">(</span><span class="n">PluginModule</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;Example&quot;</span>
+    <span class="n">cpp_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;example.hpp&quot;</span><span class="p">]</span>
+    <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">volume</span><span class="p">]</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;Michael Droettboom and Karl MacMillan&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://gamera.informatik.hsnr.de/&quot;</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">ExampleModule</span><span class="p">()</span>
+</pre></div>
+<p>Okay, now let's break it down.</p>
+<p>The <tt class="docutils literal">gamera.plugin</tt> module contains all of the utilities necessary to
+create Gamera plugins, so the first thing we do is import it:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugin</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+<p>Next, we import the C++ (compiled object file) side of the plugin,
+(described in the next section) which <em>always</em> has the same name as
+the Python metadata module, except with a leading underscore:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">_example</span>
+</pre></div>
+<p>Let's start by describing a minimal C++ method.  All methods and
+functions in a plugin are described using a class that inherits from
+<tt class="docutils literal">gamera.plugin.PluginFunction</tt>:</p>
+<div class="highlight"><pre><span></span><span class="c1"># C++ method</span>
+<span class="k">class</span> <span class="nc">volume</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+</pre></div>
+<p>Each plugin can (and should) be documented in the usual <a class="reference external" href="http://www.python.org/doc/current/tut/node6.html">Python
+docstring</a> way:</p>
+<div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Returns the ratio of black pixels to white pixels within the</span>
+<span class="sd">bounding box of the image.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+<p>On a related note, you can also have the documentation system
+(<tt class="docutils literal">doc/gendoc.py</tt>) generate an example automatically.  See
+<a class="reference internal" href="#documenting-and-unit-testing-plugin-functions">documenting and unit-testing Plugin functions</a>.</p>
+<p>Next, we define <tt class="docutils literal">self_type</tt>, which is the type of object this method
+can be called on.  If <tt class="docutils literal">self_type</tt> is an <tt class="docutils literal">ImageType</tt>, the method
+will automatically be added to all <tt class="docutils literal">Image</tt> objects in Gamera
+whenever the plugin is imported.  Within the <tt class="docutils literal">ImageType</tt> specifier,
+you can choose which types of pixels are supported using a list of
+pixel type names. Valid options are <tt class="docutils literal">ONEBIT</tt>, <tt class="docutils literal">GREYSCALE</tt>,
+<tt class="docutils literal">GREY16</tt>, <tt class="docutils literal">FLOAT</tt> and <tt class="docutils literal">RGB</tt> (these are all constants imported
+from the <tt class="docutils literal">gamera.plugin module</tt>):</p>
+<div class="highlight"><pre><span></span><span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">])</span>
+</pre></div>
+<p>You can also optionally define <tt class="docutils literal">return_type</tt>.  This specifier is
+used to generate a variable name for the result in the GUI, and so the
+C++ wrapping mechanism knows how to return the result to Python.  If
+you don't specify a return type, Gamera assumes there is no return
+result:</p>
+<div class="highlight"><pre><span></span><span class="n">return_type</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;volume&quot;</span><span class="p">)</span>
+</pre></div>
+<p>Obviously, this is a very simple plugin method with no arguments.
+Some more involved examples are given below.  In the meantime, let's
+look at how this method is contained in a plugin module.</p>
+<p>For each plugin module, you also need a class to describe the entire
+plugin.  There may be <em>only one</em> of these classes per plugin.  This is
+done in a similar manner to how the methods are described.</p>
+<p>There is a class that inherits from <tt class="docutils literal">gamera.plugin.PluginModule</tt>:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExampleModule</span><span class="p">(</span><span class="n">PluginModule</span><span class="p">):</span>
+</pre></div>
+<p>You can specify a category for the plugin's methods on
+the context (right-click) menu in the GUI:</p>
+<div class="highlight"><pre><span></span><span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;Example&quot;</span>
+</pre></div>
+<p>If you have any C++ methods (which we do in this case), you must
+specify the C++ header files to include which contain the
+corresponding method's source code:</p>
+<div class="highlight"><pre><span></span><span class="n">cpp_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;example.hpp&quot;</span><span class="p">]</span>
+</pre></div>
+<p>You must also list all of the plugins and methods in the file so they
+can be generated and loaded:</p>
+<div class="highlight"><pre><span></span><span class="n">functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">volume</span><span class="p">]</span>
+</pre></div>
+<p>Optionally, the author names and a URL for more information can be
+specified:</p>
+<div class="highlight"><pre><span></span><span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;Michael Droettboom and Karl MacMillan&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://gamera.informatik.hsnr.de/&quot;</span>
+</pre></div>
+<p>Lastly, we create an instance of this class so the module loader can
+do its work:</p>
+<div class="highlight"><pre><span></span><span class="n">module</span> <span class="o">=</span> <span class="n">ExampleModule</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="c-code">
+<h2><a class="toc-backref" href="#id19">C++ code</a></h2>
+<p>Since the <tt class="docutils literal">volume</tt> method needs to look at individual pixels, it is
+likely going to be much faster written in C++ than in Python.  Below
+is the corresponding <tt class="docutils literal">example.hpp</tt> that contains the C++
+implementation:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;gamera.hpp&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">Gamera</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="kt">float</span> <span class="n">volume</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">typename</span> <span class="nc">T</span><span class="o">::</span><span class="n">const_vec_iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">vec_begin</span><span class="p">();</span>
+  <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">vec_end</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_black</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+      <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">feature_t</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">nrows</span><span class="p">()</span> <span class="o">*</span> <span class="n">m</span><span class="p">.</span><span class="n">ncols</span><span class="p">()));</span>
+<span class="p">}</span>
+</pre></div>
+<p>Most of the declarations needed for Gamera are in <tt class="docutils literal">gamera.hpp</tt>, and
+all of that stuff is in the <tt class="docutils literal">Gamera</tt> namespace, to prevent name
+collisions.  You may find it most convenient to just put <tt class="docutils literal">using
+namespace Gamera</tt> at the top of your plugin file, rather than
+specifying <tt class="docutils literal"><span class="pre">Gamera::...</span></tt> everywhere:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;gamera.hpp&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">Gamera</span><span class="p">;</span>
+</pre></div>
+<p>Next we get to the function itself.  Note that it is templatized.
+Since it is our goal to write a single algorithm that may work on
+multiple image types, <em>all</em> plugin methods are templatized, and the
+instantiations of these templates are generated by the Gamera build
+system at compile-time based on the <tt class="docutils literal">self_type</tt> specifier in the
+method metadata class (that we specified in <tt class="docutils literal">example.py</tt>).  See how
+the first argument <tt class="docutils literal">self</tt> is templatized as <tt class="docutils literal">T</tt> so that any
+(image) type can be passed in.  The body of the function used the
+<a class="reference external" href="image_api.html">Gamera C++ Image API</a> to access and examine the individual pixels:</p>
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="kt">float</span> <span class="n">volume</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">typename</span> <span class="nc">T</span><span class="o">::</span><span class="n">const_vec_iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">vec_begin</span><span class="p">();</span>
+  <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">vec_end</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_black</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+      <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">feature_t</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">nrows</span><span class="p">()</span> <span class="o">*</span> <span class="n">m</span><span class="p">.</span><span class="n">ncols</span><span class="p">()));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="building-the-plugin">
+<h2><a class="toc-backref" href="#id20">Building the plugin</a></h2>
+<p>Okay, so now we're done with the minimal plugin, but obviously
+something more has to happen in order to access the C++ code from Python.
+Fortunately, that is all done automatically by the Gamera build
+system.  If the <tt class="docutils literal">example.py</tt> is placed in the <tt class="docutils literal">./gamera/plugins</tt>
+directory, the build system will automatically find it, use the
+metadata to generate a <em>wrapper</em> to access <tt class="docutils literal">example.hpp</tt>, and compile
+everything.  The next time Gamera is run, the plugin will
+automatically be loaded.  The plugin author does not have to learn
+about the intricacies of the <a class="reference external" href="http://www.python.org/doc/current/api/api.html">Python/C API</a>.</p>
+<p>But, for the sake of some sick curiosity, the generated code looks
+something like:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Python.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;list&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;gameramodule.hpp&quot;</span><span class="cp"></span>
+
+<span class="n">init_features</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">Py_InitModule</span> <span class="p">(</span><span class="s">&quot;_features&quot;</span><span class="p">,</span> <span class="n">_features_methods</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;features.hpp&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">Gamera</span><span class="p">;</span>
+
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span>
+<span class="p">{</span>
+  <span class="kt">void</span> <span class="nf">init_example</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+  <span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">call_volume</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="n">args</span><span class="p">);</span>
+  <span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">_features_methods</span><span class="p">[]</span> <span class="o">=</span>
+    <span class="p">{</span> <span class="p">{</span><span class="s">&quot;volume&quot;</span><span class="p">,</span> <span class="n">call_volume</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">}</span> <span class="p">};</span>
+
+  <span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">call_volume</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="n">args</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">real_self</span><span class="p">;</span>
+    <span class="n">Image</span> <span class="o">*</span><span class="n">real_self_image</span><span class="p">;</span>
+
+    <span class="n">FloatVector</span> <span class="o">*</span><span class="n">return_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;O&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">real_self</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_ImageObject</span><span class="p">(</span><span class="n">real_self</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_TypeError</span><span class="p">,</span> <span class="s">&quot;Object is not an image as expected!&quot;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">real_self_image</span> <span class="o">=</span> <span class="p">((</span><span class="n">Image</span> <span class="o">*</span><span class="p">)</span> <span class="p">((</span><span class="n">RectObject</span> <span class="o">*</span><span class="p">)</span> <span class="n">real_self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_x</span><span class="p">);</span>
+    <span class="n">image_get_fv</span><span class="p">(</span><span class="n">real_self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">real_self_image</span><span class="o">-&gt;</span><span class="n">features</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">real_self_image</span><span class="o">-&gt;</span><span class="n">features_len</span><span class="p">);</span>
+    <span class="k">try</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">get_image_combination</span> <span class="p">(</span><span class="n">real_self</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="nl">ONEBITRLEIMAGEVIEW</span><span class="p">:</span>
+        <span class="n">return_value</span> <span class="o">=</span> <span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">OneBitRleImageView</span> <span class="o">*</span><span class="p">)</span> <span class="n">real_self_image</span><span class="p">));</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="nl">RLECC</span><span class="p">:</span>
+        <span class="n">return_value</span> <span class="o">=</span> <span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">RleCc</span> <span class="o">*</span><span class="p">)</span> <span class="n">real_self_image</span><span class="p">));</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="nl">CC</span><span class="p">:</span>
+        <span class="n">return_value</span> <span class="o">=</span> <span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">Cc</span> <span class="o">*</span><span class="p">)</span> <span class="n">real_self_image</span><span class="p">));</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="nl">ONEBITIMAGEVIEW</span><span class="p">:</span>
+        <span class="n">return_value</span> <span class="o">=</span> <span class="n">volume</span> <span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">OneBitImageView</span> <span class="o">*</span><span class="p">)</span> <span class="n">real_self_image</span><span class="p">));</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">default</span><span class="o">:</span>
+        <span class="n">PyErr_SetString</span> <span class="p">(</span><span class="n">PyExc_TypeError</span><span class="p">,</span>
+                         <span class="s">&quot;Image types do not match function signature.&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">PyErr_SetString</span> <span class="p">(</span><span class="n">PyExc_RuntimeError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">array_init</span> <span class="o">=</span> <span class="n">get_ArrayInit</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">array_init</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="n">PyString_FromStringAndSize</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="o">&amp;</span><span class="p">((</span><span class="o">*</span><span class="n">return_value</span><span class="p">)[</span><span class="mi">0</span><span class="p">])),</span>
+                                <span class="n">return_value</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">()</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">double</span><span class="p">));</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="n">PyObject_CallFunction</span><span class="p">(</span><span class="n">array_init</span><span class="p">,</span> <span class="s">&quot;sO&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+    <span class="k">delete</span> <span class="n">return_value</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">DL_EXPORT</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">init_example</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Py_InitModule</span> <span class="p">(</span><span class="s">&quot;_example&quot;</span><span class="p">,</span> <span class="n">_example_methods</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong>Aren't you glad you don't have to write something like that every
+time!</strong></p>
+</div>
+</div>
+<div class="section" id="advanced-features">
+<h1><a class="toc-backref" href="#id21">Advanced features</a></h1>
+<div class="section" id="specifying-arguments">
+<h2><a class="toc-backref" href="#id22">Specifying arguments</a></h2>
+<p>Of course, many plugin methods will need to have arguments.  See this
+<tt class="docutils literal">resize_copy</tt> method, for example:</p>
+<div class="highlight"><pre><span></span><span class="c1"># C++ image method with some arguments</span>
+<span class="k">class</span> <span class="nc">resize_copy</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies and resizes an image. In addition to size the type of</span>
+<span class="sd">    interpolation can be specified to allow tradeoffs between speed</span>
+<span class="sd">    and quality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;Utility/Copy&quot;</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">,</span> <span class="n">GREYSCALE</span><span class="p">,</span> <span class="n">GREY16</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">RGB</span><span class="p">])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">Args</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;nrows&quot;</span><span class="p">),</span> <span class="n">Int</span><span class="p">(</span><span class="s2">&quot;ncols&quot;</span><span class="p">),</span>
+                <span class="n">Choice</span><span class="p">(</span><span class="s2">&quot;Interpolation Type&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear&quot;</span><span class="p">,</span> <span class="s2">&quot;Spline&quot;</span><span class="p">])])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">,</span> <span class="n">GREYSCALE</span><span class="p">,</span> <span class="n">GREY16</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">RGB</span><span class="p">])</span>
+</pre></div>
+<p>And the corresponding C++ declaration:</p>
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">Image</span><span class="o">*</span> <span class="n">resize_copy</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nrows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ncols</span><span class="p">,</span> <span class="kt">int</span> <span class="n">resize_quality</span><span class="p">);</span>
+</pre></div>
+<p>The <tt class="docutils literal">args</tt> member variable specifies a list of the arguments that
+are passable to the method.  Note that this does not include the first
+&quot;argument&quot; to the C++ function, which always corresponds to
+<tt class="docutils literal">self_type</tt>.  This specification is used to generate wrapper code,
+and also to generate dialog boxes in the GUI.  The format of these
+argument lists are documented in <a class="reference external" href="args.html">Specifying arguments</a>.</p>
+<p>The <em>args</em> parameter in the plugin prototype allows the specification of
+default values for arguments. These are however used only in the GUI for
+the argument dialog box. If you need an actual default argument for your
+plugin function, you must define the <tt class="docutils literal">__call__</tt> method in your plugin, e.g.</p>
+<div class="highlight"><pre><span></span>  <span class="c1"># wrapper for passing a default argument</span>
+  <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;Linear&quot;</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">_example</span><span class="o">.</span><span class="n">resize_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">)</span>
+<span class="fm">__call__</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="fm">__call__</span><span class="p">)</span>
+</pre></div>
+<p><tt class="docutils literal">_example</tt> must be replaced by the actual name of your source file plus
+a leading underscore.</p>
+</div>
+<div class="section" id="free-functions">
+<h2><a class="toc-backref" href="#id23">Free functions</a></h2>
+<p>It doesn't always make sense to have everything be a method of images.
+For example, you may want to create a function that requires a list of
+images as input.  Fortunately, you can still use the plugin system to
+automate the wrapping/building process, while foregoing the automatic
+inclusion of the method in the Image class and on the right-click
+context menu. It's as simple as setting <tt class="docutils literal">self_type</tt> to <tt class="docutils literal">None</tt> in
+the metadata object:</p>
+<div class="highlight"><pre><span></span><span class="c1"># C++ free function</span>
+<span class="k">class</span> <span class="nc">union_images</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a new image by overlaying all the images in the given list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">Args</span><span class="p">([</span><span class="n">ImageList</span><span class="p">(</span><span class="s1">&#39;list_of_images&#39;</span><span class="p">)])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">])</span>
+</pre></div>
+<p>As these functions are not image methods, but standalone <em>callable</em> classes,
+you additionally must create an instance of this class in the same python
+metadata file:</p>
+<div class="highlight"><pre><span></span><span class="n">union_images</span> <span class="o">=</span> <span class="n">union_images</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="pure-python-methods">
+<h2><a class="toc-backref" href="#id24">Pure Python methods</a></h2>
+<p>Sometimes there is not much efficiency to be gained by writing the
+plugin method in C++, or you want the flexibility of Python for
+experimentation.  In that case you can implement the method in pure
+Python.  Everything else is the same, except you add a <tt class="docutils literal">__call__</tt>
+method with the Python implementation.  It is important that this
+method is a <tt class="docutils literal">staticmethod</tt>, since the first <tt class="docutils literal">self</tt> argument is
+going to be an <tt class="docutils literal">Image</tt> object and not a <tt class="docutils literal">PluginFunction</tt> object:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Python image method</span>
+<span class="k">class</span> <span class="nc">area</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the aspect ratio of the bounding box of the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">,</span> <span class="n">GREYSCALE</span><span class="p">,</span> <span class="n">GREY16</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">RGB</span><span class="p">])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">)</span>
+    <span class="n">pure_python</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="fm">__call__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="free-pure-python-functions">
+<h2><a class="toc-backref" href="#id25">Free pure Python functions</a></h2>
+<p>Since the plugin modules are also just regular Python modules
+underneath, it is of course possible to just add ordinary Python
+functions as well:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Python free function</span>
+<span class="k">def</span> <span class="nf">filter_small_images</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ncols</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">nrows</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="raising-exceptions">
+<h2><a class="toc-backref" href="#id26">Raising exceptions</a></h2>
+<p>The convention in Gamera is to use exceptions for error conditions
+rather than by using error codes.</p>
+<p>C++ exceptions are automatically propagated to Python.  (All C++
+exception types will be converted to Python <tt class="docutils literal">RuntimeError</tt>.)</p>
+<div class="highlight"><pre><span></span><span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Input is out of range&quot;</span><span class="p">);</span>
+</pre></div>
+<p>From pure Python functions, the standard Python exception mechanism
+can be used:</p>
+<div class="highlight"><pre><span></span><span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Input is out of range&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="progress-bars">
+<h2><a class="toc-backref" href="#id27">Progress bars</a></h2>
+<p>This section describes how to display a progress bar dialog from a
+long-running plugin. When the GUI is running, the progress
+will be displayed in a window:</p>
+<blockquote>
+<img alt="images/progress_bar.png" src="images/progress_bar.png" />
+</blockquote>
+<p>It is also possible to display a progress bar made from text characters
+in the console, when the GUI is not running. To make it appear, set
+the config option <em>progress_bar</em> to <tt class="docutils literal">True</tt> as follows:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;progress_bar&quot;</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+<p>Progress bars will add some overhead when displayed, so they
+only make sense for plugins that take a long time to complete.
+Supporting progress bars adds very minimal overhead when they are not
+displayed.</p>
+<div class="section" id="progress-bars-in-python">
+<h3><a class="toc-backref" href="#id28">Progress Bars in Python</a></h3>
+<p>To create a progress bar that is a message box in the GUI and
+a text line in a non GUI script, you can use the <tt class="docutils literal">ProgressFactory</tt>:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.util</span> <span class="kn">import</span> <span class="n">ProgressFactory</span>
+<span class="n">progress</span> <span class="o">=</span> <span class="n">ProgressFactory</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">numsteps</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+<p>where <em>length</em> is the total number of which the progress fraction is to
+be shown. The optional argument <em>numsteps</em> can be useful to reduce
+the overhead by only updating the progress bar in <em>numsteps</em> discrete steps;
+when zero, every update call will result in an update of the progress bar.</p>
+<p>To update the progress bar, there are two alternative methods:</p>
+<blockquote>
+<ul class="simple">
+<li><tt class="docutils literal">.step()</tt> increases the progress counter by one. Whether the
+displayed progress bar actually is updated depends on <em>numsteps</em>.</li>
+<li><tt class="docutils literal">.update(steps, length)</tt> sets the progress bar to the
+<em>steps</em>/<em>length</em> fraction.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="progress-bars-in-c-plugins">
+<h3><a class="toc-backref" href="#id29">Progress Bars in C++ Plugins</a></h3>
+<p>To create a plugin method with a progress bar, simply set the
+<tt class="docutils literal">progress_bar</tt> member to the message that will be displayed in the
+progress box.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">cc_analysis</span><span class="p">(</span><span class="n">Segmenter</span><span class="p">):</span>
+  <span class="o">...</span>
+  <span class="n">progress_bar</span> <span class="o">=</span> <span class="s2">&quot;Generating connected components&quot;</span>
+  <span class="o">...</span>
+</pre></div>
+<p>Add an extra argument to the C++ function that takes an object of type
+<tt class="docutils literal">ProgressBar</tt>.  This can be a default argument, to make it easier to
+call the plugin function code without requiring a <tt class="docutils literal">ProgressBar</tt> instance.
+Creating a <tt class="docutils literal">ProgressBar</tt> with no constructor arguments creates a
+dummy <tt class="docutils literal">ProgressBar</tt> object where all methods are ignored.</p>
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">ImageList</span><span class="o">*</span> <span class="n">cc_analysis</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">image</span><span class="p">,</span> <span class="n">ProgressBar</span> <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">())</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+<p>The progress bar window will automatically disappear when the function returns.</p>
+<p>There are essentially two ways to update the progress bar:</p>
+<blockquote>
+<ul class="simple">
+<li>Call <tt class="docutils literal"><span class="pre">.set_length(*length*)</span></tt> to set the number of steps that will be
+performed, and then call <tt class="docutils literal">.step()</tt> to increase the step.</li>
+<li>Call <tt class="docutils literal"><span class="pre">.update(*num*,</span> *den*)</tt> to say that <em>num</em> of <em>den</em> steps
+have completed.  <tt class="docutils literal">.update</tt> is useful when the number of steps can
+not be pre-determined.</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="documenting-and-unit-testing-plugin-functions">
+<h2><a class="toc-backref" href="#id30">Documenting and unit-testing Plugin functions</a></h2>
+<p>The docstring of each <tt class="docutils literal">PluginFunction</tt> class is used like a regular
+Python docstring, but also has the following advantages in Gamera:</p>
+<blockquote>
+<ul class="simple">
+<li>It will be included in the automatically generated HTML
+documentation.</li>
+<li>It is displayed in the Documentation pane in the Gamera shell
+window.</li>
+<li>It is displayed in the automatically-generated dialog box for the
+plugin.</li>
+</ul>
+</blockquote>
+<p>The docstrings should be formatted in <a class="reference external" href="http://structuredtext.sourceforge.net">reStructuredText</a>, which is
+becoming a de-facto Python standard for documentation, as well as
+being rather easy to read and use.</p>
+<p>The Gamera documentation can be regenerated by going to the <tt class="docutils literal">doc</tt>
+directory (in the source distribution) and running the <tt class="docutils literal">gendoc.py</tt>
+script:</p>
+<pre class="literal-block">
+python gendoc.py
+</pre>
+<p>In addition to text, image examples can be generated on-the-fly and
+included in the documentation using the <tt class="docutils literal">doc_examples</tt> member.  The
+<tt class="docutils literal">doc_examples</tt> mechanism is also used to write rudimentary
+unit-tests for Gamera's <a class="reference external" href="unit_testing.html">unit-testing framework</a>.</p>
+<p>The <tt class="docutils literal">doc_examples</tt> member is a list of tuples or functions:</p>
+<ul>
+<li><p class="first">If the element is a tuple, it is a list of arguments that will be
+passed into the plugin method to create an example.  Where image
+arguments are expected, image type identifiers can be used, which
+will load a standard image from disk and use it.  For example:</p>
+<pre class="literal-block">
+(ONEBIT, 52, 32)
+</pre>
+<p>will use the standard OneBit image and the arguments of <tt class="docutils literal">52, 32</tt>.</p>
+</li>
+<li><p class="first">If the element is a function, that function will be called to create
+the example.  The function will be passed one argument, <tt class="docutils literal">images</tt>,
+which is a dictionary of the standard Gamera example images.  Any
+images or values returned will be included in the documentation.
+Any exceptions raised by the function will be logged by the
+unit-testing framework when it is run.  For example the following
+loads the standard RGB and GreyScale images, clips them
+appropriately, adds them together, and then returns all of them for
+inclusion in the documentation.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__doc_example1__</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">RGB</span><span class="p">]</span>
+    <span class="n">greyscale</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">GREYSCALE</span><span class="p">]</span>
+    <span class="n">clipped</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">clip_image</span><span class="p">(</span><span class="n">greyscale</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">clipped</span><span class="p">,</span> <span class="n">greyscale</span><span class="p">,</span>
+            <span class="n">clipped</span><span class="o">.</span><span class="n">add_images</span><span class="p">(</span><span class="n">greyscale</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)]</span>
+<span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[</span><span class="n">__doc_example1__</span><span class="p">]</span>
+</pre></div>
+<div class="section" id="examples">
+<h3><a class="toc-backref" href="#id31">Examples</a></h3>
+<p>The following <tt class="docutils literal">doc_examples</tt> specifier (from <a class="reference external" href="convolution.html#simple-sharpen">simple_sharpen</a>)
+produces two examples, one on the standard GREYSCALE image, and
+another on the standard RGB image, using different values for the
+<em>sharpening_factor</em>.</p>
+<div class="highlight"><pre><span></span><span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">GREYSCALE</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="n">RGB</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)]</span>
+</pre></div>
+<p>For <a class="reference external" href="draw.html#draw-bezier">draw_bezier</a>, a custom example function was used, which does
+not load a standard image.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__doc_example1__</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+    <span class="kn">from</span> <span class="nn">gamera.core</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">Dim</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">RGB</span><span class="p">,</span> <span class="n">DENSE</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">draw_bezier</span><span class="p">((</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+                          <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+                          <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+                          <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+                          <span class="n">RGBPixel</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+                          <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span>
+                          <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">image</span>
+<span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[</span><span class="n">__doc_example1__</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="feature-generators-a-special-kind-of-plugin">
+<h1><a class="toc-backref" href="#id32">Feature generators: A special kind of plugin</a></h1>
+<p>Plugin methods that take an image as input and generate some floating
+point features from it are called &quot;feature generators&quot;.  The resulting
+floating point features are used by the classifier to classify images.</p>
+<p>For efficiency reasons, feature generator functions are implemented
+slightly differently from a regular <tt class="docutils literal">PluginFunction</tt>.  Rather than
+returning the features as a return value, which would require a memory
+copy into the image's feature vector, feature generators write
+directly to a buffer that is passed in as an argument.</p>
+<p>As an example, let's look at the <tt class="docutils literal">nholes</tt> feature generator.  The
+Python metadata is the same as you would expect, except the member
+<tt class="docutils literal">feature_function</tt> is set to <tt class="docutils literal">True</tt>.  This will tell the build
+system to treat this plugin method as a feature generator with the
+different return value behavior.  The <tt class="docutils literal">return_type</tt> must be a
+<tt class="docutils literal">FloatVector</tt>, where <tt class="docutils literal">length</tt> indicates the number of feature
+values that are generated.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">nholes</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the average number of transitions from white to black</span>
+<span class="sd">    in each row or column.</span>
+
+<span class="sd">    The elements of the returned ``FloatVector`` are:</span>
+
+<span class="sd">    0. vertical</span>
+<span class="sd">    1. horizontal</span>
+
+<span class="sd">    These features are scale invariant.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">FloatVector</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">feature_function</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ONEBIT</span><span class="p">,)]</span>
+</pre></div>
+<p>On the C++ side, the function takes two arguments: the image, and a
+pointer to a floating point buffer.  Note that the return type is <tt class="docutils literal">void</tt>.</p>
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">nholes</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="n">feature_t</span><span class="o">*</span> <span class="n">buf</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">vert</span><span class="p">,</span> <span class="n">horiz</span><span class="p">;</span>
+
+  <span class="n">vert</span> <span class="o">=</span> <span class="n">nholes_1d</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">col_begin</span><span class="p">(),</span> <span class="n">m</span><span class="p">.</span><span class="n">col_end</span><span class="p">());</span>
+  <span class="n">horiz</span> <span class="o">=</span> <span class="n">nholes_1d</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">row_begin</span><span class="p">(),</span> <span class="n">m</span><span class="p">.</span><span class="n">row_end</span><span class="p">());</span>
+
+  <span class="o">*</span><span class="p">(</span><span class="n">buf</span><span class="o">++</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">feature_t</span><span class="p">)</span><span class="n">vert</span> <span class="o">/</span> <span class="n">m</span><span class="p">.</span><span class="n">ncols</span><span class="p">();</span>
+  <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">feature_t</span><span class="p">)</span><span class="n">horiz</span> <span class="o">/</span> <span class="n">m</span><span class="p">.</span><span class="n">nrows</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>(The C++ function <tt class="docutils literal">nholes_1d</tt> is where all the real work gets done,
+and is not important for this illustration.)  Note how the result of the
+function is copied directly into the buffer.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is extremely important not to write more values to the
+buffer than is defined in the metadata <tt class="docutils literal">return_value</tt>.  Doing so
+could cause Python/Gamera to behave erratically or segfault.</p>
+</div>
+<p>It is also possible to write a feature generator in pure Python.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">nholes</span><span class="p">(</span><span class="n">PluginFunction</span><span class="p">):</span>
+    <span class="n">self_type</span> <span class="o">=</span> <span class="n">ImageType</span><span class="p">([</span><span class="n">ONEBIT</span><span class="p">])</span>
+    <span class="n">return_type</span> <span class="o">=</span> <span class="n">FloatVector</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">feature_function</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">doc_examples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ONEBIT</span><span class="p">,)]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span>
+
+        <span class="c1"># Do some processing to get values...</span>
+
+        <span class="n">buffer</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">result1</span>
+        <span class="n">buffer</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">result2</span>
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="fm">__call__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="further-reading">
+<h1><a class="toc-backref" href="#id33">Further reading</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="image_api.html">Writing C++ plugin methods that processes Gamera images</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="args.html">Specifying arguments</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="plugins_custom_types.html">Passing/returning custom data types to/from plugins</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="writing_toolkits.html">Grouping plugins together into toolkits</a></li>
+</ul>
+<ul class="simple">
+<li>And of course, there's lots of examples in the Gamera code itself!</li>
+</ul>
+</div>
+<div class="section" id="references">
+<h1><a class="toc-backref" href="#id34">References</a></h1>
+<table class="docutils citation" frame="void" id="stroustrup1997" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[Stroustrup1997]</a></td><td>Stroustrup, B. 1997. <em>The C++ Programming
+Language: Third Edition.</em>  Reading, MA: Addison-Wesley.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

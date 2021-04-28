@@ -3,25 +3,212 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>list.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>List</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="list">
+<h1 class="title">List</h1>
 
-
-<p>b'nListn====nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``all_subsets``n---------------nnobject <strong>all_subsets</strong> (object <em>list</em>, int <em>size</em>)nnn:Returns: objectn:Category: Listn:Defined in: listutilities.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns all subsets of size <em>size</em> of the given list.nnn``argmax``n----------nnint <strong>argmax</strong> (<tt class="docutils literal">FloatVector</tt> <em>x</em>)nnn:Returns: intn:Category: Listn:Defined in: listutilities.pyn:Author: Christoph DalitznnnReturns the index of the maximum in a list.nnnn``argmin``n----------nnint <strong>argmin</strong> (<tt class="docutils literal">FloatVector</tt> <em>x</em>)nnn:Returns: intn:Category: Listn:Defined in: listutilities.pyn:Author: Christoph DalitznnnReturns the index of the minimum in a list.nnnn``kernel_density``n------------------nn``FloatVector`` <strong>kernel_density</strong> (<tt class="docutils literal">FloatVector</tt> <em>values</em>, <tt class="docutils literal">FloatVector</tt> <em>x</em>, float <em>bw</em> = 0.00, <tt class="docutils literal">Choice</tt> [rectangular|triangular|gaussian] <em>kernel</em> = rectangular)nnn:Returns: <tt class="docutils literal">FloatVector</tt>n:Category: Listn:Defined in: listutilities.pyn:Author: Christoph Dalitz and Fabian SchmittnnnComputes the kernel density for <em>values</em> at the specifiedn*x*-positions. Reference: S.J. Sheather: &quot;Density Estimation.&quot;nStatistical Science 19 pp. 588-597 (2004).nnArguments:nn  <em>values</em>n     Sample values from which the density is to be estimated.nn  <em>x</em>n     For each value in <em>x</em>, the density at this position is returnedn     in the returned float vector.nn  <em>bw</em>n     Band width, i.e. the parameter <em>h</em> in the kernel density estimator.n     when set to zero, Silverman's rule of thumb is used, which sets then     bandwidth to 0.9 min{sigma, iqr/1.34} n^(-1/5).nn  <em>kernel</em>n     The kernel function that weights the values (0 = rectangular, n     1 = triangular, 2 = Gaussian). A Gaussian kernel produces the smoothestn     result, but is slightly slower than the other two.nn     Note that the kernels are normalized to variance one, which means thatn     the rectangular kernel has support [-sqrt(3), +sqrt(3)], and then     triangular kernel has support [-sqrt(6), sqrt(6)].nnnn``median``n----------nnobject <strong>median</strong> (object <em>list</em>, <tt class="docutils literal">bool</tt> <em>inlist</em> = False)nnn:Returns: objectn:Category: Listn:Defined in: listutilities.pyn:Author: Christoph DalitznnnCompute the median from a list of values in linear time.nnThis implementation works both with builtin numeric types like <em>int</em> orn*float*, and with user defined types. For user defined type, younmust implement the &quot;less than&quot; operator (<cite>__lt__</cite>), as in the followingnexample:nn.. code:: Pythonnn   class P:n      x = 0; y = 0n      def __init__(self, x, y):n          self.x = x; self.y = yn      def __lt__(self, other):n          return (self.x &lt; other.x)n      def __eq__(self, other):n          return (self.x == other.x)nn   a = [P(0,0), P(1,1), P(2,0)]n   p = median(a)nnWhen the parameter <em>inlist</em> is <tt class="docutils literal">True</tt>, the median is always a list entry,neven for lists of even size. Otherwise, the median is for anneven size list of <em>int</em> or <em>float</em> values the mean between the two middlenvalues. So if you need the median for a pivot element, set <em>inlist</em> ton``True``.nnFor user defined types, the returned median is always a listnentry, because arithmetic computations do not make sense in this case.nn.. note::nn   This is <em>not</em> the median image filter that replaces each pixel valuen   with the median of its neighborhood. For this purpose, see then   <a href="#id3"><span class="problematic" id="id4">rank__</span></a> plugin.nn.. __: morphology.html#ranknnnn``permute_list``n----------------nnint <strong>permute_list</strong> (object <em>list</em>)nnn:Returns: intn:Category: Listn:Defined in: listutilities.pyn:Author: Michael Droettboom and Karl MacMillannnnPermutes the given list (in place) one step.nnReturns <tt class="docutils literal">True</tt> if there are more permutations to go.  Returnsn``False`` if permutations are done.nnExample usage::nn  &gt;&gt;&gt;from gamera.plugins import listutilitiesn  &gt;&gt;&gt;a = [1,2,3]n  &gt;&gt;&gt;while listutilities.permute_list(a):n  ...    print an  ...n  [2, 1, 3]n  [1, 3, 2]n  [3, 1, 2]n  [2, 3, 1]n  [3, 2, 1]nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/list.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/list.txt</tt>, line 2); <em><a href="#id4">backlink</a></em></p>
-Anonymous hyperlink mismatch: 1 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#all-subsets" id="id2"><tt class="docutils literal">all_subsets</tt></a></li>
+<li><a class="reference internal" href="#argmax" id="id3"><tt class="docutils literal">argmax</tt></a></li>
+<li><a class="reference internal" href="#argmin" id="id4"><tt class="docutils literal">argmin</tt></a></li>
+<li><a class="reference internal" href="#kernel-density" id="id5"><tt class="docutils literal">kernel_density</tt></a></li>
+<li><a class="reference internal" href="#median" id="id6"><tt class="docutils literal">median</tt></a></li>
+<li><a class="reference internal" href="#permute-list" id="id7"><tt class="docutils literal">permute_list</tt></a></li>
+</ul>
 </div>
+<div class="section" id="all-subsets">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">all_subsets</tt></a></h1>
+<p>object <strong>all_subsets</strong> (object <em>list</em>, int <em>size</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns all subsets of size <em>size</em> of the given list.</p>
+</div>
+<div class="section" id="argmax">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">argmax</tt></a></h1>
+<p>int <strong>argmax</strong> (<tt class="docutils literal">FloatVector</tt> <em>x</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the index of the maximum in a list.</p>
+</div>
+<div class="section" id="argmin">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">argmin</tt></a></h1>
+<p>int <strong>argmin</strong> (<tt class="docutils literal">FloatVector</tt> <em>x</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the index of the minimum in a list.</p>
+</div>
+<div class="section" id="kernel-density">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">kernel_density</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>kernel_density</strong> (<tt class="docutils literal">FloatVector</tt> <em>values</em>, <tt class="docutils literal">FloatVector</tt> <em>x</em>, float <em>bw</em> = 0.00, <tt class="docutils literal">Choice</tt> [rectangular|triangular|gaussian] <em>kernel</em> = rectangular)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz and Fabian Schmitt</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the kernel density for <em>values</em> at the specified
+<em>x</em>-positions. Reference: S.J. Sheather: &quot;Density Estimation.&quot;
+Statistical Science 19 pp. 588-597 (2004).</p>
+<p>Arguments:</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>values</em></dt>
+<dd>Sample values from which the density is to be estimated.</dd>
+<dt><em>x</em></dt>
+<dd>For each value in <em>x</em>, the density at this position is returned
+in the returned float vector.</dd>
+<dt><em>bw</em></dt>
+<dd>Band width, i.e. the parameter <em>h</em> in the kernel density estimator.
+when set to zero, Silverman's rule of thumb is used, which sets the
+bandwidth to 0.9 min{sigma, iqr/1.34} n^(-1/5).</dd>
+<dt><em>kernel</em></dt>
+<dd><p class="first">The kernel function that weights the values (0 = rectangular,
+1 = triangular, 2 = Gaussian). A Gaussian kernel produces the smoothest
+result, but is slightly slower than the other two.</p>
+<p class="last">Note that the kernels are normalized to variance one, which means that
+the rectangular kernel has support [-sqrt(3), +sqrt(3)], and the
+triangular kernel has support [-sqrt(6), sqrt(6)].</p>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="median">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">median</tt></a></h1>
+<p>object <strong>median</strong> (object <em>list</em>, <tt class="docutils literal">bool</tt> <em>inlist</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Compute the median from a list of values in linear time.</p>
+<p>This implementation works both with builtin numeric types like <em>int</em> or
+<em>float</em>, and with user defined types. For user defined type, you
+must implement the &quot;less than&quot; operator (<cite>__lt__</cite>), as in the following
+example:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">P</span><span class="p">:</span>
+   <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+   <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+       <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+   <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+       <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">P</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">P</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+<p>When the parameter <em>inlist</em> is <tt class="docutils literal">True</tt>, the median is always a list entry,
+even for lists of even size. Otherwise, the median is for an
+even size list of <em>int</em> or <em>float</em> values the mean between the two middle
+values. So if you need the median for a pivot element, set <em>inlist</em> to
+<tt class="docutils literal">True</tt>.</p>
+<p>For user defined types, the returned median is always a list
+entry, because arithmetic computations do not make sense in this case.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is <em>not</em> the median image filter that replaces each pixel value
+with the median of its neighborhood. For this purpose, see the
+<a class="reference external" href="morphology.html#rank">rank</a> plugin.</p>
+</div>
+</div>
+<div class="section" id="permute-list">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">permute_list</tt></a></h1>
+<p>int <strong>permute_list</strong> (object <em>list</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">List</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">listutilities.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Permutes the given list (in place) one step.</p>
+<p>Returns <tt class="docutils literal">True</tt> if there are more permutations to go.  Returns
+<tt class="docutils literal">False</tt> if permutations are done.</p>
+<p>Example usage:</p>
+<pre class="literal-block">
+&gt;&gt;&gt;from gamera.plugins import listutilities
+&gt;&gt;&gt;a = [1,2,3]
+&gt;&gt;&gt;while listutilities.permute_list(a):
+...    print a
+...
+[2, 1, 3]
+[1, 3, 2]
+[3, 1, 2]
+[2, 3, 1]
+[3, 2, 1]
+</pre>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

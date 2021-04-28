@@ -6,4 +6,5 @@ Fixes for some of them are currently under consideration.
  - pixel values in Cc's can only be changed over the iterators,
    but not with set()
 
- - File->Save History in GameraGUI does not work
+ - Biollante crashes on training data including groups
+

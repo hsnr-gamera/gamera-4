@@ -3,43 +3,368 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>geometry.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Geometry</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="geometry">
+<h1 class="title">Geometry</h1>
 
-
-<p>b'nGeometryn========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``convex_hull_as_image``n------------------------nn``Image`` [OneBit] <strong>convex_hull_as_image</strong> (<tt class="docutils literal">bool</tt> <em>filled</em> = False)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Geometryn:Defined in: geometry.pyn:Author: Christoph DalitznnnReturns an image containing the polygon of the convex hull calculatednby <a href="#id16"><span class="problematic" id="id17">convex_hull_as_points_</span></a>.nn.. _convex_hull_as_points: geometry.html#convex_hull_as_pointsn   nn----------nn**Example 1:** convex_hull_as_image()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/convex_hull_as_image_plugin_00.pngn   :height: 99n   :width: 69nnnn``convex_hull_as_points``n-------------------------nn[object] <strong>convex_hull_as_points</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: [object]n:Category: Geometryn:Defined in: geometry.pyn:Author: Christoph DalitznnnReturns the vertex points of the convex hull of all black pixelsnin the given image.nnActually not all black pixels are required for computing the convex hull,nbut only the left and right contour pixels of the image. This followsnfrom the fact that, when a point is invisible both from the left and thenright, it lies on the connection axis between two visible points and thusncannot be a vertex point of the convex hull.n   nnn``convex_hull_from_points``n---------------------------nn[object] <strong>convex_hull_from_points</strong> ([object <em>points</em>])nnn:Returns: [object]n:Category: Geometryn:Defined in: geometry.pyn:Author: Christian Brandt, Christoph Dalitz, and David KolanusnnnReturns the polygon vertices of the convex hull of the given list ofnpoints.nnThe function uses Graham's scan algorithm as described e.g. in Cormen et al.:n*Introduction to Algorithms.* 2nd ed., MIT Press, p. 949, 2001nnnn``delaunay_from_points``n------------------------nnobject <strong>delaunay_from_points</strong> ([object <em>points</em>], <tt class="docutils literal">IntVector</tt> <em>labels</em>)nnn:Returns: objectn:Category: Geometryn:Defined in: geometry.pyn:Author: Oliver Christen (based on code by Olivier Devillers)nnnComputes the Delaunay triangulation directly from a list of points andnpoint labels. The result is a list which contains tuples of adjacent labels,nwhere in each tuple the smaller label is given first.nnThe arguments <em>points</em> and <em>labels</em> specify the points and nonnegativenlabels, such that <tt class="docutils literal">labels[i]</tt> is the label of <tt class="docutils literal">points[i]</tt>. Note thatnthe labels need not necessarily all be different, which can be usefulnfor the computation of a neighborship graph from a set of connectedncomponents.nnThe computation of the Delaunay triangulation is based on the Delaunayntree which is a randomized geometric data structure. It isndescribed in O. Devillers, S. Meiser, M. Teillaud:n`Fully dynamic Delaunay triangulation in logarithmic expected time per operation.`__nComputational Geometry: Theory and Applications 2, pp. 55-80, 1992.nn.. __: <a class="reference external" href="http://hal.inria.fr/inria-00090678nnThis">http://hal.inria.fr/inria-00090678nnThis</a> can be useful for building a neighborhood graph as shown in thenfollowing example:nn.. code:: Pythonnn  from gamera import graphn  from gamera.plugins.geometry import delaunay_from_pointsn  n  points = [(10,10),(20,30),(32,22),(85,14),(40,70),(80,85)]n  labels = range(len(points))n  neighbors = delaunay_from_points(points, labels)n  n  g = graph.Graph(graph.UNDIRECTED)n  for pair in neighbors:n      g.add_edge(pair[0], pair[1])nnn``hough_lines``n---------------nnobject <strong>hough_lines</strong> ([object <em>points</em>], float <em>theta_min</em>, float <em>theta_step</em>, float <em>theta_max</em>, float <em>rho_min</em>, float <em>rho_step</em>, float <em>rho_max</em>, int <em>n_lines</em>, float <em>threshold</em>)nnn:Returns: objectn:Category: Geometryn:Defined in: geometry.pyn:Author: Manuel Jeltsch and Christoph DalitznnnFinds lines in a point set with the Hough transform. Lines are nrepresented by the Hessian normal form, i.e. by the two parametersn*theta* and <em>rho</em>, where <em>rho</em> is the distance of the line to the origin,nand <em>theta</em> is the angle of normal; a horizontal line thereforenhas <em>theta</em> = 90 degrees.nnThe found lines are returned as a list of tuples n[(<em>votes</em>, <em>theta</em>, <em>rho</em>),...],nwhere <em>votes</em> is the number of points from the point set belonging tonthis line. The lines are sorted by <em>votes</em> in descending order. Which andnhow many lines are returned is controlled with <em>threshold</em> and <em>n_lines</em>.nThe angles <em>theta</em> are given in degrees.nnArguments:nn*points*:n    The points from the point cloud.nn*theta_min*, <em>theta_step</em>, <em>theta_max</em>n    Theta-quantization of the Hough space, i.e. the range of anglesn    to be tested. Angles are spezified in degrees.nn*rho_min*, <em>rho_step</em>, <em>rho_max</em>n    Rho-quantization of the Hough space, i.e. the range of origin-distancesn    to be tested.nn*n_lines*n    The number of highest votes lines that are returned. When set ton    zero, all found lines are returned.nn*threshold*n    Only lines with more votes (points) than <em>threshold</em> are returned.nnn``labeled_region_neighbors``n----------------------------nnobject <strong>labeled_region_neighbors</strong> (<tt class="docutils literal">bool</tt> <em>eight_connectivity</em> = True)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: objectn:Category: Geometryn:Defined in: geometry.pyn:Author: Christoph DalitznnnFor an image containing labeled regions, a list of all label pairs belongingnto touching regions is returned. When <em>eight_connectivity</em> is <tt class="docutils literal">True</tt>n(default), 8-connectivity is used for neighborship, otherwisen4-connectivity is used.nnThis can be useful for building a Delaunay graph from a Voronoi tesselationnas in the following example:nn.. code:: Pythonnn  #n  # build Delaunay graph of neighboring (i.e. adjacent) Cc'sn  #nn  # create map label-&gt;Cc for faster lookup latern  ccs = image.cc_analysis()n  label_to_cc = {}n  for c in ccs:n     label_to_cc[c.label] = cnn  # compute area Voronoi tesselation and neighborship listn  voronoi = image.voronoi_from_labeled_image()n  labelpairs = voronoi.labeled_region_neighbors()nn  # build map of all neighbors for each label for fast lookupn  neighbors = {}n  for label in label_to_cc.keys():n     neighbors[label] = []n  for n in labelpairs:n     neighbors[n[0]].append(n[1])n     neighbors[n[1]].append(n[0])nn  # now, all neighbors to a given cc can be looked up withn  neighbors_of_cc = [label_to_cc[label] for label in neighbors[cc.label]]nnn``max_empty_rect``n------------------nn``Rect`` <strong>max_empty_rect</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Rect</tt>n:Category: Geometryn:Defined in: geometry.pyn:Author: Daveed Vandevoorde and Christoph DalitznnnReturns the maximum area empty rect that fits into the image withoutncontaining any of the black image pixels. This problem is in the literaturengenerally known as the <em>Largest Empty Rectangle Problem</em>.nnWhen the image does not contain a white pixel at all, an exception of typen``RuntimeError`` is thrown. The coordinates of the returned rectangle arenrelative to the upper left corner of the image.nnReference: D. Vandevoorde: <a href="#id13"><span class="problematic" id="id14">`&quot;The Maximal Rectangle Problem.&quot;`__</span></a> Dr. Dobb's,nApril 1998.nn.. __: <a class="reference external" href="http://www.drdobbs.com/database/184410529n">http://www.drdobbs.com/database/184410529n</a>   nn----------nn**Example 1:** max_empty_rectnn|max_empty_rect_plugin_00_00| nn.. <a href="#id3"><span class="problematic" id="id4">|max_empty_rect_plugin_00_00|</span></a> image:: images/max_empty_rect_plugin_00_00.pngn   :height: 90n   :width: 90nnnn``voronoi_from_labeled_image``n------------------------------nn``Image`` [OneBit|GreyScale] <strong>voronoi_from_labeled_image</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Category: Geometryn:Defined in: geometry.pyn:Author: Christoph Dalitz, based on code by Ullrich Kxc3xb6thennnComputes the area Voronoi tesselation from an image containing labelednCc's. In the returned onebit image, every pixel is labeled with thenlabel value of the closest Cc in the input image.nnTo prepare the input image, you can use <a href="#id13"><span class="problematic" id="id15">cc_analysis__</span></a>. When the Cc'snonly consist of single points, the area Voronoi tesselation is identicalnto the ordinary Voronoi tesselation.nn.. __: segmentation.html#cc-analysisnnThe implementation applies a watershed algorithm to the distance transformnof the input image, a method known as <em>seeded region growing</em> (U. Kxc3xb6the:n*Primary Image Segmentation.* Proceedings 17th DAGM-Symposium, pp. 554-561,nSpringer, 1995).nnThe example shown below is the image <em>voronoi_cells</em> as created withnthe following code:nn.. code:: Pythonnn  # create an area Voronoi tesselation andn  # mark the cells and their edges in colorn  ccs = image.cc_analysis()  # labels the imagen  voronoi = image.voronoi_from_labeled_image()n  voronoi_cells = voronoi.color_ccs()n  voronoi_cells.highlight(image, RGBPixel(0,0,0))n  voronoi_edges = voronoi.labeled_region_edges()n  voronoi_cells.highlight(voronoi_edges, RGBPixel(255,255,255))nn----------nn**Example 1:** voronoi_from_labeled_imagenn|voronoi_from_labeled_image_plugin_00_00| <a href="#id5"><span class="problematic" id="id6">|voronoi_from_labeled_image_plugin_00_01|</span></a> nn.. <a href="#id7"><span class="problematic" id="id8">|voronoi_from_labeled_image_plugin_00_00|</span></a> image:: images/voronoi_from_labeled_image_plugin_00_00.pngn   :height: 99n   :width: 69nn.. <a href="#id9"><span class="problematic" id="id10">|voronoi_from_labeled_image_plugin_00_01|</span></a> image:: images/voronoi_from_labeled_image_plugin_00_01.pngn   :height: 99n   :width: 69nnnn``voronoi_from_points``n-----------------------nn**voronoi_from_points** ([object <em>points</em>], <tt class="docutils literal">IntVector</tt> <em>labels</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Category: Geometryn:Defined in: geometry.pyn:Author: Christoph DalitznnnComputes the Voronoi tesselation from a list of points and point labels.nThe result is directly written to the input image. Each white pixel isnlabeled with the label value of the closest point. Non white pixel in theninput image are not overwritten.nnThe arguments <em>points</em> and <em>labels</em> specify the points and labels, suchnthat <tt class="docutils literal">labels[i]</tt> is the label of <tt class="docutils literal">points[i]</tt>. Note that the labelsnneed not necessarily all be different, which can be useful as an napproximation of an area Voronoi tesselation.nnThe algorithm is very simple: it stores the points in a <a class="reference internal" href="#kd-tree">kd-tree</a> andnthen looks up the closest point for each image pixel. This has a runtimenof <em>O(N log(n))</em>, where <em>N</em> is the number of image pixels and <em>n</em> is thennumber of points. For not too many points, this should be faster than thenmorphological region growing approach of <a class="reference internal" href="#voronoi-from-labeled-image">voronoi_from_labeled_image</a>.nn.. <span class="target" id="kd-tree">kd-tree</span>: kdtree.htmln.. <span class="target" id="voronoi-from-labeled-image">voronoi_from_labeled_image</span>: #voronoi-from-labeled-imagennThe example shown below is the image <em>voronoi_edges</em> as created withnthe following code:nn.. code:: Pythonnn  # create a Voronoi tesselation and markn  # the cell edges in a second imagen  points = [(10,10),(20,30),(32,22),(85,14),(40,70),(80,85)]n  voronoi = Image((0,0),(90,90))n  voronoi.voronoi_from_points(points,[i+2 for i in range(len(points))])n  voronoi_edges = voronoi.labeled_region_edges()n  for p in points:n     voronoi_edges.set(p,1)nn----------nn**Example 1:** voronoi_from_pointsnn|voronoi_from_points_plugin_00_00| nn.. <a href="#id11"><span class="problematic" id="id12">|voronoi_from_points_plugin_00_00|</span></a> image:: images/voronoi_from_points_plugin_00_00.pngn   :height: 90n   :width: 90nnnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;max_empty_rect_plugin_00_00&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;voronoi_from_labeled_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;voronoi_from_labeled_image_plugin_00_00&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;voronoi_from_labeled_image_plugin_00_01&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;voronoi_from_points_plugin_00_00&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 2); <em>backlinks: <a href="#id14">1</a>, <a href="#id15">2</a></em></p>
-Anonymous hyperlink mismatch: 2 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id16">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/geometry.txt</tt>, line 1); <em><a href="#id17">backlink</a></em></p>
-Unknown target name: &quot;convex_hull_as_points&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#convex-hull-as-image" id="id6"><tt class="docutils literal">convex_hull_as_image</tt></a></li>
+<li><a class="reference internal" href="#id1" id="id7"><tt class="docutils literal">convex_hull_as_points</tt></a></li>
+<li><a class="reference internal" href="#convex-hull-from-points" id="id8"><tt class="docutils literal">convex_hull_from_points</tt></a></li>
+<li><a class="reference internal" href="#delaunay-from-points" id="id9"><tt class="docutils literal">delaunay_from_points</tt></a></li>
+<li><a class="reference internal" href="#hough-lines" id="id10"><tt class="docutils literal">hough_lines</tt></a></li>
+<li><a class="reference internal" href="#labeled-region-neighbors" id="id11"><tt class="docutils literal">labeled_region_neighbors</tt></a></li>
+<li><a class="reference internal" href="#max-empty-rect" id="id12"><tt class="docutils literal">max_empty_rect</tt></a></li>
+<li><a class="reference internal" href="#voronoi-from-labeled-image" id="id13"><tt class="docutils literal">voronoi_from_labeled_image</tt></a></li>
+<li><a class="reference internal" href="#voronoi-from-points" id="id14"><tt class="docutils literal">voronoi_from_points</tt></a></li>
+</ul>
 </div>
+<div class="section" id="convex-hull-as-image">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">convex_hull_as_image</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>convex_hull_as_image</strong> (<tt class="docutils literal">bool</tt> <em>filled</em> = False)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an image containing the polygon of the convex hull calculated
+by <a class="reference external" href="geometry.html#convex_hull_as_points">convex_hull_as_points</a>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> convex_hull_as_image()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/convex_hull_as_image_plugin_00.png" src="images/convex_hull_as_image_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">convex_hull_as_points</tt></a></h1>
+<p>[object] <strong>convex_hull_as_points</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[object]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the vertex points of the convex hull of all black pixels
+in the given image.</p>
+<p>Actually not all black pixels are required for computing the convex hull,
+but only the left and right contour pixels of the image. This follows
+from the fact that, when a point is invisible both from the left and the
+right, it lies on the connection axis between two visible points and thus
+cannot be a vertex point of the convex hull.</p>
+</div>
+<div class="section" id="convex-hull-from-points">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">convex_hull_from_points</tt></a></h1>
+<p>[object] <strong>convex_hull_from_points</strong> ([object <em>points</em>])</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[object]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christian Brandt, Christoph Dalitz, and David Kolanus</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the polygon vertices of the convex hull of the given list of
+points.</p>
+<p>The function uses Graham's scan algorithm as described e.g. in Cormen et al.:
+<em>Introduction to Algorithms.</em> 2nd ed., MIT Press, p. 949, 2001</p>
+</div>
+<div class="section" id="delaunay-from-points">
+<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">delaunay_from_points</tt></a></h1>
+<p>object <strong>delaunay_from_points</strong> ([object <em>points</em>], <tt class="docutils literal">IntVector</tt> <em>labels</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Oliver Christen (based on code by Olivier Devillers)</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the Delaunay triangulation directly from a list of points and
+point labels. The result is a list which contains tuples of adjacent labels,
+where in each tuple the smaller label is given first.</p>
+<p>The arguments <em>points</em> and <em>labels</em> specify the points and nonnegative
+labels, such that <tt class="docutils literal">labels[i]</tt> is the label of <tt class="docutils literal">points[i]</tt>. Note that
+the labels need not necessarily all be different, which can be useful
+for the computation of a neighborship graph from a set of connected
+components.</p>
+<p>The computation of the Delaunay triangulation is based on the Delaunay
+tree which is a randomized geometric data structure. It is
+described in O. Devillers, S. Meiser, M. Teillaud:
+<a class="reference external" href="http://hal.inria.fr/inria-00090678">Fully dynamic Delaunay triangulation in logarithmic expected time per operation.</a>
+Computational Geometry: Theory and Applications 2, pp. 55-80, 1992.</p>
+<p>This can be useful for building a neighborhood graph as shown in the
+following example:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera</span> <span class="kn">import</span> <span class="n">graph</span>
+<span class="kn">from</span> <span class="nn">gamera.plugins.geometry</span> <span class="kn">import</span> <span class="n">delaunay_from_points</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">),(</span><span class="mi">32</span><span class="p">,</span><span class="mi">22</span><span class="p">),(</span><span class="mi">85</span><span class="p">,</span><span class="mi">14</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">70</span><span class="p">),(</span><span class="mi">80</span><span class="p">,</span><span class="mi">85</span><span class="p">)]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
+<span class="n">neighbors</span> <span class="o">=</span> <span class="n">delaunay_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="section" id="hough-lines">
+<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">hough_lines</tt></a></h1>
+<p>object <strong>hough_lines</strong> ([object <em>points</em>], float <em>theta_min</em>, float <em>theta_step</em>, float <em>theta_max</em>, float <em>rho_min</em>, float <em>rho_step</em>, float <em>rho_max</em>, int <em>n_lines</em>, float <em>threshold</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Manuel Jeltsch and Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Finds lines in a point set with the Hough transform. Lines are
+represented by the Hessian normal form, i.e. by the two parameters
+<em>theta</em> and <em>rho</em>, where <em>rho</em> is the distance of the line to the origin,
+and <em>theta</em> is the angle of normal; a horizontal line therefore
+has <em>theta</em> = 90 degrees.</p>
+<p>The found lines are returned as a list of tuples
+[(<em>votes</em>, <em>theta</em>, <em>rho</em>),...],
+where <em>votes</em> is the number of points from the point set belonging to
+this line. The lines are sorted by <em>votes</em> in descending order. Which and
+how many lines are returned is controlled with <em>threshold</em> and <em>n_lines</em>.
+The angles <em>theta</em> are given in degrees.</p>
+<p>Arguments:</p>
+<dl class="docutils">
+<dt><em>points</em>:</dt>
+<dd>The points from the point cloud.</dd>
+<dt><em>theta_min</em>, <em>theta_step</em>, <em>theta_max</em></dt>
+<dd>Theta-quantization of the Hough space, i.e. the range of angles
+to be tested. Angles are spezified in degrees.</dd>
+<dt><em>rho_min</em>, <em>rho_step</em>, <em>rho_max</em></dt>
+<dd>Rho-quantization of the Hough space, i.e. the range of origin-distances
+to be tested.</dd>
+<dt><em>n_lines</em></dt>
+<dd>The number of highest votes lines that are returned. When set to
+zero, all found lines are returned.</dd>
+<dt><em>threshold</em></dt>
+<dd>Only lines with more votes (points) than <em>threshold</em> are returned.</dd>
+</dl>
+</div>
+<div class="section" id="labeled-region-neighbors">
+<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">labeled_region_neighbors</tt></a></h1>
+<p>object <strong>labeled_region_neighbors</strong> (<tt class="docutils literal">bool</tt> <em>eight_connectivity</em> = True)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>For an image containing labeled regions, a list of all label pairs belonging
+to touching regions is returned. When <em>eight_connectivity</em> is <tt class="docutils literal">True</tt>
+(default), 8-connectivity is used for neighborship, otherwise
+4-connectivity is used.</p>
+<p>This can be useful for building a Delaunay graph from a Voronoi tesselation
+as in the following example:</p>
+<div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># build Delaunay graph of neighboring (i.e. adjacent) Cc&#39;s</span>
+<span class="c1">#</span>
+
+<span class="c1"># create map label-&gt;Cc for faster lookup later</span>
+<span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
+<span class="n">label_to_cc</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ccs</span><span class="p">:</span>
+   <span class="n">label_to_cc</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+
+<span class="c1"># compute area Voronoi tesselation and neighborship list</span>
+<span class="n">voronoi</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">voronoi_from_labeled_image</span><span class="p">()</span>
+<span class="n">labelpairs</span> <span class="o">=</span> <span class="n">voronoi</span><span class="o">.</span><span class="n">labeled_region_neighbors</span><span class="p">()</span>
+
+<span class="c1"># build map of all neighbors for each label for fast lookup</span>
+<span class="n">neighbors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">label_to_cc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+   <span class="n">neighbors</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">labelpairs</span><span class="p">:</span>
+   <span class="n">neighbors</span><span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+   <span class="n">neighbors</span><span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># now, all neighbors to a given cc can be looked up with</span>
+<span class="n">neighbors_of_cc</span> <span class="o">=</span> <span class="p">[</span><span class="n">label_to_cc</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">[</span><span class="n">cc</span><span class="o">.</span><span class="n">label</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="section" id="max-empty-rect">
+<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">max_empty_rect</tt></a></h1>
+<p><tt class="docutils literal">Rect</tt> <strong>max_empty_rect</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Rect</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Daveed Vandevoorde and Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the maximum area empty rect that fits into the image without
+containing any of the black image pixels. This problem is in the literature
+generally known as the <em>Largest Empty Rectangle Problem</em>.</p>
+<p>When the image does not contain a white pixel at all, an exception of type
+<tt class="docutils literal">RuntimeError</tt> is thrown. The coordinates of the returned rectangle are
+relative to the upper left corner of the image.</p>
+<p>Reference: D. Vandevoorde: <a class="reference external" href="http://www.drdobbs.com/database/184410529">&quot;The Maximal Rectangle Problem.&quot;</a> Dr. Dobb's,
+April 1998.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> max_empty_rect</p>
+<p><img alt="max_empty_rect_plugin_00_00" src="images/max_empty_rect_plugin_00_00.png" style="width: 90px; height: 90px;" /></p>
+</div>
+<div class="section" id="voronoi-from-labeled-image">
+<h1><a class="toc-backref" href="#id13"><tt class="docutils literal">voronoi_from_labeled_image</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale] <strong>voronoi_from_labeled_image</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz, based on code by Ullrich Köthe</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the area Voronoi tesselation from an image containing labeled
+Cc's. In the returned onebit image, every pixel is labeled with the
+label value of the closest Cc in the input image.</p>
+<p>To prepare the input image, you can use <a class="reference external" href="segmentation.html#cc-analysis">cc_analysis</a>. When the Cc's
+only consist of single points, the area Voronoi tesselation is identical
+to the ordinary Voronoi tesselation.</p>
+<p>The implementation applies a watershed algorithm to the distance transform
+of the input image, a method known as <em>seeded region growing</em> (U. Köthe:
+<em>Primary Image Segmentation.</em> Proceedings 17th DAGM-Symposium, pp. 554-561,
+Springer, 1995).</p>
+<p>The example shown below is the image <em>voronoi_cells</em> as created with
+the following code:</p>
+<div class="highlight"><pre><span></span><span class="c1"># create an area Voronoi tesselation and</span>
+<span class="c1"># mark the cells and their edges in color</span>
+<span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>  <span class="c1"># labels the image</span>
+<span class="n">voronoi</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">voronoi_from_labeled_image</span><span class="p">()</span>
+<span class="n">voronoi_cells</span> <span class="o">=</span> <span class="n">voronoi</span><span class="o">.</span><span class="n">color_ccs</span><span class="p">()</span>
+<span class="n">voronoi_cells</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">voronoi_edges</span> <span class="o">=</span> <span class="n">voronoi</span><span class="o">.</span><span class="n">labeled_region_edges</span><span class="p">()</span>
+<span class="n">voronoi_cells</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">voronoi_edges</span><span class="p">,</span> <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+</pre></div>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> voronoi_from_labeled_image</p>
+<p><img alt="voronoi_from_labeled_image_plugin_00_00" src="images/voronoi_from_labeled_image_plugin_00_00.png" style="width: 69px; height: 99px;" /> <img alt="voronoi_from_labeled_image_plugin_00_01" src="images/voronoi_from_labeled_image_plugin_00_01.png" style="width: 69px; height: 99px;" /></p>
+</div>
+<div class="section" id="voronoi-from-points">
+<h1><a class="toc-backref" href="#id14"><tt class="docutils literal">voronoi_from_points</tt></a></h1>
+<p><strong>voronoi_from_points</strong> ([object <em>points</em>], <tt class="docutils literal">IntVector</tt> <em>labels</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Geometry</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the Voronoi tesselation from a list of points and point labels.
+The result is directly written to the input image. Each white pixel is
+labeled with the label value of the closest point. Non white pixel in the
+input image are not overwritten.</p>
+<p>The arguments <em>points</em> and <em>labels</em> specify the points and labels, such
+that <tt class="docutils literal">labels[i]</tt> is the label of <tt class="docutils literal">points[i]</tt>. Note that the labels
+need not necessarily all be different, which can be useful as an
+approximation of an area Voronoi tesselation.</p>
+<p>The algorithm is very simple: it stores the points in a <a class="reference external" href="kdtree.html">kd-tree</a> and
+then looks up the closest point for each image pixel. This has a runtime
+of <em>O(N log(n))</em>, where <em>N</em> is the number of image pixels and <em>n</em> is the
+number of points. For not too many points, this should be faster than the
+morphological region growing approach of <a class="reference external" href="#voronoi-from-labeled-image">voronoi_from_labeled_image</a>.</p>
+<p>The example shown below is the image <em>voronoi_edges</em> as created with
+the following code:</p>
+<div class="highlight"><pre><span></span><span class="c1"># create a Voronoi tesselation and mark</span>
+<span class="c1"># the cell edges in a second image</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">),(</span><span class="mi">32</span><span class="p">,</span><span class="mi">22</span><span class="p">),(</span><span class="mi">85</span><span class="p">,</span><span class="mi">14</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">70</span><span class="p">),(</span><span class="mi">80</span><span class="p">,</span><span class="mi">85</span><span class="p">)]</span>
+<span class="n">voronoi</span> <span class="o">=</span> <span class="n">Image</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">))</span>
+<span class="n">voronoi</span><span class="o">.</span><span class="n">voronoi_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))])</span>
+<span class="n">voronoi_edges</span> <span class="o">=</span> <span class="n">voronoi</span><span class="o">.</span><span class="n">labeled_region_edges</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+   <span class="n">voronoi_edges</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> voronoi_from_points</p>
+<p><img alt="voronoi_from_points_plugin_00_00" src="images/voronoi_from_points_plugin_00_00.png" style="width: 90px; height: 90px;" /></p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

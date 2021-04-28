@@ -3,63 +3,802 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>filter.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Filter</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="filter">
+<h1 class="title">Filter</h1>
 
-
-<p>b'nFiltern======nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnnConvolutionn-----------nn``convolve``n````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filter/Convolutionn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnConvolves an image with a given kernel.nnUses code from the Vigra library (Copyright 1998-2007 by UllrichnKxc3xb6the).nn*kernel*n  A kernel for the convolution.  The kernel may either be a FloatImagen  or a nested Python list of floats.nn*border_treatment*n  Specifies how to treat the borders of the image.  Must be one ofn  the following:nn  - BORDER_TREATMENT_AVOID (0)nn    do not operate on a pixel where the kernel does not fit in the imagenn  - BORDER_TREATMENT_CLIP (1)nn    clip kernel at image border. The kernel entries are renormalizedn    so that the total kernel sum is not changed (this is only usefuln    if the kernel is &gt;= 0 everywhere).nn  - BORDER_TREATMENT_REPEAT (2)nn    repeat the nearest valid pixelnn  - BORDER_TREATMENT_REFLECT (3)n  n    reflect image at last row/columnnn  - BORDER_TREATMENT_WRAP (4)nn    wrap image around (periodic boundary conditions)nnExample usage:nn.. code:: Pythonnn  # Using a custom kerneln  img2 = image.convolve([[0.125, 0.0, -0.125],n                         [0.25 , 0.0, -0.25 ],n                         [0.125, 0.0, -0.125]])nn  # Using one of the included kernel generatorsn  img2 = image.convolve(GaussianKernel(3.0))nnn``convolve_x``n``````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_x</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_x</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filter/Convolutionn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnConvolves an image in the X directions with a 1D kernel.  This isnequivalent to what the Vigra library calls &quot;SeparablenConvolution&quot;.nnUses code from the Vigra library (Copyright 1998-2007 by UllrichnKxc3xb6the).nn*kernel_x*n  A kernel for the convolution in the <em>x</em> direction.  The kerneln  may either be a FloatImage or a nested Python list of floats.n  It must consist of only a single row.nn*border_treatment*n  Specifies how to treat the borders of the image.  Seen  <tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.nnn``convolve_xy``n```````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_xy</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_x</em>, <tt class="docutils literal">Image</tt> [Float] <em>kernel_y</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filter/Convolutionn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnConvolves an image in both X and Y directions with 1D kernels.nThis is equivalent to what the Vigra library calls &quot;SeparablenConvolution&quot;.nnUses code from the Vigra library (Copyright 1998-2007 by UllrichnKxc3xb6the).nn*kernel_y*n  A kernel for the convolution in the <em>y</em> direction.  The kerneln  may either be a FloatImage or a nested Python list of floats.nn*kernel_x*n  A kernel for the convolution in the <em>x</em> direction.  The kerneln  may either be a FloatImage or a nested Python list of floats.n  If <em>kernel_x</em> is omitted, <em>kernel_y</em> will be used in the <em>x</em>n  direction.nn*border_treatment*n  Specifies how to treat the borders of the image.  Seen  <tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.nnn``convolve_y``n``````````````nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_y</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_y</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filter/Convolutionn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnConvolves an image in the X directions with a 1D kernel.  This isnequivalent to what the Vigra library calls &quot;Separable Convolution&quot;.nnUses code from the Vigra library (Copyright 1998-2007 by UllrichnKxc3xb6the).nn*kernel_y*n  A kernel for the convolution in the <em>x</em> direction.  The kerneln  may either be a FloatImage or a nested Python list of floats.n  It must consist of only a single row.nn*border_treatment*n  Specifies how to treat the borders of the image.  Seen  <tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.nnnnConvolutionKernelsn------------------nn``AveragingKernel``n```````````````````nn``Image`` [Float] <strong>AveragingKernel</strong> (int <em>radius</em> = 3)nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnCreates an Averaging filter kernel for use with separablenconvolution.  The window size is (2*radius+1) * (2*radius+1).nn*radius*n  The radius of the kernel.nnn``BinomialKernel``n``````````````````nn``Image`` [Float] <strong>BinomialKernel</strong> (int <em>radius</em> = 3)nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnCreates a binomial filter kernel for use with separablenconvolution of a given radius.nn*radius*n  The radius of the kernel.nnn``GaussianDerivativeKernel``n````````````````````````````nn``Image`` [Float] <strong>GaussianDerivativeKernel</strong> (float <em>standard_deviation</em> = 1.00, int <em>order</em> = 1)nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnInit as a Gaussian derivative of order 'order'.  The radius of thenkernel is always 3*std_dev.nn*standard_deviation*n  The standard deviation of the Gaussian kernel.nn*order*n  The order of the Gaussian kernel.nnn``GaussianKernel``n``````````````````nn``Image`` [Float] <strong>GaussianKernel</strong> (float <em>standard_deviation</em> = 1.00)nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnInit as a Gaussian function. The radius of the kernel is alwaysn3*standard_deviation.nn*standard_deviation*n  The standard deviation of the Gaussian kernel.nnn``SimpleSharpeningKernel``n``````````````````````````nn``Image`` [Float] <strong>SimpleSharpeningKernel</strong> (float <em>sharpening_factor</em> = 0.50)nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnCreates a kernel for simple sharpening.nnn``SymmetricGradientKernel``n```````````````````````````nn``Image`` [Float] <strong>SymmetricGradientKernel</strong> ()nnn:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filter/ConvolutionKernelsn:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnInit as a symmetric gradient filter of the form [ 0.5, 0.0, -0.5]nnn``create_gabor_filter``n-----------------------nn``Image`` [Float] <strong>create_gabor_filter</strong> (float <em>orientation</em> = 45.00, float <em>frequency</em> = 0.38, int <em>direction</em> = 5)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale]n:Returns: <tt class="docutils literal">Image</tt> [Float]n:Category: Filtern:Defined in: misc_filters.pyn:Author: Ullrich Kxc3xb6the (wrapped from VIGRA by Uma Kompella)nnnComputes the convolution of an image with a two dimensional Gabornfunction. The result is returned as a float image.nnThe <em>orientation</em> is given in radians, the other parameters arenthe center <em>frequency</em> (for example 0.375 or smaller) and the twonangular and radial sigmas of the gabor filter.nnThe energy of the filter is explicitly normalized to 1.0.nn----------nn**Example 1:** create_gabor_filter()nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/create_gabor_filter_plugin_00.pngn   :height: 67n   :width: 96nnnn``gaussian_gradient``n---------------------nn[object] <strong>gaussian_gradient</strong> (float <em>scale</em> = 0.50)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: [object]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnCalculate the gradient vector by means of a 1st derivatives ofnGaussian filter.nn*scale*nn  Returns a tuple of (<em>x_gradient</em>, <em>y_gradient</em>).nn----------nn**Example 1:** gaussian_gradient(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn|gaussian_gradient_plugin_00_00| <a href="#id3"><span class="problematic" id="id4">|gaussian_gradient_plugin_00_01|</span></a> nn.. <a href="#id5"><span class="problematic" id="id6">|gaussian_gradient_plugin_00_00|</span></a> image:: images/gaussian_gradient_plugin_00_00.pngn   :height: 67n   :width: 96nn.. <a href="#id7"><span class="problematic" id="id8">|gaussian_gradient_plugin_00_01|</span></a> image:: images/gaussian_gradient_plugin_00_01.pngn   :height: 67n   :width: 96nn**Example 2:** gaussian_gradient(1.0)nn..  image:: images/RGB_generic.pngn   :height: 129n   :width: 227nn|gaussian_gradient_plugin_01_00| <a href="#id9"><span class="problematic" id="id10">|gaussian_gradient_plugin_01_01|</span></a> nn.. <a href="#id11"><span class="problematic" id="id12">|gaussian_gradient_plugin_01_00|</span></a> image:: images/gaussian_gradient_plugin_01_00.pngn   :height: 129n   :width: 227nn.. <a href="#id13"><span class="problematic" id="id14">|gaussian_gradient_plugin_01_01|</span></a> image:: images/gaussian_gradient_plugin_01_01.pngn   :height: 129n   :width: 227nn**Example 3:** gaussian_gradient(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn|gaussian_gradient_plugin_02_00| <a href="#id15"><span class="problematic" id="id16">|gaussian_gradient_plugin_02_01|</span></a> nn.. <a href="#id17"><span class="problematic" id="id18">|gaussian_gradient_plugin_02_00|</span></a> image:: images/gaussian_gradient_plugin_02_00.pngn   :height: 67n   :width: 96nn.. <a href="#id19"><span class="problematic" id="id20">|gaussian_gradient_plugin_02_01|</span></a> image:: images/gaussian_gradient_plugin_02_01.pngn   :height: 67n   :width: 96nnnn``gaussian_smoothing``n----------------------nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>gaussian_smoothing</strong> (float <em>standard_deviation</em> = 1.00)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnPerforms gaussian smoothing on an image.nn*standard_deviation*n  The standard deviation of the Gaussian kernel.nn----------nn**Example 1:** gaussian_smoothing(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/gaussian_smoothing_plugin_00.pngn   :height: 67n   :width: 96nn**Example 2:** gaussian_smoothing(3.0)nn..  image:: images/RGB_generic.pngn   :height: 129n   :width: 227nn..  image:: images/gaussian_smoothing_plugin_01.pngn   :height: 129n   :width: 227nn**Example 3:** gaussian_smoothing(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/gaussian_smoothing_plugin_02.pngn   :height: 67n   :width: 96nnnn``hessian_matrix_of_gaussian``n------------------------------nn[object] <strong>hessian_matrix_of_gaussian</strong> (float <em>scale</em> = 0.50)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Returns: [object]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnFilter image with the 2nd derivatives of the Gaussian at the givennscale to get the Hessian matrix.nn*scale*nn----------nn**Example 1:** hessian_matrix_of_gaussian(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn|hessian_matrix_of_gaussian_plugin_00_00| <a href="#id21"><span class="problematic" id="id22">|hessian_matrix_of_gaussian_plugin_00_01|</span></a> <a href="#id23"><span class="problematic" id="id24">|hessian_matrix_of_gaussian_plugin_00_02|</span></a> nn.. <a href="#id25"><span class="problematic" id="id26">|hessian_matrix_of_gaussian_plugin_00_00|</span></a> image:: images/hessian_matrix_of_gaussian_plugin_00_00.pngn   :height: 67n   :width: 96nn.. <a href="#id27"><span class="problematic" id="id28">|hessian_matrix_of_gaussian_plugin_00_01|</span></a> image:: images/hessian_matrix_of_gaussian_plugin_00_01.pngn   :height: 67n   :width: 96nn.. <a href="#id29"><span class="problematic" id="id30">|hessian_matrix_of_gaussian_plugin_00_02|</span></a> image:: images/hessian_matrix_of_gaussian_plugin_00_02.pngn   :height: 67n   :width: 96nnnn``kfill``n---------nn``Image`` [OneBit] <strong>kfill</strong> (int <em>k</em> = 3, int <em>iterations</em> = 1)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Filtern:Defined in: misc_filters.pyn:Author: Oliver ChristennnnRemoves salt and pepper noise in onebit images by applying the <em>kfill</em>nfilter <em>iterations</em> times. Should before <em>iteration</em> times a run ofnthe kfill filter not change a single pixel, the iteration is stoppednbeforehand.nnIn contrast to a rank or mean filter, kfill is designed in suchna way that it does not merge non touching connected components.nTo this end, the border of the <em>k</em> times <em>k</em> mask is scanned fornblack pixels and the center is not filled when this would connectndisjoint pixels on the border. A detailed description of thenalgorithm can be found innn   M. Seul, L. O'Gorman, M.J. Sammon: <em>Practical Algorithms forn   Image Analysis.</em> Cambridge University Press, 2000nnThe present implementation does not use code from the book, but hasnbeen written from scratch.nnn``kfill_modified``n------------------nn``Image`` [OneBit] <strong>kfill_modified</strong> (int <em>k</em> = 3)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Filtern:Defined in: misc_filters.pyn:Author: Oliver ChristennnnRemoves salt and pepper noise in onebit images by applying anmodified version of the <em>kfill</em> filter proposed in the followingnreference:nn   K.Chinnasarn, Y.Rangsanseri, P.Thitimajshima:n   <em>Removing Salt-and-Pepper Noise in Text/Graphics Images.</em>n   Proceedings of The Asia-Pacific Conference on Circuits and Systemsn   (APCCAS'98), pp. 459-462, 1998nnFor <em>k</em> = 3, this algorithm is identical with the original kfill algorithm.nFor larger <em>k</em> however, it fills the window core also when not allnpixels are of the same value. It should be noted that in this case,nthe modified version does <em>not</em> take carenof connectivity. In other words, it can result in joining previouslyndisconnected connected components, similar to a morphological closingnoperation, while at the same time small black speckles are removed.nnn``laplacian_of_gaussian``n-------------------------nn``Image`` [GreyScale|Grey16|Float] <strong>laplacian_of_gaussian</strong> (float <em>scale</em> = 0.50)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnFilter image with the Laplacian of Gaussian operator at the givennscale.nn*scale*nn----------nn**Example 1:** laplacian_of_gaussian(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/laplacian_of_gaussian_plugin_00.pngn   :height: 67n   :width: 96nnnn``mean``n--------nn``Image`` [OneBit|GreyScale|Grey16|Float] <strong>mean</strong> (int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [padwhite|reflect] <em>border_treatment</em> = reflect)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Category: Filtern:Defined in: misc_filters.pyn:Author: David KolanusnnnWithin each <em>k</em> times <em>k</em> window, set the center pixel to the meannvalue of all pixels.nn*k* is the window size (must be odd), and <em>border_treatment</em> cannbe 0 ('padwhite'), which sets window pixels outside the image to white,nor 1 ('reflect'), for reflecting boundary conditions.nn----------nn**Example 1:** mean()nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/mean_plugin_00.pngn   :height: 67n   :width: 96nnnn``min_max_filter``n------------------nn``Image`` [OneBit|GreyScale|Grey16|Float] <strong>min_max_filter</strong> (int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [min|max] <em>filter</em> = min, int <em>k_vertical</em> = 0)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Category: Filtern:Defined in: misc_filters.pyn:Author: David KolanusnnnWithin each <em>k</em> times <em>k</em> window, set the center pixel to the minimum ornmaximum value of all pixels inside the window.nn*k* is the window size (must be odd) and <em>filter</em> is the filter typen(0 for min, 1 for max). When <em>k_vertical</em> is nonzero, the vertical size ofnthe window is set to <em>k_vertical</em> instead of <em>k</em>.nnThis function does the same as <em>rank(1,k,border_treatment=1)</em>, but isnmuch faster because the runtime of <em>min_max_filter</em> is constant innthe window size. The same algorithm has been developed independentlynby van Herk and Gil and Werman. Seenn  M. van Herk: <em>A fast algorithm for local minimum and maximum filtersn  on rectangular and octagonal kernels.</em> Pattern Recognition Letters 13,n  pp. 517-521, 1992nn  J. Gil, M. Werman: <em>Computing 2-D min, median, and max filters.</em>n  IEEE Transactions on Pattern Analysis and Machine Intelligence 15,n  pp. 504-507, 1993nn----------nn**Example 1:** min_max_filter()nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/min_max_filter_plugin_00.pngn   :height: 67n   :width: 96nnnn``rank``n--------nn``Image`` [OneBit|GreyScale|Grey16|Float] <strong>rank</strong> (int <em>rank</em>, int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [padwhite|reflect] <em>border_treatment</em> = reflect)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]n:Category: Filtern:Defined in: misc_filters.pyn:Author: Christoph Dalitz and David KolanusnnnWithin each <em>k</em> times <em>k</em> window, set the center pixel to the <em>r</em>-th rankednvalue.nnNote that for <tt class="docutils literal">Onebit</tt> images, actually <em>rank(k*k - r + 1)</em> is computed insteadnof <em>rank(r)</em>. This has the effect that you do not need to worry whethernyour image is a greyscale or onebit image: in all cases low valuesnfor <em>r</em> will darken the image and high values will light it up.nn*rank* (1, 2, ..., <em>k</em> * <em>k</em>)n  The rank of the windows pixels to select for the center. (k*k+1)/2 isn  equivalent to the median.nn*k* (3, 5 ,7, ...)n  The window size (must be odd).nn*border_treatment* (0, 1)n  When 0 ('padwhite'), window pixels outside the image are set to white.n  When 1 ('reflect'), reflecting boundary conditions are used.nn----------nn**Example 1:** rank(2)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/rank_plugin_00.pngn   :height: 67n   :width: 96nn**Example 2:** rank(5)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/rank_plugin_01.pngn   :height: 67n   :width: 96nn**Example 3:** rank(8)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/rank_plugin_02.pngn   :height: 67n   :width: 96nnnn``simple_sharpen``n------------------nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>simple_sharpen</strong> (float <em>sharpening_factor</em> = 0.50)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnPerform simple sharpening.nn*sharpening_factor*n  The amount of sharpening to perform.nn----------nn**Example 1:** simple_sharpen(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/simple_sharpen_plugin_00.pngn   :height: 67n   :width: 96nn**Example 2:** simple_sharpen(3.0)nn..  image:: images/RGB_generic.pngn   :height: 129n   :width: 227nn..  image:: images/simple_sharpen_plugin_01.pngn   :height: 129n   :width: 227nnnn``sobel_edge_detection``n------------------------nn``Image`` [GreyScale|Grey16|Float|RGB|Complex] <strong>sobel_edge_detection</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]n:Category: Filtern:Defined in: convolution.pyn:Author: Michael Droettboom (With code from VIGRA by Ullrich Kxc3xb6the)nnnPerforms simple Sobel edge detection on the image.nn----------nn**Example 1:** sobel_edge_detection(1.0)nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/sobel_edge_detection_plugin_00.pngn   :height: 67n   :width: 96nn**Example 2:** sobel_edge_detection(3.0)nn..  image:: images/RGB_generic.pngn   :height: 129n   :width: 227nn..  image:: images/sobel_edge_detection_plugin_01.pngn   :height: 129n   :width: 227nnnn``wiener_filter``n-----------------nn``Image`` [GreyScale|Grey16|Float] <strong>wiener_filter</strong> (int <em>region size</em> = 5, float <em>noise variance</em> = -1.00)nnn:Operates on: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Returns: <tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]n:Category: Filtern:Defined in: binarization.pyn:Author: John Ashley Burgoyne and Ichiro FujinagannnAdaptive Wiener filter for de-noising.nnSee:nnJ. Lim. 2001. <em>Two-Dimensional Signal Processing.</em> EnglewoodnCliffs: Prentice Hall.nn*region_size*n  The size of the region within which to calculate the filtern  coefficients.nn*noise_variance* n  Variance of the noise in the image. If negative, estimatedn  automatically as the median of local variances.nn----------nn**Example 1:** wiener_filter()nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/wiener_filter_plugin_00.pngn   :height: 67n   :width: 96nn**Example 2:** wiener_filter()nn..  image:: images/Grey16_generic.pngn   :height: 71n   :width: 82nn..  image:: images/wiener_filter_plugin_01.pngn   :height: 71n   :width: 82nn**Example 3:** wiener_filter()nn..  image:: images/GreyScale_generic.pngn   :height: 67n   :width: 96nn..  image:: images/wiener_filter_plugin_02.pngn   :height: 67n   :width: 96nnnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_00_01&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_00_00&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_00_01&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_01_01&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_01_00&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_01_01&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_02_01&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_02_00&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Undefined substitution referenced: &quot;gaussian_gradient_plugin_02_01&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Undefined substitution referenced: &quot;hessian_matrix_of_gaussian_plugin_00_01&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Undefined substitution referenced: &quot;hessian_matrix_of_gaussian_plugin_00_02&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Undefined substitution referenced: &quot;hessian_matrix_of_gaussian_plugin_00_00&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Undefined substitution referenced: &quot;hessian_matrix_of_gaussian_plugin_00_01&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/filter.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Undefined substitution referenced: &quot;hessian_matrix_of_gaussian_plugin_00_02&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#convolution" id="id1">Convolution</a><ul>
+<li><a class="reference internal" href="#convolve" id="id2"><tt class="docutils literal">convolve</tt></a></li>
+<li><a class="reference internal" href="#convolve-x" id="id3"><tt class="docutils literal">convolve_x</tt></a></li>
+<li><a class="reference internal" href="#convolve-xy" id="id4"><tt class="docutils literal">convolve_xy</tt></a></li>
+<li><a class="reference internal" href="#convolve-y" id="id5"><tt class="docutils literal">convolve_y</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#convolutionkernels" id="id6">ConvolutionKernels</a><ul>
+<li><a class="reference internal" href="#averagingkernel" id="id7"><tt class="docutils literal">AveragingKernel</tt></a></li>
+<li><a class="reference internal" href="#binomialkernel" id="id8"><tt class="docutils literal">BinomialKernel</tt></a></li>
+<li><a class="reference internal" href="#gaussianderivativekernel" id="id9"><tt class="docutils literal">GaussianDerivativeKernel</tt></a></li>
+<li><a class="reference internal" href="#gaussiankernel" id="id10"><tt class="docutils literal">GaussianKernel</tt></a></li>
+<li><a class="reference internal" href="#simplesharpeningkernel" id="id11"><tt class="docutils literal">SimpleSharpeningKernel</tt></a></li>
+<li><a class="reference internal" href="#symmetricgradientkernel" id="id12"><tt class="docutils literal">SymmetricGradientKernel</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-gabor-filter" id="id13"><tt class="docutils literal">create_gabor_filter</tt></a></li>
+<li><a class="reference internal" href="#gaussian-gradient" id="id14"><tt class="docutils literal">gaussian_gradient</tt></a></li>
+<li><a class="reference internal" href="#gaussian-smoothing" id="id15"><tt class="docutils literal">gaussian_smoothing</tt></a></li>
+<li><a class="reference internal" href="#hessian-matrix-of-gaussian" id="id16"><tt class="docutils literal">hessian_matrix_of_gaussian</tt></a></li>
+<li><a class="reference internal" href="#kfill" id="id17"><tt class="docutils literal">kfill</tt></a></li>
+<li><a class="reference internal" href="#kfill-modified" id="id18"><tt class="docutils literal">kfill_modified</tt></a></li>
+<li><a class="reference internal" href="#laplacian-of-gaussian" id="id19"><tt class="docutils literal">laplacian_of_gaussian</tt></a></li>
+<li><a class="reference internal" href="#mean" id="id20"><tt class="docutils literal">mean</tt></a></li>
+<li><a class="reference internal" href="#min-max-filter" id="id21"><tt class="docutils literal">min_max_filter</tt></a></li>
+<li><a class="reference internal" href="#rank" id="id22"><tt class="docutils literal">rank</tt></a></li>
+<li><a class="reference internal" href="#simple-sharpen" id="id23"><tt class="docutils literal">simple_sharpen</tt></a></li>
+<li><a class="reference internal" href="#sobel-edge-detection" id="id24"><tt class="docutils literal">sobel_edge_detection</tt></a></li>
+<li><a class="reference internal" href="#wiener-filter" id="id25"><tt class="docutils literal">wiener_filter</tt></a></li>
+</ul>
 </div>
+<div class="section" id="convolution">
+<h1><a class="toc-backref" href="#id1">Convolution</a></h1>
+<div class="section" id="convolve">
+<h2><a class="toc-backref" href="#id2"><tt class="docutils literal">convolve</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/Convolution</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Convolves an image with a given kernel.</p>
+<p>Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
+Köthe).</p>
+<dl class="docutils">
+<dt><em>kernel</em></dt>
+<dd>A kernel for the convolution.  The kernel may either be a FloatImage
+or a nested Python list of floats.</dd>
+<dt><em>border_treatment</em></dt>
+<dd><p class="first">Specifies how to treat the borders of the image.  Must be one of
+the following:</p>
+<ul class="last">
+<li><p class="first">BORDER_TREATMENT_AVOID (0)</p>
+<p>do not operate on a pixel where the kernel does not fit in the image</p>
+</li>
+<li><p class="first">BORDER_TREATMENT_CLIP (1)</p>
+<p>clip kernel at image border. The kernel entries are renormalized
+so that the total kernel sum is not changed (this is only useful
+if the kernel is &gt;= 0 everywhere).</p>
+</li>
+<li><p class="first">BORDER_TREATMENT_REPEAT (2)</p>
+<p>repeat the nearest valid pixel</p>
+</li>
+<li><p class="first">BORDER_TREATMENT_REFLECT (3)</p>
+<p>reflect image at last row/column</p>
+</li>
+<li><p class="first">BORDER_TREATMENT_WRAP (4)</p>
+<p>wrap image around (periodic boundary conditions)</p>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Example usage:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Using a custom kernel</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convolve</span><span class="p">([[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.125</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.25</span> <span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span> <span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.125</span><span class="p">]])</span>
+
+<span class="c1"># Using one of the included kernel generators</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">GaussianKernel</span><span class="p">(</span><span class="mf">3.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="convolve-x">
+<h2><a class="toc-backref" href="#id3"><tt class="docutils literal">convolve_x</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_x</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_x</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/Convolution</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Convolves an image in the X directions with a 1D kernel.  This is
+equivalent to what the Vigra library calls &quot;Separable
+Convolution&quot;.</p>
+<p>Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
+Köthe).</p>
+<dl class="docutils">
+<dt><em>kernel_x</em></dt>
+<dd>A kernel for the convolution in the <em>x</em> direction.  The kernel
+may either be a FloatImage or a nested Python list of floats.
+It must consist of only a single row.</dd>
+<dt><em>border_treatment</em></dt>
+<dd>Specifies how to treat the borders of the image.  See
+<tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.</dd>
+</dl>
+</div>
+<div class="section" id="convolve-xy">
+<h2><a class="toc-backref" href="#id4"><tt class="docutils literal">convolve_xy</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_xy</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_x</em>, <tt class="docutils literal">Image</tt> [Float] <em>kernel_y</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/Convolution</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Convolves an image in both X and Y directions with 1D kernels.
+This is equivalent to what the Vigra library calls &quot;Separable
+Convolution&quot;.</p>
+<p>Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
+Köthe).</p>
+<dl class="docutils">
+<dt><em>kernel_y</em></dt>
+<dd>A kernel for the convolution in the <em>y</em> direction.  The kernel
+may either be a FloatImage or a nested Python list of floats.</dd>
+<dt><em>kernel_x</em></dt>
+<dd>A kernel for the convolution in the <em>x</em> direction.  The kernel
+may either be a FloatImage or a nested Python list of floats.
+If <em>kernel_x</em> is omitted, <em>kernel_y</em> will be used in the <em>x</em>
+direction.</dd>
+<dt><em>border_treatment</em></dt>
+<dd>Specifies how to treat the borders of the image.  See
+<tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.</dd>
+</dl>
+</div>
+<div class="section" id="convolve-y">
+<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">convolve_y</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>convolve_y</strong> (<tt class="docutils literal">Image</tt> [Float] <em>kernel_y</em>, <tt class="docutils literal">Choice</tt> [avoid|clip|repeat|reflect|wrap] <em>border_treatment</em> = clip)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/Convolution</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Convolves an image in the X directions with a 1D kernel.  This is
+equivalent to what the Vigra library calls &quot;Separable Convolution&quot;.</p>
+<p>Uses code from the Vigra library (Copyright 1998-2007 by Ullrich
+Köthe).</p>
+<dl class="docutils">
+<dt><em>kernel_y</em></dt>
+<dd>A kernel for the convolution in the <em>x</em> direction.  The kernel
+may either be a FloatImage or a nested Python list of floats.
+It must consist of only a single row.</dd>
+<dt><em>border_treatment</em></dt>
+<dd>Specifies how to treat the borders of the image.  See
+<tt class="docutils literal">convolve</tt> for information about <em>border_treatment</em> values.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="convolutionkernels">
+<h1><a class="toc-backref" href="#id6">ConvolutionKernels</a></h1>
+<div class="section" id="averagingkernel">
+<h2><a class="toc-backref" href="#id7"><tt class="docutils literal">AveragingKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>AveragingKernel</strong> (int <em>radius</em> = 3)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Creates an Averaging filter kernel for use with separable
+convolution.  The window size is (2*radius+1) * (2*radius+1).</p>
+<dl class="docutils">
+<dt><em>radius</em></dt>
+<dd>The radius of the kernel.</dd>
+</dl>
+</div>
+<div class="section" id="binomialkernel">
+<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">BinomialKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>BinomialKernel</strong> (int <em>radius</em> = 3)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Creates a binomial filter kernel for use with separable
+convolution of a given radius.</p>
+<dl class="docutils">
+<dt><em>radius</em></dt>
+<dd>The radius of the kernel.</dd>
+</dl>
+</div>
+<div class="section" id="gaussianderivativekernel">
+<h2><a class="toc-backref" href="#id9"><tt class="docutils literal">GaussianDerivativeKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>GaussianDerivativeKernel</strong> (float <em>standard_deviation</em> = 1.00, int <em>order</em> = 1)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Init as a Gaussian derivative of order 'order'.  The radius of the
+kernel is always 3*std_dev.</p>
+<dl class="docutils">
+<dt><em>standard_deviation</em></dt>
+<dd>The standard deviation of the Gaussian kernel.</dd>
+<dt><em>order</em></dt>
+<dd>The order of the Gaussian kernel.</dd>
+</dl>
+</div>
+<div class="section" id="gaussiankernel">
+<h2><a class="toc-backref" href="#id10"><tt class="docutils literal">GaussianKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>GaussianKernel</strong> (float <em>standard_deviation</em> = 1.00)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Init as a Gaussian function. The radius of the kernel is always
+3*standard_deviation.</p>
+<dl class="docutils">
+<dt><em>standard_deviation</em></dt>
+<dd>The standard deviation of the Gaussian kernel.</dd>
+</dl>
+</div>
+<div class="section" id="simplesharpeningkernel">
+<h2><a class="toc-backref" href="#id11"><tt class="docutils literal">SimpleSharpeningKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>SimpleSharpeningKernel</strong> (float <em>sharpening_factor</em> = 0.50)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Creates a kernel for simple sharpening.</p>
+</div>
+<div class="section" id="symmetricgradientkernel">
+<h2><a class="toc-backref" href="#id12"><tt class="docutils literal">SymmetricGradientKernel</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>SymmetricGradientKernel</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter/ConvolutionKernels</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Init as a symmetric gradient filter of the form [ 0.5, 0.0, -0.5]</p>
+</div>
+</div>
+<div class="section" id="create-gabor-filter">
+<h1><a class="toc-backref" href="#id13"><tt class="docutils literal">create_gabor_filter</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [Float] <strong>create_gabor_filter</strong> (float <em>orientation</em> = 45.00, float <em>frequency</em> = 0.38, int <em>direction</em> = 5)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Ullrich Köthe (wrapped from VIGRA by Uma Kompella)</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the convolution of an image with a two dimensional Gabor
+function. The result is returned as a float image.</p>
+<p>The <em>orientation</em> is given in radians, the other parameters are
+the center <em>frequency</em> (for example 0.375 or smaller) and the two
+angular and radial sigmas of the gabor filter.</p>
+<p>The energy of the filter is explicitly normalized to 1.0.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> create_gabor_filter()</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/create_gabor_filter_plugin_00.png" src="images/create_gabor_filter_plugin_00.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="gaussian-gradient">
+<h1><a class="toc-backref" href="#id14"><tt class="docutils literal">gaussian_gradient</tt></a></h1>
+<p>[object] <strong>gaussian_gradient</strong> (float <em>scale</em> = 0.50)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[object]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Calculate the gradient vector by means of a 1st derivatives of
+Gaussian filter.</p>
+<p><em>scale</em></p>
+<blockquote>
+Returns a tuple of (<em>x_gradient</em>, <em>y_gradient</em>).</blockquote>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> gaussian_gradient(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<p><img alt="gaussian_gradient_plugin_00_00" src="images/gaussian_gradient_plugin_00_00.png" style="width: 96px; height: 67px;" /> <img alt="gaussian_gradient_plugin_00_01" src="images/gaussian_gradient_plugin_00_01.png" style="width: 96px; height: 67px;" /></p>
+<p><strong>Example 2:</strong> gaussian_gradient(1.0)</p>
+<img alt="images/RGB_generic.png" src="images/RGB_generic.png" style="width: 227px; height: 129px;" />
+<p><img alt="gaussian_gradient_plugin_01_00" src="images/gaussian_gradient_plugin_01_00.png" style="width: 227px; height: 129px;" /> <img alt="gaussian_gradient_plugin_01_01" src="images/gaussian_gradient_plugin_01_01.png" style="width: 227px; height: 129px;" /></p>
+<p><strong>Example 3:</strong> gaussian_gradient(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<p><img alt="gaussian_gradient_plugin_02_00" src="images/gaussian_gradient_plugin_02_00.png" style="width: 96px; height: 67px;" /> <img alt="gaussian_gradient_plugin_02_01" src="images/gaussian_gradient_plugin_02_01.png" style="width: 96px; height: 67px;" /></p>
+</div>
+<div class="section" id="gaussian-smoothing">
+<h1><a class="toc-backref" href="#id15"><tt class="docutils literal">gaussian_smoothing</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>gaussian_smoothing</strong> (float <em>standard_deviation</em> = 1.00)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Performs gaussian smoothing on an image.</p>
+<dl class="docutils">
+<dt><em>standard_deviation</em></dt>
+<dd>The standard deviation of the Gaussian kernel.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> gaussian_smoothing(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/gaussian_smoothing_plugin_00.png" src="images/gaussian_smoothing_plugin_00.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 2:</strong> gaussian_smoothing(3.0)</p>
+<img alt="images/RGB_generic.png" src="images/RGB_generic.png" style="width: 227px; height: 129px;" />
+<img alt="images/gaussian_smoothing_plugin_01.png" src="images/gaussian_smoothing_plugin_01.png" style="width: 227px; height: 129px;" />
+<p><strong>Example 3:</strong> gaussian_smoothing(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/gaussian_smoothing_plugin_02.png" src="images/gaussian_smoothing_plugin_02.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="hessian-matrix-of-gaussian">
+<h1><a class="toc-backref" href="#id16"><tt class="docutils literal">hessian_matrix_of_gaussian</tt></a></h1>
+<p>[object] <strong>hessian_matrix_of_gaussian</strong> (float <em>scale</em> = 0.50)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[object]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Filter image with the 2nd derivatives of the Gaussian at the given
+scale to get the Hessian matrix.</p>
+<p><em>scale</em></p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> hessian_matrix_of_gaussian(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<p><img alt="hessian_matrix_of_gaussian_plugin_00_00" src="images/hessian_matrix_of_gaussian_plugin_00_00.png" style="width: 96px; height: 67px;" /> <img alt="hessian_matrix_of_gaussian_plugin_00_01" src="images/hessian_matrix_of_gaussian_plugin_00_01.png" style="width: 96px; height: 67px;" /> <img alt="hessian_matrix_of_gaussian_plugin_00_02" src="images/hessian_matrix_of_gaussian_plugin_00_02.png" style="width: 96px; height: 67px;" /></p>
+</div>
+<div class="section" id="kfill">
+<h1><a class="toc-backref" href="#id17"><tt class="docutils literal">kfill</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>kfill</strong> (int <em>k</em> = 3, int <em>iterations</em> = 1)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Oliver Christen</td>
+</tr>
+</tbody>
+</table>
+<p>Removes salt and pepper noise in onebit images by applying the <em>kfill</em>
+filter <em>iterations</em> times. Should before <em>iteration</em> times a run of
+the kfill filter not change a single pixel, the iteration is stopped
+beforehand.</p>
+<p>In contrast to a rank or mean filter, kfill is designed in such
+a way that it does not merge non touching connected components.
+To this end, the border of the <em>k</em> times <em>k</em> mask is scanned for
+black pixels and the center is not filled when this would connect
+disjoint pixels on the border. A detailed description of the
+algorithm can be found in</p>
+<blockquote>
+M. Seul, L. O'Gorman, M.J. Sammon: <em>Practical Algorithms for
+Image Analysis.</em> Cambridge University Press, 2000</blockquote>
+<p>The present implementation does not use code from the book, but has
+been written from scratch.</p>
+</div>
+<div class="section" id="kfill-modified">
+<h1><a class="toc-backref" href="#id18"><tt class="docutils literal">kfill_modified</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>kfill_modified</strong> (int <em>k</em> = 3)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Oliver Christen</td>
+</tr>
+</tbody>
+</table>
+<p>Removes salt and pepper noise in onebit images by applying a
+modified version of the <em>kfill</em> filter proposed in the following
+reference:</p>
+<blockquote>
+K.Chinnasarn, Y.Rangsanseri, P.Thitimajshima:
+<em>Removing Salt-and-Pepper Noise in Text/Graphics Images.</em>
+Proceedings of The Asia-Pacific Conference on Circuits and Systems
+(APCCAS'98), pp. 459-462, 1998</blockquote>
+<p>For <em>k</em> = 3, this algorithm is identical with the original kfill algorithm.
+For larger <em>k</em> however, it fills the window core also when not all
+pixels are of the same value. It should be noted that in this case,
+the modified version does <em>not</em> take care
+of connectivity. In other words, it can result in joining previously
+disconnected connected components, similar to a morphological closing
+operation, while at the same time small black speckles are removed.</p>
+</div>
+<div class="section" id="laplacian-of-gaussian">
+<h1><a class="toc-backref" href="#id19"><tt class="docutils literal">laplacian_of_gaussian</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>laplacian_of_gaussian</strong> (float <em>scale</em> = 0.50)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Filter image with the Laplacian of Gaussian operator at the given
+scale.</p>
+<p><em>scale</em></p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> laplacian_of_gaussian(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/laplacian_of_gaussian_plugin_00.png" src="images/laplacian_of_gaussian_plugin_00.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="mean">
+<h1><a class="toc-backref" href="#id20"><tt class="docutils literal">mean</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float] <strong>mean</strong> (int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [padwhite|reflect] <em>border_treatment</em> = reflect)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">David Kolanus</td>
+</tr>
+</tbody>
+</table>
+<p>Within each <em>k</em> times <em>k</em> window, set the center pixel to the mean
+value of all pixels.</p>
+<p><em>k</em> is the window size (must be odd), and <em>border_treatment</em> can
+be 0 ('padwhite'), which sets window pixels outside the image to white,
+or 1 ('reflect'), for reflecting boundary conditions.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> mean()</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/mean_plugin_00.png" src="images/mean_plugin_00.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="min-max-filter">
+<h1><a class="toc-backref" href="#id21"><tt class="docutils literal">min_max_filter</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float] <strong>min_max_filter</strong> (int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [min|max] <em>filter</em> = min, int <em>k_vertical</em> = 0)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">David Kolanus</td>
+</tr>
+</tbody>
+</table>
+<p>Within each <em>k</em> times <em>k</em> window, set the center pixel to the minimum or
+maximum value of all pixels inside the window.</p>
+<p><em>k</em> is the window size (must be odd) and <em>filter</em> is the filter type
+(0 for min, 1 for max). When <em>k_vertical</em> is nonzero, the vertical size of
+the window is set to <em>k_vertical</em> instead of <em>k</em>.</p>
+<p>This function does the same as <em>rank(1,k,border_treatment=1)</em>, but is
+much faster because the runtime of <em>min_max_filter</em> is constant in
+the window size. The same algorithm has been developed independently
+by van Herk and Gil and Werman. See</p>
+<blockquote>
+<p>M. van Herk: <em>A fast algorithm for local minimum and maximum filters
+on rectangular and octagonal kernels.</em> Pattern Recognition Letters 13,
+pp. 517-521, 1992</p>
+<p>J. Gil, M. Werman: <em>Computing 2-D min, median, and max filters.</em>
+IEEE Transactions on Pattern Analysis and Machine Intelligence 15,
+pp. 504-507, 1993</p>
+</blockquote>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> min_max_filter()</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/min_max_filter_plugin_00.png" src="images/min_max_filter_plugin_00.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="rank">
+<h1><a class="toc-backref" href="#id22"><tt class="docutils literal">rank</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float] <strong>rank</strong> (int <em>rank</em>, int <em>k</em> = 3, <tt class="docutils literal">Choice</tt> [padwhite|reflect] <em>border_treatment</em> = reflect)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">misc_filters.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz and David Kolanus</td>
+</tr>
+</tbody>
+</table>
+<p>Within each <em>k</em> times <em>k</em> window, set the center pixel to the <em>r</em>-th ranked
+value.</p>
+<p>Note that for <tt class="docutils literal">Onebit</tt> images, actually <em>rank(k*k - r + 1)</em> is computed instead
+of <em>rank(r)</em>. This has the effect that you do not need to worry whether
+your image is a greyscale or onebit image: in all cases low values
+for <em>r</em> will darken the image and high values will light it up.</p>
+<dl class="docutils">
+<dt><em>rank</em> (1, 2, ..., <em>k</em> * <em>k</em>)</dt>
+<dd>The rank of the windows pixels to select for the center. (k*k+1)/2 is
+equivalent to the median.</dd>
+<dt><em>k</em> (3, 5 ,7, ...)</dt>
+<dd>The window size (must be odd).</dd>
+<dt><em>border_treatment</em> (0, 1)</dt>
+<dd>When 0 ('padwhite'), window pixels outside the image are set to white.
+When 1 ('reflect'), reflecting boundary conditions are used.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> rank(2)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/rank_plugin_00.png" src="images/rank_plugin_00.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 2:</strong> rank(5)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/rank_plugin_01.png" src="images/rank_plugin_01.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 3:</strong> rank(8)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/rank_plugin_02.png" src="images/rank_plugin_02.png" style="width: 96px; height: 67px;" />
+</div>
+<div class="section" id="simple-sharpen">
+<h1><a class="toc-backref" href="#id23"><tt class="docutils literal">simple_sharpen</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>simple_sharpen</strong> (float <em>sharpening_factor</em> = 0.50)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Perform simple sharpening.</p>
+<dl class="docutils">
+<dt><em>sharpening_factor</em></dt>
+<dd>The amount of sharpening to perform.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> simple_sharpen(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/simple_sharpen_plugin_00.png" src="images/simple_sharpen_plugin_00.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 2:</strong> simple_sharpen(3.0)</p>
+<img alt="images/RGB_generic.png" src="images/RGB_generic.png" style="width: 227px; height: 129px;" />
+<img alt="images/simple_sharpen_plugin_01.png" src="images/simple_sharpen_plugin_01.png" style="width: 227px; height: 129px;" />
+</div>
+<div class="section" id="sobel-edge-detection">
+<h1><a class="toc-backref" href="#id24"><tt class="docutils literal">sobel_edge_detection</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>sobel_edge_detection</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">convolution.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom (With code from VIGRA by Ullrich Köthe)</td>
+</tr>
+</tbody>
+</table>
+<p>Performs simple Sobel edge detection on the image.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> sobel_edge_detection(1.0)</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/sobel_edge_detection_plugin_00.png" src="images/sobel_edge_detection_plugin_00.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 2:</strong> sobel_edge_detection(3.0)</p>
+<img alt="images/RGB_generic.png" src="images/RGB_generic.png" style="width: 227px; height: 129px;" />
+<img alt="images/sobel_edge_detection_plugin_01.png" src="images/sobel_edge_detection_plugin_01.png" style="width: 227px; height: 129px;" />
+</div>
+<div class="section" id="wiener-filter">
+<h1><a class="toc-backref" href="#id25"><tt class="docutils literal">wiener_filter</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>wiener_filter</strong> (int <em>region size</em> = 5, float <em>noise variance</em> = -1.00)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Filter</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">binarization.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">John Ashley Burgoyne and Ichiro Fujinaga</td>
+</tr>
+</tbody>
+</table>
+<p>Adaptive Wiener filter for de-noising.</p>
+<p>See:</p>
+<p>J. Lim. 2001. <em>Two-Dimensional Signal Processing.</em> Englewood
+Cliffs: Prentice Hall.</p>
+<dl class="docutils">
+<dt><em>region_size</em></dt>
+<dd>The size of the region within which to calculate the filter
+coefficients.</dd>
+<dt><em>noise_variance</em></dt>
+<dd>Variance of the noise in the image. If negative, estimated
+automatically as the median of local variances.</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> wiener_filter()</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/wiener_filter_plugin_00.png" src="images/wiener_filter_plugin_00.png" style="width: 96px; height: 67px;" />
+<p><strong>Example 2:</strong> wiener_filter()</p>
+<img alt="images/Grey16_generic.png" src="images/Grey16_generic.png" style="width: 82px; height: 71px;" />
+<img alt="images/wiener_filter_plugin_01.png" src="images/wiener_filter_plugin_01.png" style="width: 82px; height: 71px;" />
+<p><strong>Example 3:</strong> wiener_filter()</p>
+<img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
+<img alt="images/wiener_filter_plugin_02.png" src="images/wiener_filter_plugin_02.png" style="width: 96px; height: 67px;" />
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

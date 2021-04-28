@@ -3,31 +3,166 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>index.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Gamera 3.x documentation</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="gamera-3-x-documentation">
+<h1 class="title">Gamera 3.x documentation</h1>
 
-
-<p>b'========================nGamera 3.x documentationn========================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn:Editors: Michael Droettboom, Christoph DalitznnIntroductionn============nnThis documentation consists of some HOW TO documentation and somenreference documentation.  In addition, there are some more formalnpublished papers and a tutorial available from the <a href="#id3"><span class="problematic" id="id4">`Gamera website`__</span></a>.nn.. __: <a class="reference external" href="http://gamera.informatik.hsnr.de/nnOverviewn========nn">http://gamera.informatik.hsnr.de/nnOverviewn========nn</a>- <a href="#id3"><span class="problematic" id="id5">`Gentle overview of Gamera`__</span></a>: For a less-detailed idea of what Gameran  is and does.nn.. __: overview.htmlnnHow Ton======nnHow to <em>use</em> Gamera:nn- <a href="#id3"><span class="problematic" id="id6">`Building and installing Gamera`__</span></a>: The basics to get you startedn  with running Gamera.nn.. __: install.htmlnn- <a href="#id3"><span class="problematic" id="id7">`Training tutorial`__</span></a>: A step-by-step tutorial about how to build n  training sets.nn.. __: training_tutorial.htmlnn- <a href="#id3"><span class="problematic" id="id8">`Getting started writing Gamera scripts`__</span></a>: How to start writing an  Gamera-based application.nn.. __: script.htmlnn- <a href="#id3"><span class="problematic" id="id9">`The Gamera GUI`__</span></a>: How to use the integrated GUI.  Additionally,n  this describes how to train images.nn.. __: gui.htmlnn- <a href="#id3"><span class="problematic" id="id10">`matplotlib support`__</span></a>: Using Gamera support for the popular <a href="#id32"><span class="problematic" id="id33">matplotlib_</span></a> plotting library.nn.. __: matplotlib_support.htmln.. _matplotlib: <a class="reference external" href="http://matplotlib.sourceforge.net/nn">http://matplotlib.sourceforge.net/nn</a>- <a href="#id3"><span class="problematic" id="id11">`Classifier API`__</span></a>: How to use image classifiers from Python.nn.. __: classify.htmlnn- <a href="#id3"><span class="problematic" id="id12">`GA Optimization`__</span></a>: How to use the kNN-classifier optimization through genetic algorithms.nn.. __: ga_optimization.htmlnnnHow to <em>extend</em> Gamera:nn- <a href="#id3"><span class="problematic" id="id13">`Writing Gamera plugins`__</span></a>: Learn how to write new image methods.nn.. __: writing_plugins.htmlnn- <a href="#id3"><span class="problematic" id="id14">`Specifying arguments for plugin generation and dialog boxes`__</span></a>nn.. __: args.htmlnn- <a href="#id3"><span class="problematic" id="id15">`The Gamera C++ Image API`__</span></a>: How to work with Gamera's images from C++.nn.. __: image_api.htmlnn- <a href="#id3"><span class="problematic" id="id16">`Custom data types in plugins`__</span></a>: How to pass, access and returnn  custom data types between C++ and Python.nn.. __: plugins_custom_types.htmlnn- <a href="#id3"><span class="problematic" id="id17">`Writing Gamera toolkits`__</span></a>: How to package your code in an  redistributable package that is easier to build and lets you keepn  your own code separate from the Gamera core.nn.. __: writing_toolkits.htmlnn- <a href="#id3"><span class="problematic" id="id18">`Unit testing`__</span></a>: How to write and run unit-tests with Gamera.nn.. __: unit_testing.htmlnnReferencen=========nn- <a href="#id3"><span class="problematic" id="id19">`Plugins`__</span></a>: Documentation of all the included plugins.nn.. __: plugins.htmlnn- <a href="#id3"><span class="problematic" id="id20">`Directory hierarchy`__</span></a>: Where the files are.nn.. __: directory_heirarchy.htmlnn- <a href="#id3"><span class="problematic" id="id21">`Image types`__</span></a>: The different types of images available in Gamerann.. __: image_types.htmlnn  + <a href="#id3"><span class="problematic" id="id22">`RGBPixel`__</span></a>: properties of color values in Gamerann.. __: gamera.core.RGBPixel.htmlnn- <a href="#id3"><span class="problematic" id="id23">`Dimension types`__</span></a>: The various classes to manage bounding boxes and geometry.n   n.. __: dimension_types.htmlnn- <a href="#id3"><span class="problematic" id="id24">`ImageData`__</span></a>: Manages the underlying image data viewed by <tt class="docutils literal">Image</tt> objects.nn.. __: gamera.core.ImageData.htmlnn- <a href="#id3"><span class="problematic" id="id25">`ImageInfo objects`__</span></a>: Used to examine on-disk image files without loading themnn.. __: gamera.core.ImageInfo.htmlnn- <a href="#id3"><span class="problematic" id="id26">`XML format`__</span></a>: The XML files that Gamera uses to store training data.nn.. __: xml_format.htmlnnOptional libraries that can be useful for some tasks:nn- <a href="#id3"><span class="problematic" id="id27">`Graph objects`__</span></a>: A simple library for dealing with graphn  structures.nn.. __: graph.htmlnn- <a href="#id3"><span class="problematic" id="id28">`KdTree objects`__</span></a>: A simple library for speeding up two (or higher) n  dimensional search operations.nn.. __: kdtree.htmlnnnMigration from Gamera 2.x to Gamera 3.xn=======================================nn- <a href="#id3"><span class="problematic" id="id29">`Major changes`__</span></a> from Gamera 2.x to Gamera 3.xnn.. __: major_changes_3x.htmlnn- <a href="#id3"><span class="problematic" id="id30">`Migration guide`__</span></a>: Describes how to migrate existing Gamera scriptsn  to Gamera 3.xnn.. __: migration_guide.htmlnnAcknowledgementsn================nnMany thanks to Teal Anderson for finding numerous typos among thenhideous jargon of these documents.nnSome of the material presented here is based on documentation ornpapers by Karl MacMillan and Ichiro Fujinaga.nnGamera was initially funded through the NationalnScience Foundation's Digital Library Initiative 2 (Award \#9817430),nan Institute of Museum and Library Services National Leadership Grant,nand support from the Lester S. Levy Estate.nnThese documents were produced using <a href="#id34"><span class="problematic" id="id35">reStructuredText_</span></a>.nn.. _reStructuredText: <a class="reference external" href="http://docutils.sourceforge.net/rst.htmlnnThe">http://docutils.sourceforge.net/rst.htmlnnThe</a> documentation was written by Michael Droettboom and Christoph Dalitz.nPermission is granted to copy, distribute and/or modify this documentationnunder the terms of the <a href="#id3"><span class="problematic" id="id31">`Creative Commons Attribution Share-Alike License (CC-BY-SA) v3.0`__</span></a>. In addition, permission is granted to use and/ornmodify the code snippets from the documentation without restrictions.nn.. __: <a class="reference external" href="http://creativecommons.org/licenses/by-sa/3.0/n">http://creativecommons.org/licenses/by-sa/3.0/n</a>'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/index.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/index.txt</tt>, line 2); <em>backlinks: <a href="#id4">1</a>, <a href="#id5">2</a>, <a href="#id6">3</a>, <a href="#id7">4</a>, <a href="#id8">5</a>, <a href="#id9">6</a>, <a href="#id10">7</a>, <a href="#id11">8</a>, <a href="#id12">9</a>, <a href="#id13">10</a>, <a href="#id14">11</a>, <a href="#id15">12</a>, <a href="#id16">13</a>, <a href="#id17">14</a>, <a href="#id18">15</a>, <a href="#id19">16</a>, <a href="#id20">17</a>, <a href="#id21">18</a>, <a href="#id22">19</a>, <a href="#id23">20</a>, <a href="#id24">21</a>, <a href="#id25">22</a>, <a href="#id26">23</a>, <a href="#id27">24</a>, <a href="#id28">25</a>, <a href="#id29">26</a>, <a href="#id30">27</a>, <a href="#id31">28</a></em></p>
-Anonymous hyperlink mismatch: 28 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id32">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/index.txt</tt>, line 1); <em><a href="#id33">backlink</a></em></p>
-Unknown target name: &quot;matplotlib&quot;.</div>
-<div class="system-message" id="id34">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/index.txt</tt>, line 1); <em><a href="#id35">backlink</a></em></p>
-Unknown target name: &quot;restructuredtext&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id29">Introduction</a></li>
+<li><a class="reference internal" href="#overview" id="id30">Overview</a></li>
+<li><a class="reference internal" href="#how-to" id="id31">How To</a></li>
+<li><a class="reference internal" href="#reference" id="id32">Reference</a></li>
+<li><a class="reference internal" href="#migration-from-gamera-2-x-to-gamera-3-x" id="id33">Migration from Gamera 2.x to Gamera 3.x</a></li>
+<li><a class="reference internal" href="#acknowledgements" id="id34">Acknowledgements</a></li>
+</ul>
 </div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Editors:</th><td class="field-body">Michael Droettboom, Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id29">Introduction</a></h1>
+<p>This documentation consists of some HOW TO documentation and some
+reference documentation.  In addition, there are some more formal
+published papers and a tutorial available from the <a class="reference external" href="http://gamera.informatik.hsnr.de/">Gamera website</a>.</p>
+</div>
+<div class="section" id="overview">
+<h1><a class="toc-backref" href="#id30">Overview</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="overview.html">Gentle overview of Gamera</a>: For a less-detailed idea of what Gamera
+is and does.</li>
+</ul>
+</div>
+<div class="section" id="how-to">
+<h1><a class="toc-backref" href="#id31">How To</a></h1>
+<p>How to <em>use</em> Gamera:</p>
+<ul class="simple">
+<li><a class="reference external" href="install.html">Building and installing Gamera</a>: The basics to get you started
+with running Gamera.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="training_tutorial.html">Training tutorial</a>: A step-by-step tutorial about how to build
+training sets.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="script.html">Getting started writing Gamera scripts</a>: How to start writing a
+Gamera-based application.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="gui.html">The Gamera GUI</a>: How to use the integrated GUI.  Additionally,
+this describes how to train images.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="matplotlib_support.html">matplotlib support</a>: Using Gamera support for the popular <a class="reference external" href="http://matplotlib.sourceforge.net/">matplotlib</a> plotting library.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="classify.html">Classifier API</a>: How to use image classifiers from Python.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="ga_optimization.html">GA Optimization</a>: How to use the kNN-classifier optimization through genetic algorithms.</li>
+</ul>
+<p>How to <em>extend</em> Gamera:</p>
+<ul class="simple">
+<li><a class="reference external" href="writing_plugins.html">Writing Gamera plugins</a>: Learn how to write new image methods.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="args.html">Specifying arguments for plugin generation and dialog boxes</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="image_api.html">The Gamera C++ Image API</a>: How to work with Gamera's images from C++.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="plugins_custom_types.html">Custom data types in plugins</a>: How to pass, access and return
+custom data types between C++ and Python.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="writing_toolkits.html">Writing Gamera toolkits</a>: How to package your code in a
+redistributable package that is easier to build and lets you keep
+your own code separate from the Gamera core.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="unit_testing.html">Unit testing</a>: How to write and run unit-tests with Gamera.</li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h1><a class="toc-backref" href="#id32">Reference</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="plugins.html">Plugins</a>: Documentation of all the included plugins.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="directory_heirarchy.html">Directory hierarchy</a>: Where the files are.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="image_types.html">Image types</a>: The different types of images available in Gamera</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="gamera.core.RGBPixel.html">RGBPixel</a>: properties of color values in Gamera</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><a class="reference external" href="dimension_types.html">Dimension types</a>: The various classes to manage bounding boxes and geometry.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="gamera.core.ImageData.html">ImageData</a>: Manages the underlying image data viewed by <tt class="docutils literal">Image</tt> objects.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="gamera.core.ImageInfo.html">ImageInfo objects</a>: Used to examine on-disk image files without loading them</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="xml_format.html">XML format</a>: The XML files that Gamera uses to store training data.</li>
+</ul>
+<p>Optional libraries that can be useful for some tasks:</p>
+<ul class="simple">
+<li><a class="reference external" href="graph.html">Graph objects</a>: A simple library for dealing with graph
+structures.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="kdtree.html">KdTree objects</a>: A simple library for speeding up two (or higher)
+dimensional search operations.</li>
+</ul>
+</div>
+<div class="section" id="migration-from-gamera-2-x-to-gamera-3-x">
+<h1><a class="toc-backref" href="#id33">Migration from Gamera 2.x to Gamera 3.x</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="major_changes_3x.html">Major changes</a> from Gamera 2.x to Gamera 3.x</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="migration_guide.html">Migration guide</a>: Describes how to migrate existing Gamera scripts
+to Gamera 3.x</li>
+</ul>
+</div>
+<div class="section" id="acknowledgements">
+<h1><a class="toc-backref" href="#id34">Acknowledgements</a></h1>
+<p>Many thanks to Teal Anderson for finding numerous typos among the
+hideous jargon of these documents.</p>
+<p>Some of the material presented here is based on documentation or
+papers by Karl MacMillan and Ichiro Fujinaga.</p>
+<p>Gamera was initially funded through the National
+Science Foundation's Digital Library Initiative 2 (Award #9817430),
+an Institute of Museum and Library Services National Leadership Grant,
+and support from the Lester S. Levy Estate.</p>
+<p>These documents were produced using <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>.</p>
+<p>The documentation was written by Michael Droettboom and Christoph Dalitz.
+Permission is granted to copy, distribute and/or modify this documentation
+under the terms of the <a class="reference external" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Share-Alike License (CC-BY-SA) v3.0</a>. In addition, permission is granted to use and/or
+modify the code snippets from the documentation without restrictions.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

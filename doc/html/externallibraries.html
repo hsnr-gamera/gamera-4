@@ -3,138 +3,376 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>externallibraries.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>ExternalLibraries</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="externallibraries">
+<h1 class="title">ExternalLibraries</h1>
 
-
-<p>b'nExternalLibrariesn=================nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnnNumpyn-----nn``from_numpy``n``````````````nn``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>from_numpy</strong> (object <em>array</em>)nnn:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Category: ExternalLibraries/Numpyn:Defined in: numpy_io.pyn:Author: Robert Butz based on code by Alex CobbnnnInstantiates a Gamera image from a Numeric multi-dimensionalnarray <em>array</em>.n    nThe array must be one of the following types and will map tonthe corresponding Gamera image type:nn+------------+------------------+n| Gamera     | Numpy            <a href="#id3"><span class="problematic" id="id4">|\n|</span></a> type       | type             <a href="#id5"><span class="problematic" id="id6">|\n+============+==================+\n|</span></a> RGB        | uint8 (on 3      <a href="#id7"><span class="problematic" id="id8">|\n|</span></a>            | planes)          <a href="#id9"><span class="problematic" id="id10">|\n+------------+------------------+\n|</span></a> GREYSCALE  | uint8            <a href="#id11"><span class="problematic" id="id12">|\n+------------+------------------+\n|</span></a> GREY16     | uint32           <a href="#id13"><span class="problematic" id="id14">|\n+------------+------------------+\n|</span></a> ONEBIT     | uint16           <a href="#id15"><span class="problematic" id="id16">|\n+------------+------------------+\n|</span></a> FLOAT      | float64          <a href="#id17"><span class="problematic" id="id18">|\n+------------+------------------+\n|</span></a> COMPLEX    | complex128       <a href="#id19"><span class="problematic" id="id20">|\n+------------+------------------+\n\nRequires two copying operations;  may fail for very large images.\n\nTo use this function, which is not a method on images, do the\nfollowing:\n\n.. code:: Python\n\n  from gamera.plugins import numpy_io\n  image = numpy_io.from_numpy(array)\n\n\n``to_numpy``\n````````````\n\nobject **to_numpy** ()\n\n\n:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]\n:Returns: object\n:Category: ExternalLibraries/Numpy\n:Defined in: numpy_io.py\n:Author: Robert Butz based on code by Alex Cobb\n\n\nReturns an ``Numeric`` array containing a copy of the image\'s data.\n\nThe array will be one of the following types corresponding to\neach of the Gamera image types:\n\n+------------+-----------------+\n|</span></a> Gamera     | Numeric         <a href="#id21"><span class="problematic" id="id22">|\n|</span></a> type       | type            <a href="#id23"><span class="problematic" id="id24">|\n+============+=================+\n|</span></a> RGB        | uint8 (on 3     <a href="#id25"><span class="problematic" id="id26">|\n|</span></a>            | planes)         <a href="#id27"><span class="problematic" id="id28">|\n+------------+-----------------+\n|</span></a> GREYSCALE  | uint8           <a href="#id29"><span class="problematic" id="id30">|\n+------------+-----------------+\n|</span></a> GREY16     | uint32          <a href="#id31"><span class="problematic" id="id32">|\n+------------+-----------------+\n|</span></a> ONEBIT     | uint16          <a href="#id33"><span class="problematic" id="id34">|\n+------------+-----------------+\n|</span></a> FLOAT      | float64         <a href="#id35"><span class="problematic" id="id36">|\n+------------+-----------------+\n|</span></a> COMPLEX    | complex128      <a href="#id37"><span class="problematic" id="id38">|\n+------------+-----------------+\n\nRequires *three* copies, and may fail for very large images.\n\nThis method can be used for utilizing special functions present in\nnumpy. If you need to compute the discrete fourier transform of\nan image, you can use numpy, as in the following  example:\n\n.. code:: Python\n\n  from gamera.plugins import numpy_io\n  from numpy import fft\n  nparr = image.to_numpy()\n  fourarr = fft.fft2(nparr)\n  fourimage = numpy_io.from_numpy(fourarr)\n\n----------\n\n**Example 1:** to_numpy\n\n|to_numpy_plugin_00_00|</span></a> <a href="#id39"><span class="problematic" id="id40">|to_numpy_plugin_00_01|</span></a> nn.. <a href="#id41"><span class="problematic" id="id42">|to_numpy_plugin_00_00|</span></a> image:: images/to_numpy_plugin_00_00.pngn   :height: 129n   :width: 227nn.. <a href="#id43"><span class="problematic" id="id44">|to_numpy_plugin_00_01|</span></a> image:: images/to_numpy_plugin_00_01.pngn   :height: 129n   :width: 227nn**Example 2:** to_numpynn|to_numpy_plugin_01_00| <a href="#id45"><span class="problematic" id="id46">|to_numpy_plugin_01_01|</span></a> nn.. <a href="#id47"><span class="problematic" id="id48">|to_numpy_plugin_01_00|</span></a> image:: images/to_numpy_plugin_01_00.pngn   :height: 67n   :width: 96nn.. <a href="#id49"><span class="problematic" id="id50">|to_numpy_plugin_01_01|</span></a> image:: images/to_numpy_plugin_01_01.pngn   :height: 67n   :width: 96nn**Example 3:** to_numpynn|to_numpy_plugin_02_00| <a href="#id51"><span class="problematic" id="id52">|to_numpy_plugin_02_01|</span></a> nn.. <a href="#id53"><span class="problematic" id="id54">|to_numpy_plugin_02_00|</span></a> image:: images/to_numpy_plugin_02_00.pngn   :height: 99n   :width: 69nn.. <a href="#id55"><span class="problematic" id="id56">|to_numpy_plugin_02_01|</span></a> image:: images/to_numpy_plugin_02_01.pngn   :height: 99n   :width: 69nn**Example 4:** to_numpynn|to_numpy_plugin_03_00| <a href="#id57"><span class="problematic" id="id58">|to_numpy_plugin_03_01|</span></a> nn.. <a href="#id59"><span class="problematic" id="id60">|to_numpy_plugin_03_00|</span></a> image:: images/to_numpy_plugin_03_00.pngn   :height: 67n   :width: 96nn.. <a href="#id61"><span class="problematic" id="id62">|to_numpy_plugin_03_01|</span></a> image:: images/to_numpy_plugin_03_01.pngn   :height: 67n   :width: 96nn**Example 5:** to_numpynn|to_numpy_plugin_04_00| <a href="#id63"><span class="problematic" id="id64">|to_numpy_plugin_04_01|</span></a> nn.. <a href="#id65"><span class="problematic" id="id66">|to_numpy_plugin_04_00|</span></a> image:: images/to_numpy_plugin_04_00.pngn   :height: 67n   :width: 96nn.. <a href="#id67"><span class="problematic" id="id68">|to_numpy_plugin_04_01|</span></a> image:: images/to_numpy_plugin_04_01.pngn   :height: 67n   :width: 96nnnnnPILn---nn``from_pil``n````````````nn``Image`` [GreyScale|RGB|Float] <strong>from_pil</strong> (object <em>image</em>)nnn:Returns: <tt class="docutils literal">Image</tt> [GreyScale|RGB|Float]n:Category: ExternalLibraries/PILn:Defined in: pil_io.pyn:Author: Alex CobbnnnInstantiates a Gamera image from a Python Imaging Librarynimage <em>image</em>.nnOnly RGB or 8-bit greyscale mode PIL images are supported.nRequires a copying operation;  may fail for very large images.nnThis can, e.g., be used to read images from file formats notndirectly supported by gamera, as JPEG images:nn.. code:: Pythonnn  # Beware: name &quot;Image&quot; is already used in Gamera!n  import Image as Piln  from pil_io importnn  # read a JPEG image and convert it to a Gamera imagen  pilimg = Pil.open(&quot;image.jpg&quot;)n  img = from_pil(pilimg)nnn``to_pil``n``````````nnobject <strong>to_pil</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [RGB|GreyScale]n:Returns: objectn:Category: ExternalLibraries/PILn:Defined in: pil_io.pyn:Author: Alex CobbnnnReturns a Python Imaging Library image containing a copy ofnimage's data.nnOnly RGB and Greyscale images are supported.nMay fail for very large images.nn----------nn**Example 1:** to_pilnn|to_pil_plugin_00_00| <a href="#id69"><span class="problematic" id="id70">|to_pil_plugin_00_01|</span></a> nn.. <a href="#id71"><span class="problematic" id="id72">|to_pil_plugin_00_00|</span></a> image:: images/to_pil_plugin_00_00.pngn   :height: 129n   :width: 227nn.. <a href="#id73"><span class="problematic" id="id74">|to_pil_plugin_00_01|</span></a> image:: images/to_pil_plugin_00_01.pngn   :height: 129n   :width: 227nn**Example 2:** to_pilnn|to_pil_plugin_01_00| <a href="#id75"><span class="problematic" id="id76">|to_pil_plugin_01_01|</span></a> nn.. <a href="#id77"><span class="problematic" id="id78">|to_pil_plugin_01_00|</span></a> image:: images/to_pil_plugin_01_00.pngn   :height: 67n   :width: 96nn.. <a href="#id79"><span class="problematic" id="id80">|to_pil_plugin_01_01|</span></a> image:: images/to_pil_plugin_01_01.pngn   :height: 67n   :width: 96nnnn``_from_raw_string``n--------------------nn``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>_from_raw_string</strong> (<tt class="docutils literal">Point</tt> <em>offset</em>, <tt class="docutils literal">Dim</tt> <em>dim</em>, int <em>pixel_type</em>, int <em>storage_type</em>, object <em>data_string</em>)nnn:Returns: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Category: ExternalLibrariesn:Defined in: string_io.pyn:Author: Alex CobbnnnInstantiates an image from binary data in a Python string.nnRequires a copying operation;  may fail for very large images.nnThis function is not intended to be used directly.  To move datanto/from Numeric/numarray/PIL, use the functions in numeric_io.py,nnumarray_io.py and pil_io.py respectively.nnn``_to_raw_string``n------------------nnobject <strong>_to_raw_string</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Returns: objectn:Category: ExternalLibrariesn:Defined in: string_io.pyn:Author: Alex CobbnnnReturns the image's binary data as a Python string.nnRequires a copying operation;  may fail for very large images.nnThis function is not intended to be used directly.  To move datanto/from Numeric/numarray/PIL, use the functions in numeric_io.py,nnumarray_io.py and pil_io.py respectively.nnnncvn--nn``from_cv``n```````````nn``Image`` [GreyScale|RGB|Float] <strong>from_cv</strong> (object <em>image</em>)nnn:Returns: <tt class="docutils literal">Image</tt> [GreyScale|RGB|Float]n:Category: ExternalLibraries/cvn:Defined in: cv_io.pyn:Author: Manuel JeltschnnnInstantiates a Gamera RGB image from an OpenCVncv.cvmat or cv.iplimage. May fail for very large images.nnUsage example:nn.. code:: Pythonnn  from gamera.plugins import cv_ionn  # read a JPEG image and convert it to a Gamera imagen  cvImg = cv.LoadImage(&quot;foo.jpg&quot;)n  img = cv_io.from_cv(cvImg)nnn``to_cv``n`````````nnobject <strong>to_cv</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [RGB|GreyScale|OneBit]n:Returns: objectn:Category: ExternalLibraries/cvn:Defined in: cv_io.pyn:Author: Manuel JeltschnnnReturns an OpenCv image (cv.cvmat) containing a copy ofnimage's data.nnOnly RGB, Greyscale and Onebit images are supported.nMay fail for very large images.nnn``to_buffer``n-------------nn**to_buffer** (object <em>Buffer</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Category: ExternalLibrariesn:Defined in: gui_support.pyn:Author: Michael Droettboom and Karl MacMillannnnEncodes the image into a 'buffer' required by wx.Image.n(i.e. 8-bit RGB triplets). If you need to convert a gamera imagen*scaled_image* to a wx.Bitmap, you can do so as follows:nn.. code:: Pythonn    n  wximg = wx.EmptyImage(scaled_image.ncols, scaled_image.nrows)n  scaled_image.to_buffer(wximg.GetDataBuffer())n  wxbmp = wx.BitmapFromImage(wximg)nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+============+==================+n&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+n&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+n&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+n&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+n&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+n&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id20">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+------------------+nnRequires two copying operations; may fail for very large images.nnTo use this function, which is not a method on images, do thenfollowing:nn.. code:: Pythonnn from gamera.plugins import numpy_ion image = numpy_io.from_numpy(array)nnn``to_numpy``n````````````nnobject **to_numpy** ()nnn:Operates on: ``Image`` [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Returns: objectn:Category: ExternalLibraries/Numpyn:Defined in: numpy_io.pyn:Author: Robert Butz based on code by Alex CobbnnnReturns an ``Numeric`` array containing a copy of the image's data.nnThe array will be one of the following types corresponding toneach of the Gamera image types:nn+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id21">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id22">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id23">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id24">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+============+=================+n&quot;.</div>
-<div class="system-message" id="id25">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id26">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id27">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id28">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id35">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id36">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+n&quot;.</div>
-<div class="system-message" id="id37">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id38">backlink</a></em></p>
-Undefined substitution referenced: &quot;n+------------+-----------------+nnRequires *three* copies, and may fail for very large images.nnThis method can be used for utilizing special functions present innnumpy. If you need to compute the discrete fourier transform ofnan image, you can use numpy, as in the following example:nn.. code:: Pythonnn from gamera.plugins import numpy_ion from numpy import fftn nparr = image.to_numpy()n fourarr = fft.fft2(nparr)n fourimage = numpy_io.from_numpy(fourarr)nn----------nn**Example 1:** to_numpynn|to_numpy_plugin_00_00&quot;.</div>
-<div class="system-message" id="id39">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id40">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_00_01&quot;.</div>
-<div class="system-message" id="id41">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id42">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_00_00&quot;.</div>
-<div class="system-message" id="id43">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id44">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_00_01&quot;.</div>
-<div class="system-message" id="id45">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id46">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_01_01&quot;.</div>
-<div class="system-message" id="id47">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id48">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_01_00&quot;.</div>
-<div class="system-message" id="id49">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id50">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_01_01&quot;.</div>
-<div class="system-message" id="id51">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id52">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_02_01&quot;.</div>
-<div class="system-message" id="id53">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id54">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_02_00&quot;.</div>
-<div class="system-message" id="id55">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id56">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_02_01&quot;.</div>
-<div class="system-message" id="id57">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id58">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_03_01&quot;.</div>
-<div class="system-message" id="id59">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id60">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_03_00&quot;.</div>
-<div class="system-message" id="id61">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id62">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_03_01&quot;.</div>
-<div class="system-message" id="id63">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id64">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_04_01&quot;.</div>
-<div class="system-message" id="id65">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id66">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_04_00&quot;.</div>
-<div class="system-message" id="id67">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id68">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_numpy_plugin_04_01&quot;.</div>
-<div class="system-message" id="id69">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id70">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_00_01&quot;.</div>
-<div class="system-message" id="id71">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id72">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_00_00&quot;.</div>
-<div class="system-message" id="id73">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id74">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_00_01&quot;.</div>
-<div class="system-message" id="id75">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id76">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_01_01&quot;.</div>
-<div class="system-message" id="id77">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id78">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_01_00&quot;.</div>
-<div class="system-message" id="id79">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/externallibraries.txt</tt>, line 1); <em><a href="#id80">backlink</a></em></p>
-Undefined substitution referenced: &quot;to_pil_plugin_01_01&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#numpy" id="id1">Numpy</a><ul>
+<li><a class="reference internal" href="#from-numpy" id="id2"><tt class="docutils literal">from_numpy</tt></a></li>
+<li><a class="reference internal" href="#to-numpy" id="id3"><tt class="docutils literal">to_numpy</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pil" id="id4">PIL</a><ul>
+<li><a class="reference internal" href="#from-pil" id="id5"><tt class="docutils literal">from_pil</tt></a></li>
+<li><a class="reference internal" href="#to-pil" id="id6"><tt class="docutils literal">to_pil</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-raw-string" id="id7"><tt class="docutils literal">_from_raw_string</tt></a></li>
+<li><a class="reference internal" href="#to-raw-string" id="id8"><tt class="docutils literal">_to_raw_string</tt></a></li>
+<li><a class="reference internal" href="#cv" id="id9">cv</a><ul>
+<li><a class="reference internal" href="#from-cv" id="id10"><tt class="docutils literal">from_cv</tt></a></li>
+<li><a class="reference internal" href="#to-cv" id="id11"><tt class="docutils literal">to_cv</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#to-buffer" id="id12"><tt class="docutils literal">to_buffer</tt></a></li>
+</ul>
 </div>
+<div class="section" id="numpy">
+<h1><a class="toc-backref" href="#id1">Numpy</a></h1>
+<div class="section" id="from-numpy">
+<h2><a class="toc-backref" href="#id2"><tt class="docutils literal">from_numpy</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>from_numpy</strong> (object <em>array</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/Numpy</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">numpy_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Robert Butz based on code by Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Instantiates a Gamera image from a Numeric multi-dimensional
+array <em>array</em>.</p>
+<p>The array must be one of the following types and will map to
+the corresponding Gamera image type:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Gamera
+type</th>
+<th class="head">Numpy
+type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>RGB</td>
+<td>uint8 (on 3
+planes)</td>
+</tr>
+<tr><td>GREYSCALE</td>
+<td>uint8</td>
+</tr>
+<tr><td>GREY16</td>
+<td>uint32</td>
+</tr>
+<tr><td>ONEBIT</td>
+<td>uint16</td>
+</tr>
+<tr><td>FLOAT</td>
+<td>float64</td>
+</tr>
+<tr><td>COMPLEX</td>
+<td>complex128</td>
+</tr>
+</tbody>
+</table>
+<p>Requires two copying operations;  may fail for very large images.</p>
+<p>To use this function, which is not a method on images, do the
+following:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">numpy_io</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="to-numpy">
+<h2><a class="toc-backref" href="#id3"><tt class="docutils literal">to_numpy</tt></a></h2>
+<p>object <strong>to_numpy</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/Numpy</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">numpy_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Robert Butz based on code by Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an <tt class="docutils literal">Numeric</tt> array containing a copy of the image's data.</p>
+<p>The array will be one of the following types corresponding to
+each of the Gamera image types:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Gamera
+type</th>
+<th class="head">Numeric
+type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>RGB</td>
+<td>uint8 (on 3
+planes)</td>
+</tr>
+<tr><td>GREYSCALE</td>
+<td>uint8</td>
+</tr>
+<tr><td>GREY16</td>
+<td>uint32</td>
+</tr>
+<tr><td>ONEBIT</td>
+<td>uint16</td>
+</tr>
+<tr><td>FLOAT</td>
+<td>float64</td>
+</tr>
+<tr><td>COMPLEX</td>
+<td>complex128</td>
+</tr>
+</tbody>
+</table>
+<p>Requires <em>three</em> copies, and may fail for very large images.</p>
+<p>This method can be used for utilizing special functions present in
+numpy. If you need to compute the discrete fourier transform of
+an image, you can use numpy, as in the following  example:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">fft</span>
+<span class="n">nparr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">fourarr</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">nparr</span><span class="p">)</span>
+<span class="n">fourimage</span> <span class="o">=</span> <span class="n">numpy_io</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">fourarr</span><span class="p">)</span>
+</pre></div>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> to_numpy</p>
+<p><img alt="to_numpy_plugin_00_00" src="images/to_numpy_plugin_00_00.png" style="width: 227px; height: 129px;" /> <img alt="to_numpy_plugin_00_01" src="images/to_numpy_plugin_00_01.png" style="width: 227px; height: 129px;" /></p>
+<p><strong>Example 2:</strong> to_numpy</p>
+<p><img alt="to_numpy_plugin_01_00" src="images/to_numpy_plugin_01_00.png" style="width: 96px; height: 67px;" /> <img alt="to_numpy_plugin_01_01" src="images/to_numpy_plugin_01_01.png" style="width: 96px; height: 67px;" /></p>
+<p><strong>Example 3:</strong> to_numpy</p>
+<p><img alt="to_numpy_plugin_02_00" src="images/to_numpy_plugin_02_00.png" style="width: 69px; height: 99px;" /> <img alt="to_numpy_plugin_02_01" src="images/to_numpy_plugin_02_01.png" style="width: 69px; height: 99px;" /></p>
+<p><strong>Example 4:</strong> to_numpy</p>
+<p><img alt="to_numpy_plugin_03_00" src="images/to_numpy_plugin_03_00.png" style="width: 96px; height: 67px;" /> <img alt="to_numpy_plugin_03_01" src="images/to_numpy_plugin_03_01.png" style="width: 96px; height: 67px;" /></p>
+<p><strong>Example 5:</strong> to_numpy</p>
+<p><img alt="to_numpy_plugin_04_00" src="images/to_numpy_plugin_04_00.png" style="width: 96px; height: 67px;" /> <img alt="to_numpy_plugin_04_01" src="images/to_numpy_plugin_04_01.png" style="width: 96px; height: 67px;" /></p>
+</div>
+</div>
+<div class="section" id="pil">
+<h1><a class="toc-backref" href="#id4">PIL</a></h1>
+<div class="section" id="from-pil">
+<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">from_pil</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|RGB|Float] <strong>from_pil</strong> (object <em>image</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|RGB|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/PIL</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">pil_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Instantiates a Gamera image from a Python Imaging Library
+image <em>image</em>.</p>
+<p>Only RGB or 8-bit greyscale mode PIL images are supported.
+Requires a copying operation;  may fail for very large images.</p>
+<p>This can, e.g., be used to read images from file formats not
+directly supported by gamera, as JPEG images:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Beware: name &quot;Image&quot; is already used in Gamera!</span>
+<span class="kn">import</span> <span class="nn">Image</span> <span class="k">as</span> <span class="nn">Pil</span>
+<span class="kn">from</span> <span class="nn">pil_io</span> <span class="kn">import</span>
+
+<span class="c1"># read a JPEG image and convert it to a Gamera image</span>
+<span class="n">pilimg</span> <span class="o">=</span> <span class="n">Pil</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;image.jpg&quot;</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">from_pil</span><span class="p">(</span><span class="n">pilimg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="to-pil">
+<h2><a class="toc-backref" href="#id6"><tt class="docutils literal">to_pil</tt></a></h2>
+<p>object <strong>to_pil</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [RGB|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/PIL</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">pil_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a Python Imaging Library image containing a copy of
+image's data.</p>
+<p>Only RGB and Greyscale images are supported.
+May fail for very large images.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> to_pil</p>
+<p><img alt="to_pil_plugin_00_00" src="images/to_pil_plugin_00_00.png" style="width: 227px; height: 129px;" /> <img alt="to_pil_plugin_00_01" src="images/to_pil_plugin_00_01.png" style="width: 227px; height: 129px;" /></p>
+<p><strong>Example 2:</strong> to_pil</p>
+<p><img alt="to_pil_plugin_01_00" src="images/to_pil_plugin_01_00.png" style="width: 96px; height: 67px;" /> <img alt="to_pil_plugin_01_01" src="images/to_pil_plugin_01_01.png" style="width: 96px; height: 67px;" /></p>
+</div>
+</div>
+<div class="section" id="from-raw-string">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">_from_raw_string</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>_from_raw_string</strong> (<tt class="docutils literal">Point</tt> <em>offset</em>, <tt class="docutils literal">Dim</tt> <em>dim</em>, int <em>pixel_type</em>, int <em>storage_type</em>, object <em>data_string</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">string_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Instantiates an image from binary data in a Python string.</p>
+<p>Requires a copying operation;  may fail for very large images.</p>
+<p>This function is not intended to be used directly.  To move data
+to/from Numeric/numarray/PIL, use the functions in numeric_io.py,
+numarray_io.py and pil_io.py respectively.</p>
+</div>
+<div class="section" id="to-raw-string">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">_to_raw_string</tt></a></h1>
+<p>object <strong>_to_raw_string</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">string_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Alex Cobb</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the image's binary data as a Python string.</p>
+<p>Requires a copying operation;  may fail for very large images.</p>
+<p>This function is not intended to be used directly.  To move data
+to/from Numeric/numarray/PIL, use the functions in numeric_io.py,
+numarray_io.py and pil_io.py respectively.</p>
+</div>
+<div class="section" id="cv">
+<h1><a class="toc-backref" href="#id9">cv</a></h1>
+<div class="section" id="from-cv">
+<h2><a class="toc-backref" href="#id10"><tt class="docutils literal">from_cv</tt></a></h2>
+<p><tt class="docutils literal">Image</tt> [GreyScale|RGB|Float] <strong>from_cv</strong> (object <em>image</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [GreyScale|RGB|Float]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/cv</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">cv_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Manuel Jeltsch</td>
+</tr>
+</tbody>
+</table>
+<p>Instantiates a Gamera RGB image from an OpenCV
+cv.cvmat or cv.iplimage. May fail for very large images.</p>
+<p>Usage example:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">cv_io</span>
+
+<span class="c1"># read a JPEG image and convert it to a Gamera image</span>
+<span class="n">cvImg</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">LoadImage</span><span class="p">(</span><span class="s2">&quot;foo.jpg&quot;</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">cv_io</span><span class="o">.</span><span class="n">from_cv</span><span class="p">(</span><span class="n">cvImg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="to-cv">
+<h2><a class="toc-backref" href="#id11"><tt class="docutils literal">to_cv</tt></a></h2>
+<p>object <strong>to_cv</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [RGB|GreyScale|OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries/cv</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">cv_io.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Manuel Jeltsch</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an OpenCv image (cv.cvmat) containing a copy of
+image's data.</p>
+<p>Only RGB, Greyscale and Onebit images are supported.
+May fail for very large images.</p>
+</div>
+</div>
+<div class="section" id="to-buffer">
+<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">to_buffer</tt></a></h1>
+<p><strong>to_buffer</strong> (object <em>Buffer</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">ExternalLibraries</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">gui_support.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Encodes the image into a 'buffer' required by wx.Image.
+(i.e. 8-bit RGB triplets). If you need to convert a gamera image
+<em>scaled_image</em> to a wx.Bitmap, you can do so as follows:</p>
+<div class="highlight"><pre><span></span><span class="n">wximg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">EmptyImage</span><span class="p">(</span><span class="n">scaled_image</span><span class="o">.</span><span class="n">ncols</span><span class="p">,</span> <span class="n">scaled_image</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
+<span class="n">scaled_image</span><span class="o">.</span><span class="n">to_buffer</span><span class="p">(</span><span class="n">wximg</span><span class="o">.</span><span class="n">GetDataBuffer</span><span class="p">())</span>
+<span class="n">wxbmp</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">wximg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

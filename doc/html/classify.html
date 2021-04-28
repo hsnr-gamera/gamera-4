@@ -3,58 +3,1207 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>classify.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Gamera classifier API</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="gamera-classifier-api">
+<h1 class="title">Gamera classifier API</h1>
 
-
-<p>b'=====================nGamera classifier APIn=====================nn**Last modified**: June 03, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnnIntroductionn------------nnFor manual training of a classifier, you will generally want to usenthe <a href="#id19"><span class="problematic" id="id20">`interactive classifier GUI`__</span></a>.  This document describes thenprogramming API that is used by scripts that make use of a classifier.nn.. __: gui.html#interactive-classifier-windownnAt present, Gamera supports segmentation-based image classification.nThis means that the page image is first segmented into individualnconnected components (or glyphs).  Each of these glyphs has a numbernof features generated from it.  These features (collectively called an&quot;feature vector&quot;) are then used inside a classifier which, using andatabase of training data, identifies the glyph.nnInteractive vs. Noninteractive classifiersn''''''''''''''''''''''''''''''''''''''''''nnAll classifiers in Gamera support the same core Classifier API (interface), sonthey are interchangeable.  There is an importantndistinction between two families of classifiers, however:nnInteractive classifiern  An interactive classifier can have training examples added to it inn  real time, and the results used immediately to classify glyphs.n  Interactive classifiers are useful during the training process sincen  the classifier can be &quot;boot strapped&quot; with a few examples and refinedn  interactively. nnNoninteractive classifiern  Noninteractive classifiers take a complete database ofn  training data and then create an optimised data structure forn  classification.  Because building that data structure can take an  considerable amount of time, new training examples cannot be addedn  on the fly.  In addition, noninteractive classifiers aren  serializable to binary classifier-specific file formats, which saven  and load much faster than the Gamera XML format.nnTypes of classifiersn''''''''''''''''''''nnWithin each of these families, different classifiers are available.nThese &quot;concrete&quot; classifiers have additional methods specific to thenparticular classifier type.  The currently implemented classifiersnare all <em>k</em> - nearest-neighbor, but we plan to add other classifiersnas needed.nn - <a href="#id29"><span class="problematic" id="id30">kNNInteractive_</span></a>n     Interactive <em>k</em> nearest neighbor classifier.nn - <a href="#id31"><span class="problematic" id="id32">kNNNonInteractive_</span></a>n     Noninteractive <em>k</em> nearest neighbor classifier.  The weights ofn     the dimensions can be optimised using a genetic algorithm.n     To learn more about applying genetic algorithms for feature selection,n     see the <a href="#id19"><span class="problematic" id="id21">`Evolutionary Optimization Module documentation`__</span></a>.nn.. __: ga_optimization.htmlnnImage properties related to classificationn------------------------------------------nnClassification result are stored with the image. Some interface functionsnfor storing and querying the classification result are describednin the <a href="#id19"><span class="problematic" id="id22">`classification plugin documentation`__</span></a>.nn.. __: plugins.html#classificationnnn``id_name``n'''''''''''nnThe class name of a glyph is stored in the member variablen``id_name``.  This variable is actually a list of possiblenclassifications, so that a classifier can return a number of differentnpossibilities with different confidences. Each classification entrynis a tuple of the form (float <em>confidence</em>, string <em>name</em>), wherenthe &quot;confidence&quot; measure is of the type CONFIDENCE_DEFAULTn(see the <a href="#id19"><span class="problematic" id="id23">`confidence property`__</span></a> below).nn.. __: #confidencennFor example, if among the k nearest neighbor of the imagenthere are training samples both from class 'lower.b' andn'lower.d', its <tt class="docutils literal">id_name</tt> variable might be:nn.. code:: Pythonn  n  [(0.0879, 'lower.b'), (0.0012, 'lower.d')]nnThe first entry in <tt class="docutils literal">id_name</tt> is always the class decision madenby the classifier, so the other entries can (and should) generallynbe ignored. Due to the simplistic definition of the nCONFIDENCE_DEFAULT measure, the decision made by the classifiernmust not necessarily have the highest &quot;confidence&quot;, nor donthe values of all &quot;confidences&quot; add to one.nnn``classification_state``n''''''''''''''''''''''''nnHow a glyph was classified is managed by the <tt class="docutils literal">classification_state</tt>nmember variable.  It can be one of the following values:nn  +----------+--------------+-----------------------------------------------------+n  | Color    | Constant     | Description                                         <a href="#id3"><span class="problematic" id="id4">|\n  +==========+==============+=====================================================+\n  | |UColor|</span></a> | UNCLASSIFIED | The connected component is completely unclassified. <a href="#id5"><span class="problematic" id="id6">|\n  | (white)  |              |                                                     |\n  +----------+--------------+-----------------------------------------------------+\n  | |AColor|</span></a> | AUTOMATIC    | The connected component was classified by the       | n  | (red)    |              | automatic classifier using training data.           <a href="#id7"><span class="problematic" id="id8">|\n  +----------+--------------+-----------------------------------------------------+\n  | |HColor|</span></a> | HEURISTIC    | The connected component was classified by some      <a href="#id9"><span class="problematic" id="id10">|\n  | (yellow) |              | heuristic (non-exemplar-based) process.             |\n  +----------+--------------+-----------------------------------------------------+\n  | |MColor|</span></a> | MANUAL       | The connected component was classified by a human.  <a href="#id11"><span class="problematic" id="id12">|\n  | (green)  |              |                                                     |\n  +----------+--------------+-----------------------------------------------------+\n\n.. |UColor|</span></a> image:: images/unclassified_color.pngn.. <a href="#id13"><span class="problematic" id="id14">|AColor|</span></a> image:: images/autoclassified_color.pngn.. <a href="#id15"><span class="problematic" id="id16">|HColor|</span></a> image:: images/heuristicclassified_color.pngn.. <a href="#id17"><span class="problematic" id="id18">|MColor|</span></a> image:: images/manualclassified_color.pngnnn``confidence``n''''''''''''''nnDifferent confidence measures for the main class id are storednin the member variable <tt class="docutils literal">confidence</tt>. This is a map ('dictionary' innpython lingo) with a confidence type as key. The possible confidencentype constants are defined in <tt class="docutils literal">gamera.gameracore</tt> and have the nfollowing meaning:nn  <tt class="docutils literal">CONFIDENCE_DEFAULT</tt>nn     (1-<em>dist</em>/<em>max_dist</em>)^10, where <em>dist</em> is the distance to n     the closest prototype of the main class, and <em>max_dist</em> isn     the distance to the farthest prototype of the entire trainingn     population. This &quot;confidence&quot; is always between 0.0 and 1.0,n     where 1.0 only occurs for feature values that exactly match an     training sample.nn  <tt class="docutils literal">CONFIDENCE_KNNFRACTION</tt>nn     Fraction of samples belonging to main class among the kn     nearest neighbors. Makes only sense for k &gt; 1.nn  <tt class="docutils literal">CONFIDENCE_INVERSEWEIGHT</tt>nn     Dudani's weighted average distance to the main class withn     each distance weighted inversely. Makes only sense for k &gt; 1.nn  <tt class="docutils literal">CONFIDENCE_LINEARWEIGHT</tt>nn     Dudani's weighted average distance to the main class withn     each distance weighted linearly between the closest neighborn     (weight one) and the k-th nearest neighbor (weight zero).n     Makes only sense for k &gt; 1.nn  <tt class="docutils literal">CONFIDENCE_NUN</tt>nn     Dasarathy's &quot;nearest unlike neighbor&quot; measure. Let <em>dnn</em> denoten     the distance to the closest prototype of then     main class (nearest neighbor) and <em>dnun</em> the distance ton     the closest prototype of the remaining classes (nearest unliken     neighbor). Then the NUN confidence measure is (1-<em>dnn</em>/<em>dnun</em>).nn  <tt class="docutils literal">CONFIDENCE_NNDISTANCE</tt>nn     Absolute distance to the nearest neighbor. This can taken     arbitrary values and is in itself meaningless, but can be usefuln     for distance rejection.nn  <tt class="docutils literal">CONFIDENCE_AVGDISTANCE</tt>nn     Average distance to the k nearest neighbors. This can taken     arbitrary values and is in itself meaningless, but can be usefuln     for distance rejection. For k = 1, this is identical ton     <tt class="docutils literal">CONFIDENCE_NNDISTANCE</tt>.nnThe <tt class="docutils literal">confidence</tt> map is only filled for automatically classifiednglyphs. Which confidence types are actually written to the confidencenmap depends on the <tt class="docutils literal">confidence_types</tt> property of the classifier.nSo when the list <tt class="docutils literal">Classifier.confidence_types</tt> is empty, nonconfidence values will be written to <tt class="docutils literal">Image.confidence</tt>.nnReference:nn    C. Dalitz:n    <a href="#id19"><span class="problematic" id="id24">`Reject Options and Confidence Measures for kNN Classifiers.`__</span></a>n    In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;n    Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,n    Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009) nn.. __: <a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdfnnMethodsn'''''''nnImages">http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdfnnMethodsn'''''''nnImages</a> have a number of methods for managing their classificationnstate.  Use of these methods is highly recommended over changing then``id_name`` variable directly.  These methods are documented in then`classification section of the plugin documentation`__.nn.. __: plugins.html#classificationnnThe classifier interfacen------------------------nnThis section describes each method of the classifier interface.nThe base class for all classifiers is <tt class="docutils literal">Classifier</tt>, from whichntwo classes <tt class="docutils literal">NonInteractiveClassifier</tt> and <tt class="docutils literal">InteractiveClassifier</tt>nare derived. As noninteractive classifiers are more limitednin their interface, this divides the methods into two categories:nnCoren  Methods available to all classifiersnnInteractiven  Methods available only to interactive classifiersnnCoren''''nnThe following methods and properties are available to all classifiers.nnPropertiesn``````````nnEach classifier has the following member variables:nn  <tt class="docutils literal">_database</tt>n    List of glyphs used as training data. This is a private propertyn    that can only be accessed through the methods <tt class="docutils literal">get_glyphs</tt> n    and <tt class="docutils literal">set_glyphs</tt>, or it is set in the constructor or withn    <tt class="docutils literal">from_xml_filename</tt>. Note that the return value of <tt class="docutils literal">get_glyphs</tt>n    must be converted to a list with <tt class="docutils literal"><span class="pre">list(classifier.get_glyphs())</span></tt>.nn  <tt class="docutils literal">confidence_types</tt>n    List of confidence types that are to be computed during n    classification. The confidence types must be from then    predefined <a href="#id19"><span class="problematic" id="id25">`confidence constants`__</span></a>.n    n.. __: #confidencennnInitializationn``````````````nnAs the base class <tt class="docutils literal">Classifier</tt> does not have an explicit constructor,nthe constructor of <tt class="docutils literal">NonInteractiveClassifier</tt> is described here.nn.. docstring:: gamera.classify NonInteractiveClassifier __init__ nnClassificationn``````````````nnThe following methods deal with classifying glyphs on an individual level.nn.. docstring:: gamera.classify NonInteractiveClassifier classify_glyph_automatic classify_list_automatic classify_and_update_list_automatic guess_glyph_automaticn.. docstring:: gamera.knn _kNNBase classify_with_imagesnnGroupingn````````nnOften, characters do not cleanly correspond to connected components.nFor instance, broken or degraded printing may disconnect parts of ancharacter, or characters, such as <em>i</em> may always be made up of twonconnected components.  The grouping algorithm is designed to deal withnthose cases.  It attempts to group connected components with othersnnearby in order to create groupings that are more like glyphs in thendatabase.  Needless to say, this approach is much slower than then&quot;one-connected-component-at-a-time&quot; approach, but can producenconsiderably better results on certain images.nnTo train for grouping, images corresponding to the entire characternmust exist in the database.  For instance, in the Gamera GUI, onenwould select both the dot and stem of a lower-case <em>i</em> and train it asn``_group.lower.i``.  This will join the two connected components intona single image and then add it to the database.nnThe algorithm is described in more detail in our paper on <a href="#id19"><span class="problematic" id="id26">`correcting\nbroken characters`__</span></a> (PDF).nn.. __: <a class="reference external" href="http://gamera.informatik.hsnr.de/publications/droettboom_broken_03.pdfnn">http://gamera.informatik.hsnr.de/publications/droettboom_broken_03.pdfnn</a>.. docstring:: gamera.classify NonInteractiveClassifier group_list_automatic group_and_update_list_automaticnnSaving and loadingn``````````````````nnThese functions deal with saving and loading the training data of thenclassifier to/from the <a href="#id19"><span class="problematic" id="id27">`Gamera XML format`__</span></a>.nn.. __: xml_format.htmlnn.. note:: UNCLASSIFIED glyphs in the training data are ignoredn   (neither saved or loaded).nn.. docstring:: gamera.classify NonInteractiveClassifier to_xml to_xml_filename from_xml from_xml_filename merge_from_xml merge_from_xml_filenamennnMiscellaneousn`````````````nn.. docstring:: gamera.classify NonInteractiveClassifier is_interactive get_glyphs set_glyphs merge_glyphs clear_glyphsnnInteractive classifiersn'''''''''''''''''''''''nnClassificationn``````````````nn.. docstring:: gamera.classify InteractiveClassifier classify_glyph_manual classify_list_manual classify_and_update_list_manual add_to_database remove_from_databasennDisplayn```````nn.. docstring:: gamera.classify InteractiveClassifier displaynn*k* Nearest Neighbor classifiern-------------------------------nnThe <em>k</em> Nearest Neighbor classifier is a concrete example of thenclassifier API.  It adds some methods of its own.nn``kNNNonInteractive`` has a number of advantages overn``kNNInteractive``:nn- Each feature can optionally be normalized independently to zero mean andn  unit variance. This reduces the bias toward features that generate largen  values, such as <tt class="docutils literal">area</tt>.  This normalization may change the classificationsn  that the classifier makes, however.nn- The selections and weights of the features can be optimized using a geneticn  algorithm (See <a href="#id33"><span class="problematic" id="id34">here_</span></a>).nn- The training data can be serialized to a classifier-specific binary filen  format.  This format saves and loads much faster than the Gamera XMLn  file format.nn.. note:: n   It is good practice to retain the XMLn   file, since it is portable across platforms and to future versions ofn   Gamera.  The binary format is not guaranteed to be portable.nn.. _here: ga_optimization.htmlnnFeature managementn''''''''''''''''''nnThe classifier automatically manages the generation of feature vectorsnfrom glyphs.  When a feature vector is needed because it is beingnautomatically classified or added to the training set, it isnautomatically generated on-the-fly.nnBy default, the feature generation method in kNN is quite simple.  Thenuser of the classifier provides a list of feature function namesn(either in the constructor or through the <tt class="docutils literal">change_feature_set</tt>nmethod), and for each glyph, the results of each feature function innthe set are appended together to produce a feature vector.nnThis basic feature generation method can be overridden and replacednwith something more appropriate to other problem domains.  See then`overriding kNN's feature generation`__ appendix for more information.nn.. __: overriding_knn_features.htmlnnMethods on all <tt class="docutils literal">kNN</tt> classesn''''''''''''''''''''''''''''''nn.. _kNNNonInteractive:nnkNN Initializationn``````````````````nn.. docstring:: gamera.knn kNNNonInteractive __init__nnSettingsn````````nnSettings are various parameters that control the behavior of thenclassifier. While some are only accessible through the methods given below,nthe following settings are plain properties of all kNN classifier classes:nn*num_k*n    the number <em>k</em> of neighbors to be considerednn*distance_type*n    the distance measure for neighborhood. Can be one ofn    <tt class="docutils literal">CITY_BLOCK</tt> (default), <tt class="docutils literal">EUCLIDEAN</tt> or <tt class="docutils literal">FAST_EUCLIDEAN</tt>nnn.. docstring:: gamera.knn kNNInteractive change_feature_setnn.. docstring:: gamera.knn _kNNBase get_selections_by_features get_selections_by_featuren.. docstring:: gamera.knn _kNNBase get_weights_by_features get_weights_by_featuren.. docstring:: gamera.knn _kNNBase set_selections_by_features set_selections_by_featuren.. docstring:: gamera.knn _kNNBase set_weights_by_features set_weights_by_featurenn.. docstring:: gamera.knn _kNNBase save_settings load_settingsnnSerializationn`````````````n.. docstring:: gamera.knn _kNNBase serialize unserializennEvaluationn''''''''''nn.. docstring:: gamera.knn _kNNBase evaluate knndistance_statistics distance_from_images distance_between_images distance_matrix unique_distancesnn.. _kNNInteractive:nn``kNNInteractive``n''''''''''''''''''nn.. docstring:: gamera.knn kNNInteractive __init__nn.. docstring:: gamera.knn kNNInteractive noninteractive_copynnImproving kNN Classifiers using Editingn'''''''''''''''''''''''''''''''''''''''nnGamera provides a way to improve kNN classifiers by modifying the underlyingnset of glyphs (training-set). This class of algorithms either removes bad or nredundant glyphs or even creates new <em>optimal</em> glyphs from the training-set.nnBesides the graphical user interface in the <a href="#id19"><span class="problematic" id="id28">`Classifier Display`__</span></a>, it is alsonpossible to invoke the algorithms from your script.nn.. __: gui.html#classifier-menunnEach editing algorithm is a function, that takes at least one parameter, a n*kNNInteractive* classifier - and returns a new edited <em>kNNInteractive</em> nclassifier. Any additional parameters depend on the effective algorithm, but arenoptional by convention.nnCurrently the following editing algorithms are included with Gamera:nn.. docstring:: gamera.knn_editing edit_mnnn n.. docstring:: gamera.knn_editing edit_cnn nn.. docstring:: gamera.knn_editing edit_mnn_cnnnnnUsage Examplen`````````````nnThe algorithms are located in the <em>gamera.knn_editing</em> package. So a typical nusage example employing Wilson's <em>Modified Nearest Neighbour</em> (edit_mnn) would nlook like this:nn.. code:: Pythonnn  from gamera.core import init_gameran  init_gamera()n  n  from gamera.knn import kNNInteractiven  classifier = kNNInteractive()n  classifier.from_xml_filename(&quot;training-set.xml&quot;)n  n  from gamera.knn_editing import edit_mnnn  editedClassifier = edit_mnn(classifier)nnTo display the glyphs removed by the editing algorithm, you can usenthe following code in the Gamera GUI:nn.. code:: Pythonnn   set1 = classifier.get_glyphs()n   set2 = editedClassifier.get_glyphs()n   imagelist = list(set1.difference(set2))n   display_multi(imagelist)nnnIntegrating your own editing algorithmn``````````````````````````````````````nnIf you have written your own editing algorithm and want to make it available innthe Classifier GUI, refer to the documentation of the class n**gamera.knn_editing.AlgoRegistry**.  n'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +==========+==============+=====================================================+n | |UColor&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (white) | | |n +----------+--------------+-----------------------------------------------------+n | |AColor&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;n +----------+--------------+-----------------------------------------------------+n | |HColor&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (yellow) | | heuristic (non-exemplar-based) process. |n +----------+--------------+-----------------------------------------------------+n | |MColor&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Undefined substitution referenced: &quot;n | (green) | | |n +----------+--------------+-----------------------------------------------------+nn.. |UColor&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Undefined substitution referenced: &quot;AColor&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Undefined substitution referenced: &quot;HColor&quot;.</div>
-<div class="system-message" id="id17">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id18">backlink</a></em></p>
-Undefined substitution referenced: &quot;MColor&quot;.</div>
-<div class="system-message" id="id19">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 2); <em>backlinks: <a href="#id20">1</a>, <a href="#id21">2</a>, <a href="#id22">3</a>, <a href="#id23">4</a>, <a href="#id24">5</a>, <a href="#id25">6</a>, <a href="#id26">7</a>, <a href="#id27">8</a>, <a href="#id28">9</a></em></p>
-Anonymous hyperlink mismatch: 9 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
-<div class="system-message" id="id29">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id30">backlink</a></em></p>
-Unknown target name: &quot;knninteractive&quot;.</div>
-<div class="system-message" id="id31">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id32">backlink</a></em></p>
-Unknown target name: &quot;knnnoninteractive&quot;.</div>
-<div class="system-message" id="id33">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/classify.txt</tt>, line 1); <em><a href="#id34">backlink</a></em></p>
-Unknown target name: &quot;here&quot;.</div>
+<p><strong>Last modified</strong>: September 17, 2019</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id30">Introduction</a><ul>
+<li><a class="reference internal" href="#interactive-vs-noninteractive-classifiers" id="id31">Interactive vs. Noninteractive classifiers</a></li>
+<li><a class="reference internal" href="#types-of-classifiers" id="id32">Types of classifiers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image-properties-related-to-classification" id="id33">Image properties related to classification</a><ul>
+<li><a class="reference internal" href="#id-name" id="id34"><tt class="docutils literal">id_name</tt></a></li>
+<li><a class="reference internal" href="#classification-state" id="id35"><tt class="docutils literal">classification_state</tt></a></li>
+<li><a class="reference internal" href="#confidence" id="id36"><tt class="docutils literal">confidence</tt></a></li>
+<li><a class="reference internal" href="#methods" id="id37">Methods</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-classifier-interface" id="id38">The classifier interface</a><ul>
+<li><a class="reference internal" href="#core" id="id39">Core</a><ul>
+<li><a class="reference internal" href="#properties" id="id40">Properties</a></li>
+<li><a class="reference internal" href="#initialization" id="id41">Initialization</a><ul>
+<li><a class="reference internal" href="#init" id="id42"><tt class="docutils literal">__init__</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classification" id="id43">Classification</a><ul>
+<li><a class="reference internal" href="#classify-glyph-automatic" id="id44"><tt class="docutils literal">classify_glyph_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-list-automatic" id="id45"><tt class="docutils literal">classify_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-and-update-list-automatic" id="id46"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#guess-glyph-automatic" id="id47"><tt class="docutils literal">guess_glyph_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-with-images" id="id48"><tt class="docutils literal">classify_with_images</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grouping" id="id49">Grouping</a><ul>
+<li><a class="reference internal" href="#group-list-automatic" id="id50"><tt class="docutils literal">group_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#group-and-update-list-automatic" id="id51"><tt class="docutils literal">group_and_update_list_automatic</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-and-loading" id="id52">Saving and loading</a><ul>
+<li><a class="reference internal" href="#to-xml" id="id53"><tt class="docutils literal">to_xml</tt></a></li>
+<li><a class="reference internal" href="#to-xml-filename" id="id54"><tt class="docutils literal">to_xml_filename</tt></a></li>
+<li><a class="reference internal" href="#from-xml" id="id55"><tt class="docutils literal">from_xml</tt></a></li>
+<li><a class="reference internal" href="#from-xml-filename" id="id56"><tt class="docutils literal">from_xml_filename</tt></a></li>
+<li><a class="reference internal" href="#merge-from-xml" id="id57"><tt class="docutils literal">merge_from_xml</tt></a></li>
+<li><a class="reference internal" href="#merge-from-xml-filename" id="id58"><tt class="docutils literal">merge_from_xml_filename</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#miscellaneous" id="id59">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#is-interactive" id="id60"><tt class="docutils literal">is_interactive</tt></a></li>
+<li><a class="reference internal" href="#get-glyphs" id="id61"><tt class="docutils literal">get_glyphs</tt></a></li>
+<li><a class="reference internal" href="#set-glyphs" id="id62"><tt class="docutils literal">set_glyphs</tt></a></li>
+<li><a class="reference internal" href="#merge-glyphs" id="id63"><tt class="docutils literal">merge_glyphs</tt></a></li>
+<li><a class="reference internal" href="#clear-glyphs" id="id64"><tt class="docutils literal">clear_glyphs</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interactive-classifiers" id="id65">Interactive classifiers</a><ul>
+<li><a class="reference internal" href="#id15" id="id66">Classification</a><ul>
+<li><a class="reference internal" href="#classify-glyph-manual" id="id67"><tt class="docutils literal">classify_glyph_manual</tt></a></li>
+<li><a class="reference internal" href="#classify-list-manual" id="id68"><tt class="docutils literal">classify_list_manual</tt></a></li>
+<li><a class="reference internal" href="#classify-and-update-list-manual" id="id69"><tt class="docutils literal">classify_and_update_list_manual</tt></a></li>
+<li><a class="reference internal" href="#add-to-database" id="id70"><tt class="docutils literal">add_to_database</tt></a></li>
+<li><a class="reference internal" href="#remove-from-database" id="id71"><tt class="docutils literal">remove_from_database</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#display" id="id72">Display</a><ul>
+<li><a class="reference internal" href="#id16" id="id73"><tt class="docutils literal">display</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#k-nearest-neighbor-classifier" id="id74"><em>k</em> Nearest Neighbor classifier</a><ul>
+<li><a class="reference internal" href="#feature-management" id="id75">Feature management</a></li>
+<li><a class="reference internal" href="#methods-on-all-knn-classes" id="id76">Methods on all <tt class="docutils literal">kNN</tt> classes</a><ul>
+<li><a class="reference internal" href="#knn-initialization" id="id77">kNN Initialization</a><ul>
+<li><a class="reference internal" href="#id19" id="id78"><tt class="docutils literal">__init__</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#settings" id="id79">Settings</a><ul>
+<li><a class="reference internal" href="#change-feature-set" id="id80"><tt class="docutils literal">change_feature_set</tt></a></li>
+<li><a class="reference internal" href="#get-selections-by-features" id="id81"><tt class="docutils literal">get_selections_by_features</tt></a></li>
+<li><a class="reference internal" href="#get-selections-by-feature" id="id82"><tt class="docutils literal">get_selections_by_feature</tt></a></li>
+<li><a class="reference internal" href="#get-weights-by-features" id="id83"><tt class="docutils literal">get_weights_by_features</tt></a></li>
+<li><a class="reference internal" href="#get-weights-by-feature" id="id84"><tt class="docutils literal">get_weights_by_feature</tt></a></li>
+<li><a class="reference internal" href="#set-selections-by-features" id="id85"><tt class="docutils literal">set_selections_by_features</tt></a></li>
+<li><a class="reference internal" href="#set-selections-by-feature" id="id86"><tt class="docutils literal">set_selections_by_feature</tt></a></li>
+<li><a class="reference internal" href="#set-weights-by-features" id="id87"><tt class="docutils literal">set_weights_by_features</tt></a></li>
+<li><a class="reference internal" href="#set-weights-by-feature" id="id88"><tt class="docutils literal">set_weights_by_feature</tt></a></li>
+<li><a class="reference internal" href="#save-settings" id="id89"><tt class="docutils literal">save_settings</tt></a></li>
+<li><a class="reference internal" href="#load-settings" id="id90"><tt class="docutils literal">load_settings</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#serialization" id="id91">Serialization</a><ul>
+<li><a class="reference internal" href="#serialize" id="id92"><tt class="docutils literal">serialize</tt></a></li>
+<li><a class="reference internal" href="#unserialize" id="id93"><tt class="docutils literal">unserialize</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evaluation" id="id94">Evaluation</a><ul>
+<li><a class="reference internal" href="#evaluate" id="id95"><tt class="docutils literal">evaluate</tt></a></li>
+<li><a class="reference internal" href="#knndistance-statistics" id="id96"><tt class="docutils literal">knndistance_statistics</tt></a></li>
+<li><a class="reference internal" href="#distance-from-images" id="id97"><tt class="docutils literal">distance_from_images</tt></a></li>
+<li><a class="reference internal" href="#distance-between-images" id="id98"><tt class="docutils literal">distance_between_images</tt></a></li>
+<li><a class="reference internal" href="#distance-matrix" id="id99"><tt class="docutils literal">distance_matrix</tt></a></li>
+<li><a class="reference internal" href="#unique-distances" id="id100"><tt class="docutils literal">unique_distances</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id24" id="id101"><tt class="docutils literal">kNNInteractive</tt></a><ul>
+<li><a class="reference internal" href="#id25" id="id102"><tt class="docutils literal">__init__</tt></a></li>
+<li><a class="reference internal" href="#noninteractive-copy" id="id103"><tt class="docutils literal">noninteractive_copy</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#improving-knn-classifiers-using-editing" id="id104">Improving kNN Classifiers using Editing</a><ul>
+<li><a class="reference internal" href="#edit-mnn" id="id105"><tt class="docutils literal">edit_mnn</tt></a></li>
+<li><a class="reference internal" href="#edit-cnn" id="id106"><tt class="docutils literal">edit_cnn</tt></a></li>
+<li><a class="reference internal" href="#edit-mnn-cnn" id="id107"><tt class="docutils literal">edit_mnn_cnn</tt></a></li>
+<li><a class="reference internal" href="#usage-example" id="id108">Usage Example</a></li>
+<li><a class="reference internal" href="#integrating-your-own-editing-algorithm" id="id109">Integrating your own editing algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id30">Introduction</a></h1>
+<p>For manual training of a classifier, you will generally want to use
+the <a class="reference external" href="gui.html#interactive-classifier-window">interactive classifier GUI</a>.  This document describes the
+programming API that is used by scripts that make use of a classifier.</p>
+<p>At present, Gamera supports segmentation-based image classification.
+This means that the page image is first segmented into individual
+connected components (or glyphs).  Each of these glyphs has a number
+of features generated from it.  These features (collectively called a
+&quot;feature vector&quot;) are then used inside a classifier which, using a
+database of training data, identifies the glyph.</p>
+<div class="section" id="interactive-vs-noninteractive-classifiers">
+<h2><a class="toc-backref" href="#id31">Interactive vs. Noninteractive classifiers</a></h2>
+<p>All classifiers in Gamera support the same core Classifier API (interface), so
+they are interchangeable.  There is an important
+distinction between two families of classifiers, however:</p>
+<dl class="docutils">
+<dt>Interactive classifier</dt>
+<dd>An interactive classifier can have training examples added to it in
+real time, and the results used immediately to classify glyphs.
+Interactive classifiers are useful during the training process since
+the classifier can be &quot;boot strapped&quot; with a few examples and refined
+interactively.</dd>
+<dt>Noninteractive classifier</dt>
+<dd>Noninteractive classifiers take a complete database of
+training data and then create an optimised data structure for
+classification.  Because building that data structure can take a
+considerable amount of time, new training examples cannot be added
+on the fly.  In addition, noninteractive classifiers are
+serializable to binary classifier-specific file formats, which save
+and load much faster than the Gamera XML format.</dd>
+</dl>
+</div>
+<div class="section" id="types-of-classifiers">
+<h2><a class="toc-backref" href="#id32">Types of classifiers</a></h2>
+<p>Within each of these families, different classifiers are available.
+These &quot;concrete&quot; classifiers have additional methods specific to the
+particular classifier type.  The currently implemented classifiers
+are all <em>k</em> - nearest-neighbor, but we plan to add other classifiers
+as needed.</p>
+<blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#knninteractive">kNNInteractive</a></dt>
+<dd>Interactive <em>k</em> nearest neighbor classifier.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#knnnoninteractive">kNNNonInteractive</a></dt>
+<dd>Noninteractive <em>k</em> nearest neighbor classifier.  The weights of
+the dimensions can be optimised using a genetic algorithm.
+To learn more about applying genetic algorithms for feature selection,
+see the <a class="reference external" href="ga_optimization.html">Evolutionary Optimization Module documentation</a>.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="image-properties-related-to-classification">
+<h1><a class="toc-backref" href="#id33">Image properties related to classification</a></h1>
+<p>Classification result are stored with the image. Some interface functions
+for storing and querying the classification result are described
+in the <a class="reference external" href="plugins.html#classification">classification plugin documentation</a>.</p>
+<div class="section" id="id-name">
+<h2><a class="toc-backref" href="#id34"><tt class="docutils literal">id_name</tt></a></h2>
+<p>The class name of a glyph is stored in the member variable
+<tt class="docutils literal">id_name</tt>.  This variable is actually a list of possible
+classifications, so that a classifier can return a number of different
+possibilities with different confidences. Each classification entry
+is a tuple of the form (float <em>confidence</em>, string <em>name</em>), where
+the &quot;confidence&quot; measure is of the type CONFIDENCE_DEFAULT
+(see the <a class="reference external" href="#confidence">confidence property</a> below).</p>
+<p>For example, if among the k nearest neighbor of the image
+there are training samples both from class 'lower.b' and
+'lower.d', its <tt class="docutils literal">id_name</tt> variable might be:</p>
+<div class="highlight"><pre><span></span><span class="p">[(</span><span class="mf">0.0879</span><span class="p">,</span> <span class="s1">&#39;lower.b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0012</span><span class="p">,</span> <span class="s1">&#39;lower.d&#39;</span><span class="p">)]</span>
+</pre></div>
+<p>The first entry in <tt class="docutils literal">id_name</tt> is always the class decision made
+by the classifier, so the other entries can (and should) generally
+be ignored. Due to the simplistic definition of the
+CONFIDENCE_DEFAULT measure, the decision made by the classifier
+must not necessarily have the highest &quot;confidence&quot;, nor do
+the values of all &quot;confidences&quot; add to one.</p>
+</div>
+<div class="section" id="classification-state">
+<h2><a class="toc-backref" href="#id35"><tt class="docutils literal">classification_state</tt></a></h2>
+<p>How a glyph was classified is managed by the <tt class="docutils literal">classification_state</tt>
+member variable.  It can be one of the following values:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="18%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Color</th>
+<th class="head">Constant</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="UColor" src="images/unclassified_color.png" />
+(white)</td>
+<td>UNCLASSIFIED</td>
+<td>The connected component is completely unclassified.</td>
+</tr>
+<tr><td><img alt="AColor" src="images/autoclassified_color.png" />
+(red)</td>
+<td>AUTOMATIC</td>
+<td>The connected component was classified by the
+automatic classifier using training data.</td>
+</tr>
+<tr><td><img alt="HColor" src="images/heuristicclassified_color.png" />
+(yellow)</td>
+<td>HEURISTIC</td>
+<td>The connected component was classified by some
+heuristic (non-exemplar-based) process.</td>
+</tr>
+<tr><td><img alt="MColor" src="images/manualclassified_color.png" />
+(green)</td>
+<td>MANUAL</td>
+<td>The connected component was classified by a human.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="confidence">
+<h2><a class="toc-backref" href="#id36"><tt class="docutils literal">confidence</tt></a></h2>
+<p>Different confidence measures for the main class id are stored
+in the member variable <tt class="docutils literal">confidence</tt>. This is a map ('dictionary' in
+python lingo) with a confidence type as key. The possible confidence
+type constants are defined in <tt class="docutils literal">gamera.gameracore</tt> and have the
+following meaning:</p>
+<blockquote>
+<p><tt class="docutils literal">CONFIDENCE_DEFAULT</tt></p>
+<blockquote>
+(1-<em>dist</em>/<em>max_dist</em>)^10, where <em>dist</em> is the distance to
+the closest prototype of the main class, and <em>max_dist</em> is
+the distance to the farthest prototype of the entire training
+population. This &quot;confidence&quot; is always between 0.0 and 1.0,
+where 1.0 only occurs for feature values that exactly match a
+training sample.</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_KNNFRACTION</tt></p>
+<blockquote>
+Fraction of samples belonging to main class among the k
+nearest neighbors. Makes only sense for k &gt; 1.</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_INVERSEWEIGHT</tt></p>
+<blockquote>
+Dudani's weighted average distance to the main class with
+each distance weighted inversely. Makes only sense for k &gt; 1.</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_LINEARWEIGHT</tt></p>
+<blockquote>
+Dudani's weighted average distance to the main class with
+each distance weighted linearly between the closest neighbor
+(weight one) and the k-th nearest neighbor (weight zero).
+Makes only sense for k &gt; 1.</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_NUN</tt></p>
+<blockquote>
+Dasarathy's &quot;nearest unlike neighbor&quot; measure. Let <em>dnn</em> denote
+the distance to the closest prototype of the
+main class (nearest neighbor) and <em>dnun</em> the distance to
+the closest prototype of the remaining classes (nearest unlike
+neighbor). Then the NUN confidence measure is (1-<em>dnn</em>/<em>dnun</em>).</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_NNDISTANCE</tt></p>
+<blockquote>
+Absolute distance to the nearest neighbor. This can take
+arbitrary values and is in itself meaningless, but can be useful
+for distance rejection.</blockquote>
+<p><tt class="docutils literal">CONFIDENCE_AVGDISTANCE</tt></p>
+<blockquote>
+Average distance to the k nearest neighbors. This can take
+arbitrary values and is in itself meaningless, but can be useful
+for distance rejection. For k = 1, this is identical to
+<tt class="docutils literal">CONFIDENCE_NNDISTANCE</tt>.</blockquote>
+</blockquote>
+<p>The <tt class="docutils literal">confidence</tt> map is only filled for automatically classified
+glyphs. Which confidence types are actually written to the confidence
+map depends on the <tt class="docutils literal">confidence_types</tt> property of the classifier.
+So when the list <tt class="docutils literal">Classifier.confidence_types</tt> is empty, no
+confidence values will be written to <tt class="docutils literal">Image.confidence</tt>.</p>
+<p>Reference:</p>
+<blockquote>
+C. Dalitz:
+<a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/sr09-knn-rejection.pdf">Reject Options and Confidence Measures for kNN Classifiers.</a>
+In C. Dalitz (Ed.): &quot;Document Image Analysis with the Gamera Framework.&quot;
+Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
+Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009)</blockquote>
+</div>
+<div class="section" id="methods">
+<h2><a class="toc-backref" href="#id37">Methods</a></h2>
+<p>Images have a number of methods for managing their classification
+state.  Use of these methods is highly recommended over changing the
+<tt class="docutils literal">id_name</tt> variable directly.  These methods are documented in the
+<a class="reference external" href="plugins.html#classification">classification section of the plugin documentation</a>.</p>
+</div>
+</div>
+<div class="section" id="the-classifier-interface">
+<h1><a class="toc-backref" href="#id38">The classifier interface</a></h1>
+<p>This section describes each method of the classifier interface.
+The base class for all classifiers is <tt class="docutils literal">Classifier</tt>, from which
+two classes <tt class="docutils literal">NonInteractiveClassifier</tt> and <tt class="docutils literal">InteractiveClassifier</tt>
+are derived. As noninteractive classifiers are more limited
+in their interface, this divides the methods into two categories:</p>
+<dl class="docutils">
+<dt>Core</dt>
+<dd>Methods available to all classifiers</dd>
+<dt>Interactive</dt>
+<dd>Methods available only to interactive classifiers</dd>
+</dl>
+<div class="section" id="core">
+<h2><a class="toc-backref" href="#id39">Core</a></h2>
+<p>The following methods and properties are available to all classifiers.</p>
+<div class="section" id="properties">
+<h3><a class="toc-backref" href="#id40">Properties</a></h3>
+<p>Each classifier has the following member variables:</p>
+<blockquote>
+<dl class="docutils">
+<dt><tt class="docutils literal">_database</tt></dt>
+<dd>List of glyphs used as training data. This is a private property
+that can only be accessed through the methods <tt class="docutils literal">get_glyphs</tt>
+and <tt class="docutils literal">set_glyphs</tt>, or it is set in the constructor or with
+<tt class="docutils literal">from_xml_filename</tt>. Note that the return value of <tt class="docutils literal">get_glyphs</tt>
+must be converted to a list with <tt class="docutils literal"><span class="pre">list(classifier.get_glyphs())</span></tt>.</dd>
+<dt><tt class="docutils literal">confidence_types</tt></dt>
+<dd>List of confidence types that are to be computed during
+classification. The confidence types must be from the
+predefined <a class="reference external" href="#confidence">confidence constants</a>.</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="initialization">
+<h3><a class="toc-backref" href="#id41">Initialization</a></h3>
+<p>As the base class <tt class="docutils literal">Classifier</tt> does not have an explicit constructor,
+the constructor of <tt class="docutils literal">NonInteractiveClassifier</tt> is described here.</p>
+<div class="section" id="init">
+<h4><a class="toc-backref" href="#id42"><tt class="docutils literal">__init__</tt></a></h4>
+<p><strong>NonInteractiveClassifier</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>)</p>
+<p>Creates a new classifier instance.</p>
+<dl class="docutils">
+<dt><em>database</em></dt>
+<dd><p class="first">Can come in two forms:</p>
+<blockquote>
+<ul class="simple">
+<li>When a list (or Python iterable) each element is a glyph to
+use as training data for the classifier</li>
+<li><em>For non-interactive classifiers only</em>, when <em>database</em> is a filename,
+the classifier will be &quot;unserialized&quot; from the given file.</li>
+</ul>
+</blockquote>
+<p>Any images in the list that were manually classified (have
+classification_state == MANUAL) will be used as training data
+for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
+classified images will be ignored.</p>
+<p class="last">When initializing a noninteractive classifier, the database
+<em>must</em> be non-empty.</p>
+</dd>
+<dt><em>perform_splits</em></dt>
+<dd><p class="first">If <tt class="docutils literal">perform_splits</tt> is <tt class="docutils literal">True</tt>, glyphs trained with names
+beginning with <tt class="docutils literal">_split.</tt> are run through a given splitting
+algorithm.  For instance, glyphs that need to be broken into
+upper and lower halves for further classification of those
+parts would be trained as <tt class="docutils literal">_split.splity</tt>.  When the
+automatic classifier encounters glyphs that most closely
+match those trained as <tt class="docutils literal">_split</tt>, it will perform the
+splitting algorithm and then continue to recursively
+classify its parts.</p>
+<p class="last">The <a class="reference external" href="plugins.html#segmentation">splitting algorithms</a> are documented in the plugin documentation.</p>
+</dd>
+</dl>
+<blockquote>
+New splitting algorithms can be created by <a class="reference external" href="writing_plugins.html">writing plugin</a> methods
+in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
+</div>
+</div>
+<div class="section" id="classification">
+<h3><a class="toc-backref" href="#id43">Classification</a></h3>
+<p>The following methods deal with classifying glyphs on an individual level.</p>
+<div class="section" id="classify-glyph-automatic">
+<h4><a class="toc-backref" href="#id44"><tt class="docutils literal">classify_glyph_automatic</tt></a></h4>
+<p><strong>classify_glyph_automatic</strong> (Image <em>glyph</em>, int <em>max_recursion</em> = 10)</p>
+<p>Classifies a glyph and sets its <tt class="docutils literal">classification_state</tt> and
+<tt class="docutils literal">id_name</tt>.  (If you don't want the glyph changed, use
+<a class="reference internal" href="#guess-glyph-automatic">guess_glyph_automatic</a>.)</p>
+<dl class="docutils">
+<dt><em>glyph</em></dt>
+<dd>The glyph to classify.</dd>
+<dt><em>max_recursion</em> (optional)</dt>
+<dd>Limit the number of split recursions.</dd>
+</dl>
+<p>Returns a 2-tuple (pair) of lists: (<em>add</em>, <em>remove</em>).  <em>add</em> is a list
+of glyphs that were created by classifying <em>glyph</em> as a split (See
+<a class="reference internal" href="#initialization">Initialization</a>).  <em>remove</em> is a list of glyphs that are no longer
+valid due to reclassifying <em>glyph</em> from a split to something else.
+Most often, both of these lists will be empty.  You will normally want
+to use these lists to update the collection of glyphs on the current
+page.</p>
+</div>
+<div class="section" id="classify-list-automatic">
+<h4><a class="toc-backref" href="#id45"><tt class="docutils literal">classify_list_automatic</tt></a></h4>
+<p><strong>classify_list_automatic</strong> (ImageList <em>glyphs</em>, int <em>max_recursion</em> = 10)</p>
+<p>Classifies a list of glyphs and sets the classification_state and
+id_name of each glyph.  (If you don't want it set, use <a class="reference internal" href="#guess-glyph-automatic">guess_glyph_automatic</a>.)</p>
+<dl class="docutils">
+<dt><em>glyphs</em></dt>
+<dd>A list of glyphs to classify.</dd>
+<dt><em>max_recursion</em></dt>
+<dd>The maximum level of recursion to follow when splitting glyphs.
+Since some glyphs will split into parts that then classify as
+<tt class="docutils literal">_split</tt> in turn, a maximum depth should be set to avoid infinite
+recursion.  This number can normally be set quite low, depending on
+the application.</dd>
+</dl>
+<p>Return type: (<em>add</em>, <em>remove</em>)</p>
+<blockquote>
+The list <em>glyphs</em> is never modified by the function.  Instead, it
+returns a 2-tuple (pair) of lists: (<em>add</em>, <em>remove</em>).  <em>add</em> is a
+list of glyphs that were created by classifying glyphs as a
+split (See <a class="reference internal" href="#initialization">Initialization</a>).  <em>remove</em> is a list of glyphs that are
+no longer valid due to reclassifying glyphs from a split to
+something else.  Most often, both of these lists will be empty.  You
+will normally want to use these lists to update the collection of
+glyphs on the current page.  If you just want a new list returned
+with these updates already made, use <a class="reference internal" href="#classify-and-update-list-automatic">classify_and_update_list_automatic</a>.</blockquote>
+</div>
+<div class="section" id="classify-and-update-list-automatic">
+<h4><a class="toc-backref" href="#id46"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></h4>
+<p><strong>classify_and_update_list_automatic</strong> (ImageList <em>glyphs</em>, Int
+<em>max_recursion</em> = <tt class="docutils literal">10</tt>)</p>
+<p>A convenience wrapper around <a class="reference internal" href="#classify-list-automatic">classify_list_automatic</a> that returns
+a list of glyphs that is already updated based on splitting.</p>
+</div>
+<div class="section" id="guess-glyph-automatic">
+<h4><a class="toc-backref" href="#id47"><tt class="docutils literal">guess_glyph_automatic</tt></a></h4>
+<p>(id_name, confidencemap) <strong>guess_glyph_automatic</strong> (Image <em>glyph</em>)</p>
+<p>Classifies the given <em>glyph</em> without setting its classification.  The
+return value is a tuple of the form <tt class="docutils literal">(id_name,confidencemap)</tt>, where
+<em>idname</em> is a list of the form <a class="reference external" href="#id-name">idname</a>, and <em>confidencemap</em> is a
+map of the form <a class="reference external" href="#confidence">confidence</a> listing the confidences of the main id.</p>
+</div>
+<div class="section" id="classify-with-images">
+<h4><a class="toc-backref" href="#id48"><tt class="docutils literal">classify_with_images</tt></a></h4>
+<p>(id_name, confidencemap) <strong>classify_with_images</strong> (ImageList <em>glyphs</em>, Image <em>glyph</em>, bool cross_validation_mode=False, bool do_confidence=True )</p>
+<p>Classifies an unknown image using the given list of images as training data.
+The <em>glyph</em> is classified without setting its classification.  The
+return value is a tuple of the form <tt class="docutils literal">(id_name,confidencemap)</tt>, where
+<em>idname</em> is a list of the form <a class="reference external" href="#id-name">idname</a>, and <em>confidencemap</em> is a
+map of the form <a class="reference external" href="#confidence">confidence</a> listing the confidences of the main id.</p>
+</div>
+</div>
+<div class="section" id="grouping">
+<h3><a class="toc-backref" href="#id49">Grouping</a></h3>
+<p>Often, characters do not cleanly correspond to connected components.
+For instance, broken or degraded printing may disconnect parts of a
+character, or characters, such as <em>i</em> may always be made up of two
+connected components.  The grouping algorithm is designed to deal with
+those cases.  It attempts to group connected components with others
+nearby in order to create groupings that are more like glyphs in the
+database.  Needless to say, this approach is much slower than the
+&quot;one-connected-component-at-a-time&quot; approach, but can produce
+considerably better results on certain images.</p>
+<p>To train for grouping, images corresponding to the entire character
+must exist in the database.  For instance, in the Gamera GUI, one
+would select both the dot and stem of a lower-case <em>i</em> and train it as
+<tt class="docutils literal">_group.lower.i</tt>.  This will join the two connected components into
+a single image and then add it to the database.</p>
+<p>The algorithm is described in more detail in our paper on <a class="reference external" href="http://gamera.informatik.hsnr.de/publications/droettboom_broken_03.pdf">correcting
+broken characters</a> (PDF).</p>
+<div class="section" id="group-list-automatic">
+<h4><a class="toc-backref" href="#id50"><tt class="docutils literal">group_list_automatic</tt></a></h4>
+<p><strong>group_list_automatic</strong> (ImageList <em>glyphs</em>, Function
+<em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
+int <em>max_parts_per_group</em> = 4, int <em>max_graph_size</em> = 16, <em>criterion</em> = <tt class="docutils literal">'min'</tt>)</p>
+<p>Classifies the given list of glyphs.  Adjacent glyphs are joined
+together if doing so results in a higher global confidence.  Each part
+of a joined glyph is classified as HEURISTIC with the prefix
+<tt class="docutils literal">_group</tt>.</p>
+<dl class="docutils">
+<dt><em>glyphs</em></dt>
+<dd>The list of glyphs to group and classify.</dd>
+<dt><em>grouping_function</em></dt>
+<dd><p class="first">A function that determines how glyphs are initially
+combined.  This function must take exactly two arguments, which the
+grouping algorithm will pass an arbitrary pair of glyphs from
+<em>glyphs</em>.  If the two glyphs should be considered for grouping, the
+function should return <tt class="docutils literal">True</tt>, else <tt class="docutils literal">False</tt>.</p>
+<p>In <tt class="docutils literal">gamera.classify</tt>, there are two predefined grouping functions:</p>
+<dl class="docutils">
+<dt><strong>BoundingBoxGroupingFunction</strong> (<em>threshold</em>)</dt>
+<dd>A callable class that returns <tt class="docutils literal">True</tt> when the bounding boxes
+are at most <em>threshold</em> apart.</dd>
+<dt><strong>ShapedGroupingFunction</strong> (<em>threshold</em>)</dt>
+<dd>A callable class that returns <tt class="docutils literal">True</tt> when the closest distance
+between the black pixels is at most <em>threshold</em>.</dd>
+</dl>
+<p class="last">When <em>grouping_function</em> is <tt class="docutils literal">None</tt>, <em>BoundingBoxGroupingFunction(4)</em>
+is used.</p>
+</dd>
+<dt><em>evaluate_function</em></dt>
+<dd><p class="first">A function that evaluates a grouping of glyphs.  This function must
+take exactly one argument which is a list of glyphs.  The function
+should return a confidence value between 0 and 1 (1 being most
+confident) representing how confidently the grouping forms a valid
+character.</p>
+<p class="last">If no <em>evaluate_function</em> is provided, a default one will be used
+that returns the CONFIDENCE_DEFAULT of the knn classification.</p>
+</dd>
+<dt><em>max_parts_per_group</em></dt>
+<dd>The maximum number of connected components that will be grouped
+together and tested as a group.  For performance reasons, this
+number should be kept relatively small.</dd>
+<dt><em>max_graph_size</em></dt>
+<dd>Subgraphs (potentially connected areas of the image) larger than
+the given number of nodes will be ignored.  This is a hack to
+prevent the runtime of the algorithm from exploding.</dd>
+<dt><em>criterion</em></dt>
+<dd>Determines how the grouping candidates ccs are evaluated against
+each other in the optimization step. Default = <em>min</em> choses the
+grouping with the highest minimum confidence, and <em>avg</em> that one
+with the highest average confidence.</dd>
+</dl>
+<p>The function returns a 2-tuple (pair) of lists: (<em>add</em>, <em>remove</em>).
+<em>add</em> is a list of glyphs that were created by classifying any glyphs
+as a split (See <a class="reference internal" href="#initialization">Initialization</a>) or grouping.  <em>remove</em> is a list of
+glyphs that are no longer valid due to reclassifying glyphs from a
+split to something else.</p>
+<p>The list <em>glyphs</em> is never modified.  Instead, detected parts of groups
+are classified as <tt class="docutils literal">_group._part.*</tt>, where <tt class="docutils literal">*</tt> stands for the class
+name of the grouped glyph. This means that after calling this function,
+you must remove the <em>remove</em> CCs and all CCs with a class name beginning with
+<tt class="docutils literal">`_group._part</tt> from <em>glyph</em>, and you must add all glyphs from <em>add</em>
+to it. Or you can instead call <a class="reference internal" href="#group-and-update-list-automatic">group_and_update_list_automatic</a>, which does
+this automatically for you.</p>
+</div>
+<div class="section" id="group-and-update-list-automatic">
+<h4><a class="toc-backref" href="#id51"><tt class="docutils literal">group_and_update_list_automatic</tt></a></h4>
+<p><strong>group_and_update_list_automatic</strong> (ImageList <em>glyphs</em>, Function
+<em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
+int <em>max_parts_per_group</em> = 5, int <em>max_graph_size</em> = 16, string <em>criterion</em> = <tt class="docutils literal">'min'</tt>)</p>
+<p>A convenience wrapper around <a class="reference internal" href="#group-list-automatic">group_list_automatic</a> that returns
+a list of glyphs that is already updated for splitting and grouping.</p>
+</div>
+</div>
+<div class="section" id="saving-and-loading">
+<h3><a class="toc-backref" href="#id52">Saving and loading</a></h3>
+<p>These functions deal with saving and loading the training data of the
+classifier to/from the <a class="reference external" href="xml_format.html">Gamera XML format</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">UNCLASSIFIED glyphs in the training data are ignored
+(neither saved or loaded).</p>
+</div>
+<div class="section" id="to-xml">
+<h4><a class="toc-backref" href="#id53"><tt class="docutils literal">to_xml</tt></a></h4>
+<p><strong>to_xml</strong> (stream <em>stream</em>)</p>
+<p>Saves the training data in XML format to the given stream (which could
+be any object supporting the file protocol, such as a file object or StringIO
+object).</p>
+</div>
+<div class="section" id="to-xml-filename">
+<h4><a class="toc-backref" href="#id54"><tt class="docutils literal">to_xml_filename</tt></a></h4>
+<p><strong>to_xml_filename</strong> (FileSave <em>filename</em>)</p>
+<p>Saves the training data in XML format to the given filename.</p>
+</div>
+<div class="section" id="from-xml">
+<h4><a class="toc-backref" href="#id55"><tt class="docutils literal">from_xml</tt></a></h4>
+<p><strong>from_xml</strong> (stream <em>stream</em>)</p>
+<p>Loads the training data from the given stream (which could be any object
+supporting the file protocol, such as a file object or StringIO object.)</p>
+</div>
+<div class="section" id="from-xml-filename">
+<h4><a class="toc-backref" href="#id56"><tt class="docutils literal">from_xml_filename</tt></a></h4>
+<p><strong>from_xml_filename</strong> (FileOpen <em>filename</em>)</p>
+<p>Loads the training data from the given filename.</p>
+</div>
+<div class="section" id="merge-from-xml">
+<h4><a class="toc-backref" href="#id57"><tt class="docutils literal">merge_from_xml</tt></a></h4>
+<p><strong>merge_from_xml</strong> (stream <em>stream</em>)</p>
+<p>Loads the training data from the given stream (which could be a file
+handle or StringIO object) and adds it to the existing training data.</p>
+</div>
+<div class="section" id="merge-from-xml-filename">
+<h4><a class="toc-backref" href="#id58"><tt class="docutils literal">merge_from_xml_filename</tt></a></h4>
+<p><strong>merge_from_xml_filename</strong> (stream <em>stream</em>)</p>
+<p>Loads the training data from the given filename and adds it to the
+existing training data.</p>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h3><a class="toc-backref" href="#id59">Miscellaneous</a></h3>
+<div class="section" id="is-interactive">
+<h4><a class="toc-backref" href="#id60"><tt class="docutils literal">is_interactive</tt></a></h4>
+<p>Boolean <strong>is_interactive</strong> ()</p>
+<p>Returns <tt class="docutils literal">True</tt> if classifier is interactive, else <tt class="docutils literal">False</tt>.</p>
+</div>
+<div class="section" id="get-glyphs">
+<h4><a class="toc-backref" href="#id61"><tt class="docutils literal">get_glyphs</tt></a></h4>
+<p>ImageList <strong>get_glyphs</strong> ()</p>
+<p>Returns a list of the glyphs in the classifier.</p>
+</div>
+<div class="section" id="set-glyphs">
+<h4><a class="toc-backref" href="#id62"><tt class="docutils literal">set_glyphs</tt></a></h4>
+<p><strong>set_glyphs</strong> (ImageList <em>glyphs</em>)</p>
+<p>Sets the training data for the classifier to the given list of glyphs.</p>
+<p>On some non-interactive classifiers, this operation can be quite
+expensive.</p>
+</div>
+<div class="section" id="merge-glyphs">
+<h4><a class="toc-backref" href="#id63"><tt class="docutils literal">merge_glyphs</tt></a></h4>
+<p><strong>merge_glyphs</strong> (ImageList <em>glyphs</em>)</p>
+<p>Adds the given glyphs to the current set of training data.</p>
+<p>On some non-interactive classifiers, this operation can be quite
+expensive.</p>
+</div>
+<div class="section" id="clear-glyphs">
+<h4><a class="toc-backref" href="#id64"><tt class="docutils literal">clear_glyphs</tt></a></h4>
+<p><strong>clear_glyphs</strong> ()</p>
+<p>Removes all training data from the classifier.</p>
+</div>
+</div>
+</div>
+<div class="section" id="interactive-classifiers">
+<h2><a class="toc-backref" href="#id65">Interactive classifiers</a></h2>
+<div class="section" id="id15">
+<h3><a class="toc-backref" href="#id66">Classification</a></h3>
+<div class="section" id="classify-glyph-manual">
+<h4><a class="toc-backref" href="#id67"><tt class="docutils literal">classify_glyph_manual</tt></a></h4>
+<p><strong>classify_glyph_manual</strong> (Image <em>glyph</em>, String <em>id</em>)</p>
+<p>Sets the classification of the given <em>glyph</em> to the given <em>id</em> and
+then adds the glyph to the training data.  Call this function when the
+end user definitively knows the identity of the glyph.</p>
+<dl class="docutils">
+<dt><em>glyph</em></dt>
+<dd>The glyph to classify.</dd>
+<dt><em>id</em></dt>
+<dd>The class name.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Here <em>id</em> is a simple string, not of the <a class="reference internal" href="#id-name">id_name</a> format, since
+the confidence of a manual classification is always 1.0.</p>
+</div>
+</div>
+<div class="section" id="classify-list-manual">
+<h4><a class="toc-backref" href="#id68"><tt class="docutils literal">classify_list_manual</tt></a></h4>
+<p><strong>classify_list_manual</strong> (ImageList <em>glyphs</em>, String <em>id</em>)</p>
+<p>Sets the classification of the given <em>glyphs</em> to the given <em>id</em> and
+then adds the glyphs to the training data.  Call this function when the
+end user definitively knows the identity of the glyphs.</p>
+<p>If <em>id</em> begins with the special prefix <tt class="docutils literal">_group</tt>, all of the glyphs
+in <em>glyphs</em> are combined and the result is added to the training
+data.  This is useful for characters that always appear with multiple
+connnected components, such as the lower-case <em>i</em>.</p>
+<dl class="docutils">
+<dt><em>glyphs</em></dt>
+<dd>The glyphs to classify.</dd>
+<dt><em>id</em></dt>
+<dd>The class name.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Here <em>id</em> is a simple string, not of the <a class="reference internal" href="#id-name">id_name</a> format, since
+the confidence of a manual classification is always 1.0.</p>
+</div>
+</div>
+<div class="section" id="classify-and-update-list-manual">
+<h4><a class="toc-backref" href="#id69"><tt class="docutils literal">classify_and_update_list_manual</tt></a></h4>
+<p><strong>classify_and_update_list_manual</strong> (ImageList <em>glyphs</em>, Function
+<em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
+int <em>max_size</em> = 5)</p>
+<p>A convenience wrapper around <a class="reference internal" href="#group-list-automatic">group_list_automatic</a> that returns
+a list of glyphs that is already updated for splitting and grouping.</p>
+</div>
+<div class="section" id="add-to-database">
+<h4><a class="toc-backref" href="#id70"><tt class="docutils literal">add_to_database</tt></a></h4>
+<p><strong>add_to_database</strong> (ImageList <em>glyphs</em>)</p>
+<p>Adds the given glyph (or list of glyphs) to the classifier training data.  Will not add duplicates
+to the training data.  Unlike <a class="reference internal" href="#classify-glyph-manual">classify_glyph_manual</a>, no grouping support is performed.</p>
+</div>
+<div class="section" id="remove-from-database">
+<h4><a class="toc-backref" href="#id71"><tt class="docutils literal">remove_from_database</tt></a></h4>
+<p><strong>remove_from_database</strong> (ImageList <em>glyphs</em>)</p>
+<p>Removes the given glyphs from the classifier training data.  Ignores silently
+if a given glyph is not in the training data.</p>
+</div>
+</div>
+<div class="section" id="display">
+<h3><a class="toc-backref" href="#id72">Display</a></h3>
+<div class="section" id="id16">
+<h4><a class="toc-backref" href="#id73"><tt class="docutils literal">display</tt></a></h4>
+<p><strong>display</strong> (ImageList <em>current_database</em> = <tt class="docutils literal">[]</tt>, Image
+<em>context_image</em> = <tt class="docutils literal">None</tt>, List <em>symbol_table</em> = <tt class="docutils literal">[]</tt>)</p>
+<p>Displays the <a class="reference external" href="gui.html#interactive-classifier-window">interactive classifier window</a>, which is where manual
+training usually takes place.</p>
+<dl class="docutils">
+<dt><em>current_database</em></dt>
+<dd>A list of glyphs yet to be trained.</dd>
+<dt><em>context_image</em></dt>
+<dd>An image of the page where the glyphs in <em>current_database</em> came
+from.</dd>
+<dt><em>symbol_table</em></dt>
+<dd>A set of id names to insert by default into the symbol table.</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="k-nearest-neighbor-classifier">
+<h1><a class="toc-backref" href="#id74"><em>k</em> Nearest Neighbor classifier</a></h1>
+<p>The <em>k</em> Nearest Neighbor classifier is a concrete example of the
+classifier API.  It adds some methods of its own.</p>
+<p><tt class="docutils literal">kNNNonInteractive</tt> has a number of advantages over
+<tt class="docutils literal">kNNInteractive</tt>:</p>
+<ul class="simple">
+<li>Each feature can optionally be normalized independently to zero mean and
+unit variance. This reduces the bias toward features that generate large
+values, such as <tt class="docutils literal">area</tt>.  This normalization may change the classifications
+that the classifier makes, however.</li>
+<li>The selections and weights of the features can be optimized using a genetic
+algorithm (See <a class="reference external" href="ga_optimization.html">here</a>).</li>
+<li>The training data can be serialized to a classifier-specific binary file
+format.  This format saves and loads much faster than the Gamera XML
+file format.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is good practice to retain the XML
+file, since it is portable across platforms and to future versions of
+Gamera.  The binary format is not guaranteed to be portable.</p>
+</div>
+<div class="section" id="feature-management">
+<h2><a class="toc-backref" href="#id75">Feature management</a></h2>
+<p>The classifier automatically manages the generation of feature vectors
+from glyphs.  When a feature vector is needed because it is being
+automatically classified or added to the training set, it is
+automatically generated on-the-fly.</p>
+<p>By default, the feature generation method in kNN is quite simple.  The
+user of the classifier provides a list of feature function names
+(either in the constructor or through the <tt class="docutils literal">change_feature_set</tt>
+method), and for each glyph, the results of each feature function in
+the set are appended together to produce a feature vector.</p>
+<p>This basic feature generation method can be overridden and replaced
+with something more appropriate to other problem domains.  See the
+<a class="reference external" href="overriding_knn_features.html">overriding kNN's feature generation</a> appendix for more information.</p>
+</div>
+<div class="section" id="methods-on-all-knn-classes">
+<h2><a class="toc-backref" href="#id76">Methods on all <tt class="docutils literal">kNN</tt> classes</a></h2>
+<div class="section" id="knn-initialization">
+<span id="knnnoninteractive"></span><h3><a class="toc-backref" href="#id77">kNN Initialization</a></h3>
+<div class="section" id="id19">
+<h4><a class="toc-backref" href="#id78"><tt class="docutils literal">__init__</tt></a></h4>
+<p><strong>kNNNonInteractive</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, <em>features</em> = <tt class="docutils literal">'all'</tt>,
+bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>, int <em>num_k</em> = <tt class="docutils literal">1</tt>, bool <em>normalize</em> = <tt class="docutils literal">False</tt>)</p>
+<p>Creates a new kNN classifier instance.</p>
+<dl class="docutils">
+<dt><em>database</em></dt>
+<dd><p class="first">Can be in one of two forms:</p>
+<blockquote>
+<ul class="simple">
+<li>When a list (or Python iterable) each element is a glyph
+to use as training data for the classifier.  (For
+non-interactive classifiers, this list must be
+non-empty).</li>
+<li>For non-interactive classifiers, <em>database</em> may be a
+filename, in which case the classifier will be
+&quot;unserialized&quot; from the given file.</li>
+</ul>
+</blockquote>
+<p>Any images in the list that were manually classified (have
+classification_state == MANUAL) will be used as training data
+for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
+classified images will be ignored.</p>
+<p class="last">When initializing a noninteractive classifier, the database
+<em>must</em> be non-empty.</p>
+</dd>
+<dt><em>features</em></dt>
+<dd>A list of feature function names to use for classification.
+These feature names
+correspond to the <a class="reference external" href="plugins.html#features">feature plugin methods</a>.  To use all
+available feature functions, pass in <tt class="docutils literal">'all'</tt>.</dd>
+</dl>
+<dl class="docutils">
+<dt><em>perform_splits</em></dt>
+<dd><p class="first">If <tt class="docutils literal">perform_splits</tt> is <tt class="docutils literal">True</tt>, glyphs trained with names
+beginning with <tt class="docutils literal">_split.</tt> are run through a given splitting
+algorithm.  For instance, glyphs that need to be broken into
+upper and lower halves for further classification of those
+parts would be trained as <tt class="docutils literal">_split.splity</tt>.  When the
+automatic classifier encounters glyphs that most closely
+match those trained as <tt class="docutils literal">_split</tt>, it will perform the
+splitting algorithm and then continue to recursively
+classify its parts.</p>
+<p class="last">The <a class="reference external" href="plugins.html#segmentation">splitting algorithms</a> are documented in the plugin documentation.</p>
+</dd>
+</dl>
+<blockquote>
+New splitting algorithms can be created by <a class="reference external" href="writing_plugins.html">writing plugin</a> methods
+in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
+<dl class="docutils">
+<dt><em>normalize</em></dt>
+<dd>Normalize the feature vectors: x' = (x - mean_x)/stdev_x</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="settings">
+<h3><a class="toc-backref" href="#id79">Settings</a></h3>
+<p>Settings are various parameters that control the behavior of the
+classifier. While some are only accessible through the methods given below,
+the following settings are plain properties of all kNN classifier classes:</p>
+<dl class="docutils">
+<dt><em>num_k</em></dt>
+<dd>the number <em>k</em> of neighbors to be considered</dd>
+<dt><em>distance_type</em></dt>
+<dd>the distance measure for neighborhood. Can be one of
+<tt class="docutils literal">CITY_BLOCK</tt> (default), <tt class="docutils literal">EUCLIDEAN</tt> or <tt class="docutils literal">FAST_EUCLIDEAN</tt></dd>
+</dl>
+<div class="section" id="change-feature-set">
+<h4><a class="toc-backref" href="#id80"><tt class="docutils literal">change_feature_set</tt></a></h4>
+<p><strong>change_feature_set</strong> (<em>features</em>)</p>
+<p>Changes the set of features used in the classifier to the given list of feature names.</p>
+<dl class="docutils">
+<dt><em>features</em></dt>
+<dd>These feature names correspond to the <a class="reference external" href="plugins.html#features">feature plugin methods</a>.
+To use all available feature functions, pass in <tt class="docutils literal">'all'</tt>.</dd>
+</dl>
+</div>
+<div class="section" id="get-selections-by-features">
+<h4><a class="toc-backref" href="#id81"><tt class="docutils literal">get_selections_by_features</tt></a></h4>
+<p><strong>get_selections_by_features</strong> ()</p>
+<p>Get the selection vector elements.</p>
+<p>This function returns a python dictionary: keys are the feature names, values
+are lists of zeros and ones, where ones correspond to the selected components.</p>
+</div>
+<div class="section" id="get-selections-by-feature">
+<h4><a class="toc-backref" href="#id82"><tt class="docutils literal">get_selections_by_feature</tt></a></h4>
+<p><strong>get_selections_by_feature</strong> (String <em>feature_name</em>)</p>
+<p>Convenience wrapper for <em>get_selections_by_features</em> function. This function
+returns only the selection values list for the given feature name.</p>
+</div>
+<div class="section" id="get-weights-by-features">
+<h4><a class="toc-backref" href="#id83"><tt class="docutils literal">get_weights_by_features</tt></a></h4>
+<p><strong>get_weights_by_features</strong> ()</p>
+<p>Get the weighting vector elements.</p>
+<p>This function returns a python dictionary: keys are the feature names, values
+are lists of real values in [0,1], which give the weight of the respective
+component.</p>
+</div>
+<div class="section" id="get-weights-by-feature">
+<h4><a class="toc-backref" href="#id84"><tt class="docutils literal">get_weights_by_feature</tt></a></h4>
+<p><strong>get_weights_by_feature</strong> (String <em>feature_name</em>)</p>
+<p>Convenience wrapper for <em>get_weights_by_features</em> function. This function
+returns only the weighting values list for the given feature name.</p>
+</div>
+<div class="section" id="set-selections-by-features">
+<h4><a class="toc-backref" href="#id85"><tt class="docutils literal">set_selections_by_features</tt></a></h4>
+<p><strong>set_selections_by_features</strong> (Dictionary <em>values</em>)</p>
+<p>Set the selection vector elements by the corresponding feature name.</p>
+<dl class="docutils">
+<dt><em>values</em></dt>
+<dd>Python dictionary with feature names as keys and lists as values, as
+described in get_selections_by_features.</dd>
+</dl>
+<p>The dictionary must contain an entry for every feature of the currently
+active feature set, that has been set in the constructor of the classifier or
+by <em>change_feature_set</em>. Example:</p>
+<div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">kNNNonInteractive</span><span class="p">(</span><span class="s2">&quot;train.xml&quot;</span><span class="p">,</span>
+                                   <span class="p">[</span><span class="s2">&quot;aspect_ratio&quot;</span><span class="p">,</span><span class="s2">&quot;moments&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">set_selections_by_features</span><span class="p">({</span><span class="s2">&quot;aspect_ratio&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">],</span>
+                                       <span class="s2">&quot;moments&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="section" id="set-selections-by-feature">
+<h4><a class="toc-backref" href="#id86"><tt class="docutils literal">set_selections_by_feature</tt></a></h4>
+<p><strong>set_selections_by_feature</strong> (String <em>feature_name</em>, List <em>values</em>)</p>
+<p>Set the selection vector elements for one specific feature.</p>
+<dl class="docutils">
+<dt><em>feature_name</em></dt>
+<dd>The feature name as string.</dd>
+<dt><em>values</em></dt>
+<dd>Python list with the selection values for the given feature. Dimension of the
+list must match with the feature dimension.</dd>
+</dl>
+</div>
+<div class="section" id="set-weights-by-features">
+<h4><a class="toc-backref" href="#id87"><tt class="docutils literal">set_weights_by_features</tt></a></h4>
+<p><strong>set_weights_by_features</strong> (Dictionary <em>values</em>)</p>
+<p>Set the weighing vector elements by the corresponding feature name.
+The dictionary must contain an entry for every feature of the currently
+active feature set, that has been set in the constructor of the classifier or
+by <em>change_feature_set</em>. Example:</p>
+<div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">kNNNonInteractive</span><span class="p">(</span><span class="s2">&quot;train.xml&quot;</span><span class="p">,</span>
+                                   <span class="p">[</span><span class="s2">&quot;aspect_ratio&quot;</span><span class="p">,</span><span class="s2">&quot;moments&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">set_weights_by_features</span><span class="p">({</span><span class="s2">&quot;aspect_ratio&quot;</span><span class="p">:[</span><span class="mf">0.6</span><span class="p">],</span>
+                                    <span class="s2">&quot;moments&quot;</span><span class="p">:[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="section" id="set-weights-by-feature">
+<h4><a class="toc-backref" href="#id88"><tt class="docutils literal">set_weights_by_feature</tt></a></h4>
+<p><strong>set_weights_by_feature</strong> (String <em>feature_name</em>, List <em>values</em>)</p>
+<p>Set the weighting vector elements for one specific feature.</p>
+<dl class="docutils">
+<dt><em>feature_name</em></dt>
+<dd>The feature name as string.</dd>
+<dt><em>values</em></dt>
+<dd>Python list with the weighting values for the given feature. Dimension of the
+list must match with the feature dimension.</dd>
+</dl>
+</div>
+<div class="section" id="save-settings">
+<h4><a class="toc-backref" href="#id89"><tt class="docutils literal">save_settings</tt></a></h4>
+<p><strong>save_settings</strong> (FileSave <em>filename</em>)</p>
+<p>Save the kNN settings to the given filename. This settings file (which is XML)
+includes k, distance type, the current selection and weighting. This file is
+different from the one produced by serialize in that it contains only the settings
+and no data.</p>
+</div>
+<div class="section" id="load-settings">
+<h4><a class="toc-backref" href="#id90"><tt class="docutils literal">load_settings</tt></a></h4>
+<p><strong>load_settings</strong> (FileOpen <em>filename</em>)</p>
+<p>Load the kNN settings from an XML file.  See <a class="reference internal" href="#save-settings">save_settings</a>.</p>
+</div>
+</div>
+<div class="section" id="serialization">
+<h3><a class="toc-backref" href="#id91">Serialization</a></h3>
+<div class="section" id="serialize">
+<h4><a class="toc-backref" href="#id92"><tt class="docutils literal">serialize</tt></a></h4>
+<p><strong>serialize</strong> (FileSave <em>filename</em>)</p>
+<p>Saves the classifier-specific settings <em>and</em> data in an optimized and
+classifer-specific format.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is good practice to retain the XML
+file, since it is portable across platforms and to future versions of
+Gamera.  The binary format is not guaranteed to be portable.</p>
+</div>
+</div>
+<div class="section" id="unserialize">
+<h4><a class="toc-backref" href="#id93"><tt class="docutils literal">unserialize</tt></a></h4>
+<p><strong>unserialize</strong> (FileOpen <em>filename</em>)</p>
+<p>Opens the classifier-specific settings <em>and</em> data from an optimized and
+classifer-specific format.</p>
+</div>
+</div>
+</div>
+<div class="section" id="evaluation">
+<h2><a class="toc-backref" href="#id94">Evaluation</a></h2>
+<div class="section" id="evaluate">
+<h3><a class="toc-backref" href="#id95"><tt class="docutils literal">evaluate</tt></a></h3>
+<p>Float <strong>evaluate</strong> ()</p>
+<p>Evaluate the performance of the kNN classifier using
+leave-one-out cross-validation. The return value is a
+floating-point number between 0.0 (0% correct) and 1.0 (100%
+correct).</p>
+</div>
+<div class="section" id="knndistance-statistics">
+<h3><a class="toc-backref" href="#id96"><tt class="docutils literal">knndistance_statistics</tt></a></h3>
+<p><strong>knndistance_statistics</strong> (Int <em>k</em> = 0)</p>
+<p>Returns a list of average distances between each training sample and its <em>k</em>
+nearest neighbors. So, when you have <em>n</em> training samples, <em>n</em> average
+distance values are returned. This can be useful for distance rejection.</p>
+<p>Each item in the returned list is a tuple (<em>d</em>, <em>classname</em>), where
+<em>d</em> is the average kNN distance and <em>classname</em> is the class name of the
+training sample. In most cases, the class name is of little interest,
+but it could be useful if you need class conditional distance statistics.
+Beware however, that the average distance is computed over neighbors
+belonging to any class, not just the same class. If you need the latter,
+you must create a new classifier from training samples belonging only
+to the specific class.</p>
+<p>When <em>k</em> is zero, the property <tt class="docutils literal">num_k</tt> of the knn classifier is used.</p>
+</div>
+<div class="section" id="distance-from-images">
+<h3><a class="toc-backref" href="#id97"><tt class="docutils literal">distance_from_images</tt></a></h3>
+<p><strong>distance_from_images</strong> (ImageList <em>glyphs</em>, Image <em>glyph</em>, Float <em>max</em> = <tt class="docutils literal">None</tt>)</p>
+<p>Compute a list of distances between a list of glyphs and a single glyph. Distances
+greater than <em>max</em> are not included in the output.  The return value is a list of
+floating-point distances.</p>
+</div>
+<div class="section" id="distance-between-images">
+<h3><a class="toc-backref" href="#id98"><tt class="docutils literal">distance_between_images</tt></a></h3>
+<p><strong>distance_between_images</strong> (Image <em>imagea</em>, Image <em>imageb</em>)</p>
+<p>Compute the distance between two images using the settings
+for the kNN object (distance_type, features, weights, etc). This
+can be used when more control over the distance computations are
+needed than with any of the other methods that work on multiple
+images at once.</p>
+</div>
+<div class="section" id="distance-matrix">
+<h3><a class="toc-backref" href="#id99"><tt class="docutils literal">distance_matrix</tt></a></h3>
+<p><strong>distance_matrix</strong> (ImageList <em>images</em>, Bool <em>normalize</em> = <tt class="docutils literal">True</tt>)</p>
+<p>Create a symmetric FloatImage containing all of the
+distances between the images in the list passed in. This is useful
+because it allows you to find the distance between any two pairs
+of images regardless of the order of the pairs.</p>
+<dl class="docutils">
+<dt><em>normalize</em></dt>
+<dd>When true, the features are normalized before performing the distance
+calculations.</dd>
+</dl>
+</div>
+<div class="section" id="unique-distances">
+<h3><a class="toc-backref" href="#id100"><tt class="docutils literal">unique_distances</tt></a></h3>
+<p><strong>unique_distances</strong> (ImageList <em>images</em>, Bool <em>normalize</em> = <tt class="docutils literal">True</tt>)</p>
+<p>Return a list of the unique pairs of images in the passed in list
+and the distances between them. The return list is a list of tuples
+of (distance, imagea, imageb) so that it easy to sort.</p>
+<dl class="docutils">
+<dt><em>normalize</em></dt>
+<dd>When true, the features are normalized before performing the distance
+calculations.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="id24">
+<span id="knninteractive"></span><h2><a class="toc-backref" href="#id101"><tt class="docutils literal">kNNInteractive</tt></a></h2>
+<div class="section" id="id25">
+<h3><a class="toc-backref" href="#id102"><tt class="docutils literal">__init__</tt></a></h3>
+<p><strong>kNNInteractive</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, <em>features</em> = 'all', bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>, int <em>num_k</em> = <tt class="docutils literal">1</tt>)</p>
+<p>Creates a new kNN interactive classifier instance.</p>
+<dl class="docutils">
+<dt><em>database</em></dt>
+<dd><p class="first">Must be a list (or Python interable) containing glyphs to use
+as training data for the classifier.</p>
+<p>Any images in the list that were manually classified (have
+classification_state == MANUAL) will be used as training data
+for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
+classified images will be ignored.</p>
+<p class="last">When initializing a noninteractive classifier, the database
+<em>must</em> be non-empty.</p>
+</dd>
+<dt><em>features</em></dt>
+<dd>A list of feature function names to use for classification.
+These feature names
+correspond to the <a class="reference external" href="plugins.html#features">feature plugin methods</a>.  To use all
+available feature functions, pass in <tt class="docutils literal">'all'</tt>.</dd>
+</dl>
+<dl class="docutils">
+<dt><em>perform_splits</em></dt>
+<dd><p class="first">If <tt class="docutils literal">perform_splits</tt> is <tt class="docutils literal">True</tt>, glyphs trained with names
+beginning with <tt class="docutils literal">_split.</tt> are run through a given splitting
+algorithm.  For instance, glyphs that need to be broken into
+upper and lower halves for further classification of those
+parts would be trained as <tt class="docutils literal">_split.splity</tt>.  When the
+automatic classifier encounters glyphs that most closely
+match those trained as <tt class="docutils literal">_split</tt>, it will perform the
+splitting algorithm and then continue to recursively
+classify its parts.</p>
+<p class="last">The <a class="reference external" href="plugins.html#segmentation">splitting algorithms</a> are documented in the plugin documentation.</p>
+</dd>
+</dl>
+<blockquote>
+New splitting algorithms can be created by <a class="reference external" href="writing_plugins.html">writing plugin</a> methods
+in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
+</div>
+<div class="section" id="noninteractive-copy">
+<h3><a class="toc-backref" href="#id103"><tt class="docutils literal">noninteractive_copy</tt></a></h3>
+<p><strong>noninteractive_copy</strong> ()</p>
+<p>Creates a non-interactive copy of the interactive classifier.</p>
+</div>
+</div>
+<div class="section" id="improving-knn-classifiers-using-editing">
+<h2><a class="toc-backref" href="#id104">Improving kNN Classifiers using Editing</a></h2>
+<p>Gamera provides a way to improve kNN classifiers by modifying the underlying
+set of glyphs (training-set). This class of algorithms either removes bad or
+redundant glyphs or even creates new <em>optimal</em> glyphs from the training-set.</p>
+<p>Besides the graphical user interface in the <a class="reference external" href="gui.html#classifier-menu">Classifier Display</a>, it is also
+possible to invoke the algorithms from your script.</p>
+<p>Each editing algorithm is a function, that takes at least one parameter, a
+<em>kNNInteractive</em> classifier - and returns a new edited <em>kNNInteractive</em>
+classifier. Any additional parameters depend on the effective algorithm, but are
+optional by convention.</p>
+<p>Currently the following editing algorithms are included with Gamera:</p>
+<div class="section" id="edit-mnn">
+<h3><a class="toc-backref" href="#id105"><tt class="docutils literal">edit_mnn</tt></a></h3>
+<p><strong>edit_mnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>protectRare</em>, int <em>rareThreshold</em>)</p>
+<p>Wilson's <em>Modified Nearest Neighbour</em> (MNN, aka <em>Leave-one-out-editing</em>).
+The algorithm removes 'bad' glyphs from the classifier, i.e. glyphs that
+are outliers from their class in featurespace, usually because they have been
+manually misclassified or are not representative for their class</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>classifier</em></dt>
+<dd>The classifier from which to create an edited copy</dd>
+<dt><em>internalK</em></dt>
+<dd>The k value used internally by the editing algorithm. If 0 is given for
+this parameter, the original classifier's k is used (recommended).</dd>
+<dt><em>protect rare classes</em></dt>
+<dd>The algorithm tends to completely delete the items of rare classes,
+removing this whole class from the classifier. If this is not
+desired these rare classes can be explicitly protected from deletion.
+Note that enabling this option causes additional computing effort</dd>
+<dt><em>rare class threshold</em></dt>
+<dd>In case <em>protect rare classes</em> is enabled, classes with less than this
+number of elements are considered to be rare</dd>
+</dl>
+</blockquote>
+<p>Reference: D. Wilson: 'Asymptotic Properties of NN Rules Using Edited Data'.
+<em>IEEE Transactions on Systems, Man, and Cybernetics</em>, 2(3):408-421, 1972</p>
+</div>
+<div class="section" id="edit-cnn">
+<h3><a class="toc-backref" href="#id106"><tt class="docutils literal">edit_cnn</tt></a></h3>
+<p><strong>edit_cnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>randomize</em>)</p>
+<p>Hart's <em>Condensed Nearest Neighbour (CNN)</em> editing.
+This alorithm is specialized in removing superfluous glyphs - glyphs that do not
+influence the recognition rate - from the classifier to improve its
+classification speed. Typically glyphs far from the classifiers decision
+boundaries are removed.</p>
+<blockquote>
+<dl class="docutils">
+<dt><em>classifier</em></dt>
+<dd>The classifier from which to create an edited copy</dd>
+<dt><em>internalK</em></dt>
+<dd>The k value used internally by the editing algorithm. 0 means, use the
+same value as the given classifier (recommended)</dd>
+<dt><em>randomize</em></dt>
+<dd>Because the processing order of the glyphs in the classifier impacts the
+result of this algorithm, the order will be randomized. If reproducible
+results are required, turn this option off.</dd>
+</dl>
+</blockquote>
+<p>Reference: P.E. Hart: 'The Condensed Nearest Neighbor rule'. <em>IEEE Transactions on Information Theory</em>, 14(3):515-516, 1968</p>
+</div>
+<div class="section" id="edit-mnn-cnn">
+<h3><a class="toc-backref" href="#id107"><tt class="docutils literal">edit_mnn_cnn</tt></a></h3>
+<p><strong>edit_mnn_cnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>protectRare</em>, int <em>rareThreshold</em>, bool <em>randomize</em>)</p>
+<p>Combined execution of Wilson's Modified Nearest Neighbour and Hart's
+Condensed Nearest Neighbour. Combining the algorithms in this order is
+recommended, because first bad samples are removed to improve the classifiers
+accuracy, and then the remaining samples are condensed to speed up the classifier</p>
+<p>For documentation of the parameters see the independent algorithms</p>
+</div>
+<div class="section" id="usage-example">
+<h3><a class="toc-backref" href="#id108">Usage Example</a></h3>
+<p>The algorithms are located in the <em>gamera.knn_editing</em> package. So a typical
+usage example employing Wilson's <em>Modified Nearest Neighbour</em> (edit_mnn) would
+look like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.core</span> <span class="kn">import</span> <span class="n">init_gamera</span>
+<span class="n">init_gamera</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">gamera.knn</span> <span class="kn">import</span> <span class="n">kNNInteractive</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">kNNInteractive</span><span class="p">()</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">from_xml_filename</span><span class="p">(</span><span class="s2">&quot;training-set.xml&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">gamera.knn_editing</span> <span class="kn">import</span> <span class="n">edit_mnn</span>
+<span class="n">editedClassifier</span> <span class="o">=</span> <span class="n">edit_mnn</span><span class="p">(</span><span class="n">classifier</span><span class="p">)</span>
+</pre></div>
+<p>To display the glyphs removed by the editing algorithm, you can use
+the following code in the Gamera GUI:</p>
+<div class="highlight"><pre><span></span><span class="n">set1</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">get_glyphs</span><span class="p">()</span>
+<span class="n">set2</span> <span class="o">=</span> <span class="n">editedClassifier</span><span class="o">.</span><span class="n">get_glyphs</span><span class="p">()</span>
+<span class="n">imagelist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">set1</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">set2</span><span class="p">))</span>
+<span class="n">display_multi</span><span class="p">(</span><span class="n">imagelist</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="integrating-your-own-editing-algorithm">
+<h3><a class="toc-backref" href="#id109">Integrating your own editing algorithm</a></h3>
+<p>If you have written your own editing algorithm and want to make it available in
+the Classifier GUI, refer to the documentation of the class
+<strong>gamera.knn_editing.AlgoRegistry</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

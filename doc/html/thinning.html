@@ -3,42 +3,214 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>thinning.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Thinning</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="thinning">
+<h1 class="title">Thinning</h1>
 
-
-<p>b'nThinningn========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``medial_axis_transform_hs``n----------------------------nn``Image`` [OneBit] <strong>medial_axis_transform_hs</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnn&quot;This function is an alias for <a href="#id3"><span class="problematic" id="id4">thin_hs_</span></a>.nn----------nn**Example 1:** medial_axis_transform_hs()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/medial_axis_transform_hs_plugin_00.pngn   :height: 99n   :width: 69nnnn``medial_axis_transform_large_image_hs``n----------------------------------------nn``Image`` [OneBit] <strong>medial_axis_transform_large_image_hs</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnnThis function is an alias for <a href="#id5"><span class="problematic" id="id6">thin_hs_large_image_</span></a>.nn----------nn**Example 1:** medial_axis_transform_large_image_hs()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/medial_axis_transform_large_image_hs_plugin_00.pngn   :height: 99n   :width: 69nnnn``thin_hs``n-----------nn``Image`` [OneBit] <strong>thin_hs</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnnDerives the medial axis transformation from a ONEBIT image using thenHaralick and Shapiro algorithm.nnUnlike <a href="#id7"><span class="problematic" id="id8">thin_zs_</span></a> and <a href="#id9"><span class="problematic" id="id10">thin_lc_</span></a>, this function performs a medial axisntransformation, and the ends of the skeleton extend to the corners ofnthe original image.nnConsider using <a href="#id11"><span class="problematic" id="id12">thin_hs_large_image_</span></a> instead, for faster performance onnlarge images with a lot of connected components.nnR. M. Haralick and L. G. Shapiro. 1992.  <em>Computer and Robot Vision</em>,nVol. 1, Chapter 5 (especially 5.10.1).  Reading, MA: Addison-Wesley.nn----------nn**Example 1:** thin_hs()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/thin_hs_plugin_00.pngn   :height: 99n   :width: 69nnnn``thin_hs_large_image``n-----------------------nn``Image`` [OneBit] <strong>thin_hs_large_image</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnnThins (skeletonizes) a ONEBIT image using the Haralick and Shapironalgorithm.nnUnlike <a href="#id13"><span class="problematic" id="id14">thin_hs_</span></a>, this algorithm performs skeletonization on onenconnected component at a time.  On large images with a lot ofnconnected components, this can be significantly faster.  However,nfor small images with a single connected component, this hasnunnecessary overhead, which is why both versions are included.nPlease note cc_analysis results in a labelled image, which you cannreset afterwards with reset_onebit_image().nn----------nn**Example 1:** thin_hs_large_image()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/thin_hs_large_image_plugin_00.pngn   :height: 99n   :width: 69nnnn``thin_lc``n-----------nn``Image`` [OneBit] <strong>thin_lc</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnnThins (skeletonizes) a ONEBIT image using the Lee and Chennalgorithm.nnThis function is a simple extension to the Zhang and Suennalgorithm in <a href="#id15"><span class="problematic" id="id16">thin_zs_</span></a> that ensure that no two pixels are more thann4-connected.nnThe resulting skeleton is not a medial axis transformation, andnthe ends of the skeleton will not extend to the edges of thenoriginal image.nnH.-J. Lee and B. Chen. 1992.  Recognition of handwritten Chinesencharacters via short line segments. <em>Pattern Recognition</em>. 25(5)n543-552.nn----------nn**Example 1:** thin_lc()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/thin_lc_plugin_00.pngn   :height: 99n   :width: 69nnnn``thin_zs``n-----------nn``Image`` [OneBit] <strong>thin_zs</strong> ()nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit]n:Returns: <tt class="docutils literal">Image</tt> [OneBit]n:Category: Thinningn:Defined in: thinning.pyn:Author: Michael Droettboom and Karl MacMillan (based on code by xc3x98ivind Due Trier and Qian Huang)nnnThins (skeletonizes) a ONEBIT image using the Zhang and Suennalgorithm.nnThe resulting skeleton is not a medial axis transformation, andnthe ends of the skeleton will not extend to the edges of thenoriginal image.nnT. Y. Zhang and C. Y. Suen. 1984.  A Fast Parallel Algorithm fornThinning Digital Patterns., <em>Communications of ACM</em>, 2(3).nnR. C. Gonzalez and P. Wintz. 1987 <em>Digital Image Processing.</em>,n2. edition. 398-402.nn----------nn**Example 1:** thin_zs()nn..  image:: images/OneBit_generic.pngn   :height: 99n   :width: 69nn..  image:: images/thin_zs_plugin_00.pngn   :height: 99n   :width: 69nnnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Unknown target name: &quot;thin_hs&quot;.</div>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Unknown target name: &quot;thin_hs_large_image&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Unknown target name: &quot;thin_zs&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Unknown target name: &quot;thin_lc&quot;.</div>
-<div class="system-message" id="id11">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id12">backlink</a></em></p>
-Unknown target name: &quot;thin_hs_large_image&quot;.</div>
-<div class="system-message" id="id13">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id14">backlink</a></em></p>
-Unknown target name: &quot;thin_hs&quot;.</div>
-<div class="system-message" id="id15">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/thinning.txt</tt>, line 1); <em><a href="#id16">backlink</a></em></p>
-Unknown target name: &quot;thin_zs&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#medial-axis-transform-hs" id="id1"><tt class="docutils literal">medial_axis_transform_hs</tt></a></li>
+<li><a class="reference internal" href="#medial-axis-transform-large-image-hs" id="id2"><tt class="docutils literal">medial_axis_transform_large_image_hs</tt></a></li>
+<li><a class="reference internal" href="#thin-hs" id="id3"><tt class="docutils literal">thin_hs</tt></a></li>
+<li><a class="reference internal" href="#thin-hs-large-image" id="id4"><tt class="docutils literal">thin_hs_large_image</tt></a></li>
+<li><a class="reference internal" href="#thin-lc" id="id5"><tt class="docutils literal">thin_lc</tt></a></li>
+<li><a class="reference internal" href="#thin-zs" id="id6"><tt class="docutils literal">thin_zs</tt></a></li>
+</ul>
 </div>
+<div class="section" id="medial-axis-transform-hs">
+<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">medial_axis_transform_hs</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>medial_axis_transform_hs</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>&quot;This function is an alias for <a class="reference internal" href="#thin-hs">thin_hs</a>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> medial_axis_transform_hs()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/medial_axis_transform_hs_plugin_00.png" src="images/medial_axis_transform_hs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="medial-axis-transform-large-image-hs">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">medial_axis_transform_large_image_hs</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>medial_axis_transform_large_image_hs</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>This function is an alias for <a class="reference internal" href="#thin-hs-large-image">thin_hs_large_image</a>.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> medial_axis_transform_large_image_hs()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/medial_axis_transform_large_image_hs_plugin_00.png" src="images/medial_axis_transform_large_image_hs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="thin-hs">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">thin_hs</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>thin_hs</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>Derives the medial axis transformation from a ONEBIT image using the
+Haralick and Shapiro algorithm.</p>
+<p>Unlike <a class="reference internal" href="#thin-zs">thin_zs</a> and <a class="reference internal" href="#thin-lc">thin_lc</a>, this function performs a medial axis
+transformation, and the ends of the skeleton extend to the corners of
+the original image.</p>
+<p>Consider using <a class="reference internal" href="#thin-hs-large-image">thin_hs_large_image</a> instead, for faster performance on
+large images with a lot of connected components.</p>
+<p>R. M. Haralick and L. G. Shapiro. 1992.  <em>Computer and Robot Vision</em>,
+Vol. 1, Chapter 5 (especially 5.10.1).  Reading, MA: Addison-Wesley.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> thin_hs()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/thin_hs_plugin_00.png" src="images/thin_hs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="thin-hs-large-image">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">thin_hs_large_image</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>thin_hs_large_image</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>Thins (skeletonizes) a ONEBIT image using the Haralick and Shapiro
+algorithm.</p>
+<p>Unlike <a class="reference internal" href="#thin-hs">thin_hs</a>, this algorithm performs skeletonization on one
+connected component at a time.  On large images with a lot of
+connected components, this can be significantly faster.  However,
+for small images with a single connected component, this has
+unnecessary overhead, which is why both versions are included.
+Please note cc_analysis results in a labelled image, which you can
+reset afterwards with reset_onebit_image().</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> thin_hs_large_image()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/thin_hs_large_image_plugin_00.png" src="images/thin_hs_large_image_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="thin-lc">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">thin_lc</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>thin_lc</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>Thins (skeletonizes) a ONEBIT image using the Lee and Chen
+algorithm.</p>
+<p>This function is a simple extension to the Zhang and Suen
+algorithm in <a class="reference internal" href="#thin-zs">thin_zs</a> that ensure that no two pixels are more than
+4-connected.</p>
+<p>The resulting skeleton is not a medial axis transformation, and
+the ends of the skeleton will not extend to the edges of the
+original image.</p>
+<p>H.-J. Lee and B. Chen. 1992.  Recognition of handwritten Chinese
+characters via short line segments. <em>Pattern Recognition</em>. 25(5)
+543-552.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> thin_lc()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/thin_lc_plugin_00.png" src="images/thin_lc_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+<div class="section" id="thin-zs">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">thin_zs</tt></a></h1>
+<p><tt class="docutils literal">Image</tt> [OneBit] <strong>thin_zs</strong> ()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Thinning</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">thinning.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan (based on code by Øivind Due Trier and Qian Huang)</td>
+</tr>
+</tbody>
+</table>
+<p>Thins (skeletonizes) a ONEBIT image using the Zhang and Suen
+algorithm.</p>
+<p>The resulting skeleton is not a medial axis transformation, and
+the ends of the skeleton will not extend to the edges of the
+original image.</p>
+<p>T. Y. Zhang and C. Y. Suen. 1984.  A Fast Parallel Algorithm for
+Thinning Digital Patterns., <em>Communications of ACM</em>, 2(3).</p>
+<p>R. C. Gonzalez and P. Wintz. 1987 <em>Digital Image Processing.</em>,
+2. edition. 398-402.</p>
+<hr class="docutils" />
+<p><strong>Example 1:</strong> thin_zs()</p>
+<img alt="images/OneBit_generic.png" src="images/OneBit_generic.png" style="width: 69px; height: 99px;" />
+<img alt="images/thin_zs_plugin_00.png" src="images/thin_zs_plugin_00.png" style="width: 69px; height: 99px;" />
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

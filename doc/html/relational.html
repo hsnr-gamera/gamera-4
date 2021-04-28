@@ -3,25 +3,195 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>relational.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Relational</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="relational">
+<h1 class="title">Relational</h1>
 
-
-<p>b'nRelationaln==========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``bounding_box_grouping_function``n----------------------------------nn``bool`` <strong>bounding_box_grouping_function</strong> (<tt class="docutils literal">Rect</tt> <em>a</em>, <tt class="docutils literal">Rect</tt> <em>b</em>, int <em>threshold</em>)nnn:Returns: <tt class="docutils literal">bool</tt>n:Category: Relationaln:Defined in: structural.pyn:Author: Michael Droettboom and Karl MacMillannnnGiven two rectangles <em>a</em>, <em>b</em>, and a given <em>threshold</em> distancen(in pixels), returns <tt class="docutils literal">True</tt> if the two rectangles are closernthan <em>threshold</em>.nnn``edit_distance``n-----------------nnint <strong>edit_distance</strong> (str <em>s1</em>, str <em>s2</em>)nnn:Returns: intn:Category: Relationaln:Defined in: structural.pyn:Author: Christoph DalitznnnComputes the edit distance (also known as <em>Levenshtein distance</em>) betweenntwo strings.nnThis counts the number of character substitutions, additions and deletionsnnecessary to transform one string into another. This plugin is a nstraightforward implementation of the classic algorithm by Wagner nand Fischer, which has runtime complexity <em>O(m*n)</em>, where <em>m</em> and <em>n</em> arenthe lengths of the two strings.nnSee R.A. Wagner, M.J. Fischer: <em>The String-to-String Correction Problem.</em>nJournal of the ACM 21, pp. 168-173, 1974.nnn``least_squares_fit``n---------------------nnobject <strong>least_squares_fit</strong> ([object <em>points</em>])nnn:Returns: objectn:Category: Relationaln:Defined in: structural.pyn:Author: Michael Droettboom and Karl MacMillannnnPerforms a least squares fit on a given list of points.nnThe result is a tuple of the form (<em>m</em>, <em>b</em>, <em>q</em>) where <em>m</em> is thenslope of the line, <em>b</em> is the <em>y</em>-offset, and <em>q</em> is the gamma fitnof the line to the points. (This assumes the same statisticalnsignificance for all points).nnSee Numerical Recipes in C, section <a href="#id3"><span class="problematic" id="id4">15.2__</span></a> for more information.nn.. __: <a class="reference external" href="http://www.library.cornell.edu/nr/bookcpdf/c15-2.pdfnn">http://www.library.cornell.edu/nr/bookcpdf/c15-2.pdfnn</a>n``least_squares_fit_xy``n------------------------nnobject <strong>least_squares_fit_xy</strong> ([object <em>points</em>])nnn:Returns: objectn:Category: Relationaln:Defined in: structural.pyn:Author: Christoph DalitznnnIdentical to <em>least_squares_fit</em> for line angles below 45 degrees.nFor lines with a more vertical slope a least square fit of <em>x = myn+ b</em> is done instead.nnThe result is a tuple of the form (<em>m</em>, <em>b</em>, <em>q</em>, <em>x_of_y</em>) wheren*m, b, q* are the same as in <em>least_squares_fit</em>, but the integernvalue <em>x_of_y</em> determines the actual meaning of the parameters <em>m</em>nand <em>b</em>:nnWhen <em>x_of_y</em> is zero, <em>y = mx + b</em>. Otherwise <em>x = my + b</em>.nnn``polar_distance``n------------------nn``FloatVector`` <strong>polar_distance</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]n:Returns: <tt class="docutils literal">FloatVector</tt>n:Category: Relationaln:Defined in: structural.pyn:Author: Michael Droettboom and Karl MacMillannnnReturns a tuple containing the normalized distance, polarndirection, and non-normalized polar distance to another glyphn(based on center of bounding boxes).nnn``polar_match``n---------------nnint <strong>polar_match</strong> (float <em>r1</em>, float <em>q1</em>, float <em>r2</em>, float <em>q2</em>)nnn:Returns: intn:Category: Relationaln:Defined in: structural.pyn:Author: Michael Droettboom and Karl MacMillannn.. warning:: No documentation written.nnnn``shaped_grouping_function``n----------------------------nn``bool`` <strong>shaped_grouping_function</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>a</em>, <tt class="docutils literal">Image</tt> [OneBit] <em>b</em>, int <em>threshold</em>)nnn:Returns: <tt class="docutils literal">bool</tt>n:Category: Relationaln:Defined in: structural.pyn:Author: Michael Droettboom and Karl MacMillannnnGiven two connected components <em>a</em>, <em>b</em>, and a given <em>threshold</em>ndistance (in pixels), returns <tt class="docutils literal">True</tt> if any pixel in <em>a</em> arencloser than <em>threshold</em> to any pixel in <em>b</em>.nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/relational.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/relational.txt</tt>, line 2); <em><a href="#id4">backlink</a></em></p>
-Anonymous hyperlink mismatch: 1 references but 0 targets.
-See &quot;backrefs&quot; attribute for IDs.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#bounding-box-grouping-function" id="id2"><tt class="docutils literal">bounding_box_grouping_function</tt></a></li>
+<li><a class="reference internal" href="#edit-distance" id="id3"><tt class="docutils literal">edit_distance</tt></a></li>
+<li><a class="reference internal" href="#least-squares-fit" id="id4"><tt class="docutils literal">least_squares_fit</tt></a></li>
+<li><a class="reference internal" href="#least-squares-fit-xy" id="id5"><tt class="docutils literal">least_squares_fit_xy</tt></a></li>
+<li><a class="reference internal" href="#polar-distance" id="id6"><tt class="docutils literal">polar_distance</tt></a></li>
+<li><a class="reference internal" href="#polar-match" id="id7"><tt class="docutils literal">polar_match</tt></a></li>
+<li><a class="reference internal" href="#shaped-grouping-function" id="id8"><tt class="docutils literal">shaped_grouping_function</tt></a></li>
+</ul>
 </div>
+<div class="section" id="bounding-box-grouping-function">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">bounding_box_grouping_function</tt></a></h1>
+<p><tt class="docutils literal">bool</tt> <strong>bounding_box_grouping_function</strong> (<tt class="docutils literal">Rect</tt> <em>a</em>, <tt class="docutils literal">Rect</tt> <em>b</em>, int <em>threshold</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">bool</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Given two rectangles <em>a</em>, <em>b</em>, and a given <em>threshold</em> distance
+(in pixels), returns <tt class="docutils literal">True</tt> if the two rectangles are closer
+than <em>threshold</em>.</p>
+</div>
+<div class="section" id="edit-distance">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">edit_distance</tt></a></h1>
+<p>int <strong>edit_distance</strong> (str <em>s1</em>, str <em>s2</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Computes the edit distance (also known as <em>Levenshtein distance</em>) between
+two strings.</p>
+<p>This counts the number of character substitutions, additions and deletions
+necessary to transform one string into another. This plugin is a
+straightforward implementation of the classic algorithm by Wagner
+and Fischer, which has runtime complexity <em>O(m*n)</em>, where <em>m</em> and <em>n</em> are
+the lengths of the two strings.</p>
+<p>See R.A. Wagner, M.J. Fischer: <em>The String-to-String Correction Problem.</em>
+Journal of the ACM 21, pp. 168-173, 1974.</p>
+</div>
+<div class="section" id="least-squares-fit">
+<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">least_squares_fit</tt></a></h1>
+<p>object <strong>least_squares_fit</strong> ([object <em>points</em>])</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Performs a least squares fit on a given list of points.</p>
+<p>The result is a tuple of the form (<em>m</em>, <em>b</em>, <em>q</em>) where <em>m</em> is the
+slope of the line, <em>b</em> is the <em>y</em>-offset, and <em>q</em> is the gamma fit
+of the line to the points. (This assumes the same statistical
+significance for all points).</p>
+<p>See Numerical Recipes in C, section <a class="reference external" href="http://www.library.cornell.edu/nr/bookcpdf/c15-2.pdf">15.2</a> for more information.</p>
+</div>
+<div class="section" id="least-squares-fit-xy">
+<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">least_squares_fit_xy</tt></a></h1>
+<p>object <strong>least_squares_fit_xy</strong> ([object <em>points</em>])</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">object</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Christoph Dalitz</td>
+</tr>
+</tbody>
+</table>
+<p>Identical to <em>least_squares_fit</em> for line angles below 45 degrees.
+For lines with a more vertical slope a least square fit of <em>x = my
++ b</em> is done instead.</p>
+<p>The result is a tuple of the form (<em>m</em>, <em>b</em>, <em>q</em>, <em>x_of_y</em>) where
+<em>m, b, q</em> are the same as in <em>least_squares_fit</em>, but the integer
+value <em>x_of_y</em> determines the actual meaning of the parameters <em>m</em>
+and <em>b</em>:</p>
+<p>When <em>x_of_y</em> is zero, <em>y = mx + b</em>. Otherwise <em>x = my + b</em>.</p>
+</div>
+<div class="section" id="polar-distance">
+<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">polar_distance</tt></a></h1>
+<p><tt class="docutils literal">FloatVector</tt> <strong>polar_distance</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">FloatVector</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a tuple containing the normalized distance, polar
+direction, and non-normalized polar distance to another glyph
+(based on center of bounding boxes).</p>
+</div>
+<div class="section" id="polar-match">
+<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">polar_match</tt></a></h1>
+<p>int <strong>polar_match</strong> (float <em>r1</em>, float <em>q1</em>, float <em>r2</em>, float <em>q2</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">No documentation written.</p>
+</div>
+</div>
+<div class="section" id="shaped-grouping-function">
+<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">shaped_grouping_function</tt></a></h1>
+<p><tt class="docutils literal">bool</tt> <strong>shaped_grouping_function</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>a</em>, <tt class="docutils literal">Image</tt> [OneBit] <em>b</em>, int <em>threshold</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">bool</tt></td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Relational</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">structural.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom and Karl MacMillan</td>
+</tr>
+</tbody>
+</table>
+<p>Given two connected components <em>a</em>, <em>b</em>, and a given <em>threshold</em>
+distance (in pixels), returns <tt class="docutils literal">True</tt> if any pixel in <em>a</em> are
+closer than <em>threshold</em> to any pixel in <em>b</em>.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>

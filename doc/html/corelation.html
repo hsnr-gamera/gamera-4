@@ -3,33 +3,148 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
-<title>corelation.txt</title>
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Corelation</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="corelation">
+<h1 class="title">Corelation</h1>
 
-
-<p>b'nCorelationn==========nn**Last modified**: November 26, 2019nn.. contents::nn.. role:: raw-html(raw)n   :format: htmln.. footer:: <a href="#id1"><span class="problematic" id="id2">:raw-html:`&lt;div style=&quot;text-align:right;&quot;&gt;For contact information, see &lt;a href=&quot;http://gamera.informatik.hsnr.de/contact.html&quot;&gt;http://gamera.informatik.hsnr.de/contact.html&lt;/a&gt;&lt;/div&gt;`</span></a>nnn``corelation_sum``n------------------nnfloat <strong>corelation_sum</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Returns: floatn:Category: Corelationn:Defined in: corelation.pyn:Author: Michael DroettboomnnnReturns a floating-point value for how well an image is corelatednto another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses thensum of absolute distance method.  A higher value indicates morencorelation.nn*template*n  The template image.nn*offset*n  The displacement of the template on the image.nnn``corelation_sum_squares``n--------------------------nnfloat <strong>corelation_sum_squares</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Returns: floatn:Category: Corelationn:Defined in: corelation.pyn:Author: Michael DroettboomnnnReturns a floating-point value for how well an image is corelatednto another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses thensum of squares method.  A higher value indicates more corelation.nn*template*n  The template image.n*offset*n  The displacement of the template on the image.nnn``corelation_weighted``n-----------------------nnfloat <strong>corelation_weighted</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>, float <em>bb</em>, float <em>bw</em>, float <em>wb</em>, float <em>ww</em>)nnn:Operates on: <tt class="docutils literal">Image</tt> [OneBit|GreyScale]n:Returns: floatn:Category: Corelationn:Defined in: corelation.pyn:Author: Michael DroettboomnnnReturns a floating-point value for how well an image is corelatednto another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses thenweighted reward/penalty method.nn*template*n  The template image.nn*offset*n  The displacement of the template on the image.nn*bb*, <em>bw</em>, <em>wb</em>, <em>ww</em>n  The rewards and penalties for different combinations of pixels.n  The first letter in the argument name indicates the color of then  template; the second letter indicates the color of the sourcen  image.  For instance, the value of <em>bw</em> will be applied to then  result when the template pixel is black and the source imagen  pixel is white.nn+--------+--------+------------------+n| Image  |        | Template         <a href="#id5"><span class="problematic" id="id6">|\n|</span></a>        +--------+---------+--------+n|        |        | black   | white  <a href="#id7"><span class="problematic" id="id8">|\n|</span></a>        +--------+---------+--------+n|        | black  | <em>bb</em>    | <em>wb</em>   <a href="#id9"><span class="problematic" id="id10">|\n|</span></a>        +--------+---------+--------+n|        | white  | <em>bw</em>    | <em>ww</em>   <a href="#id3"><span class="problematic" id="id4">|</span></a>n+--------+--------+---------+--------+nnn'</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/corelation.txt</tt>, line 1); <em><a href="#id2">backlink</a></em></p>
-Unknown interpreted text role &quot;raw-html&quot;.</div>
-<div class="system-message" id="id3">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">./src/corelation.txt</tt>, line 1); <em><a href="#id4">backlink</a></em></p>
-Inline substitution_reference start-string without end-string.</div>
-<div class="system-messages section">
-<h1>Docutils System Messages</h1>
-<div class="system-message" id="id5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/corelation.txt</tt>, line 1); <em><a href="#id6">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id7">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/corelation.txt</tt>, line 1); <em><a href="#id8">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
-<div class="system-message" id="id9">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">./src/corelation.txt</tt>, line 1); <em><a href="#id10">backlink</a></em></p>
-Undefined substitution referenced: &quot;n&quot;.</div>
+<p><strong>Last modified</strong>: April 19, 2021</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#corelation-sum" id="id1"><tt class="docutils literal">corelation_sum</tt></a></li>
+<li><a class="reference internal" href="#corelation-sum-squares" id="id2"><tt class="docutils literal">corelation_sum_squares</tt></a></li>
+<li><a class="reference internal" href="#corelation-weighted" id="id3"><tt class="docutils literal">corelation_weighted</tt></a></li>
+</ul>
 </div>
+<div class="section" id="corelation-sum">
+<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">corelation_sum</tt></a></h1>
+<p>float <strong>corelation_sum</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Corelation</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">corelation.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses the
+sum of absolute distance method.  A higher value indicates more
+corelation.</p>
+<dl class="docutils">
+<dt><em>template</em></dt>
+<dd>The template image.</dd>
+<dt><em>offset</em></dt>
+<dd>The displacement of the template on the image.</dd>
+</dl>
+</div>
+<div class="section" id="corelation-sum-squares">
+<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">corelation_sum_squares</tt></a></h1>
+<p>float <strong>corelation_sum_squares</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Corelation</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">corelation.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses the
+sum of squares method.  A higher value indicates more corelation.</p>
+<dl class="docutils">
+<dt><em>template</em></dt>
+<dd>The template image.</dd>
+<dt><em>offset</em></dt>
+<dd>The displacement of the template on the image.</dd>
+</dl>
+</div>
+<div class="section" id="corelation-weighted">
+<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">corelation_weighted</tt></a></h1>
+<p>float <strong>corelation_weighted</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>template</em>, <tt class="docutils literal">Point</tt> <em>offset</em>, float <em>bb</em>, float <em>bw</em>, float <em>wb</em>, float <em>ww</em>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit|GreyScale]</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">float</td>
+</tr>
+<tr class="field"><th class="field-name">Category:</th><td class="field-body">Corelation</td>
+</tr>
+<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">corelation.py</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Michael Droettboom</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a floating-point value for how well an image is corelated
+to another image placed at a given origin (<em>x</em>, <em>y</em>).  Uses the
+weighted reward/penalty method.</p>
+<dl class="docutils">
+<dt><em>template</em></dt>
+<dd>The template image.</dd>
+<dt><em>offset</em></dt>
+<dd>The displacement of the template on the image.</dd>
+<dt><em>bb</em>, <em>bw</em>, <em>wb</em>, <em>ww</em></dt>
+<dd>The rewards and penalties for different combinations of pixels.
+The first letter in the argument name indicates the color of the
+template; the second letter indicates the color of the source
+image.  For instance, the value of <em>bw</em> will be applied to the
+result when the template pixel is black and the source image
+pixel is white.</dd>
+</dl>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="24%" />
+<col width="27%" />
+<col width="24%" />
+</colgroup>
+<tbody valign="top">
+<tr><td rowspan="4">Image</td>
+<td>&nbsp;</td>
+<td colspan="2">Template</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td>black</td>
+<td>white</td>
+</tr>
+<tr><td>black</td>
+<td><em>bb</em></td>
+<td><em>wb</em></td>
+</tr>
+<tr><td>white</td>
+<td><em>bw</em></td>
+<td><em>ww</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<span class="raw-html"><div style="text-align:right;">For contact information, see <a href="http://gamera.informatik.hsnr.de/contact.html">http://gamera.informatik.hsnr.de/contact.html</a></div></span>
 </div>
 </body>
 </html>
