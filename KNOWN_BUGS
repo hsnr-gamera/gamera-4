@@ -1,10 +1,14 @@
 The following issues in Gamera are known.
 Fixes for some of them are currently under consideration.
 
+ - error in doc generation (gendoc) for plugins canny_edge_image() etc.
+
  - Config options should be somewhere documented.
 
  - pixel values in Cc's can only be changed over the iterators,
    but not with set()
 
+ - Biollante's geneitc algorithm reports error about missing *.so library
+ 
  - Biollante crashes on training data including groups
 
