@@ -207,7 +207,7 @@ extensions = [Extension("gamera.gameracore",
                          "src/gameracore/iteratorobject.cpp"
                          ],
                         include_dirs=["include"],
-                        **gamera_setup.extras,
+                        **gamera_setup.extras
                         ),
               Extension("gamera.knncore",
                         ["src/knncore/knncoremodule.cpp"],
