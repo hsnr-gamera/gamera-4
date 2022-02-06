@@ -973,7 +973,20 @@ static PyObject *image_gt(PyObject *self, PyObject *args) {
 #if PY_VERSION_HEX > 0x030a00a6
 #define Npy_HashDouble _Py_HashDouble
 #else
-static NPY_INLINE Py_hash_t
+static inline Py_hash_t
+#ifndef __COMP_NPY_UNUSED
+    #if defined(__GNUC__)
+        #define __COMP_NPY_UNUSED __attribute__ ((__unused__))
+    #elif defined(__ICC)
+        #define __COMP_NPY_UNUSED __attribute__ ((__unused__))
+    #elif defined(__clang__)
+        #define __COMP_NPY_UNUSED __attribute__ ((unused))
+    #else
+        #define __COMP_NPY_UNUSED
+    #endif
+    #define NPY_UNUSED(x) (__NPY_UNUSED_TAGGED ## x) __COMP_NPY_UNUSED
+#endif
+
 Npy_HashDouble(PyObject *NPY_UNUSED(identity), double val)
 {
     return _Py_HashDouble(val);
