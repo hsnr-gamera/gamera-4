@@ -966,29 +966,42 @@ static PyObject *image_gt(PyObject *self, PyObject *args) {
 	PyErr_SetString(PyExc_TypeError, "Invalid arguments to __gt__.  Need an image object as first argument");
 	return 0;
 }
+/*
+ * In Python 3.10a7 (or b1), python started using the identity for the hash
+ * when a value is NaN.  See https://bugs.python.org/issue43475
+ */
+#if PY_VERSION_HEX > 0x030a00a6
+#define Npy_HashDouble _Py_HashDouble
+#else
+static NPY_INLINE Py_hash_t
+Npy_HashDouble(PyObject *NPY_UNUSED(identity), double val)
+{
+    return _Py_HashDouble(val);
+}
+#endif
 
 static PyObject *image_hash(PyObject *self, PyObject *) {
 	Image* image = (Image *) ((RectObject *) self)->m_x;
 	Point origin = image->origin();
 	Point lr = image->lr();
-	return Py_BuildValue("i",  _Py_HashDouble((double)origin.x()) +
-	                           _Py_HashDouble((double)origin.y())+
-	                           _Py_HashDouble((double)lr.x())+
-	                           _Py_HashDouble((double)lr.y())+
-	                           _Py_HashDouble((double)image->nrows())+
-	                           _Py_HashDouble((double)image->ncols()));
+	return Py_BuildValue("i",  Npy_HashDouble(self,(double)origin.x()) +
+	                           Npy_HashDouble(self,(double)origin.y())+
+	                           Npy_HashDouble(self,(double)lr.x())+
+	                           Npy_HashDouble(self,(double)lr.y())+
+	                           Npy_HashDouble(self,(double)image->nrows())+
+	                           Npy_HashDouble(self,(double)image->ncols()));
 }
 
 static PyObject *cc_hash(PyObject *self, PyObject *) {
 	Image* cc = (Image *) ((RectObject *) self)->m_x;
 	Point origin = cc->origin();
 	Point lr = cc->lr();
-	return Py_BuildValue("i", _Py_HashDouble((double)origin.x()) +
-			_Py_HashDouble((double)origin.y())+
-			_Py_HashDouble((double)lr.x())+
-			_Py_HashDouble((double)lr.y())+
-			_Py_HashDouble((double)cc->nrows())+
-			_Py_HashDouble((double)cc->ncols()));
+	return Py_BuildValue("i",  Npy_HashDouble(self,(double)origin.x()) +
+	                           Npy_HashDouble(self,(double)origin.y())+
+	                           Npy_HashDouble(self,(double)lr.x())+
+	                           Npy_HashDouble(self,(double)lr.y())+
+	                           Npy_HashDouble(self,(double)cc->nrows())+
+	                           Npy_HashDouble(self,(double)cc->ncols()));
 }
 
 #define CREATE_GET_FUNC(name) static PyObject* image_get_##name(PyObject* self) {\
