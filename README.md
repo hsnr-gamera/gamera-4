@@ -1,4 +1,4 @@
-# Gamera (experimental version for Python 3)
+# Gamera 4 (for Python 3)
 
 Gamera is a framework for building document analysis applications.  
 It is not a packaged document recognition system, but a toolkit for
