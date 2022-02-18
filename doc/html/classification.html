@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>Classification</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="classification">
 <h1 class="title">Classification</h1>
 
-<p><strong>Last modified</strong>: November 17, 2021</p>
+<p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#classify-automatic" id="id3"><tt class="docutils literal">classify_automatic</tt></a></li>
 <li><a class="reference internal" href="#classify-heuristic" id="id4"><tt class="docutils literal">classify_heuristic</tt></a></li>
@@ -173,7 +173,7 @@ As in this case no confidence is provided, it is set to one.</dd>
 </table>
 <p>Returns the confidence of the primary class assigned to the image.
 <em>confidence_type</em> can be one of the predefined <a class="reference external" href="classify.html#confidence">confidence measures</a>, e.g.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.gameracore</span> <span class="kn">import</span> <span class="n">CONFIDENCE_KNNFRACTION</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.gameracore</span> <span class="kn">import</span> <span class="n">CONFIDENCE_KNNFRACTION</span>
 <span class="n">glyph</span><span class="o">.</span><span class="n">get_confidence</span><span class="p">(</span><span class="n">CONFIDENCE_KNNFRACTION</span><span class="p">)</span>
 </pre></div>
 <p>When no <em>confidence_type</em> is given, the default confidence stored with

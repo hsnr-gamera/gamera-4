@@ -1,6 +1,9 @@
 Changes made between Gamera File Releases
 =========================================
 
+Version 4.0.0, Feb 18, 2022
+----------------------------
+
  - ported to python 3.x
 
 

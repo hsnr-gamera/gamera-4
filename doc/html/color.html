@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>Color</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="color">
 <h1 class="title">Color</h1>
 
-<p><strong>Last modified</strong>: November 17, 2021</p>
+<p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#blue" id="id10"><tt class="docutils literal">blue</tt></a></li>
 <li><a class="reference internal" href="#cie-lab-l" id="id11"><tt class="docutils literal">cie_Lab_L</tt></a></li>
@@ -255,7 +255,7 @@ have a look at <a class="reference external" href="color.html#graph-color-ccs">g
 <dt><em>ignore_unlabeled</em>:</dt>
 <dd>do not colorize unlabeled pixels (pixel value one), but leave them black</dd>
 </dl>
-<div class="admonition note">
+<div class="note">
 <p class="first admonition-title">Note</p>
 <p class="last">Connected component analysis must already be performed
 on the image (using <a class="reference external" href="segmentation.html#cc-analysis">cc_analysis</a>, for example) in order
@@ -292,7 +292,7 @@ in the returned onebit image. When no mapping <em>rgb_to_label</em> is
 provided, each different RGB color is replaced by a unique label.</p>
 <p>This is mostly useful for reading manually labeled groundtruth
 data from color PNG files. Example:</p>
-<div class="highlight"><pre><span></span><span class="c1"># map red to label 3, and green to label 5</span>
+<div class="highlight"><pre><span class="c1"># map red to label 3, and green to label 5</span>
 <span class="n">labeled</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">colors_to_labels</span><span class="p">(</span> <span class="p">{</span><span class="n">RGBPixel</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="mi">5</span><span class="p">}</span> <span class="p">)</span>
 </pre></div>
 <p>A typical use case of this plugin is in combination
@@ -424,7 +424,7 @@ that neighboring segments obtain sufficiently different colors.
 See the reference above for details.</dd>
 </dl>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="n">ccs</span> <span class="o">=</span> <span class="n">imgage</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
+<div class="highlight"><pre><span class="n">ccs</span> <span class="o">=</span> <span class="n">imgage</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span> <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
            <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
            <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
@@ -434,7 +434,7 @@ See the reference above for details.</dd>
            <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="p">]</span>
 <span class="n">rgb</span> <span class="o">=</span> <span class="n">imgage</span><span class="o">.</span><span class="n">graph_color_ccs</span><span class="p">(</span><span class="n">ccs</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
-<div class="admonition note">
+<div class="note">
 <p class="first admonition-title">Note</p>
 <p class="last"><em>colors</em> must not contain less than six colors.</p>
 </div>

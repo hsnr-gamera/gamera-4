@@ -235,7 +235,6 @@ class to_nested_list(PluginFunction):
     category = "Utility/NestedLists"
     self_type = ImageType(ALL)
     return_type = Class("nested_list")
-    doc_examples = [(ONEBIT,)]
 
 class nested_list_to_image(PluginFunction):
     """

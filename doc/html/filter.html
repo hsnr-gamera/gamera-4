@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>Filter</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="filter">
 <h1 class="title">Filter</h1>
 
-<p><strong>Last modified</strong>: November 17, 2021</p>
+<p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#convolution" id="id1">Convolution</a><ul>
 <li><a class="reference internal" href="#convolve" id="id2"><tt class="docutils literal">convolve</tt></a></li>
@@ -99,7 +99,7 @@ if the kernel is &gt;= 0 everywhere).</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Using a custom kernel</span>
+<div class="highlight"><pre><span class="c1"># Using a custom kernel</span>
 <span class="n">img2</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convolve</span><span class="p">([[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.125</span><span class="p">],</span>
                        <span class="p">[</span><span class="mf">0.25</span> <span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span> <span class="p">],</span>
                        <span class="p">[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.125</span><span class="p">]])</span>
