@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <title>Geometry</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -13,7 +13,7 @@
 
 <p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#convex-hull-as-image" id="id6"><tt class="docutils literal">convex_hull_as_image</tt></a></li>
 <li><a class="reference internal" href="#id1" id="id7"><tt class="docutils literal">convex_hull_as_points</tt></a></li>
@@ -133,7 +133,7 @@ described in O. Devillers, S. Meiser, M. Teillaud:
 Computational Geometry: Theory and Applications 2, pp. 55-80, 1992.</p>
 <p>This can be useful for building a neighborhood graph as shown in the
 following example:</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera</span> <span class="kn">import</span> <span class="n">graph</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera</span> <span class="kn">import</span> <span class="n">graph</span>
 <span class="kn">from</span> <span class="nn">gamera.plugins.geometry</span> <span class="kn">import</span> <span class="n">delaunay_from_points</span>
 
 <span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">),(</span><span class="mi">32</span><span class="p">,</span><span class="mi">22</span><span class="p">),(</span><span class="mi">85</span><span class="p">,</span><span class="mi">14</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">70</span><span class="p">),(</span><span class="mi">80</span><span class="p">,</span><span class="mi">85</span><span class="p">)]</span>
@@ -215,7 +215,7 @@ to touching regions is returned. When <em>eight_connectivity</em> is <tt class="
 4-connectivity is used.</p>
 <p>This can be useful for building a Delaunay graph from a Voronoi tesselation
 as in the following example:</p>
-<div class="highlight"><pre><span class="c1">#</span>
+<div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># build Delaunay graph of neighboring (i.e. adjacent) Cc&#39;s</span>
 <span class="c1">#</span>
 
@@ -303,7 +303,7 @@ of the input image, a method known as <em>seeded region growing</em> (U. Köthe:
 Springer, 1995).</p>
 <p>The example shown below is the image <em>voronoi_cells</em> as created with
 the following code:</p>
-<div class="highlight"><pre><span class="c1"># create an area Voronoi tesselation and</span>
+<div class="highlight"><pre><span></span><span class="c1"># create an area Voronoi tesselation and</span>
 <span class="c1"># mark the cells and their edges in color</span>
 <span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>  <span class="c1"># labels the image</span>
 <span class="n">voronoi</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">voronoi_from_labeled_image</span><span class="p">()</span>
@@ -348,7 +348,7 @@ number of points. For not too many points, this should be faster than the
 morphological region growing approach of <a class="reference external" href="#voronoi-from-labeled-image">voronoi_from_labeled_image</a>.</p>
 <p>The example shown below is the image <em>voronoi_edges</em> as created with
 the following code:</p>
-<div class="highlight"><pre><span class="c1"># create a Voronoi tesselation and mark</span>
+<div class="highlight"><pre><span></span><span class="c1"># create a Voronoi tesselation and mark</span>
 <span class="c1"># the cell edges in a second image</span>
 <span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">),(</span><span class="mi">32</span><span class="p">,</span><span class="mi">22</span><span class="p">),(</span><span class="mi">85</span><span class="p">,</span><span class="mi">14</span><span class="p">),(</span><span class="mi">40</span><span class="p">,</span><span class="mi">70</span><span class="p">),(</span><span class="mi">80</span><span class="p">,</span><span class="mi">85</span><span class="p">)]</span>
 <span class="n">voronoi</span> <span class="o">=</span> <span class="n">Image</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">))</span>

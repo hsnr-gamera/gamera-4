@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <title>Runlength</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -13,7 +13,7 @@
 
 <p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#filter-narrow-runs" id="id1"><tt class="docutils literal">filter_narrow_runs</tt></a></li>
 <li><a class="reference internal" href="#filter-short-runs" id="id2"><tt class="docutils literal">filter_short_runs</tt></a></li>
@@ -170,10 +170,10 @@ the right hand edge and continue on the left edge of the next run.</p>
 <em>direction</em>.</p>
 <p>Each run is returned as a Rect object.</p>
 <p>For example, to iterate over all runs:</p>
-<div class="highlight"><pre><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">iterate_black_horizontal_runs</span><span class="p">():</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">iterate_black_horizontal_runs</span><span class="p">():</span>
 <span class="c1"># All the runs in each row</span>
 <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">run</span>
+    <span class="nb">print</span> <span class="n">run</span>
 </pre></div>
 </div>
 <div class="section" id="most-frequent-run">

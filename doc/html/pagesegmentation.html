@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <title>PageSegmentation</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -13,7 +13,7 @@
 
 <p><strong>Last modified</strong>: February 18, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#bbox-merging" id="id3"><tt class="docutils literal">bbox_merging</tt></a></li>
 <li><a class="reference internal" href="#kise-block-extraction" id="id4"><tt class="docutils literal">kise_block_extraction</tt></a></li>
@@ -303,7 +303,7 @@ be of use to determine what exactly is wrong with the segmentation.</p>
 <p>As this function is not an image method, but a free function, it
 is not automatically imported with all plugins and you must import
 it explicitly with</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">segmentation_error</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">segmentation_error</span>
 </pre></div>
 </div>
 <div class="section" id="sub-cc-analysis">
@@ -343,7 +343,7 @@ list of segments returned by the page segmentation algorithm.</p>
 <li>a list of ImageLists, each list containing all connected components
 belonging to the same page segments</li>
 </ul>
-<div class="note">
+<div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The groups will be returned in the same order as given
 in <em>cclist</em>.  This means that you can sort the page segments
@@ -395,7 +395,7 @@ in the depth-first-search utilized in the topological sorting.</p>
 <p>As this function is not an image method, but a free function, it
 is not automatically imported with all plugins and you must import
 it explicitly with</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">textline_reading_order</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">textline_reading_order</span>
 </pre></div>
 </div>
 </div>
