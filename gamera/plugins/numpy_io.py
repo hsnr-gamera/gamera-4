@@ -165,7 +165,7 @@ else:
             if pixel_type == RGB:
                 shape += (3,)
 
-            array = n.frombuffer(tmp, typecode, 3)
+            array = n.frombuffer(buffer=tmp, dtype=typecode)
             return n.resize(array, shape)
 
         __call__ = staticmethod(__call__)
