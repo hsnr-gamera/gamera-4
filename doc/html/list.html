@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>List</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="list">
 <h1 class="title">List</h1>
 
-<p><strong>Last modified</strong>: April 08, 2022</p>
+<p><strong>Last modified</strong>: April 26, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#all-subsets" id="id2"><tt class="docutils literal">all_subsets</tt></a></li>
 <li><a class="reference internal" href="#argmax" id="id3"><tt class="docutils literal">argmax</tt></a></li>
@@ -145,13 +145,13 @@ triangular kernel has support [-sqrt(6), sqrt(6)].</p>
 <em>float</em>, and with user defined types. For user defined type, you
 must implement the &quot;less than&quot; operator (<cite>__lt__</cite>), as in the following
 example:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">P</span><span class="p">:</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">P</span><span class="p">:</span>
    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
-   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-   <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-   <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">P</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">P</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
@@ -164,7 +164,7 @@ values. So if you need the median for a pivot element, set <em>inlist</em> to
 <tt class="docutils literal">True</tt>.</p>
 <p>For user defined types, the returned median is always a list
 entry, because arithmetic computations do not make sense in this case.</p>
-<div class="admonition note">
+<div class="note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is <em>not</em> the median image filter that replaces each pixel value
 with the median of its neighborhood. For this purpose, see the

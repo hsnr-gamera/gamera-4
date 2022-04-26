@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>ExternalLibraries</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="externallibraries">
 <h1 class="title">ExternalLibraries</h1>
 
-<p><strong>Last modified</strong>: April 08, 2022</p>
+<p><strong>Last modified</strong>: April 26, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#numpy" id="id1">Numpy</a><ul>
 <li><a class="reference internal" href="#from-numpy" id="id2"><tt class="docutils literal">from_numpy</tt></a></li>
@@ -95,7 +95,7 @@ planes)</td>
 <p>Requires two copying operations;  may fail for very large images.</p>
 <p>To use this function, which is not a method on images, do the
 following:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">numpy_io</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -159,7 +159,7 @@ planes)</td>
 <p>This method can be used for utilizing special functions present in
 numpy. If you need to compute the discrete fourier transform of
 an image, you can use numpy, as in the following  example:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">numpy_io</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">fft</span>
 <span class="n">nparr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">fourarr</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">nparr</span><span class="p">)</span>
@@ -203,8 +203,8 @@ image <em>image</em>.</p>
 Requires a copying operation;  may fail for very large images.</p>
 <p>This can, e.g., be used to read images from file formats not
 directly supported by gamera, as JPEG images:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Beware: name &quot;Image&quot; is already used in Gamera!</span>
-<span class="kn">import</span> <span class="nn">Image</span> <span class="k">as</span> <span class="nn">Pil</span>
+<div class="highlight"><pre><span class="c1"># Beware: name &quot;Image&quot; is already used in Gamera!</span>
+<span class="kn">import</span> <span class="nn">Image</span> <span class="kn">as</span> <span class="nn">Pil</span>
 <span class="kn">from</span> <span class="nn">pil_io</span> <span class="kn">import</span>
 
 <span class="c1"># read a JPEG image and convert it to a Gamera image</span>
@@ -312,7 +312,7 @@ numarray_io.py and pil_io.py respectively.</p>
 <p>Instantiates a Gamera RGB image from an OpenCV
 cv.cvmat or cv.iplimage. May fail for very large images.</p>
 <p>Usage example:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">cv_io</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins</span> <span class="kn">import</span> <span class="n">cv_io</span>
 
 <span class="c1"># read a JPEG image and convert it to a Gamera image</span>
 <span class="n">cvImg</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">LoadImage</span><span class="p">(</span><span class="s2">&quot;foo.jpg&quot;</span><span class="p">)</span>
@@ -364,7 +364,7 @@ May fail for very large images.</p>
 <p>Encodes the image into a 'buffer' required by wx.Image.
 (i.e. 8-bit RGB triplets). If you need to convert a gamera image
 <em>scaled_image</em> to a wx.Bitmap, you can do so as follows:</p>
-<div class="highlight"><pre><span></span><span class="n">wximg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">EmptyImage</span><span class="p">(</span><span class="n">scaled_image</span><span class="o">.</span><span class="n">ncols</span><span class="p">,</span> <span class="n">scaled_image</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">wximg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">EmptyImage</span><span class="p">(</span><span class="n">scaled_image</span><span class="o">.</span><span class="n">ncols</span><span class="p">,</span> <span class="n">scaled_image</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
 <span class="n">scaled_image</span><span class="o">.</span><span class="n">to_buffer</span><span class="p">(</span><span class="n">wximg</span><span class="o">.</span><span class="n">GetDataBuffer</span><span class="p">())</span>
 <span class="n">wxbmp</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">wximg</span><span class="p">)</span>
 </pre></div>

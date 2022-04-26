@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>Morphology</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,9 +11,9 @@
 <div class="document" id="morphology">
 <h1 class="title">Morphology</h1>
 
-<p><strong>Last modified</strong>: April 08, 2022</p>
+<p><strong>Last modified</strong>: April 26, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
+<p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#despeckle" id="id5"><tt class="docutils literal">despeckle</tt></a></li>
 <li><a class="reference internal" href="#dilate" id="id6"><tt class="docutils literal">dilate</tt></a></li>
@@ -115,7 +115,7 @@ element.</p>
 <p>Note that it is necessary to specify which point in the
 structuring element shall be treated as origin. This allows for
 arbitrary structuring elements. Examples:</p>
-<div class="highlight"><pre><span></span><span class="c1"># same as image.dilate()</span>
+<div class="highlight"><pre><span class="c1"># same as image.dilate()</span>
 <span class="n">structure</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ONEBIT</span><span class="p">)</span>
 <span class="n">structure</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dilate_with_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -287,7 +287,7 @@ arbitrary structuring elements.</p>
 image dimensions are whitened. In other words the image is padded
 with white pixels before erosion.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="c1"># same as image.erode()</span>
+<div class="highlight"><pre><span class="c1"># same as image.erode()</span>
 <span class="n">structure</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ONEBIT</span><span class="p">)</span>
 <span class="n">structure</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">erode_with_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
