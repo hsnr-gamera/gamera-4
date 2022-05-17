@@ -24,7 +24,7 @@ def test_rle1():
     # compare the results
     # this test leads to segmentation fault in is_white() for RLE image
     # with gcc 9.4.0: we must still figure out what the cause is
-    #assert image1.color_ccs().to_string() == image2.color_ccs().to_string()
+    assert image1.color_ccs().to_string() == image2.color_ccs().to_string()
     assert image1._to_raw_string() == image2._to_raw_string()
 
     # Do some more complicated stuff, particularly things that
