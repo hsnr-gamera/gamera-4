@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Segmentation</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,23 +11,23 @@
 <div class="document" id="segmentation">
 <h1 class="title">Segmentation</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#cc-analysis" id="id1"><tt class="docutils literal">cc_analysis</tt></a></li>
-<li><a class="reference internal" href="#cc-and-cluster" id="id2"><tt class="docutils literal">cc_and_cluster</tt></a></li>
-<li><a class="reference internal" href="#splitx" id="id3"><tt class="docutils literal">splitx</tt></a></li>
-<li><a class="reference internal" href="#splitx-left" id="id4"><tt class="docutils literal">splitx_left</tt></a></li>
-<li><a class="reference internal" href="#splitx-max" id="id5"><tt class="docutils literal">splitx_max</tt></a></li>
-<li><a class="reference internal" href="#splitx-right" id="id6"><tt class="docutils literal">splitx_right</tt></a></li>
-<li><a class="reference internal" href="#splity" id="id7"><tt class="docutils literal">splity</tt></a></li>
-<li><a class="reference internal" href="#splity-bottom" id="id8"><tt class="docutils literal">splity_bottom</tt></a></li>
-<li><a class="reference internal" href="#splity-top" id="id9"><tt class="docutils literal">splity_top</tt></a></li>
+<li><a class="reference internal" href="#cc-analysis" id="toc-entry-1"><tt class="docutils literal">cc_analysis</tt></a></li>
+<li><a class="reference internal" href="#cc-and-cluster" id="toc-entry-2"><tt class="docutils literal">cc_and_cluster</tt></a></li>
+<li><a class="reference internal" href="#splitx" id="toc-entry-3"><tt class="docutils literal">splitx</tt></a></li>
+<li><a class="reference internal" href="#splitx-left" id="toc-entry-4"><tt class="docutils literal">splitx_left</tt></a></li>
+<li><a class="reference internal" href="#splitx-max" id="toc-entry-5"><tt class="docutils literal">splitx_max</tt></a></li>
+<li><a class="reference internal" href="#splitx-right" id="toc-entry-6"><tt class="docutils literal">splitx_right</tt></a></li>
+<li><a class="reference internal" href="#splity" id="toc-entry-7"><tt class="docutils literal">splity</tt></a></li>
+<li><a class="reference internal" href="#splity-bottom" id="toc-entry-8"><tt class="docutils literal">splity_bottom</tt></a></li>
+<li><a class="reference internal" href="#splity-top" id="toc-entry-9"><tt class="docutils literal">splity_top</tt></a></li>
 </ul>
 </div>
 <div class="section" id="cc-analysis">
-<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">cc_analysis</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1"><tt class="docutils literal">cc_analysis</tt></a></h1>
 <p>[object] <strong>cc_analysis</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -66,7 +66,7 @@ ccs = [x.image_copy() for x in ccs]
 <p><img alt="cc_analysis_plugin_00_00" src="images/cc_analysis_plugin_00_00.png" style="width: 65px; height: 87px;" /> <img alt="cc_analysis_plugin_00_01" src="images/cc_analysis_plugin_00_01.png" style="width: 2px; height: 3px;" /> <img alt="cc_analysis_plugin_00_02" src="images/cc_analysis_plugin_00_02.png" style="width: 1px; height: 10px;" /> <img alt="cc_analysis_plugin_00_03" src="images/cc_analysis_plugin_00_03.png" style="width: 4px; height: 4px;" /> <img alt="cc_analysis_plugin_00_04" src="images/cc_analysis_plugin_00_04.png" style="width: 41px; height: 7px;" /></p>
 </div>
 <div class="section" id="cc-and-cluster">
-<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">cc_and_cluster</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">cc_and_cluster</tt></a></h1>
 <p>[object] <strong>cc_and_cluster</strong> (float <em>ratio</em> = 1.00, int <em>distance</em> = 2)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -93,7 +93,7 @@ clusters the CC's according to their similarity.</p>
 <p><img alt="cc_and_cluster_plugin_00_00" src="images/cc_and_cluster_plugin_00_00.png" style="width: 65px; height: 87px;" /> <img alt="cc_and_cluster_plugin_00_01" src="images/cc_and_cluster_plugin_00_01.png" style="width: 2px; height: 3px;" /> <img alt="cc_and_cluster_plugin_00_02" src="images/cc_and_cluster_plugin_00_02.png" style="width: 1px; height: 10px;" /> <img alt="cc_and_cluster_plugin_00_03" src="images/cc_and_cluster_plugin_00_03.png" style="width: 4px; height: 4px;" /> <img alt="cc_and_cluster_plugin_00_04" src="images/cc_and_cluster_plugin_00_04.png" style="width: 41px; height: 7px;" /></p>
 </div>
 <div class="section" id="splitx">
-<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">splitx</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">splitx</tt></a></h1>
 <p>[object] <strong>splitx</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -122,7 +122,7 @@ and a list of splitting point candidates as input.</p>
 <p><img alt="splitx_plugin_00_00" src="images/splitx_plugin_00_00.png" style="width: 28px; height: 56px;" /> <img alt="splitx_plugin_00_01" src="images/splitx_plugin_00_01.png" style="width: 7px; height: 6px;" /> <img alt="splitx_plugin_00_02" src="images/splitx_plugin_00_02.png" style="width: 4px; height: 4px;" /> <img alt="splitx_plugin_00_03" src="images/splitx_plugin_00_03.png" style="width: 15px; height: 6px;" /> <img alt="splitx_plugin_00_04" src="images/splitx_plugin_00_04.png" style="width: 36px; height: 76px;" /> <img alt="splitx_plugin_00_05" src="images/splitx_plugin_00_05.png" style="width: 2px; height: 3px;" /> <img alt="splitx_plugin_00_06" src="images/splitx_plugin_00_06.png" style="width: 1px; height: 10px;" /> <img alt="splitx_plugin_00_07" src="images/splitx_plugin_00_07.png" style="width: 23px; height: 12px;" /> <img alt="splitx_plugin_00_08" src="images/splitx_plugin_00_08.png" style="width: 25px; height: 7px;" /></p>
 </div>
 <div class="section" id="splitx-left">
-<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">splitx_left</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">splitx_left</tt></a></h1>
 <p>[object] <strong>splitx_left</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -149,7 +149,7 @@ the projections near the left of the image.</p>
 <p><img alt="splitx_left_plugin_00_00" src="images/splitx_left_plugin_00_00.png" style="width: 19px; height: 53px;" /> <img alt="splitx_left_plugin_00_01" src="images/splitx_left_plugin_00_01.png" style="width: 4px; height: 4px;" /> <img alt="splitx_left_plugin_00_02" src="images/splitx_left_plugin_00_02.png" style="width: 6px; height: 3px;" /> <img alt="splitx_left_plugin_00_03" src="images/splitx_left_plugin_00_03.png" style="width: 45px; height: 87px;" /> <img alt="splitx_left_plugin_00_04" src="images/splitx_left_plugin_00_04.png" style="width: 6px; height: 4px;" /> <img alt="splitx_left_plugin_00_05" src="images/splitx_left_plugin_00_05.png" style="width: 2px; height: 3px;" /> <img alt="splitx_left_plugin_00_06" src="images/splitx_left_plugin_00_06.png" style="width: 1px; height: 10px;" /> <img alt="splitx_left_plugin_00_07" src="images/splitx_left_plugin_00_07.png" style="width: 34px; height: 7px;" /></p>
 </div>
 <div class="section" id="splitx-max">
-<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">splitx_max</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">splitx_max</tt></a></h1>
 <p>[object] <strong>splitx_max</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -180,7 +180,7 @@ list of splitting point candidates as input.</p>
 <p><img alt="splitx_max_plugin_00_00" src="images/splitx_max_plugin_00_00.png" style="width: 1px; height: 1px;" /> <img alt="splitx_max_plugin_00_01" src="images/splitx_max_plugin_00_01.png" style="width: 37px; height: 57px;" /> <img alt="splitx_max_plugin_00_02" src="images/splitx_max_plugin_00_02.png" style="width: 4px; height: 4px;" /> <img alt="splitx_max_plugin_00_03" src="images/splitx_max_plugin_00_03.png" style="width: 24px; height: 6px;" /> <img alt="splitx_max_plugin_00_04" src="images/splitx_max_plugin_00_04.png" style="width: 27px; height: 70px;" /> <img alt="splitx_max_plugin_00_05" src="images/splitx_max_plugin_00_05.png" style="width: 2px; height: 3px;" /> <img alt="splitx_max_plugin_00_06" src="images/splitx_max_plugin_00_06.png" style="width: 1px; height: 10px;" /> <img alt="splitx_max_plugin_00_07" src="images/splitx_max_plugin_00_07.png" style="width: 14px; height: 10px;" /> <img alt="splitx_max_plugin_00_08" src="images/splitx_max_plugin_00_08.png" style="width: 16px; height: 7px;" /></p>
 </div>
 <div class="section" id="splitx-right">
-<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">splitx_right</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">splitx_right</tt></a></h1>
 <p>[object] <strong>splitx_right</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -207,7 +207,7 @@ the projections near the right of the image.</p>
 <p><img alt="splitx_right_plugin_00_00" src="images/splitx_right_plugin_00_00.png" style="width: 18px; height: 7px;" /> <img alt="splitx_right_plugin_00_01" src="images/splitx_right_plugin_00_01.png" style="width: 54px; height: 61px;" /> <img alt="splitx_right_plugin_00_02" src="images/splitx_right_plugin_00_02.png" style="width: 2px; height: 3px;" /> <img alt="splitx_right_plugin_00_03" src="images/splitx_right_plugin_00_03.png" style="width: 1px; height: 10px;" /> <img alt="splitx_right_plugin_00_04" src="images/splitx_right_plugin_00_04.png" style="width: 4px; height: 4px;" /> <img alt="splitx_right_plugin_00_05" src="images/splitx_right_plugin_00_05.png" style="width: 41px; height: 7px;" /> <img alt="splitx_right_plugin_00_06" src="images/splitx_right_plugin_00_06.png" style="width: 10px; height: 30px;" /></p>
 </div>
 <div class="section" id="splity">
-<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">splity</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">splity</tt></a></h1>
 <p>[object] <strong>splity</strong> (<tt class="docutils literal">FloatVector</tt> <em>center</em> = [0.5])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -236,7 +236,7 @@ list of splitting point candidates as input.</p>
 <p><img alt="splity_plugin_00_00" src="images/splity_plugin_00_00.png" style="width: 44px; height: 45px;" /> <img alt="splity_plugin_00_01" src="images/splity_plugin_00_01.png" style="width: 21px; height: 15px;" /> <img alt="splity_plugin_00_02" src="images/splity_plugin_00_02.png" style="width: 2px; height: 3px;" /> <img alt="splity_plugin_00_03" src="images/splity_plugin_00_03.png" style="width: 52px; height: 41px;" /> <img alt="splity_plugin_00_04" src="images/splity_plugin_00_04.png" style="width: 1px; height: 10px;" /> <img alt="splity_plugin_00_05" src="images/splity_plugin_00_05.png" style="width: 4px; height: 4px;" /> <img alt="splity_plugin_00_06" src="images/splity_plugin_00_06.png" style="width: 41px; height: 7px;" /></p>
 </div>
 <div class="section" id="splity-bottom">
-<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">splity_bottom</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-8"><tt class="docutils literal">splity_bottom</tt></a></h1>
 <p>[object] <strong>splity_bottom</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -263,7 +263,7 @@ the projections near the bottom of the image.</p>
 <p><img alt="splity_bottom_plugin_00_00" src="images/splity_bottom_plugin_00_00.png" style="width: 44px; height: 72px;" /> <img alt="splity_bottom_plugin_00_01" src="images/splity_bottom_plugin_00_01.png" style="width: 26px; height: 42px;" /> <img alt="splity_bottom_plugin_00_02" src="images/splity_bottom_plugin_00_02.png" style="width: 2px; height: 3px;" /> <img alt="splity_bottom_plugin_00_03" src="images/splity_bottom_plugin_00_03.png" style="width: 1px; height: 10px;" /> <img alt="splity_bottom_plugin_00_04" src="images/splity_bottom_plugin_00_04.png" style="width: 4px; height: 4px;" /> <img alt="splity_bottom_plugin_00_05" src="images/splity_bottom_plugin_00_05.png" style="width: 46px; height: 14px;" /> <img alt="splity_bottom_plugin_00_06" src="images/splity_bottom_plugin_00_06.png" style="width: 41px; height: 7px;" /></p>
 </div>
 <div class="section" id="splity-top">
-<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">splity_top</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9"><tt class="docutils literal">splity_top</tt></a></h1>
 <p>[object] <strong>splity_top</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Writing Gamera toolkits</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,38 +11,38 @@
 <div class="document" id="writing-gamera-toolkits">
 <h1 class="title">Writing Gamera toolkits</h1>
 
-<p><strong>Last modified</strong>: September 17, 2019</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#what-is-a-toolkit" id="id11">What is a toolkit?</a></li>
-<li><a class="reference internal" href="#creating-a-toolkit" id="id12">Creating a toolkit</a><ul>
-<li><a class="reference internal" href="#the-directory-hierarchy" id="id13">The directory hierarchy</a></li>
-<li><a class="reference internal" href="#the-skeleton-toolkit" id="id14">The skeleton toolkit</a></li>
-<li><a class="reference internal" href="#editing-the-files" id="id15">Editing the files</a><ul>
-<li><a class="reference internal" href="#setup-py" id="id16">setup.py</a></li>
-<li><a class="reference internal" href="#manifest-in" id="id17">MANIFEST.in</a></li>
-<li><a class="reference internal" href="#gamera-toolkits-my-toolkit-init-py" id="id18">gamera/toolkits/my_toolkit/__init__.py</a></li>
-<li><a class="reference internal" href="#plugins" id="id19">Plugins</a></li>
-<li><a class="reference internal" href="#python-modules" id="id20">Python modules</a></li>
-<li><a class="reference internal" href="#documentation" id="id21">Documentation</a></li>
+<li><a class="reference internal" href="#what-is-a-toolkit" id="toc-entry-1">What is a toolkit?</a></li>
+<li><a class="reference internal" href="#creating-a-toolkit" id="toc-entry-2">Creating a toolkit</a><ul>
+<li><a class="reference internal" href="#the-directory-hierarchy" id="toc-entry-3">The directory hierarchy</a></li>
+<li><a class="reference internal" href="#the-skeleton-toolkit" id="toc-entry-4">The skeleton toolkit</a></li>
+<li><a class="reference internal" href="#editing-the-files" id="toc-entry-5">Editing the files</a><ul>
+<li><a class="reference internal" href="#setup-py" id="toc-entry-6">setup.py</a></li>
+<li><a class="reference internal" href="#manifest-in" id="toc-entry-7">MANIFEST.in</a></li>
+<li><a class="reference internal" href="#gamera-toolkits-my-toolkit-init-py" id="toc-entry-8">gamera/toolkits/my_toolkit/__init__.py</a></li>
+<li><a class="reference internal" href="#plugins" id="toc-entry-9">Plugins</a></li>
+<li><a class="reference internal" href="#python-modules" id="toc-entry-10">Python modules</a></li>
+<li><a class="reference internal" href="#documentation" id="toc-entry-11">Documentation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#building-and-installing-a-toolkit" id="id22">Building and installing a toolkit</a></li>
-<li><a class="reference internal" href="#documenting-toolkits" id="id23">Documenting toolkits</a><ul>
-<li><a class="reference internal" href="#writing-narrative-documentation" id="id24">Writing narrative documentation</a></li>
-<li><a class="reference internal" href="#plugin-documentation" id="id25">Plugin documentation</a></li>
-<li><a class="reference internal" href="#class-documentation" id="id26">Class documentation</a><ul>
-<li><a class="reference internal" href="#inline-class-documentation" id="id27">Inline class documentation</a></li>
-<li><a class="reference internal" href="#one-class-per-file-documentation" id="id28">One-class-per-file documentation</a></li>
+<li><a class="reference internal" href="#building-and-installing-a-toolkit" id="toc-entry-12">Building and installing a toolkit</a></li>
+<li><a class="reference internal" href="#documenting-toolkits" id="toc-entry-13">Documenting toolkits</a><ul>
+<li><a class="reference internal" href="#writing-narrative-documentation" id="toc-entry-14">Writing narrative documentation</a></li>
+<li><a class="reference internal" href="#plugin-documentation" id="toc-entry-15">Plugin documentation</a></li>
+<li><a class="reference internal" href="#class-documentation" id="toc-entry-16">Class documentation</a><ul>
+<li><a class="reference internal" href="#inline-class-documentation" id="toc-entry-17">Inline class documentation</a></li>
+<li><a class="reference internal" href="#one-class-per-file-documentation" id="toc-entry-18">One-class-per-file documentation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#documentation-generation-script" id="id29">Documentation generation script</a></li>
-<li><a class="reference internal" href="#building-the-documentation" id="id30">Building the documentation</a><ul>
-<li><a class="reference internal" href="#prerequisites" id="id31">Prerequisites</a></li>
-<li><a class="reference internal" href="#generating" id="id32">Generating</a></li>
+<li><a class="reference internal" href="#documentation-generation-script" id="toc-entry-19">Documentation generation script</a></li>
+<li><a class="reference internal" href="#building-the-documentation" id="toc-entry-20">Building the documentation</a><ul>
+<li><a class="reference internal" href="#prerequisites" id="toc-entry-21">Prerequisites</a></li>
+<li><a class="reference internal" href="#generating" id="toc-entry-22">Generating</a></li>
 </ul>
 </li>
 </ul>
@@ -53,7 +53,7 @@
 <li>2004 Michael Droettboom</li>
 </ol>
 <div class="section" id="what-is-a-toolkit">
-<h1><a class="toc-backref" href="#id11">What is a toolkit?</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">What is a toolkit?</a></h1>
 <p>A toolkit is a way to distribute code that uses Gamera but is not
 included in the Gamera source tree.  This could be entire
 applications that process images and return symbolic
@@ -74,9 +74,9 @@ Python package.  <a class="reference external" href="https://docs.python.org/2/d
 documentation is a good resource for how to do that.</p>
 </div>
 <div class="section" id="creating-a-toolkit">
-<h1><a class="toc-backref" href="#id12">Creating a toolkit</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Creating a toolkit</a></h1>
 <div class="section" id="the-directory-hierarchy">
-<h2><a class="toc-backref" href="#id13">The directory hierarchy</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3">The directory hierarchy</a></h2>
 <p>Toolkits require a number of different files in a directory
 hierarchy.  Here we assume the toolkit is called <tt class="docutils literal">my_toolkit</tt>.</p>
 <blockquote>
@@ -141,7 +141,7 @@ files in a <tt class="docutils literal">src/</tt> directory or documentation in 
 directory.</p>
 </div>
 <div class="section" id="the-skeleton-toolkit">
-<h2><a class="toc-backref" href="#id14">The skeleton toolkit</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4">The skeleton toolkit</a></h2>
 <p>For convenience, a minimal skeleton of a toolkit is provided and
 available from the files section of the <a class="reference external" href="https://github.com/hsnr-gamera">Gamera github site</a>.</p>
 <p>This skeleton provides the very minimum needed to create a toolkit.
@@ -155,12 +155,12 @@ python rename.py my_toolkit
 <tt class="docutils literal">my_toolkit</tt>.</p>
 </div>
 <div class="section" id="editing-the-files">
-<h2><a class="toc-backref" href="#id15">Editing the files</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5">Editing the files</a></h2>
 <p>The files included in the skeleton toolkit are self-documenting.  They
 should require only minimal editing.  Mainly, toolkit authors will be
 adding their own Python modules and Gamera plugins to the toolkit.</p>
 <div class="section" id="setup-py">
-<h3><a class="toc-backref" href="#id16">setup.py</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-6">setup.py</a></h3>
 <p>You only need to edit this file if you are doing anything more complex
 than installing Python modules and building Gamera plugins.  For
 instance, if you are building and linking to a third-party library.
@@ -168,13 +168,13 @@ Since this script is based on Python distutils, the distutils
 documentation is the best resource for how to do that.</p>
 </div>
 <div class="section" id="manifest-in">
-<h3><a class="toc-backref" href="#id17">MANIFEST.in</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">MANIFEST.in</a></h3>
 <p>If you need to include more data files to your toolkit distribution,
 you will need to edit this file.  The format is described in the
 distutils documentation.</p>
 </div>
 <div class="section" id="gamera-toolkits-my-toolkit-init-py">
-<h3><a class="toc-backref" href="#id18">gamera/toolkits/my_toolkit/__init__.py</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">gamera/toolkits/my_toolkit/__init__.py</a></h3>
 <p>If you want to add a drop-down menu to the Gamera GUI shell, you can
 edit this file.  It is self-documenting.  You will probably want to
 remove the example menu items that are included in the skeleton.</p>
@@ -182,25 +182,25 @@ remove the example menu items that are included in the skeleton.</p>
 to the GUI's context menu (right-click menu).</p>
 </div>
 <div class="section" id="plugins">
-<h3><a class="toc-backref" href="#id19">Plugins</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-9">Plugins</a></h3>
 <p><a class="reference external" href="writing_plugins.html">Writing plugins</a> is described in detail.  The Python metadata
 files for a toolkit go in <tt class="docutils literal">gamera/toolkits/my_toolkit/plugins/</tt>, and
 the C++ source code goes in <tt class="docutils literal">include/plugins/</tt>.</p>
 </div>
 <div class="section" id="python-modules">
-<h3><a class="toc-backref" href="#id20">Python modules</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-10">Python modules</a></h3>
 <p>The Python modules in your toolkit should go in
 <tt class="docutils literal">gamera/my_toolkit/skeleton</tt>.</p>
 </div>
 <div class="section" id="documentation">
-<h3><a class="toc-backref" href="#id21">Documentation</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-11">Documentation</a></h3>
 <p>Optionally, the toolkit may use the Gamera documentation system.  See
 <a class="reference internal" href="#documenting-toolkits">Documenting toolkits</a> for more information.</p>
 </div>
 </div>
 </div>
 <div class="section" id="building-and-installing-a-toolkit">
-<h1><a class="toc-backref" href="#id22">Building and installing a toolkit</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12">Building and installing a toolkit</a></h1>
 <p>Building and installing toolkits is very similar to building and
 installing Gamera itself.</p>
 <p><strong>You must ensure that Gamera is installed and working before
@@ -212,7 +212,7 @@ the skeleton example in the INSTALL file.  You should redistribute
 this file with your toolkit.</p>
 </div>
 <div class="section" id="documenting-toolkits">
-<h1><a class="toc-backref" href="#id23">Documenting toolkits</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13">Documenting toolkits</a></h1>
 <p>Optionally, toolkit writers can use the Gamera documentation system.
 Toolkits are also free to use another documentation
 workflow if desired, of course.</p>
@@ -227,7 +227,7 @@ author should perform four steps:</p>
 </ol>
 </blockquote>
 <div class="section" id="writing-narrative-documentation">
-<h2><a class="toc-backref" href="#id24">Writing narrative documentation</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-14">Writing narrative documentation</a></h2>
 <p>The narrative (handwritten) documentation is intended for &quot;how-to&quot;
 like documents or anything that is not simply documenting methods
 one-by-one.</p>
@@ -240,7 +240,7 @@ corresponding <tt class="docutils literal">.html</tt> when the documentation is 
 an entry-point to the documentation.</p>
 </div>
 <div class="section" id="plugin-documentation">
-<h2><a class="toc-backref" href="#id25">Plugin documentation</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-15">Plugin documentation</a></h2>
 <p>Document each plugin method in its Python docstring.  This docstring
 should occur on the line following the <tt class="docutils literal">class</tt> statement where each
 <tt class="docutils literal">PluginFunction</tt> is defined.</p>
@@ -262,12 +262,12 @@ generator from your <a class="reference internal" href="#documentation-generatio
 </pre></div>
 </div>
 <div class="section" id="class-documentation">
-<h2><a class="toc-backref" href="#id26">Class documentation</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-16">Class documentation</a></h2>
 <p>Individual classes and their methods can be documented as well.  There
 are two ways to do this: 1) inline with the narrative documentation,
 or 2) one-class-per-file documentation.</p>
 <div class="section" id="inline-class-documentation">
-<h3><a class="toc-backref" href="#id27">Inline class documentation</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-17">Inline class documentation</a></h3>
 <p>The Gamera documentation system adds a new directive, <tt class="docutils literal">docstring</tt>, to
 reStructuredText.  The directive looks up the docstring of a class,
 function or method and inserts it inline into the document.  It takes
@@ -370,7 +370,7 @@ process is not running, this method has no effect.</p>
 </div>
 </div>
 <div class="section" id="one-class-per-file-documentation">
-<h3><a class="toc-backref" href="#id28">One-class-per-file documentation</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-18">One-class-per-file documentation</a></h3>
 <p>To generate one-class-per-file documentation, use the
 <tt class="docutils literal">classes</tt> keywoard argument when calling <tt class="docutils literal">gendoc()</tt> (See <a class="reference external" href="#documentation-generation-script">below</a>).
 This argument takes a list of 3-tuples, (<em>module</em>, <em>class</em>,
@@ -399,7 +399,7 @@ put the class documentation in its own file.</p>
 </div>
 </div>
 <div class="section" id="documentation-generation-script">
-<h2><a class="toc-backref" href="#id29">Documentation generation script</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-19">Documentation generation script</a></h2>
 <p>A small script is required that loads the toolkits' plugins and then
 calls out to the Gamera documentation system.  The example
 documentation generation script included in the skeleton toolkit
@@ -434,11 +434,11 @@ example is as follows:</p>
 </pre></div>
 </div>
 <div class="section" id="building-the-documentation">
-<h2><a class="toc-backref" href="#id30">Building the documentation</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-20">Building the documentation</a></h2>
 <p>Once these three elements are in place, the documentation can be
 generated and converted to HTML.</p>
 <div class="section" id="prerequisites">
-<h3><a class="toc-backref" href="#id31">Prerequisites</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-21">Prerequisites</a></h3>
 <p>Generating documentation requires two third-party Python
 libraries:</p>
 <blockquote>
@@ -449,7 +449,7 @@ libraries:</p>
 </blockquote>
 </div>
 <div class="section" id="generating">
-<h3><a class="toc-backref" href="#id32">Generating</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-22">Generating</a></h3>
 <p>To generate the documentation, go to the <tt class="docutils literal">doc</tt> directory in the
 skeleton and run the <tt class="docutils literal">gendoc.py</tt> script.</p>
 <p>Alternatively, you can call the <tt class="docutils literal">gendoc.py</tt> script with the

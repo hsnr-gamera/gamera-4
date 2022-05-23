@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>A gentle overview of Gamera</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,29 +11,29 @@
 <div class="document" id="a-gentle-overview-of-gamera">
 <h1 class="title">A gentle overview of Gamera</h1>
 
-<p><strong>Last modified</strong>: September 17, 2019</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#introduction" id="id14">Introduction</a></li>
-<li><a class="reference internal" href="#architecture-overview" id="id15">Architecture overview</a><ul>
-<li><a class="reference internal" href="#tasks" id="id16">Tasks</a><ul>
-<li><a class="reference internal" href="#pre-processing" id="id17">Pre-processing</a></li>
-<li><a class="reference internal" href="#document-segmentation-and-analysis" id="id18">Document segmentation and analysis</a></li>
-<li><a class="reference internal" href="#symbol-segmentation-and-classification" id="id19">Symbol segmentation and classification</a></li>
-<li><a class="reference internal" href="#syntactical-and-structural-analysis" id="id20">Syntactical and structural analysis</a></li>
-<li><a class="reference internal" href="#output" id="id21">Output</a></li>
+<li><a class="reference internal" href="#introduction" id="toc-entry-1">Introduction</a></li>
+<li><a class="reference internal" href="#architecture-overview" id="toc-entry-2">Architecture overview</a><ul>
+<li><a class="reference internal" href="#tasks" id="toc-entry-3">Tasks</a><ul>
+<li><a class="reference internal" href="#pre-processing" id="toc-entry-4">Pre-processing</a></li>
+<li><a class="reference internal" href="#document-segmentation-and-analysis" id="toc-entry-5">Document segmentation and analysis</a></li>
+<li><a class="reference internal" href="#symbol-segmentation-and-classification" id="toc-entry-6">Symbol segmentation and classification</a></li>
+<li><a class="reference internal" href="#syntactical-and-structural-analysis" id="toc-entry-7">Syntactical and structural analysis</a></li>
+<li><a class="reference internal" href="#output" id="toc-entry-8">Output</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#graphical-user-interface" id="id22">Graphical user interface</a></li>
-<li><a class="reference internal" href="#implementation-details" id="id23">Implementation details</a><ul>
-<li><a class="reference internal" href="#image-classes" id="id24">Image classes</a></li>
-<li><a class="reference internal" href="#the-plugin-system" id="id25">The plugin system</a></li>
+<li><a class="reference internal" href="#graphical-user-interface" id="toc-entry-9">Graphical user interface</a></li>
+<li><a class="reference internal" href="#implementation-details" id="toc-entry-10">Implementation details</a><ul>
+<li><a class="reference internal" href="#image-classes" id="toc-entry-11">Image classes</a></li>
+<li><a class="reference internal" href="#the-plugin-system" id="toc-entry-12">The plugin system</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#bibliography" id="id26">Bibliography</a></li>
+<li><a class="reference internal" href="#bibliography" id="toc-entry-13">Bibliography</a></li>
 </ul>
 </div>
 <div class="admonition note">
@@ -44,7 +44,7 @@ framework for building custom recognition systems</em>. In proceedings,
 Symposium on Document Image Understanding Technology.</p>
 </div>
 <div class="section" id="introduction">
-<h1><a class="toc-backref" href="#id14">Introduction</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Introduction</a></h1>
 <p>Gamera is a framework for the creation of structured document analysis
 applications by domain experts. Domain experts are individuals who
 have a strong knowledge of the documents in a collection, but may not
@@ -56,16 +56,16 @@ a monolithic application.</p>
 of Gamera.</p>
 </div>
 <div class="section" id="architecture-overview">
-<h1><a class="toc-backref" href="#id15">Architecture overview</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Architecture overview</a></h1>
 <p>Developing recognition systems for difficult historical documents
 requires experimentation since the solution is often
 non-obvious. Therefore, Gamera's primary goal is to support an
 efficient test-and-refine development cycle. Virtually every
 implementation detail is driven by this goal. For instance, Python
-<a class="citation-reference" href="#rossum2002" id="id1">[Rossum2002]</a> was chosen as the core language because of its
+<a class="citation-reference" href="#rossum2002" id="citation-reference-1">[Rossum2002]</a> was chosen as the core language because of its
 introspection capabilities, dynamic typing and ease of use. It has
 been used as a first programming language with considerable success
-<a class="citation-reference" href="#berehzny2001" id="id2">[Berehzny2001]</a>. C++ is used to write plugins where runtime performance
+<a class="citation-reference" href="#berehzny2001" id="citation-reference-2">[Berehzny2001]</a>. C++ is used to write plugins where runtime performance
 is a priority, but even in that case, the <a class="reference external" href="writing_plugins.html">Gamera plugin system</a> is
 designed to make writing extensions as easy as possible. Gamera
 includes a full-fledged graphical user interface that provides a
@@ -96,7 +96,7 @@ recognition strategies</li>
 </ul>
 </blockquote>
 <div class="section" id="tasks">
-<h2><a class="toc-backref" href="#id16">Tasks</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3">Tasks</a></h2>
 <p>Gamera has a modular plugin architecture. These modules typically
 perform one of five document recognition tasks:</p>
 <blockquote>
@@ -113,7 +113,7 @@ strategies or modules, or be removed entirely depending on the
 specific recognition problem at hand. The actual steps that make up a
 complete recognition system are completely controlled by the user.</p>
 <div class="section" id="pre-processing">
-<h3><a class="toc-backref" href="#id17">Pre-processing</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-4">Pre-processing</a></h3>
 <p>Pre-processing involves standard image-processing operations such as
 noise removal, blurring, de-skewing, contrast adjustment, sharpening,
 binarization, and morphology. Close attention to and refinement of
@@ -121,7 +121,7 @@ these steps is particularly important when working with degraded
 historical documents.</p>
 </div>
 <div class="section" id="document-segmentation-and-analysis">
-<h3><a class="toc-backref" href="#id18">Document segmentation and analysis</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-5">Document segmentation and analysis</a></h3>
 <p>Before the symbols of a document can be classified, an analysis of the
 overall structure of the document may be necessary. The purpose of
 this step is to analyze the structure of the document, segment it into
@@ -132,7 +132,7 @@ individual symbols. Similarly, text documents may require the removal
 of figures.</p>
 </div>
 <div class="section" id="symbol-segmentation-and-classification">
-<h3><a class="toc-backref" href="#id19">Symbol segmentation and classification</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-6">Symbol segmentation and classification</a></h3>
 <p>The segmentation, feature extraction, and classification of symbols is
 the core of the Gamera system. The system allows different segmenters
 and classifiers to be plugged-in.</p>
@@ -143,16 +143,16 @@ static. Gamera has a generic and flexible <a class="reference external" href="xm
 store classifier data, but for efficiency, the &quot;non-interactive&quot;
 classifiers can also define their own format containing Pre-parsed or
 pre-optimized data. At present, we have an implementation of the k
--nearest neighbor (kNN) algorithm <a class="citation-reference" href="#cover1967" id="id4">[Cover1967]</a> whose selections and weights
-can be optimized by a genetic algorithm (GA) <a class="citation-reference" href="#holland1975" id="id5">[Holland1975]</a>. We have tested
+-nearest neighbor (kNN) algorithm <a class="citation-reference" href="#cover1967" id="citation-reference-3">[Cover1967]</a> whose selections and weights
+can be optimized by a genetic algorithm (GA) <a class="citation-reference" href="#holland1975" id="citation-reference-4">[Holland1975]</a>. We have tested
 the extensibility of our classifier framework by porting a simple
 back-propagating neural network library to Gamera
-<a class="citation-reference" href="#schemenauer2002" id="id6">[Schemenauer2002]</a>. We also plan to examine what modifications would be
+<a class="citation-reference" href="#schemenauer2002" id="citation-reference-5">[Schemenauer2002]</a>. We also plan to examine what modifications would be
 necessary to support stateful classifiers, such as hidden Markov
 models.</p>
 </div>
 <div class="section" id="syntactical-and-structural-analysis">
-<h3><a class="toc-backref" href="#id20">Syntactical and structural analysis</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Syntactical and structural analysis</a></h3>
 <p>This process reconstructs a document into a semantic representation of
 the individual symbols. Examples of this include combining stems,
 flags, and noteheads into musical objects, or grouping words and
@@ -161,7 +161,7 @@ is entirely dependent on the type of document being processed and is a
 likely place for large customizations by knowledgeable users.</p>
 </div>
 <div class="section" id="output">
-<h3><a class="toc-backref" href="#id21">Output</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Output</a></h3>
 <p>Gamera stores groups of glyphs in an <a class="reference external" href="xml_format.html">XML-based file format</a>. This
 makes it very easy to save, load, and merge sets of training
 data. Since a run-length encoded copy of the glyph is included, it is
@@ -174,7 +174,7 @@ features from them.</p>
    <span class="nt">&lt;ids</span> <span class="na">state=</span><span class="s">&quot;MANUAL&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">&quot;lower.c&quot;</span> <span class="na">confidence=</span><span class="s">&quot;1.000000&quot;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;/ids&gt;</span>
-   <span class="c">&lt;!-- Run-length encoded binary image (white first) --&gt;</span>
+   <span class="cm">&lt;!-- Run-length encoded binary image (white first) --&gt;</span>
    <span class="nt">&lt;data&gt;</span>
     5 6 4 9 2 4 2 4 2 4 3 3 1 4 6 5 8 4 9 3 8 4 9 4 8 5 7 5 3 3 3 9 3 9 6
     4 2 0
@@ -208,7 +208,7 @@ since different domains will have different requirements.</p>
 </div>
 </div>
 <div class="section" id="graphical-user-interface">
-<h1><a class="toc-backref" href="#id22">Graphical user interface</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9">Graphical user interface</a></h1>
 <p>Since document recognition is an inherently visual problem, a
 graphical user interface (GUI) is included to allow the application
 developer to experiment with different recognition strategies. At the
@@ -232,9 +232,9 @@ using the wxPython toolkit.</p>
 <p>The Gamera GUI documentation contains more information.</p>
 </div>
 <div class="section" id="implementation-details">
-<h1><a class="toc-backref" href="#id23">Implementation details</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10">Implementation details</a></h1>
 <div class="section" id="image-classes">
-<h2><a class="toc-backref" href="#id24">Image classes</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-11">Image classes</a></h2>
 <p>The storage and manipulation of images is one of the most important
 aspects of Gamera. Gamera must provide not only general-purpose image
 manipulation functions, but also infrastructure to support the symbol
@@ -256,8 +256,8 @@ changed at different points in the development process.</dd>
 <dd>The image classes have been designed especially to make
 transferring code from other ccpp image processing libraries as
 easy as possible. For example, many algorithms in the VIGRA
-library <a class="citation-reference" href="#jahne1999" id="id9">[Jähne1999]</a> can be used in Gamera without
-modification. Using C libraries, such as XITE <a class="citation-reference" href="#boe1998" id="id10">[Bøe1998]</a>, often
+library <a class="citation-reference" href="#jahne1999" id="citation-reference-6">[Jähne1999]</a> can be used in Gamera without
+modification. Using C libraries, such as XITE <a class="citation-reference" href="#boe1998" id="citation-reference-7">[Bøe1998]</a>, often
 requires only a few minor modifications of the code. This ability
 has reduced our development time considerably.</dd>
 <dt><strong>Portions of images.</strong></dt>
@@ -272,7 +272,7 @@ connected component.</dd>
 <p>The <a class="reference external" href="image_types.html">image types documentation</a> contains more information.</p>
 </div>
 <div class="section" id="the-plugin-system">
-<h2><a class="toc-backref" href="#id25">The plugin system</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-12">The plugin system</a></h2>
 <p>Writing wrapper code to call C/C++ from Python is a time-consuming,
 error-prone and repetitive task. A number of general-purpose tools
 exist to help automate this process, including <a class="reference external" href="http://www.swig.org/">SWIG</a> and <a class="reference external" href="http://www.boost.org/">Boost
@@ -292,18 +292,18 @@ functions.</p>
 </div>
 </div>
 <div class="section" id="bibliography">
-<h1><a class="toc-backref" href="#id26">Bibliography</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13">Bibliography</a></h1>
 <table class="docutils citation" frame="void" id="rossum2002" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[Rossum2002]</a></td><td>Rossum, G. 2002. Python language
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-1">[Rossum2002]</a></td><td>Rossum, G. 2002. Python language
 reference. F. L. Drake, Jr., ed. <a class="reference external" href="http://www.python.org">http://www.python.org</a></td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="berehzny2001" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[Berehzny2001]</a></td><td>Berehzny, L., J. Elkner, and J. Straw. 2001. Using
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-2">[Berehzny2001]</a></td><td>Berehzny, L., J. Elkner, and J. Straw. 2001. Using
 Python in a high school computer science program: Year
 2. International Python Conference. 217--23.</td></tr>
 </tbody>
@@ -311,28 +311,28 @@ Python in a high school computer science program: Year
 <table class="docutils citation" frame="void" id="cover1967" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[Cover1967]</a></td><td>Cover, T. and P. Hart. 1967. Nearest neighbour pattern
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-3">[Cover1967]</a></td><td>Cover, T. and P. Hart. 1967. Nearest neighbour pattern
 classification. IEEE Transactions on Information Theory. 13(1): 21--7.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="holland1975" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id5">[Holland1975]</a></td><td>Holland, J. H. 1975. Adaptation in natural and
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-4">[Holland1975]</a></td><td>Holland, J. H. 1975. Adaptation in natural and
 artificial systems. University of Michigan Press, Ann Arbor.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="schemenauer2002" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[Schemenauer2002]</a></td><td>Schemenauer, N. 2002. A simple neural network
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-5">[Schemenauer2002]</a></td><td>Schemenauer, N. 2002. A simple neural network
 library bpnn.py. Computer software. <a class="reference external" href="http://arctrix.com/nas/">http://arctrix.com/nas/</a></td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="jahne1999" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id9">[Jähne1999]</a></td><td>Jähne, B., H. Haußecker, and P. Geißler. 1999. Reusable
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-6">[Jähne1999]</a></td><td>Jähne, B., H. Haußecker, and P. Geißler. 1999. Reusable
 software in Computer Vision. Handbook on Computer Vision and
 Applications. New York: Academic Press.</td></tr>
 </tbody>
@@ -340,7 +340,7 @@ Applications. New York: Academic Press.</td></tr>
 <table class="docutils citation" frame="void" id="boe1998" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id10">[Bøe1998]</a></td><td>Bøe, S., T. Lønnestad, and O. Milvang. 1998. XITE:
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-7">[Bøe1998]</a></td><td>Bøe, S., T. Lønnestad, and O. Milvang. 1998. XITE:
 X-based image processing tools and environment: User's manual, version
 3.4. Technical Report 56, Image Processing Laboratory, Department of
 Informatics, University of Oslo.</td></tr>

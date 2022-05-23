@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Gamera classifier API</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,126 +11,126 @@
 <div class="document" id="gamera-classifier-api">
 <h1 class="title">Gamera classifier API</h1>
 
-<p><strong>Last modified</strong>: April 28, 2021</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#introduction" id="id30">Introduction</a><ul>
-<li><a class="reference internal" href="#interactive-vs-noninteractive-classifiers" id="id31">Interactive vs. Noninteractive classifiers</a></li>
-<li><a class="reference internal" href="#types-of-classifiers" id="id32">Types of classifiers</a></li>
+<li><a class="reference internal" href="#introduction" id="toc-entry-1">Introduction</a><ul>
+<li><a class="reference internal" href="#interactive-vs-noninteractive-classifiers" id="toc-entry-2">Interactive vs. Noninteractive classifiers</a></li>
+<li><a class="reference internal" href="#types-of-classifiers" id="toc-entry-3">Types of classifiers</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#image-properties-related-to-classification" id="id33">Image properties related to classification</a><ul>
-<li><a class="reference internal" href="#id-name" id="id34"><tt class="docutils literal">id_name</tt></a></li>
-<li><a class="reference internal" href="#classification-state" id="id35"><tt class="docutils literal">classification_state</tt></a></li>
-<li><a class="reference internal" href="#confidence" id="id36"><tt class="docutils literal">confidence</tt></a></li>
-<li><a class="reference internal" href="#methods" id="id37">Methods</a></li>
+<li><a class="reference internal" href="#image-properties-related-to-classification" id="toc-entry-4">Image properties related to classification</a><ul>
+<li><a class="reference internal" href="#id-name" id="toc-entry-5"><tt class="docutils literal">id_name</tt></a></li>
+<li><a class="reference internal" href="#classification-state" id="toc-entry-6"><tt class="docutils literal">classification_state</tt></a></li>
+<li><a class="reference internal" href="#confidence" id="toc-entry-7"><tt class="docutils literal">confidence</tt></a></li>
+<li><a class="reference internal" href="#methods" id="toc-entry-8">Methods</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#the-classifier-interface" id="id38">The classifier interface</a><ul>
-<li><a class="reference internal" href="#core" id="id39">Core</a><ul>
-<li><a class="reference internal" href="#properties" id="id40">Properties</a></li>
-<li><a class="reference internal" href="#initialization" id="id41">Initialization</a><ul>
-<li><a class="reference internal" href="#init" id="id42"><tt class="docutils literal">__init__</tt></a></li>
+<li><a class="reference internal" href="#the-classifier-interface" id="toc-entry-9">The classifier interface</a><ul>
+<li><a class="reference internal" href="#core" id="toc-entry-10">Core</a><ul>
+<li><a class="reference internal" href="#properties" id="toc-entry-11">Properties</a></li>
+<li><a class="reference internal" href="#initialization" id="toc-entry-12">Initialization</a><ul>
+<li><a class="reference internal" href="#init" id="toc-entry-13"><tt class="docutils literal">__init__</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#classification" id="id43">Classification</a><ul>
-<li><a class="reference internal" href="#classify-glyph-automatic" id="id44"><tt class="docutils literal">classify_glyph_automatic</tt></a></li>
-<li><a class="reference internal" href="#classify-list-automatic" id="id45"><tt class="docutils literal">classify_list_automatic</tt></a></li>
-<li><a class="reference internal" href="#classify-and-update-list-automatic" id="id46"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></li>
-<li><a class="reference internal" href="#guess-glyph-automatic" id="id47"><tt class="docutils literal">guess_glyph_automatic</tt></a></li>
-<li><a class="reference internal" href="#classify-with-images" id="id48"><tt class="docutils literal">classify_with_images</tt></a></li>
+<li><a class="reference internal" href="#classification" id="toc-entry-14">Classification</a><ul>
+<li><a class="reference internal" href="#classify-glyph-automatic" id="toc-entry-15"><tt class="docutils literal">classify_glyph_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-list-automatic" id="toc-entry-16"><tt class="docutils literal">classify_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-and-update-list-automatic" id="toc-entry-17"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#guess-glyph-automatic" id="toc-entry-18"><tt class="docutils literal">guess_glyph_automatic</tt></a></li>
+<li><a class="reference internal" href="#classify-with-images" id="toc-entry-19"><tt class="docutils literal">classify_with_images</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#grouping" id="id49">Grouping</a><ul>
-<li><a class="reference internal" href="#group-list-automatic" id="id50"><tt class="docutils literal">group_list_automatic</tt></a></li>
-<li><a class="reference internal" href="#group-and-update-list-automatic" id="id51"><tt class="docutils literal">group_and_update_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#grouping" id="toc-entry-20">Grouping</a><ul>
+<li><a class="reference internal" href="#group-list-automatic" id="toc-entry-21"><tt class="docutils literal">group_list_automatic</tt></a></li>
+<li><a class="reference internal" href="#group-and-update-list-automatic" id="toc-entry-22"><tt class="docutils literal">group_and_update_list_automatic</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#saving-and-loading" id="id52">Saving and loading</a><ul>
-<li><a class="reference internal" href="#to-xml" id="id53"><tt class="docutils literal">to_xml</tt></a></li>
-<li><a class="reference internal" href="#to-xml-filename" id="id54"><tt class="docutils literal">to_xml_filename</tt></a></li>
-<li><a class="reference internal" href="#from-xml" id="id55"><tt class="docutils literal">from_xml</tt></a></li>
-<li><a class="reference internal" href="#from-xml-filename" id="id56"><tt class="docutils literal">from_xml_filename</tt></a></li>
-<li><a class="reference internal" href="#merge-from-xml" id="id57"><tt class="docutils literal">merge_from_xml</tt></a></li>
-<li><a class="reference internal" href="#merge-from-xml-filename" id="id58"><tt class="docutils literal">merge_from_xml_filename</tt></a></li>
+<li><a class="reference internal" href="#saving-and-loading" id="toc-entry-23">Saving and loading</a><ul>
+<li><a class="reference internal" href="#to-xml" id="toc-entry-24"><tt class="docutils literal">to_xml</tt></a></li>
+<li><a class="reference internal" href="#to-xml-filename" id="toc-entry-25"><tt class="docutils literal">to_xml_filename</tt></a></li>
+<li><a class="reference internal" href="#from-xml" id="toc-entry-26"><tt class="docutils literal">from_xml</tt></a></li>
+<li><a class="reference internal" href="#from-xml-filename" id="toc-entry-27"><tt class="docutils literal">from_xml_filename</tt></a></li>
+<li><a class="reference internal" href="#merge-from-xml" id="toc-entry-28"><tt class="docutils literal">merge_from_xml</tt></a></li>
+<li><a class="reference internal" href="#merge-from-xml-filename" id="toc-entry-29"><tt class="docutils literal">merge_from_xml_filename</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#miscellaneous" id="id59">Miscellaneous</a><ul>
-<li><a class="reference internal" href="#is-interactive" id="id60"><tt class="docutils literal">is_interactive</tt></a></li>
-<li><a class="reference internal" href="#get-glyphs" id="id61"><tt class="docutils literal">get_glyphs</tt></a></li>
-<li><a class="reference internal" href="#set-glyphs" id="id62"><tt class="docutils literal">set_glyphs</tt></a></li>
-<li><a class="reference internal" href="#merge-glyphs" id="id63"><tt class="docutils literal">merge_glyphs</tt></a></li>
-<li><a class="reference internal" href="#clear-glyphs" id="id64"><tt class="docutils literal">clear_glyphs</tt></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#interactive-classifiers" id="id65">Interactive classifiers</a><ul>
-<li><a class="reference internal" href="#id15" id="id66">Classification</a><ul>
-<li><a class="reference internal" href="#classify-glyph-manual" id="id67"><tt class="docutils literal">classify_glyph_manual</tt></a></li>
-<li><a class="reference internal" href="#classify-list-manual" id="id68"><tt class="docutils literal">classify_list_manual</tt></a></li>
-<li><a class="reference internal" href="#classify-and-update-list-manual" id="id69"><tt class="docutils literal">classify_and_update_list_manual</tt></a></li>
-<li><a class="reference internal" href="#add-to-database" id="id70"><tt class="docutils literal">add_to_database</tt></a></li>
-<li><a class="reference internal" href="#remove-from-database" id="id71"><tt class="docutils literal">remove_from_database</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#display" id="id72">Display</a><ul>
-<li><a class="reference internal" href="#id16" id="id73"><tt class="docutils literal">display</tt></a></li>
+<li><a class="reference internal" href="#miscellaneous" id="toc-entry-30">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#is-interactive" id="toc-entry-31"><tt class="docutils literal">is_interactive</tt></a></li>
+<li><a class="reference internal" href="#get-glyphs" id="toc-entry-32"><tt class="docutils literal">get_glyphs</tt></a></li>
+<li><a class="reference internal" href="#set-glyphs" id="toc-entry-33"><tt class="docutils literal">set_glyphs</tt></a></li>
+<li><a class="reference internal" href="#merge-glyphs" id="toc-entry-34"><tt class="docutils literal">merge_glyphs</tt></a></li>
+<li><a class="reference internal" href="#clear-glyphs" id="toc-entry-35"><tt class="docutils literal">clear_glyphs</tt></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#interactive-classifiers" id="toc-entry-36">Interactive classifiers</a><ul>
+<li><a class="reference internal" href="#classification-1" id="toc-entry-37">Classification</a><ul>
+<li><a class="reference internal" href="#classify-glyph-manual" id="toc-entry-38"><tt class="docutils literal">classify_glyph_manual</tt></a></li>
+<li><a class="reference internal" href="#classify-list-manual" id="toc-entry-39"><tt class="docutils literal">classify_list_manual</tt></a></li>
+<li><a class="reference internal" href="#classify-and-update-list-manual" id="toc-entry-40"><tt class="docutils literal">classify_and_update_list_manual</tt></a></li>
+<li><a class="reference internal" href="#add-to-database" id="toc-entry-41"><tt class="docutils literal">add_to_database</tt></a></li>
+<li><a class="reference internal" href="#remove-from-database" id="toc-entry-42"><tt class="docutils literal">remove_from_database</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#k-nearest-neighbor-classifier" id="id74"><em>k</em> Nearest Neighbor classifier</a><ul>
-<li><a class="reference internal" href="#feature-management" id="id75">Feature management</a></li>
-<li><a class="reference internal" href="#methods-on-all-knn-classes" id="id76">Methods on all <tt class="docutils literal">kNN</tt> classes</a><ul>
-<li><a class="reference internal" href="#knn-initialization" id="id77">kNN Initialization</a><ul>
-<li><a class="reference internal" href="#id19" id="id78"><tt class="docutils literal">__init__</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#settings" id="id79">Settings</a><ul>
-<li><a class="reference internal" href="#change-feature-set" id="id80"><tt class="docutils literal">change_feature_set</tt></a></li>
-<li><a class="reference internal" href="#get-selections-by-features" id="id81"><tt class="docutils literal">get_selections_by_features</tt></a></li>
-<li><a class="reference internal" href="#get-selections-by-feature" id="id82"><tt class="docutils literal">get_selections_by_feature</tt></a></li>
-<li><a class="reference internal" href="#get-weights-by-features" id="id83"><tt class="docutils literal">get_weights_by_features</tt></a></li>
-<li><a class="reference internal" href="#get-weights-by-feature" id="id84"><tt class="docutils literal">get_weights_by_feature</tt></a></li>
-<li><a class="reference internal" href="#set-selections-by-features" id="id85"><tt class="docutils literal">set_selections_by_features</tt></a></li>
-<li><a class="reference internal" href="#set-selections-by-feature" id="id86"><tt class="docutils literal">set_selections_by_feature</tt></a></li>
-<li><a class="reference internal" href="#set-weights-by-features" id="id87"><tt class="docutils literal">set_weights_by_features</tt></a></li>
-<li><a class="reference internal" href="#set-weights-by-feature" id="id88"><tt class="docutils literal">set_weights_by_feature</tt></a></li>
-<li><a class="reference internal" href="#save-settings" id="id89"><tt class="docutils literal">save_settings</tt></a></li>
-<li><a class="reference internal" href="#load-settings" id="id90"><tt class="docutils literal">load_settings</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#serialization" id="id91">Serialization</a><ul>
-<li><a class="reference internal" href="#serialize" id="id92"><tt class="docutils literal">serialize</tt></a></li>
-<li><a class="reference internal" href="#unserialize" id="id93"><tt class="docutils literal">unserialize</tt></a></li>
+<li><a class="reference internal" href="#display" id="toc-entry-43">Display</a><ul>
+<li><a class="reference internal" href="#display-1" id="toc-entry-44"><tt class="docutils literal">display</tt></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#evaluation" id="id94">Evaluation</a><ul>
-<li><a class="reference internal" href="#evaluate" id="id95"><tt class="docutils literal">evaluate</tt></a></li>
-<li><a class="reference internal" href="#knndistance-statistics" id="id96"><tt class="docutils literal">knndistance_statistics</tt></a></li>
-<li><a class="reference internal" href="#distance-from-images" id="id97"><tt class="docutils literal">distance_from_images</tt></a></li>
-<li><a class="reference internal" href="#distance-between-images" id="id98"><tt class="docutils literal">distance_between_images</tt></a></li>
-<li><a class="reference internal" href="#distance-matrix" id="id99"><tt class="docutils literal">distance_matrix</tt></a></li>
-<li><a class="reference internal" href="#unique-distances" id="id100"><tt class="docutils literal">unique_distances</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id24" id="id101"><tt class="docutils literal">kNNInteractive</tt></a><ul>
-<li><a class="reference internal" href="#id25" id="id102"><tt class="docutils literal">__init__</tt></a></li>
-<li><a class="reference internal" href="#noninteractive-copy" id="id103"><tt class="docutils literal">noninteractive_copy</tt></a></li>
+<li><a class="reference internal" href="#k-nearest-neighbor-classifier" id="toc-entry-45"><em>k</em> Nearest Neighbor classifier</a><ul>
+<li><a class="reference internal" href="#feature-management" id="toc-entry-46">Feature management</a></li>
+<li><a class="reference internal" href="#methods-on-all-knn-classes" id="toc-entry-47">Methods on all <tt class="docutils literal">kNN</tt> classes</a><ul>
+<li><a class="reference internal" href="#knn-initialization" id="toc-entry-48">kNN Initialization</a><ul>
+<li><a class="reference internal" href="#init-1" id="toc-entry-49"><tt class="docutils literal">__init__</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#improving-knn-classifiers-using-editing" id="id104">Improving kNN Classifiers using Editing</a><ul>
-<li><a class="reference internal" href="#edit-mnn" id="id105"><tt class="docutils literal">edit_mnn</tt></a></li>
-<li><a class="reference internal" href="#edit-cnn" id="id106"><tt class="docutils literal">edit_cnn</tt></a></li>
-<li><a class="reference internal" href="#edit-mnn-cnn" id="id107"><tt class="docutils literal">edit_mnn_cnn</tt></a></li>
-<li><a class="reference internal" href="#usage-example" id="id108">Usage Example</a></li>
-<li><a class="reference internal" href="#integrating-your-own-editing-algorithm" id="id109">Integrating your own editing algorithm</a></li>
+<li><a class="reference internal" href="#settings" id="toc-entry-50">Settings</a><ul>
+<li><a class="reference internal" href="#change-feature-set" id="toc-entry-51"><tt class="docutils literal">change_feature_set</tt></a></li>
+<li><a class="reference internal" href="#get-selections-by-features" id="toc-entry-52"><tt class="docutils literal">get_selections_by_features</tt></a></li>
+<li><a class="reference internal" href="#get-selections-by-feature" id="toc-entry-53"><tt class="docutils literal">get_selections_by_feature</tt></a></li>
+<li><a class="reference internal" href="#get-weights-by-features" id="toc-entry-54"><tt class="docutils literal">get_weights_by_features</tt></a></li>
+<li><a class="reference internal" href="#get-weights-by-feature" id="toc-entry-55"><tt class="docutils literal">get_weights_by_feature</tt></a></li>
+<li><a class="reference internal" href="#set-selections-by-features" id="toc-entry-56"><tt class="docutils literal">set_selections_by_features</tt></a></li>
+<li><a class="reference internal" href="#set-selections-by-feature" id="toc-entry-57"><tt class="docutils literal">set_selections_by_feature</tt></a></li>
+<li><a class="reference internal" href="#set-weights-by-features" id="toc-entry-58"><tt class="docutils literal">set_weights_by_features</tt></a></li>
+<li><a class="reference internal" href="#set-weights-by-feature" id="toc-entry-59"><tt class="docutils literal">set_weights_by_feature</tt></a></li>
+<li><a class="reference internal" href="#save-settings" id="toc-entry-60"><tt class="docutils literal">save_settings</tt></a></li>
+<li><a class="reference internal" href="#load-settings" id="toc-entry-61"><tt class="docutils literal">load_settings</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#serialization" id="toc-entry-62">Serialization</a><ul>
+<li><a class="reference internal" href="#serialize" id="toc-entry-63"><tt class="docutils literal">serialize</tt></a></li>
+<li><a class="reference internal" href="#unserialize" id="toc-entry-64"><tt class="docutils literal">unserialize</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evaluation" id="toc-entry-65">Evaluation</a><ul>
+<li><a class="reference internal" href="#evaluate" id="toc-entry-66"><tt class="docutils literal">evaluate</tt></a></li>
+<li><a class="reference internal" href="#knndistance-statistics" id="toc-entry-67"><tt class="docutils literal">knndistance_statistics</tt></a></li>
+<li><a class="reference internal" href="#distance-from-images" id="toc-entry-68"><tt class="docutils literal">distance_from_images</tt></a></li>
+<li><a class="reference internal" href="#distance-between-images" id="toc-entry-69"><tt class="docutils literal">distance_between_images</tt></a></li>
+<li><a class="reference internal" href="#distance-matrix" id="toc-entry-70"><tt class="docutils literal">distance_matrix</tt></a></li>
+<li><a class="reference internal" href="#unique-distances" id="toc-entry-71"><tt class="docutils literal">unique_distances</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#knninteractive-1" id="toc-entry-72"><tt class="docutils literal">kNNInteractive</tt></a><ul>
+<li><a class="reference internal" href="#init-2" id="toc-entry-73"><tt class="docutils literal">__init__</tt></a></li>
+<li><a class="reference internal" href="#noninteractive-copy" id="toc-entry-74"><tt class="docutils literal">noninteractive_copy</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#improving-knn-classifiers-using-editing" id="toc-entry-75">Improving kNN Classifiers using Editing</a><ul>
+<li><a class="reference internal" href="#edit-mnn" id="toc-entry-76"><tt class="docutils literal">edit_mnn</tt></a></li>
+<li><a class="reference internal" href="#edit-cnn" id="toc-entry-77"><tt class="docutils literal">edit_cnn</tt></a></li>
+<li><a class="reference internal" href="#edit-mnn-cnn" id="toc-entry-78"><tt class="docutils literal">edit_mnn_cnn</tt></a></li>
+<li><a class="reference internal" href="#usage-example" id="toc-entry-79">Usage Example</a></li>
+<li><a class="reference internal" href="#integrating-your-own-editing-algorithm" id="toc-entry-80">Integrating your own editing algorithm</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@
 </ul>
 </div>
 <div class="section" id="introduction">
-<h1><a class="toc-backref" href="#id30">Introduction</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Introduction</a></h1>
 <p>For manual training of a classifier, you will generally want to use
 the <a class="reference external" href="gui.html#interactive-classifier-window">interactive classifier GUI</a>.  This document describes the
 programming API that is used by scripts that make use of a classifier.</p>
@@ -149,7 +149,7 @@ of features generated from it.  These features (collectively called a
 &quot;feature vector&quot;) are then used inside a classifier which, using a
 database of training data, identifies the glyph.</p>
 <div class="section" id="interactive-vs-noninteractive-classifiers">
-<h2><a class="toc-backref" href="#id31">Interactive vs. Noninteractive classifiers</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-2">Interactive vs. Noninteractive classifiers</a></h2>
 <p>All classifiers in Gamera support the same core Classifier API (interface), so
 they are interchangeable.  There is an important
 distinction between two families of classifiers, however:</p>
@@ -171,7 +171,7 @@ and load much faster than the Gamera XML format.</dd>
 </dl>
 </div>
 <div class="section" id="types-of-classifiers">
-<h2><a class="toc-backref" href="#id32">Types of classifiers</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3">Types of classifiers</a></h2>
 <p>Within each of these families, different classifiers are available.
 These &quot;concrete&quot; classifiers have additional methods specific to the
 particular classifier type.  The currently implemented classifiers
@@ -197,12 +197,12 @@ see the <a class="reference external" href="ga_optimization.html">Evolutionary O
 </div>
 </div>
 <div class="section" id="image-properties-related-to-classification">
-<h1><a class="toc-backref" href="#id33">Image properties related to classification</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4">Image properties related to classification</a></h1>
 <p>Classification result are stored with the image. Some interface functions
 for storing and querying the classification result are described
 in the <a class="reference external" href="plugins.html#classification">classification plugin documentation</a>.</p>
 <div class="section" id="id-name">
-<h2><a class="toc-backref" href="#id34"><tt class="docutils literal">id_name</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">id_name</tt></a></h2>
 <p>The class name of a glyph is stored in the member variable
 <tt class="docutils literal">id_name</tt>.  This variable is actually a list of possible
 classifications, so that a classifier can return a number of different
@@ -223,7 +223,7 @@ must not necessarily have the highest &quot;confidence&quot;, nor do
 the values of all &quot;confidences&quot; add to one.</p>
 </div>
 <div class="section" id="classification-state">
-<h2><a class="toc-backref" href="#id35"><tt class="docutils literal">classification_state</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">classification_state</tt></a></h2>
 <p>How a glyph was classified is managed by the <tt class="docutils literal">classification_state</tt>
 member variable.  It can be one of the following values:</p>
 <blockquote>
@@ -267,7 +267,7 @@ heuristic (non-exemplar-based) process.</td>
 </blockquote>
 </div>
 <div class="section" id="confidence">
-<h2><a class="toc-backref" href="#id36"><tt class="docutils literal">confidence</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">confidence</tt></a></h2>
 <p>Different confidence measures for the main class id are stored
 in the member variable <tt class="docutils literal">confidence</tt>. This is a map ('dictionary' in
 python lingo) with a confidence type as key. The possible confidence
@@ -329,7 +329,7 @@ Schriftenreihe des Fachbereichs Elektrotechnik und Informatik,
 Hochschule Niederrhein, vol. 8, pp. 16-38, Shaker Verlag (2009)</blockquote>
 </div>
 <div class="section" id="methods">
-<h2><a class="toc-backref" href="#id37">Methods</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8">Methods</a></h2>
 <p>Images have a number of methods for managing their classification
 state.  Use of these methods is highly recommended over changing the
 <tt class="docutils literal">id_name</tt> variable directly.  These methods are documented in the
@@ -337,7 +337,7 @@ state.  Use of these methods is highly recommended over changing the
 </div>
 </div>
 <div class="section" id="the-classifier-interface">
-<h1><a class="toc-backref" href="#id38">The classifier interface</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9">The classifier interface</a></h1>
 <p>This section describes each method of the classifier interface.
 The base class for all classifiers is <tt class="docutils literal">Classifier</tt>, from which
 two classes <tt class="docutils literal">NonInteractiveClassifier</tt> and <tt class="docutils literal">InteractiveClassifier</tt>
@@ -350,10 +350,10 @@ in their interface, this divides the methods into two categories:</p>
 <dd>Methods available only to interactive classifiers</dd>
 </dl>
 <div class="section" id="core">
-<h2><a class="toc-backref" href="#id39">Core</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-10">Core</a></h2>
 <p>The following methods and properties are available to all classifiers.</p>
 <div class="section" id="properties">
-<h3><a class="toc-backref" href="#id40">Properties</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-11">Properties</a></h3>
 <p>Each classifier has the following member variables:</p>
 <blockquote>
 <dl class="docutils">
@@ -371,11 +371,11 @@ predefined <a class="reference external" href="#confidence">confidence constants
 </blockquote>
 </div>
 <div class="section" id="initialization">
-<h3><a class="toc-backref" href="#id41">Initialization</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-12">Initialization</a></h3>
 <p>As the base class <tt class="docutils literal">Classifier</tt> does not have an explicit constructor,
 the constructor of <tt class="docutils literal">NonInteractiveClassifier</tt> is described here.</p>
 <div class="section" id="init">
-<h4><a class="toc-backref" href="#id42"><tt class="docutils literal">__init__</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">__init__</tt></a></h4>
 <p><strong>NonInteractiveClassifier</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>)</p>
 <p>Creates a new classifier instance.</p>
 <dl class="docutils">
@@ -415,10 +415,10 @@ in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
 </div>
 </div>
 <div class="section" id="classification">
-<h3><a class="toc-backref" href="#id43">Classification</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-14">Classification</a></h3>
 <p>The following methods deal with classifying glyphs on an individual level.</p>
 <div class="section" id="classify-glyph-automatic">
-<h4><a class="toc-backref" href="#id44"><tt class="docutils literal">classify_glyph_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-15"><tt class="docutils literal">classify_glyph_automatic</tt></a></h4>
 <p><strong>classify_glyph_automatic</strong> (Image <em>glyph</em>, int <em>max_recursion</em> = 10)</p>
 <p>Classifies a glyph and sets its <tt class="docutils literal">classification_state</tt> and
 <tt class="docutils literal">id_name</tt>.  (If you don't want the glyph changed, use
@@ -438,7 +438,7 @@ to use these lists to update the collection of glyphs on the current
 page.</p>
 </div>
 <div class="section" id="classify-list-automatic">
-<h4><a class="toc-backref" href="#id45"><tt class="docutils literal">classify_list_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-16"><tt class="docutils literal">classify_list_automatic</tt></a></h4>
 <p><strong>classify_list_automatic</strong> (ImageList <em>glyphs</em>, int <em>max_recursion</em> = 10)</p>
 <p>Classifies a list of glyphs and sets the classification_state and
 id_name of each glyph.  (If you don't want it set, use <a class="reference internal" href="#guess-glyph-automatic">guess_glyph_automatic</a>.)</p>
@@ -465,14 +465,14 @@ glyphs on the current page.  If you just want a new list returned
 with these updates already made, use <a class="reference internal" href="#classify-and-update-list-automatic">classify_and_update_list_automatic</a>.</blockquote>
 </div>
 <div class="section" id="classify-and-update-list-automatic">
-<h4><a class="toc-backref" href="#id46"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-17"><tt class="docutils literal">classify_and_update_list_automatic</tt></a></h4>
 <p><strong>classify_and_update_list_automatic</strong> (ImageList <em>glyphs</em>, Int
 <em>max_recursion</em> = <tt class="docutils literal">10</tt>)</p>
 <p>A convenience wrapper around <a class="reference internal" href="#classify-list-automatic">classify_list_automatic</a> that returns
 a list of glyphs that is already updated based on splitting.</p>
 </div>
 <div class="section" id="guess-glyph-automatic">
-<h4><a class="toc-backref" href="#id47"><tt class="docutils literal">guess_glyph_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-18"><tt class="docutils literal">guess_glyph_automatic</tt></a></h4>
 <p>(id_name, confidencemap) <strong>guess_glyph_automatic</strong> (Image <em>glyph</em>)</p>
 <p>Classifies the given <em>glyph</em> without setting its classification.  The
 return value is a tuple of the form <tt class="docutils literal">(id_name,confidencemap)</tt>, where
@@ -480,7 +480,7 @@ return value is a tuple of the form <tt class="docutils literal">(id_name,confid
 map of the form <a class="reference external" href="#confidence">confidence</a> listing the confidences of the main id.</p>
 </div>
 <div class="section" id="classify-with-images">
-<h4><a class="toc-backref" href="#id48"><tt class="docutils literal">classify_with_images</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-19"><tt class="docutils literal">classify_with_images</tt></a></h4>
 <p>(id_name, confidencemap) <strong>classify_with_images</strong> (ImageList <em>glyphs</em>, Image <em>glyph</em>, bool cross_validation_mode=False, bool do_confidence=True )</p>
 <p>Classifies an unknown image using the given list of images as training data.
 The <em>glyph</em> is classified without setting its classification.  The
@@ -490,7 +490,7 @@ map of the form <a class="reference external" href="#confidence">confidence</a> 
 </div>
 </div>
 <div class="section" id="grouping">
-<h3><a class="toc-backref" href="#id49">Grouping</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-20">Grouping</a></h3>
 <p>Often, characters do not cleanly correspond to connected components.
 For instance, broken or degraded printing may disconnect parts of a
 character, or characters, such as <em>i</em> may always be made up of two
@@ -508,7 +508,7 @@ a single image and then add it to the database.</p>
 <p>The algorithm is described in more detail in our paper on <a class="reference external" href="http://gamera.informatik.hsnr.de/publications/droettboom_broken_03.pdf">correcting
 broken characters</a> (PDF).</p>
 <div class="section" id="group-list-automatic">
-<h4><a class="toc-backref" href="#id50"><tt class="docutils literal">group_list_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-21"><tt class="docutils literal">group_list_automatic</tt></a></h4>
 <p><strong>group_list_automatic</strong> (ImageList <em>glyphs</em>, Function
 <em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
 int <em>max_parts_per_group</em> = 4, int <em>max_graph_size</em> = 16, <em>criterion</em> = <tt class="docutils literal">'min'</tt>)</p>
@@ -574,7 +574,7 @@ to it. Or you can instead call <a class="reference internal" href="#group-and-up
 this automatically for you.</p>
 </div>
 <div class="section" id="group-and-update-list-automatic">
-<h4><a class="toc-backref" href="#id51"><tt class="docutils literal">group_and_update_list_automatic</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-22"><tt class="docutils literal">group_and_update_list_automatic</tt></a></h4>
 <p><strong>group_and_update_list_automatic</strong> (ImageList <em>glyphs</em>, Function
 <em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
 int <em>max_parts_per_group</em> = 5, int <em>max_graph_size</em> = 16, string <em>criterion</em> = <tt class="docutils literal">'min'</tt>)</p>
@@ -583,7 +583,7 @@ a list of glyphs that is already updated for splitting and grouping.</p>
 </div>
 </div>
 <div class="section" id="saving-and-loading">
-<h3><a class="toc-backref" href="#id52">Saving and loading</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-23">Saving and loading</a></h3>
 <p>These functions deal with saving and loading the training data of the
 classifier to/from the <a class="reference external" href="xml_format.html">Gamera XML format</a>.</p>
 <div class="admonition note">
@@ -592,80 +592,80 @@ classifier to/from the <a class="reference external" href="xml_format.html">Game
 (neither saved or loaded).</p>
 </div>
 <div class="section" id="to-xml">
-<h4><a class="toc-backref" href="#id53"><tt class="docutils literal">to_xml</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-24"><tt class="docutils literal">to_xml</tt></a></h4>
 <p><strong>to_xml</strong> (stream <em>stream</em>)</p>
 <p>Saves the training data in XML format to the given stream (which could
 be any object supporting the file protocol, such as a file object or StringIO
 object).</p>
 </div>
 <div class="section" id="to-xml-filename">
-<h4><a class="toc-backref" href="#id54"><tt class="docutils literal">to_xml_filename</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-25"><tt class="docutils literal">to_xml_filename</tt></a></h4>
 <p><strong>to_xml_filename</strong> (FileSave <em>filename</em>)</p>
 <p>Saves the training data in XML format to the given filename.</p>
 </div>
 <div class="section" id="from-xml">
-<h4><a class="toc-backref" href="#id55"><tt class="docutils literal">from_xml</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-26"><tt class="docutils literal">from_xml</tt></a></h4>
 <p><strong>from_xml</strong> (stream <em>stream</em>)</p>
 <p>Loads the training data from the given stream (which could be any object
 supporting the file protocol, such as a file object or StringIO object.)</p>
 </div>
 <div class="section" id="from-xml-filename">
-<h4><a class="toc-backref" href="#id56"><tt class="docutils literal">from_xml_filename</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-27"><tt class="docutils literal">from_xml_filename</tt></a></h4>
 <p><strong>from_xml_filename</strong> (FileOpen <em>filename</em>)</p>
 <p>Loads the training data from the given filename.</p>
 </div>
 <div class="section" id="merge-from-xml">
-<h4><a class="toc-backref" href="#id57"><tt class="docutils literal">merge_from_xml</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-28"><tt class="docutils literal">merge_from_xml</tt></a></h4>
 <p><strong>merge_from_xml</strong> (stream <em>stream</em>)</p>
 <p>Loads the training data from the given stream (which could be a file
 handle or StringIO object) and adds it to the existing training data.</p>
 </div>
 <div class="section" id="merge-from-xml-filename">
-<h4><a class="toc-backref" href="#id58"><tt class="docutils literal">merge_from_xml_filename</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-29"><tt class="docutils literal">merge_from_xml_filename</tt></a></h4>
 <p><strong>merge_from_xml_filename</strong> (stream <em>stream</em>)</p>
 <p>Loads the training data from the given filename and adds it to the
 existing training data.</p>
 </div>
 </div>
 <div class="section" id="miscellaneous">
-<h3><a class="toc-backref" href="#id59">Miscellaneous</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-30">Miscellaneous</a></h3>
 <div class="section" id="is-interactive">
-<h4><a class="toc-backref" href="#id60"><tt class="docutils literal">is_interactive</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-31"><tt class="docutils literal">is_interactive</tt></a></h4>
 <p>Boolean <strong>is_interactive</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if classifier is interactive, else <tt class="docutils literal">False</tt>.</p>
 </div>
 <div class="section" id="get-glyphs">
-<h4><a class="toc-backref" href="#id61"><tt class="docutils literal">get_glyphs</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-32"><tt class="docutils literal">get_glyphs</tt></a></h4>
 <p>ImageList <strong>get_glyphs</strong> ()</p>
 <p>Returns a list of the glyphs in the classifier.</p>
 </div>
 <div class="section" id="set-glyphs">
-<h4><a class="toc-backref" href="#id62"><tt class="docutils literal">set_glyphs</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-33"><tt class="docutils literal">set_glyphs</tt></a></h4>
 <p><strong>set_glyphs</strong> (ImageList <em>glyphs</em>)</p>
 <p>Sets the training data for the classifier to the given list of glyphs.</p>
 <p>On some non-interactive classifiers, this operation can be quite
 expensive.</p>
 </div>
 <div class="section" id="merge-glyphs">
-<h4><a class="toc-backref" href="#id63"><tt class="docutils literal">merge_glyphs</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-34"><tt class="docutils literal">merge_glyphs</tt></a></h4>
 <p><strong>merge_glyphs</strong> (ImageList <em>glyphs</em>)</p>
 <p>Adds the given glyphs to the current set of training data.</p>
 <p>On some non-interactive classifiers, this operation can be quite
 expensive.</p>
 </div>
 <div class="section" id="clear-glyphs">
-<h4><a class="toc-backref" href="#id64"><tt class="docutils literal">clear_glyphs</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-35"><tt class="docutils literal">clear_glyphs</tt></a></h4>
 <p><strong>clear_glyphs</strong> ()</p>
 <p>Removes all training data from the classifier.</p>
 </div>
 </div>
 </div>
 <div class="section" id="interactive-classifiers">
-<h2><a class="toc-backref" href="#id65">Interactive classifiers</a></h2>
-<div class="section" id="id15">
-<h3><a class="toc-backref" href="#id66">Classification</a></h3>
+<h2><a class="toc-backref" href="#toc-entry-36">Interactive classifiers</a></h2>
+<div class="section" id="classification-1">
+<h3><a class="toc-backref" href="#toc-entry-37">Classification</a></h3>
 <div class="section" id="classify-glyph-manual">
-<h4><a class="toc-backref" href="#id67"><tt class="docutils literal">classify_glyph_manual</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-38"><tt class="docutils literal">classify_glyph_manual</tt></a></h4>
 <p><strong>classify_glyph_manual</strong> (Image <em>glyph</em>, String <em>id</em>)</p>
 <p>Sets the classification of the given <em>glyph</em> to the given <em>id</em> and
 then adds the glyph to the training data.  Call this function when the
@@ -683,7 +683,7 @@ the confidence of a manual classification is always 1.0.</p>
 </div>
 </div>
 <div class="section" id="classify-list-manual">
-<h4><a class="toc-backref" href="#id68"><tt class="docutils literal">classify_list_manual</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-39"><tt class="docutils literal">classify_list_manual</tt></a></h4>
 <p><strong>classify_list_manual</strong> (ImageList <em>glyphs</em>, String <em>id</em>)</p>
 <p>Sets the classification of the given <em>glyphs</em> to the given <em>id</em> and
 then adds the glyphs to the training data.  Call this function when the
@@ -705,7 +705,7 @@ the confidence of a manual classification is always 1.0.</p>
 </div>
 </div>
 <div class="section" id="classify-and-update-list-manual">
-<h4><a class="toc-backref" href="#id69"><tt class="docutils literal">classify_and_update_list_manual</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-40"><tt class="docutils literal">classify_and_update_list_manual</tt></a></h4>
 <p><strong>classify_and_update_list_manual</strong> (ImageList <em>glyphs</em>, Function
 <em>grouping_function</em> = <tt class="docutils literal">None</tt>, Function <em>evaluate_function</em> = <tt class="docutils literal">None</tt>,
 int <em>max_size</em> = 5)</p>
@@ -713,22 +713,22 @@ int <em>max_size</em> = 5)</p>
 a list of glyphs that is already updated for splitting and grouping.</p>
 </div>
 <div class="section" id="add-to-database">
-<h4><a class="toc-backref" href="#id70"><tt class="docutils literal">add_to_database</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-41"><tt class="docutils literal">add_to_database</tt></a></h4>
 <p><strong>add_to_database</strong> (ImageList <em>glyphs</em>)</p>
 <p>Adds the given glyph (or list of glyphs) to the classifier training data.  Will not add duplicates
 to the training data.  Unlike <a class="reference internal" href="#classify-glyph-manual">classify_glyph_manual</a>, no grouping support is performed.</p>
 </div>
 <div class="section" id="remove-from-database">
-<h4><a class="toc-backref" href="#id71"><tt class="docutils literal">remove_from_database</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-42"><tt class="docutils literal">remove_from_database</tt></a></h4>
 <p><strong>remove_from_database</strong> (ImageList <em>glyphs</em>)</p>
 <p>Removes the given glyphs from the classifier training data.  Ignores silently
 if a given glyph is not in the training data.</p>
 </div>
 </div>
 <div class="section" id="display">
-<h3><a class="toc-backref" href="#id72">Display</a></h3>
-<div class="section" id="id16">
-<h4><a class="toc-backref" href="#id73"><tt class="docutils literal">display</tt></a></h4>
+<h3><a class="toc-backref" href="#toc-entry-43">Display</a></h3>
+<div class="section" id="display-1">
+<h4><a class="toc-backref" href="#toc-entry-44"><tt class="docutils literal">display</tt></a></h4>
 <p><strong>display</strong> (ImageList <em>current_database</em> = <tt class="docutils literal">[]</tt>, Image
 <em>context_image</em> = <tt class="docutils literal">None</tt>, List <em>symbol_table</em> = <tt class="docutils literal">[]</tt>)</p>
 <p>Displays the <a class="reference external" href="gui.html#interactive-classifier-window">interactive classifier window</a>, which is where manual
@@ -747,7 +747,7 @@ from.</dd>
 </div>
 </div>
 <div class="section" id="k-nearest-neighbor-classifier">
-<h1><a class="toc-backref" href="#id74"><em>k</em> Nearest Neighbor classifier</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-45"><em>k</em> Nearest Neighbor classifier</a></h1>
 <p>The <em>k</em> Nearest Neighbor classifier is a concrete example of the
 classifier API.  It adds some methods of its own.</p>
 <p><tt class="docutils literal">kNNNonInteractive</tt> has a number of advantages over
@@ -770,7 +770,7 @@ file, since it is portable across platforms and to future versions of
 Gamera.  The binary format is not guaranteed to be portable.</p>
 </div>
 <div class="section" id="feature-management">
-<h2><a class="toc-backref" href="#id75">Feature management</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-46">Feature management</a></h2>
 <p>The classifier automatically manages the generation of feature vectors
 from glyphs.  When a feature vector is needed because it is being
 automatically classified or added to the training set, it is
@@ -785,11 +785,11 @@ with something more appropriate to other problem domains.  See the
 <a class="reference external" href="overriding_knn_features.html">overriding kNN's feature generation</a> appendix for more information.</p>
 </div>
 <div class="section" id="methods-on-all-knn-classes">
-<h2><a class="toc-backref" href="#id76">Methods on all <tt class="docutils literal">kNN</tt> classes</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-47">Methods on all <tt class="docutils literal">kNN</tt> classes</a></h2>
 <div class="section" id="knn-initialization">
-<span id="knnnoninteractive"></span><h3><a class="toc-backref" href="#id77">kNN Initialization</a></h3>
-<div class="section" id="id19">
-<h4><a class="toc-backref" href="#id78"><tt class="docutils literal">__init__</tt></a></h4>
+<span id="knnnoninteractive"></span><h3><a class="toc-backref" href="#toc-entry-48">kNN Initialization</a></h3>
+<div class="section" id="init-1">
+<h4><a class="toc-backref" href="#toc-entry-49"><tt class="docutils literal">__init__</tt></a></h4>
 <p><strong>kNNNonInteractive</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, <em>features</em> = <tt class="docutils literal">'all'</tt>,
 bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>, int <em>num_k</em> = <tt class="docutils literal">1</tt>, bool <em>normalize</em> = <tt class="docutils literal">False</tt>)</p>
 <p>Creates a new kNN classifier instance.</p>
@@ -844,7 +844,7 @@ in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
 </div>
 </div>
 <div class="section" id="settings">
-<h3><a class="toc-backref" href="#id79">Settings</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-50">Settings</a></h3>
 <p>Settings are various parameters that control the behavior of the
 classifier. While some are only accessible through the methods given below,
 the following settings are plain properties of all kNN classifier classes:</p>
@@ -856,7 +856,7 @@ the following settings are plain properties of all kNN classifier classes:</p>
 <tt class="docutils literal">CITY_BLOCK</tt> (default), <tt class="docutils literal">EUCLIDEAN</tt> or <tt class="docutils literal">FAST_EUCLIDEAN</tt></dd>
 </dl>
 <div class="section" id="change-feature-set">
-<h4><a class="toc-backref" href="#id80"><tt class="docutils literal">change_feature_set</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-51"><tt class="docutils literal">change_feature_set</tt></a></h4>
 <p><strong>change_feature_set</strong> (<em>features</em>)</p>
 <p>Changes the set of features used in the classifier to the given list of feature names.</p>
 <dl class="docutils">
@@ -866,20 +866,20 @@ To use all available feature functions, pass in <tt class="docutils literal">'al
 </dl>
 </div>
 <div class="section" id="get-selections-by-features">
-<h4><a class="toc-backref" href="#id81"><tt class="docutils literal">get_selections_by_features</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-52"><tt class="docutils literal">get_selections_by_features</tt></a></h4>
 <p><strong>get_selections_by_features</strong> ()</p>
 <p>Get the selection vector elements.</p>
 <p>This function returns a python dictionary: keys are the feature names, values
 are lists of zeros and ones, where ones correspond to the selected components.</p>
 </div>
 <div class="section" id="get-selections-by-feature">
-<h4><a class="toc-backref" href="#id82"><tt class="docutils literal">get_selections_by_feature</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-53"><tt class="docutils literal">get_selections_by_feature</tt></a></h4>
 <p><strong>get_selections_by_feature</strong> (String <em>feature_name</em>)</p>
 <p>Convenience wrapper for <em>get_selections_by_features</em> function. This function
 returns only the selection values list for the given feature name.</p>
 </div>
 <div class="section" id="get-weights-by-features">
-<h4><a class="toc-backref" href="#id83"><tt class="docutils literal">get_weights_by_features</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-54"><tt class="docutils literal">get_weights_by_features</tt></a></h4>
 <p><strong>get_weights_by_features</strong> ()</p>
 <p>Get the weighting vector elements.</p>
 <p>This function returns a python dictionary: keys are the feature names, values
@@ -887,13 +887,13 @@ are lists of real values in [0,1], which give the weight of the respective
 component.</p>
 </div>
 <div class="section" id="get-weights-by-feature">
-<h4><a class="toc-backref" href="#id84"><tt class="docutils literal">get_weights_by_feature</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-55"><tt class="docutils literal">get_weights_by_feature</tt></a></h4>
 <p><strong>get_weights_by_feature</strong> (String <em>feature_name</em>)</p>
 <p>Convenience wrapper for <em>get_weights_by_features</em> function. This function
 returns only the weighting values list for the given feature name.</p>
 </div>
 <div class="section" id="set-selections-by-features">
-<h4><a class="toc-backref" href="#id85"><tt class="docutils literal">set_selections_by_features</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-56"><tt class="docutils literal">set_selections_by_features</tt></a></h4>
 <p><strong>set_selections_by_features</strong> (Dictionary <em>values</em>)</p>
 <p>Set the selection vector elements by the corresponding feature name.</p>
 <dl class="docutils">
@@ -911,7 +911,7 @@ by <em>change_feature_set</em>. Example:</p>
 </pre></div>
 </div>
 <div class="section" id="set-selections-by-feature">
-<h4><a class="toc-backref" href="#id86"><tt class="docutils literal">set_selections_by_feature</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-57"><tt class="docutils literal">set_selections_by_feature</tt></a></h4>
 <p><strong>set_selections_by_feature</strong> (String <em>feature_name</em>, List <em>values</em>)</p>
 <p>Set the selection vector elements for one specific feature.</p>
 <dl class="docutils">
@@ -923,7 +923,7 @@ list must match with the feature dimension.</dd>
 </dl>
 </div>
 <div class="section" id="set-weights-by-features">
-<h4><a class="toc-backref" href="#id87"><tt class="docutils literal">set_weights_by_features</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-58"><tt class="docutils literal">set_weights_by_features</tt></a></h4>
 <p><strong>set_weights_by_features</strong> (Dictionary <em>values</em>)</p>
 <p>Set the weighing vector elements by the corresponding feature name.
 The dictionary must contain an entry for every feature of the currently
@@ -936,7 +936,7 @@ by <em>change_feature_set</em>. Example:</p>
 </pre></div>
 </div>
 <div class="section" id="set-weights-by-feature">
-<h4><a class="toc-backref" href="#id88"><tt class="docutils literal">set_weights_by_feature</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-59"><tt class="docutils literal">set_weights_by_feature</tt></a></h4>
 <p><strong>set_weights_by_feature</strong> (String <em>feature_name</em>, List <em>values</em>)</p>
 <p>Set the weighting vector elements for one specific feature.</p>
 <dl class="docutils">
@@ -948,7 +948,7 @@ list must match with the feature dimension.</dd>
 </dl>
 </div>
 <div class="section" id="save-settings">
-<h4><a class="toc-backref" href="#id89"><tt class="docutils literal">save_settings</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-60"><tt class="docutils literal">save_settings</tt></a></h4>
 <p><strong>save_settings</strong> (FileSave <em>filename</em>)</p>
 <p>Save the kNN settings to the given filename. This settings file (which is XML)
 includes k, distance type, the current selection and weighting. This file is
@@ -956,15 +956,15 @@ different from the one produced by serialize in that it contains only the settin
 and no data.</p>
 </div>
 <div class="section" id="load-settings">
-<h4><a class="toc-backref" href="#id90"><tt class="docutils literal">load_settings</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-61"><tt class="docutils literal">load_settings</tt></a></h4>
 <p><strong>load_settings</strong> (FileOpen <em>filename</em>)</p>
 <p>Load the kNN settings from an XML file.  See <a class="reference internal" href="#save-settings">save_settings</a>.</p>
 </div>
 </div>
 <div class="section" id="serialization">
-<h3><a class="toc-backref" href="#id91">Serialization</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-62">Serialization</a></h3>
 <div class="section" id="serialize">
-<h4><a class="toc-backref" href="#id92"><tt class="docutils literal">serialize</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-63"><tt class="docutils literal">serialize</tt></a></h4>
 <p><strong>serialize</strong> (FileSave <em>filename</em>)</p>
 <p>Saves the classifier-specific settings <em>and</em> data in an optimized and
 classifer-specific format.</p>
@@ -976,7 +976,7 @@ Gamera.  The binary format is not guaranteed to be portable.</p>
 </div>
 </div>
 <div class="section" id="unserialize">
-<h4><a class="toc-backref" href="#id93"><tt class="docutils literal">unserialize</tt></a></h4>
+<h4><a class="toc-backref" href="#toc-entry-64"><tt class="docutils literal">unserialize</tt></a></h4>
 <p><strong>unserialize</strong> (FileOpen <em>filename</em>)</p>
 <p>Opens the classifier-specific settings <em>and</em> data from an optimized and
 classifer-specific format.</p>
@@ -984,9 +984,9 @@ classifer-specific format.</p>
 </div>
 </div>
 <div class="section" id="evaluation">
-<h2><a class="toc-backref" href="#id94">Evaluation</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-65">Evaluation</a></h2>
 <div class="section" id="evaluate">
-<h3><a class="toc-backref" href="#id95"><tt class="docutils literal">evaluate</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-66"><tt class="docutils literal">evaluate</tt></a></h3>
 <p>Float <strong>evaluate</strong> ()</p>
 <p>Evaluate the performance of the kNN classifier using
 leave-one-out cross-validation. The return value is a
@@ -994,7 +994,7 @@ floating-point number between 0.0 (0% correct) and 1.0 (100%
 correct).</p>
 </div>
 <div class="section" id="knndistance-statistics">
-<h3><a class="toc-backref" href="#id96"><tt class="docutils literal">knndistance_statistics</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-67"><tt class="docutils literal">knndistance_statistics</tt></a></h3>
 <p><strong>knndistance_statistics</strong> (Int <em>k</em> = 0)</p>
 <p>Returns a list of average distances between each training sample and its <em>k</em>
 nearest neighbors. So, when you have <em>n</em> training samples, <em>n</em> average
@@ -1010,14 +1010,14 @@ to the specific class.</p>
 <p>When <em>k</em> is zero, the property <tt class="docutils literal">num_k</tt> of the knn classifier is used.</p>
 </div>
 <div class="section" id="distance-from-images">
-<h3><a class="toc-backref" href="#id97"><tt class="docutils literal">distance_from_images</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-68"><tt class="docutils literal">distance_from_images</tt></a></h3>
 <p><strong>distance_from_images</strong> (ImageList <em>glyphs</em>, Image <em>glyph</em>, Float <em>max</em> = <tt class="docutils literal">None</tt>)</p>
 <p>Compute a list of distances between a list of glyphs and a single glyph. Distances
 greater than <em>max</em> are not included in the output.  The return value is a list of
 floating-point distances.</p>
 </div>
 <div class="section" id="distance-between-images">
-<h3><a class="toc-backref" href="#id98"><tt class="docutils literal">distance_between_images</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-69"><tt class="docutils literal">distance_between_images</tt></a></h3>
 <p><strong>distance_between_images</strong> (Image <em>imagea</em>, Image <em>imageb</em>)</p>
 <p>Compute the distance between two images using the settings
 for the kNN object (distance_type, features, weights, etc). This
@@ -1026,7 +1026,7 @@ needed than with any of the other methods that work on multiple
 images at once.</p>
 </div>
 <div class="section" id="distance-matrix">
-<h3><a class="toc-backref" href="#id99"><tt class="docutils literal">distance_matrix</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-70"><tt class="docutils literal">distance_matrix</tt></a></h3>
 <p><strong>distance_matrix</strong> (ImageList <em>images</em>, Bool <em>normalize</em> = <tt class="docutils literal">True</tt>)</p>
 <p>Create a symmetric FloatImage containing all of the
 distances between the images in the list passed in. This is useful
@@ -1039,7 +1039,7 @@ calculations.</dd>
 </dl>
 </div>
 <div class="section" id="unique-distances">
-<h3><a class="toc-backref" href="#id100"><tt class="docutils literal">unique_distances</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-71"><tt class="docutils literal">unique_distances</tt></a></h3>
 <p><strong>unique_distances</strong> (ImageList <em>images</em>, Bool <em>normalize</em> = <tt class="docutils literal">True</tt>)</p>
 <p>Return a list of the unique pairs of images in the passed in list
 and the distances between them. The return list is a list of tuples
@@ -1051,10 +1051,10 @@ calculations.</dd>
 </dl>
 </div>
 </div>
-<div class="section" id="id24">
-<span id="knninteractive"></span><h2><a class="toc-backref" href="#id101"><tt class="docutils literal">kNNInteractive</tt></a></h2>
-<div class="section" id="id25">
-<h3><a class="toc-backref" href="#id102"><tt class="docutils literal">__init__</tt></a></h3>
+<div class="section" id="knninteractive-1">
+<span id="knninteractive"></span><h2><a class="toc-backref" href="#toc-entry-72"><tt class="docutils literal">kNNInteractive</tt></a></h2>
+<div class="section" id="init-2">
+<h3><a class="toc-backref" href="#toc-entry-73"><tt class="docutils literal">__init__</tt></a></h3>
 <p><strong>kNNInteractive</strong> (ImageList <em>database</em> = <tt class="docutils literal">[]</tt>, <em>features</em> = 'all', bool <em>perform_splits</em> = <tt class="docutils literal">True</tt>, int <em>num_k</em> = <tt class="docutils literal">1</tt>)</p>
 <p>Creates a new kNN interactive classifier instance.</p>
 <dl class="docutils">
@@ -1093,13 +1093,13 @@ New splitting algorithms can be created by <a class="reference external" href="w
 in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
 </div>
 <div class="section" id="noninteractive-copy">
-<h3><a class="toc-backref" href="#id103"><tt class="docutils literal">noninteractive_copy</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-74"><tt class="docutils literal">noninteractive_copy</tt></a></h3>
 <p><strong>noninteractive_copy</strong> ()</p>
 <p>Creates a non-interactive copy of the interactive classifier.</p>
 </div>
 </div>
 <div class="section" id="improving-knn-classifiers-using-editing">
-<h2><a class="toc-backref" href="#id104">Improving kNN Classifiers using Editing</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-75">Improving kNN Classifiers using Editing</a></h2>
 <p>Gamera provides a way to improve kNN classifiers by modifying the underlying
 set of glyphs (training-set). This class of algorithms either removes bad or
 redundant glyphs or even creates new <em>optimal</em> glyphs from the training-set.</p>
@@ -1111,7 +1111,7 @@ classifier. Any additional parameters depend on the effective algorithm, but are
 optional by convention.</p>
 <p>Currently the following editing algorithms are included with Gamera:</p>
 <div class="section" id="edit-mnn">
-<h3><a class="toc-backref" href="#id105"><tt class="docutils literal">edit_mnn</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-76"><tt class="docutils literal">edit_mnn</tt></a></h3>
 <p><strong>edit_mnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>protectRare</em>, int <em>rareThreshold</em>)</p>
 <p>Wilson's <em>Modified Nearest Neighbour</em> (MNN, aka <em>Leave-one-out-editing</em>).
 The algorithm removes 'bad' glyphs from the classifier, i.e. glyphs that
@@ -1138,7 +1138,7 @@ number of elements are considered to be rare</dd>
 <em>IEEE Transactions on Systems, Man, and Cybernetics</em>, 2(3):408-421, 1972</p>
 </div>
 <div class="section" id="edit-cnn">
-<h3><a class="toc-backref" href="#id106"><tt class="docutils literal">edit_cnn</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-77"><tt class="docutils literal">edit_cnn</tt></a></h3>
 <p><strong>edit_cnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>randomize</em>)</p>
 <p>Hart's <em>Condensed Nearest Neighbour (CNN)</em> editing.
 This alorithm is specialized in removing superfluous glyphs - glyphs that do not
@@ -1161,7 +1161,7 @@ results are required, turn this option off.</dd>
 <p>Reference: P.E. Hart: 'The Condensed Nearest Neighbor rule'. <em>IEEE Transactions on Information Theory</em>, 14(3):515-516, 1968</p>
 </div>
 <div class="section" id="edit-mnn-cnn">
-<h3><a class="toc-backref" href="#id107"><tt class="docutils literal">edit_mnn_cnn</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-78"><tt class="docutils literal">edit_mnn_cnn</tt></a></h3>
 <p><strong>edit_mnn_cnn</strong> (kNNInteractive <em>classifier</em>, int <em>k</em> = 0, bool <em>protectRare</em>, int <em>rareThreshold</em>, bool <em>randomize</em>)</p>
 <p>Combined execution of Wilson's Modified Nearest Neighbour and Hart's
 Condensed Nearest Neighbour. Combining the algorithms in this order is
@@ -1170,7 +1170,7 @@ accuracy, and then the remaining samples are condensed to speed up the classifie
 <p>For documentation of the parameters see the independent algorithms</p>
 </div>
 <div class="section" id="usage-example">
-<h3><a class="toc-backref" href="#id108">Usage Example</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-79">Usage Example</a></h3>
 <p>The algorithms are located in the <em>gamera.knn_editing</em> package. So a typical
 usage example employing Wilson's <em>Modified Nearest Neighbour</em> (edit_mnn) would
 look like this:</p>
@@ -1193,7 +1193,7 @@ the following code in the Gamera GUI:</p>
 </pre></div>
 </div>
 <div class="section" id="integrating-your-own-editing-algorithm">
-<h3><a class="toc-backref" href="#id109">Integrating your own editing algorithm</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-80">Integrating your own editing algorithm</a></h3>
 <p>If you have written your own editing algorithm and want to make it available in
 the Classifier GUI, refer to the documentation of the class
 <strong>gamera.knn_editing.AlgoRegistry</strong>.</p>

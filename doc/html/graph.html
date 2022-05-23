@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Gamera graph library</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,148 +11,148 @@
 <div class="document" id="gamera-graph-library">
 <h1 class="title">Gamera graph library</h1>
 
-<p><strong>Last modified</strong>: April 28, 2021</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#introduction" id="id5">Introduction</a></li>
-<li><a class="reference internal" href="#using-the-graph-library-from-python" id="id6">Using the graph library from Python</a></li>
-<li><a class="reference internal" href="#reference" id="id7">Reference</a><ul>
-<li><a class="reference internal" href="#graph-objects" id="id8"><tt class="docutils literal">Graph</tt> objects</a><ul>
-<li><a class="reference internal" href="#basic-methods" id="id9">Basic methods</a><ul>
-<li><a class="reference internal" href="#graph-constructor" id="id10"><tt class="docutils literal">Graph</tt> Constructor</a><ul>
-<li><a class="reference internal" href="#graph" id="id11"><tt class="docutils literal">Graph</tt></a></li>
+<li><a class="reference internal" href="#introduction" id="toc-entry-1">Introduction</a></li>
+<li><a class="reference internal" href="#using-the-graph-library-from-python" id="toc-entry-2">Using the graph library from Python</a></li>
+<li><a class="reference internal" href="#reference" id="toc-entry-3">Reference</a><ul>
+<li><a class="reference internal" href="#graph-objects" id="toc-entry-4"><tt class="docutils literal">Graph</tt> objects</a><ul>
+<li><a class="reference internal" href="#basic-methods" id="toc-entry-5">Basic methods</a><ul>
+<li><a class="reference internal" href="#graph-constructor" id="toc-entry-6"><tt class="docutils literal">Graph</tt> Constructor</a><ul>
+<li><a class="reference internal" href="#graph" id="toc-entry-7"><tt class="docutils literal">Graph</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#methods-for-nodes" id="id12">Methods for Nodes</a><ul>
-<li><a class="reference internal" href="#add-node" id="id13"><tt class="docutils literal">add_node</tt></a></li>
-<li><a class="reference internal" href="#add-nodes" id="id14"><tt class="docutils literal">add_nodes</tt></a></li>
-<li><a class="reference internal" href="#get-node" id="id15"><tt class="docutils literal">get_node</tt></a></li>
-<li><a class="reference internal" href="#get-nodes" id="id16"><tt class="docutils literal">get_nodes</tt></a></li>
-<li><a class="reference internal" href="#has-node" id="id17"><tt class="docutils literal">has_node</tt></a></li>
-<li><a class="reference internal" href="#remove-node" id="id18"><tt class="docutils literal">remove_node</tt></a></li>
-<li><a class="reference internal" href="#remove-node-and-edges" id="id19"><tt class="docutils literal">remove_node_and_edges</tt></a></li>
+<li><a class="reference internal" href="#methods-for-nodes" id="toc-entry-8">Methods for Nodes</a><ul>
+<li><a class="reference internal" href="#add-node" id="toc-entry-9"><tt class="docutils literal">add_node</tt></a></li>
+<li><a class="reference internal" href="#add-nodes" id="toc-entry-10"><tt class="docutils literal">add_nodes</tt></a></li>
+<li><a class="reference internal" href="#get-node" id="toc-entry-11"><tt class="docutils literal">get_node</tt></a></li>
+<li><a class="reference internal" href="#get-nodes" id="toc-entry-12"><tt class="docutils literal">get_nodes</tt></a></li>
+<li><a class="reference internal" href="#has-node" id="toc-entry-13"><tt class="docutils literal">has_node</tt></a></li>
+<li><a class="reference internal" href="#remove-node" id="toc-entry-14"><tt class="docutils literal">remove_node</tt></a></li>
+<li><a class="reference internal" href="#remove-node-and-edges" id="toc-entry-15"><tt class="docutils literal">remove_node_and_edges</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#methods-for-edges" id="id20">Methods for Edges</a><ul>
-<li><a class="reference internal" href="#add-edge" id="id21"><tt class="docutils literal">add_edge</tt></a></li>
-<li><a class="reference internal" href="#add-edges" id="id22"><tt class="docutils literal">add_edges</tt></a></li>
-<li><a class="reference internal" href="#get-edges" id="id23"><tt class="docutils literal">get_edges</tt></a></li>
-<li><a class="reference internal" href="#has-edge" id="id24"><tt class="docutils literal">has_edge</tt></a></li>
-<li><a class="reference internal" href="#remove-edge" id="id25"><tt class="docutils literal">remove_edge</tt></a></li>
-<li><a class="reference internal" href="#remove-all-edges" id="id26"><tt class="docutils literal">remove_all_edges</tt></a></li>
+<li><a class="reference internal" href="#methods-for-edges" id="toc-entry-16">Methods for Edges</a><ul>
+<li><a class="reference internal" href="#add-edge" id="toc-entry-17"><tt class="docutils literal">add_edge</tt></a></li>
+<li><a class="reference internal" href="#add-edges" id="toc-entry-18"><tt class="docutils literal">add_edges</tt></a></li>
+<li><a class="reference internal" href="#get-edges" id="toc-entry-19"><tt class="docutils literal">get_edges</tt></a></li>
+<li><a class="reference internal" href="#has-edge" id="toc-entry-20"><tt class="docutils literal">has_edge</tt></a></li>
+<li><a class="reference internal" href="#remove-edge" id="toc-entry-21"><tt class="docutils literal">remove_edge</tt></a></li>
+<li><a class="reference internal" href="#remove-all-edges" id="toc-entry-22"><tt class="docutils literal">remove_all_edges</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#directedness" id="id27">Directedness</a><ul>
-<li><a class="reference internal" href="#is-directed" id="id28"><tt class="docutils literal">is_directed</tt></a></li>
-<li><a class="reference internal" href="#is-undirected" id="id29"><tt class="docutils literal">is_undirected</tt></a></li>
-<li><a class="reference internal" href="#make-directed" id="id30"><tt class="docutils literal">make_directed</tt></a></li>
-<li><a class="reference internal" href="#make-undirected" id="id31"><tt class="docutils literal">make_undirected</tt></a></li>
+<li><a class="reference internal" href="#directedness" id="toc-entry-23">Directedness</a><ul>
+<li><a class="reference internal" href="#is-directed" id="toc-entry-24"><tt class="docutils literal">is_directed</tt></a></li>
+<li><a class="reference internal" href="#is-undirected" id="toc-entry-25"><tt class="docutils literal">is_undirected</tt></a></li>
+<li><a class="reference internal" href="#make-directed" id="toc-entry-26"><tt class="docutils literal">make_directed</tt></a></li>
+<li><a class="reference internal" href="#make-undirected" id="toc-entry-27"><tt class="docutils literal">make_undirected</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#cyclicalness" id="id32">Cyclicalness</a><ul>
-<li><a class="reference internal" href="#is-cyclic" id="id33"><tt class="docutils literal">is_cyclic</tt></a></li>
-<li><a class="reference internal" href="#is-acyclic" id="id34"><tt class="docutils literal">is_acyclic</tt></a></li>
-<li><a class="reference internal" href="#make-cyclic" id="id35"><tt class="docutils literal">make_cyclic</tt></a></li>
-<li><a class="reference internal" href="#make-acyclic" id="id36"><tt class="docutils literal">make_acyclic</tt></a></li>
+<li><a class="reference internal" href="#cyclicalness" id="toc-entry-28">Cyclicalness</a><ul>
+<li><a class="reference internal" href="#is-cyclic" id="toc-entry-29"><tt class="docutils literal">is_cyclic</tt></a></li>
+<li><a class="reference internal" href="#is-acyclic" id="toc-entry-30"><tt class="docutils literal">is_acyclic</tt></a></li>
+<li><a class="reference internal" href="#make-cyclic" id="toc-entry-31"><tt class="docutils literal">make_cyclic</tt></a></li>
+<li><a class="reference internal" href="#make-acyclic" id="toc-entry-32"><tt class="docutils literal">make_acyclic</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#blob-vs-tree" id="id37">Blob vs. Tree</a><ul>
-<li><a class="reference internal" href="#is-tree" id="id38"><tt class="docutils literal">is_tree</tt></a></li>
-<li><a class="reference internal" href="#is-blob" id="id39"><tt class="docutils literal">is_blob</tt></a></li>
-<li><a class="reference internal" href="#make-tree" id="id40"><tt class="docutils literal">make_tree</tt></a></li>
-<li><a class="reference internal" href="#make-blob" id="id41"><tt class="docutils literal">make_blob</tt></a></li>
+<li><a class="reference internal" href="#blob-vs-tree" id="toc-entry-33">Blob vs. Tree</a><ul>
+<li><a class="reference internal" href="#is-tree" id="toc-entry-34"><tt class="docutils literal">is_tree</tt></a></li>
+<li><a class="reference internal" href="#is-blob" id="toc-entry-35"><tt class="docutils literal">is_blob</tt></a></li>
+<li><a class="reference internal" href="#make-tree" id="toc-entry-36"><tt class="docutils literal">make_tree</tt></a></li>
+<li><a class="reference internal" href="#make-blob" id="toc-entry-37"><tt class="docutils literal">make_blob</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#multi-connectedness" id="id42">Multi-connectedness</a><ul>
-<li><a class="reference internal" href="#is-multi-connected" id="id43"><tt class="docutils literal">is_multi_connected</tt></a></li>
-<li><a class="reference internal" href="#is-singly-connected" id="id44"><tt class="docutils literal">is_singly_connected</tt></a></li>
-<li><a class="reference internal" href="#make-multi-connected" id="id45"><tt class="docutils literal">make_multi_connected</tt></a></li>
-<li><a class="reference internal" href="#make-singly-connected" id="id46"><tt class="docutils literal">make_singly_connected</tt></a></li>
+<li><a class="reference internal" href="#multi-connectedness" id="toc-entry-38">Multi-connectedness</a><ul>
+<li><a class="reference internal" href="#is-multi-connected" id="toc-entry-39"><tt class="docutils literal">is_multi_connected</tt></a></li>
+<li><a class="reference internal" href="#is-singly-connected" id="toc-entry-40"><tt class="docutils literal">is_singly_connected</tt></a></li>
+<li><a class="reference internal" href="#make-multi-connected" id="toc-entry-41"><tt class="docutils literal">make_multi_connected</tt></a></li>
+<li><a class="reference internal" href="#make-singly-connected" id="toc-entry-42"><tt class="docutils literal">make_singly_connected</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#self-connectedness" id="id47">Self-connectedness</a><ul>
-<li><a class="reference internal" href="#is-self-connected" id="id48"><tt class="docutils literal">is_self_connected</tt></a></li>
-<li><a class="reference internal" href="#make-self-connected" id="id49"><tt class="docutils literal">make_self_connected</tt></a></li>
-<li><a class="reference internal" href="#make-not-self-connected" id="id50"><tt class="docutils literal">make_not_self_connected</tt></a></li>
+<li><a class="reference internal" href="#self-connectedness" id="toc-entry-43">Self-connectedness</a><ul>
+<li><a class="reference internal" href="#is-self-connected" id="toc-entry-44"><tt class="docutils literal">is_self_connected</tt></a></li>
+<li><a class="reference internal" href="#make-self-connected" id="toc-entry-45"><tt class="docutils literal">make_self_connected</tt></a></li>
+<li><a class="reference internal" href="#make-not-self-connected" id="toc-entry-46"><tt class="docutils literal">make_not_self_connected</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#subgraphs" id="id51">Subgraphs</a><ul>
-<li><a class="reference internal" href="#get-subgraph-roots" id="id52"><tt class="docutils literal">get_subgraph_roots</tt></a></li>
-<li><a class="reference internal" href="#size-of-subgraph" id="id53"><tt class="docutils literal">size_of_subgraph</tt></a></li>
-<li><a class="reference internal" href="#is-fully-connected" id="id54"><tt class="docutils literal">is_fully_connected</tt></a></li>
+<li><a class="reference internal" href="#subgraphs" id="toc-entry-47">Subgraphs</a><ul>
+<li><a class="reference internal" href="#get-subgraph-roots" id="toc-entry-48"><tt class="docutils literal">get_subgraph_roots</tt></a></li>
+<li><a class="reference internal" href="#size-of-subgraph" id="toc-entry-49"><tt class="docutils literal">size_of_subgraph</tt></a></li>
+<li><a class="reference internal" href="#is-fully-connected" id="toc-entry-50"><tt class="docutils literal">is_fully_connected</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#utility" id="id55">Utility</a><ul>
-<li><a class="reference internal" href="#copy" id="id56"><tt class="docutils literal">copy</tt></a></li>
-<li><a class="reference internal" href="#has-flag" id="id57"><tt class="docutils literal">has_flag</tt></a></li>
-<li><a class="reference internal" href="#has-path" id="id58"><tt class="docutils literal">has_path</tt></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#properties" id="id59">Properties</a></li>
-<li><a class="reference internal" href="#high-level-algorithms" id="id60">High-level algorithms</a><ul>
-<li><a class="reference internal" href="#search" id="id61">Search</a><ul>
-<li><a class="reference internal" href="#bfs" id="id62"><tt class="docutils literal">BFS</tt></a></li>
-<li><a class="reference internal" href="#dfs" id="id63"><tt class="docutils literal">DFS</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#shortest-path" id="id64">Shortest path</a><ul>
-<li><a class="reference internal" href="#dijkstra-shortest-path" id="id65"><tt class="docutils literal">dijkstra_shortest_path</tt></a></li>
-<li><a class="reference internal" href="#id1" id="id66"><tt class="docutils literal">shortest_path</tt></a></li>
-<li><a class="reference internal" href="#dijkstra-all-pairs-shortest-path" id="id67"><tt class="docutils literal">dijkstra_all_pairs_shortest_path</tt></a></li>
-<li><a class="reference internal" href="#all-pairs-shortest-path" id="id68"><tt class="docutils literal">all_pairs_shortest_path</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#spanning-trees" id="id69">Spanning trees</a><ul>
-<li><a class="reference internal" href="#create-spanning-tree" id="id70"><tt class="docutils literal">create_spanning_tree</tt></a></li>
-<li><a class="reference internal" href="#create-minimum-spanning-tree" id="id71"><tt class="docutils literal">create_minimum_spanning_tree</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#partitions" id="id72">Partitions</a><ul>
-<li><a class="reference internal" href="#optimize-partitions" id="id73"><tt class="docutils literal">optimize_partitions</tt></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#coloration" id="id74">Coloration</a><ul>
-<li><a class="reference internal" href="#colorize" id="id75"><tt class="docutils literal">colorize</tt></a></li>
-<li><a class="reference internal" href="#get-color" id="id76"><tt class="docutils literal">get_color</tt></a></li>
+<li><a class="reference internal" href="#utility" id="toc-entry-51">Utility</a><ul>
+<li><a class="reference internal" href="#copy" id="toc-entry-52"><tt class="docutils literal">copy</tt></a></li>
+<li><a class="reference internal" href="#has-flag" id="toc-entry-53"><tt class="docutils literal">has_flag</tt></a></li>
+<li><a class="reference internal" href="#has-path" id="toc-entry-54"><tt class="docutils literal">has_path</tt></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#properties" id="toc-entry-55">Properties</a></li>
+<li><a class="reference internal" href="#high-level-algorithms" id="toc-entry-56">High-level algorithms</a><ul>
+<li><a class="reference internal" href="#search" id="toc-entry-57">Search</a><ul>
+<li><a class="reference internal" href="#bfs" id="toc-entry-58"><tt class="docutils literal">BFS</tt></a></li>
+<li><a class="reference internal" href="#dfs" id="toc-entry-59"><tt class="docutils literal">DFS</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#node-objects" id="id77">Node objects</a><ul>
-<li><a class="reference internal" href="#id3" id="id78">Properties</a></li>
+<li><a class="reference internal" href="#shortest-path" id="toc-entry-60">Shortest path</a><ul>
+<li><a class="reference internal" href="#dijkstra-shortest-path" id="toc-entry-61"><tt class="docutils literal">dijkstra_shortest_path</tt></a></li>
+<li><a class="reference internal" href="#shortest-path-1" id="toc-entry-62"><tt class="docutils literal">shortest_path</tt></a></li>
+<li><a class="reference internal" href="#dijkstra-all-pairs-shortest-path" id="toc-entry-63"><tt class="docutils literal">dijkstra_all_pairs_shortest_path</tt></a></li>
+<li><a class="reference internal" href="#all-pairs-shortest-path" id="toc-entry-64"><tt class="docutils literal">all_pairs_shortest_path</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#edge-objects" id="id79">Edge objects</a><ul>
-<li><a class="reference internal" href="#methods" id="id80">Methods</a><ul>
-<li><a class="reference internal" href="#traverse" id="id81">traverse</a></li>
+<li><a class="reference internal" href="#spanning-trees" id="toc-entry-65">Spanning trees</a><ul>
+<li><a class="reference internal" href="#create-spanning-tree" id="toc-entry-66"><tt class="docutils literal">create_spanning_tree</tt></a></li>
+<li><a class="reference internal" href="#create-minimum-spanning-tree" id="toc-entry-67"><tt class="docutils literal">create_minimum_spanning_tree</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id4" id="id82">Properties</a></li>
+<li><a class="reference internal" href="#partitions" id="toc-entry-68">Partitions</a><ul>
+<li><a class="reference internal" href="#optimize-partitions" id="toc-entry-69"><tt class="docutils literal">optimize_partitions</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#utilities" id="id83">Utilities</a><ul>
-<li><a class="reference internal" href="#graphviz-output" id="id84"><tt class="docutils literal">graphviz_output</tt></a></li>
+<li><a class="reference internal" href="#coloration" id="toc-entry-70">Coloration</a><ul>
+<li><a class="reference internal" href="#colorize" id="toc-entry-71"><tt class="docutils literal">colorize</tt></a></li>
+<li><a class="reference internal" href="#get-color" id="toc-entry-72"><tt class="docutils literal">get_color</tt></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#implementation-details" id="id85">Implementation details</a></li>
-<li><a class="reference internal" href="#using-the-graph-library-from-c" id="id86">Using the Graph library from C++</a><ul>
-<li><a class="reference internal" href="#compilation-and-linkage" id="id87">Compilation and linkage</a></li>
-<li><a class="reference internal" href="#usage" id="id88">Usage</a></li>
-<li><a class="reference internal" href="#example" id="id89">Example</a></li>
-<li><a class="reference internal" href="#iterators" id="id90">Iterators</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#node-objects" id="toc-entry-73">Node objects</a><ul>
+<li><a class="reference internal" href="#properties-1" id="toc-entry-74">Properties</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edge-objects" id="toc-entry-75">Edge objects</a><ul>
+<li><a class="reference internal" href="#methods" id="toc-entry-76">Methods</a><ul>
+<li><a class="reference internal" href="#traverse" id="toc-entry-77">traverse</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#properties-2" id="toc-entry-78">Properties</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utilities" id="toc-entry-79">Utilities</a><ul>
+<li><a class="reference internal" href="#graphviz-output" id="toc-entry-80"><tt class="docutils literal">graphviz_output</tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#implementation-details" id="toc-entry-81">Implementation details</a></li>
+<li><a class="reference internal" href="#using-the-graph-library-from-c" id="toc-entry-82">Using the Graph library from C++</a><ul>
+<li><a class="reference internal" href="#compilation-and-linkage" id="toc-entry-83">Compilation and linkage</a></li>
+<li><a class="reference internal" href="#usage" id="toc-entry-84">Usage</a></li>
+<li><a class="reference internal" href="#example" id="toc-entry-85">Example</a></li>
+<li><a class="reference internal" href="#iterators" id="toc-entry-86">Iterators</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="introduction">
-<h1><a class="toc-backref" href="#id5">Introduction</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Introduction</a></h1>
 <p>Gamera provides a rudimentary framework for dealing with graph
 structures.  This library can be used from Python and from C++.</p>
 <p>This chapter assumes a basic understanding of graph theory and graph
@@ -161,7 +161,7 @@ does not describe in detail how the algorithms work.  (Hopefully this
 can be added in a future release of this documentation.)</p>
 </div>
 <div class="section" id="using-the-graph-library-from-python">
-<h1><a class="toc-backref" href="#id6">Using the graph library from Python</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Using the graph library from Python</a></h1>
 <p>Most operations on graphs in the Gamera graph library are methods on
 <tt class="docutils literal">Graph</tt> objects.</p>
 <p>Each node is identified by an arbitrary Python value.  <strong>Importantly,
@@ -294,18 +294,18 @@ graph now looks like this:</p>
 and methods on graph objects.</p>
 </div>
 <div class="section" id="reference">
-<h1><a class="toc-backref" href="#id7">Reference</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3">Reference</a></h1>
 <div class="section" id="graph-objects">
-<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">Graph</tt> objects</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">Graph</tt> objects</a></h2>
 <p>Each graph is represented by instances of the <tt class="docutils literal">Graph</tt> class.  All
 modifications to the graph structure, including adding and removing nodes and
 edges, is performed through this class.</p>
 <div class="section" id="basic-methods">
-<h3><a class="toc-backref" href="#id9">Basic methods</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-5">Basic methods</a></h3>
 <div class="section" id="graph-constructor">
-<h4><a class="toc-backref" href="#id10"><tt class="docutils literal">Graph</tt> Constructor</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">Graph</tt> Constructor</a></h4>
 <div class="section" id="graph">
-<h5><a class="toc-backref" href="#id11"><tt class="docutils literal">Graph</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">Graph</tt></a></h5>
 <p><strong>Graph</strong> (<em>flags</em> = <tt class="docutils literal">FREE</tt>)</p>
 <p>Construct a new graph.</p>
 <p>The <em>flags</em> are used to set certain restrictions on the graph.  When adding an edge
@@ -368,9 +368,9 @@ flags.</p>
 </div>
 </div>
 <div class="section" id="methods-for-nodes">
-<h4><a class="toc-backref" href="#id12">Methods for Nodes</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-8">Methods for Nodes</a></h4>
 <div class="section" id="add-node">
-<h5><a class="toc-backref" href="#id13"><tt class="docutils literal">add_node</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-9"><tt class="docutils literal">add_node</tt></a></h5>
 <p><strong>add_node</strong> (<em>value</em>)</p>
 <p>Add a node identified by the given <em>value</em>. The newly-created node has no edges.</p>
 <p>Returns <tt class="docutils literal">1</tt> if a new node was created.
@@ -378,14 +378,14 @@ Returns <tt class="docutils literal">0</tt> if a node already exists with the as
 <p><strong>Complexity</strong>: Nodes are added in logarithmic time.</p>
 </div>
 <div class="section" id="add-nodes">
-<h5><a class="toc-backref" href="#id14"><tt class="docutils literal">add_nodes</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-10"><tt class="docutils literal">add_nodes</tt></a></h5>
 <p><strong>add_nodes</strong> (<em>list_of_values</em>)</p>
 <p>Add nodes identified by each value in a list. The newly-created nodes have no edges.</p>
 <p>Returns the number of new nodes that were created.</p>
 <p><strong>Complexity</strong>: <cite>add_nodes</cite> is moderately faster than multiple calls to <a class="reference internal" href="#add-node">add_node</a>. Nodes are added in logarithmic time</p>
 </div>
 <div class="section" id="get-node">
-<h5><a class="toc-backref" href="#id15"><tt class="docutils literal">get_node</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-11"><tt class="docutils literal">get_node</tt></a></h5>
 <p><strong>get_node</strong> (<em>value</em>)</p>
 <p>Returns the <tt class="docutils literal">Node</tt> object identified by the given <em>value</em>.</p>
 <p>Raises a <tt class="docutils literal">ValueError</tt> exception if there is no node associated with the given <em>value</em>.</p>
@@ -393,19 +393,19 @@ Returns <tt class="docutils literal">0</tt> if a node already exists with the as
 <em>n</em> is the number of nodes in the graph.</p>
 </div>
 <div class="section" id="get-nodes">
-<h5><a class="toc-backref" href="#id16"><tt class="docutils literal">get_nodes</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">get_nodes</tt></a></h5>
 <p><strong>get_nodes</strong> ()</p>
 <p>Returns a lazy iterator over all nodes in the graph.  The ordering of the nodes is undefined.</p>
 </div>
 <div class="section" id="has-node">
-<h5><a class="toc-backref" href="#id17"><tt class="docutils literal">has_node</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">has_node</tt></a></h5>
 <p><strong>has_node</strong> (<em>value</em>)</p>
 <p>Returns <tt class="docutils literal">True</tt> if graph has a node identified by <em>value</em>.</p>
 <p><strong>Comlexity</strong>: Searching for an node takes <em>O</em> ( ln <em>n</em> ) time where
 <em>n</em> is the number of nodes in the graph.</p>
 </div>
 <div class="section" id="remove-node">
-<h5><a class="toc-backref" href="#id18"><tt class="docutils literal">remove_node</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-14"><tt class="docutils literal">remove_node</tt></a></h5>
 <p><strong>remove_node</strong> (<em>value</em>)</p>
 <p>Remove a node identified by <em>value</em> from the graph, stitching together the broken edges.</p>
 <p>For instance, given the graph:</p>
@@ -419,7 +419,7 @@ a -&gt; c
 <p><strong>Complexity</strong>: Removing a node takes <em>O</em> (<em>n</em> + <em>e</em>) where <em>n</em> is the number of nodes in the graph and <em>e</em> is the number of edges attached to the given node.</p>
 </div>
 <div class="section" id="remove-node-and-edges">
-<h5><a class="toc-backref" href="#id19"><tt class="docutils literal">remove_node_and_edges</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-15"><tt class="docutils literal">remove_node_and_edges</tt></a></h5>
 <p><strong>remove_node_and_edges</strong> (<em>value</em>)</p>
 <p>Remove the node identifed by <em>value</em> from the graph, and remove all edges pointing inward or outward from that node.</p>
 <p>For instance, given the graph:</p>
@@ -434,17 +434,17 @@ a         c
 </div>
 </div>
 <div class="section" id="methods-for-edges">
-<h4><a class="toc-backref" href="#id20">Methods for Edges</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-16">Methods for Edges</a></h4>
 <div class="section" id="add-edge">
-<h5><a class="toc-backref" href="#id21"><tt class="docutils literal">add_edge</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-17"><tt class="docutils literal">add_edge</tt></a></h5>
 <p><strong>add_edge</strong> (<em>from_value</em>, <em>to_value</em>, <em>cost</em> = 1.0, <em>label</em> = None)</p>
 <p>Add an edge between the two nodes identified by <em>from_value</em> and <em>to_value</em>.</p>
 <p>The return value is the number of edges created. If the graph has set the flag <tt class="docutils literal">CHECK_ON_INSERT</tt> and the edge violates any of the restrictions specified the edge by the flags to the graph's constructor will not be created. If the graph is <tt class="docutils literal">DIRECTED</tt>, the edge goes from <em>from_value</em> to <em>to_value</em>. If a node representing one of the values is not present, a node wille be implicitly created.</p>
-<p>Optionally, a <em>cost</em> and <em>label</em> can be associated with the edge. These values are used by some higher-level graph algorithms such as <a class="reference internal" href="#create-minimum-spanning-tree">create_minimum_spanning_tree</a> or <a class="reference internal" href="#id1">shortest_path</a>.</p>
+<p>Optionally, a <em>cost</em> and <em>label</em> can be associated with the edge. These values are used by some higher-level graph algorithms such as <a class="reference internal" href="#create-minimum-spanning-tree">create_minimum_spanning_tree</a> or <a class="reference internal" href="#shortest-path-1">shortest_path</a>.</p>
 <p><strong>Complexity</strong>: Edges are added in <em>O</em> ( ln <em>n</em> ) because of getting the nodes which are associated to <em>from_value</em> or <em>to_value</em>.</p>
 </div>
 <div class="section" id="add-edges">
-<h5><a class="toc-backref" href="#id22"><tt class="docutils literal">add_edges</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-18"><tt class="docutils literal">add_edges</tt></a></h5>
 <p><strong>add_edges</strong> (<em>list_of_tuples</em>)</p>
 <p>Add edges specified by a list of tuples of the form:</p>
 <blockquote>
@@ -454,12 +454,12 @@ a         c
 <p><strong>Complexity:</strong> <tt class="docutils literal">add_edges</tt> is moderately faster than multiple calls to <a class="reference internal" href="#add-edge">add_edge</a>.</p>
 </div>
 <div class="section" id="get-edges">
-<h5><a class="toc-backref" href="#id23"><tt class="docutils literal">get_edges</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-19"><tt class="docutils literal">get_edges</tt></a></h5>
 <p><strong>get_edges</strong> ()</p>
 <p>Returns an iterator over all edges in the graph.  The ordering of the edges is undefined.</p>
 </div>
 <div class="section" id="has-edge">
-<h5><a class="toc-backref" href="#id24"><tt class="docutils literal">has_edge</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-20"><tt class="docutils literal">has_edge</tt></a></h5>
 <p><strong>has_edge</strong> (<em>from_value</em>, <em>to_value</em>)</p>
 <blockquote>
 <em>or</em></blockquote>
@@ -475,7 +475,7 @@ where <em>e</em> is the number of edges in the graph and <em>n</em> is the numbe
 nodes in the graph.</p>
 </div>
 <div class="section" id="remove-edge">
-<h5><a class="toc-backref" href="#id25"><tt class="docutils literal">remove_edge</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-21"><tt class="docutils literal">remove_edge</tt></a></h5>
 <p><strong>remove_edge</strong> (<em>from_value</em>, <em>to_value</em>)</p>
 <p>Remove an edge between two nodes identified by <em>from_value</em> and <em>to_value</em>.</p>
 <p>If the edge does not exist in the graph, a <tt class="docutils literal">RuntimeError</tt> exception is raised.</p>
@@ -484,58 +484,58 @@ nodes in the graph.</p>
 <p><strong>Complexity</strong>: Edges can be removed in <em>O*(*e</em>) time where <em>e</em> is the number of edges in the graph.</p>
 </div>
 <div class="section" id="remove-all-edges">
-<h5><a class="toc-backref" href="#id26"><tt class="docutils literal">remove_all_edges</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-22"><tt class="docutils literal">remove_all_edges</tt></a></h5>
 <p><strong>remove_all_edges</strong> ()</p>
 <p>Remove all the edges in the graph, leaving all nodes as islands.</p>
 <p><strong>Complexity</strong>: <tt class="docutils literal">remove_all_edges</tt> takes <em>O</em> ( <em>n</em> + <em>e</em>) time where <em>n</em> is the number of nodes in the graph and <em>e</em> is the number of edges in the graph.</p>
 </div>
 </div>
 <div class="section" id="directedness">
-<h4><a class="toc-backref" href="#id27">Directedness</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-23">Directedness</a></h4>
 <div class="section" id="is-directed">
-<h5><a class="toc-backref" href="#id28"><tt class="docutils literal">is_directed</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-24"><tt class="docutils literal">is_directed</tt></a></h5>
 <p><strong>is_directed</strong> ()</p>
 <p>Return <tt class="docutils literal">True</tt> if the graph is defined as directed.</p>
 </div>
 <div class="section" id="is-undirected">
-<h5><a class="toc-backref" href="#id29"><tt class="docutils literal">is_undirected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-25"><tt class="docutils literal">is_undirected</tt></a></h5>
 <p><strong>is_undirected</strong> ()</p>
 <p>Return <tt class="docutils literal">True</tt> if the graph is defined as undirected.</p>
 </div>
 <div class="section" id="make-directed">
-<h5><a class="toc-backref" href="#id30"><tt class="docutils literal">make_directed</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-26"><tt class="docutils literal">make_directed</tt></a></h5>
 <p><strong>make_directed</strong> ()</p>
 <p>If the graph is undirected, converts it into an directed graph by adding a complementary edge for
 each existing edge.
 <strong>Complexity</strong>: The graph can be converted in <em>O</em> ( <em>e</em> ) time.</p>
 </div>
 <div class="section" id="make-undirected">
-<h5><a class="toc-backref" href="#id31"><tt class="docutils literal">make_undirected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-27"><tt class="docutils literal">make_undirected</tt></a></h5>
 <p><strong>make_undirected</strong> ()</p>
 <p>If the graph is directed, converts it into an undirected graph. Each edge in the existing graph
 will become a non-directional edge in the resulting graph.</p>
 </div>
 </div>
 <div class="section" id="cyclicalness">
-<h4><a class="toc-backref" href="#id32">Cyclicalness</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-28">Cyclicalness</a></h4>
 <div class="section" id="is-cyclic">
-<h5><a class="toc-backref" href="#id33"><tt class="docutils literal">is_cyclic</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-29"><tt class="docutils literal">is_cyclic</tt></a></h5>
 <p><strong>is_cyclic</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph has any cycles. Note that this is independent
 from the flag <tt class="docutils literal">CYCLIC</tt>.</p>
 </div>
 <div class="section" id="is-acyclic">
-<h5><a class="toc-backref" href="#id34"><tt class="docutils literal">is_acyclic</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-30"><tt class="docutils literal">is_acyclic</tt></a></h5>
 <p><strong>is_acyclic</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph does not have any cycles.</p>
 </div>
 <div class="section" id="make-cyclic">
-<h5><a class="toc-backref" href="#id35"><tt class="docutils literal">make_cyclic</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-31"><tt class="docutils literal">make_cyclic</tt></a></h5>
 <p><strong>make_cyclic</strong> ()</p>
 <p>Allow the graph to include cycles from this point on.  This does nothing except set the <tt class="docutils literal">CYCLIC</tt> flag.</p>
 </div>
 <div class="section" id="make-acyclic">
-<h5><a class="toc-backref" href="#id36"><tt class="docutils literal">make_acyclic</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-32"><tt class="docutils literal">make_acyclic</tt></a></h5>
 <p><strong>make_acyclic</strong> ()</p>
 <p>Remove any cycles (using a depth-first search technique) and disallow cycles from this point on.</p>
 <p>This may not be the most appropriate cycle-removing technique for all applications.</p>
@@ -543,87 +543,87 @@ from the flag <tt class="docutils literal">CYCLIC</tt>.</p>
 </div>
 </div>
 <div class="section" id="blob-vs-tree">
-<h4><a class="toc-backref" href="#id37">Blob vs. Tree</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-33">Blob vs. Tree</a></h4>
 <div class="section" id="is-tree">
-<h5><a class="toc-backref" href="#id38"><tt class="docutils literal">is_tree</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-34"><tt class="docutils literal">is_tree</tt></a></h5>
 <p><strong>is_tree</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph conforms to the restrictions of a tree.</p>
 </div>
 <div class="section" id="is-blob">
-<h5><a class="toc-backref" href="#id39"><tt class="docutils literal">is_blob</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-35"><tt class="docutils literal">is_blob</tt></a></h5>
 <p><strong>is_blob</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph does not conform to the restricitions of a tree.</p>
 </div>
 <div class="section" id="make-tree">
-<h5><a class="toc-backref" href="#id40"><tt class="docutils literal">make_tree</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-36"><tt class="docutils literal">make_tree</tt></a></h5>
 <p><strong>make_tree</strong> ()</p>
 <p>Turns the graph into a tree by calling <a class="reference internal" href="#make-acyclic">make_acyclic</a> followed by <a class="reference internal" href="#make-undirected">make_undirected</a>.  Sets the <tt class="docutils literal">BLOB</tt> flag to <tt class="docutils literal">False</tt>.</p>
 <p>This approach may not be reasonable for all applications.  For other ways to convert blobs to trees, see <a class="reference internal" href="#spanning-trees">spanning trees</a>.</p>
 </div>
 <div class="section" id="make-blob">
-<h5><a class="toc-backref" href="#id41"><tt class="docutils literal">make_blob</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-37"><tt class="docutils literal">make_blob</tt></a></h5>
 <p><strong>make_blob</strong> ()</p>
 <p>Make the graph into a blob (the opposite of a tree).  This does nothing
 except set the <tt class="docutils literal">BLOB</tt> flag.</p>
 </div>
 </div>
 <div class="section" id="multi-connectedness">
-<h4><a class="toc-backref" href="#id42">Multi-connectedness</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-38">Multi-connectedness</a></h4>
 <div class="section" id="is-multi-connected">
-<h5><a class="toc-backref" href="#id43"><tt class="docutils literal">is_multi_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-39"><tt class="docutils literal">is_multi_connected</tt></a></h5>
 <p><strong>is_multi_connected</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph is multi-connected (multiple edges between a single pair of nodes).</p>
 </div>
 <div class="section" id="is-singly-connected">
-<h5><a class="toc-backref" href="#id44"><tt class="docutils literal">is_singly_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-40"><tt class="docutils literal">is_singly_connected</tt></a></h5>
 <p><strong>is_singly_connected</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph does not have multiple edges between a single pair of nodes.</p>
 </div>
 <div class="section" id="make-multi-connected">
-<h5><a class="toc-backref" href="#id45"><tt class="docutils literal">make_multi_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-41"><tt class="docutils literal">make_multi_connected</tt></a></h5>
 <p><strong>make_multi_connected</strong> ()</p>
 <p>Allow the graph to be multi-connected from this point on.  This does
 nothing except set the <tt class="docutils literal">MULTI_CONNECTED</tt> flag.</p>
 </div>
 <div class="section" id="make-singly-connected">
-<h5><a class="toc-backref" href="#id46"><tt class="docutils literal">make_singly_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-42"><tt class="docutils literal">make_singly_connected</tt></a></h5>
 <p><strong>make_singly_connected</strong> ()</p>
 <p>For each pair of nodes, leave only one remaining edge in either direction.
 Restrict the graph to being singly-connected from this point on.</p>
 </div>
 </div>
 <div class="section" id="self-connectedness">
-<h4><a class="toc-backref" href="#id47">Self-connectedness</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-43">Self-connectedness</a></h4>
 <div class="section" id="is-self-connected">
-<h5><a class="toc-backref" href="#id48"><tt class="docutils literal">is_self_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-44"><tt class="docutils literal">is_self_connected</tt></a></h5>
 <p><strong>is_self_connected</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if the graph is self-connected. When <tt class="docutils literal">True</tt> the graph
 has edges pointfrom from one node to that same node.</p>
 </div>
 <div class="section" id="make-self-connected">
-<h5><a class="toc-backref" href="#id49"><tt class="docutils literal">make_self_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-45"><tt class="docutils literal">make_self_connected</tt></a></h5>
 <p><strong>make_self_connected</strong> ()</p>
 <p>Allow the graph to be self-conncted from this point on.  This does nothing except set the <tt class="docutils literal">SELF_CONNECTED</tt> flag.</p>
 </div>
 <div class="section" id="make-not-self-connected">
-<h5><a class="toc-backref" href="#id50"><tt class="docutils literal">make_not_self_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-46"><tt class="docutils literal">make_not_self_connected</tt></a></h5>
 <p><strong>make_not_self_connected</strong> ()</p>
 <p>Remove all self-connections and restrict the graph to have no self-connections from this point on.</p>
 </div>
 </div>
 <div class="section" id="subgraphs">
-<h4><a class="toc-backref" href="#id51">Subgraphs</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-47">Subgraphs</a></h4>
 <p>Here, a &quot;subgraph&quot; is defined as a connected group of nodes.  A graph
 contains multiple subgraphs when the graph does not have a single root
 node from which all other nodes can be reached.</p>
 <div class="section" id="get-subgraph-roots">
-<h5><a class="toc-backref" href="#id52"><tt class="docutils literal">get_subgraph_roots</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-48"><tt class="docutils literal">get_subgraph_roots</tt></a></h5>
 <p><strong>get_subgraph_roots</strong> ()</p>
 <p>Returns a lazy iterator over each of the subgraph roots.  Performing a breadth-first or depth-first search
 from each of this nodes will visit every node in the graph. Currently this algorithm has been tested for undirected graphs only, but it should also work for directed graphs.</p>
 </div>
 <div class="section" id="size-of-subgraph">
-<h5><a class="toc-backref" href="#id53"><tt class="docutils literal">size_of_subgraph</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-49"><tt class="docutils literal">size_of_subgraph</tt></a></h5>
 <p><strong>size_of_subgraph</strong> (<em>value</em>)</p>
 <blockquote>
 <em>or</em></blockquote>
@@ -632,7 +632,7 @@ from each of this nodes will visit every node in the graph. Currently this algor
 number of nodes reachable from the given node.</p>
 </div>
 <div class="section" id="is-fully-connected">
-<h5><a class="toc-backref" href="#id54"><tt class="docutils literal">is_fully_connected</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-50"><tt class="docutils literal">is_fully_connected</tt></a></h5>
 <p><strong>is_fully_connected</strong> ()</p>
 <p>Returns <tt class="docutils literal">True</tt> if there is only one subgraph in the graph. In other words it returns
 <tt class="docutils literal">True</tt> if the number of nodes reachable from the first inserted node is equal to the
@@ -640,9 +640,9 @@ overall number of nodes. Currently this algorithm is only defined for undirected
 </div>
 </div>
 <div class="section" id="utility">
-<h4><a class="toc-backref" href="#id55">Utility</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-51">Utility</a></h4>
 <div class="section" id="copy">
-<h5><a class="toc-backref" href="#id56"><tt class="docutils literal">copy</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-52"><tt class="docutils literal">copy</tt></a></h5>
 <p><strong>copy</strong> (<em>flags</em> = <tt class="docutils literal">FREE</tt>)</p>
 <p>Copies a graph (optionally specifying new flags for the new graph).</p>
 <p>In some cases, copying the graph to a new graph type may be faster
@@ -650,13 +650,13 @@ than using one of the in-place conversion functions.</p>
 <p>See <a class="reference internal" href="#graph-constructor">Graph constructor</a> for a definition of <em>flags</em>.</p>
 </div>
 <div class="section" id="has-flag">
-<h5><a class="toc-backref" href="#id57"><tt class="docutils literal">has_flag</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-53"><tt class="docutils literal">has_flag</tt></a></h5>
 <p><strong>has_flag</strong> (<em>flag</em>)</p>
 <p>Returns <tt class="docutils literal">True</tt> when the given flag is set in the graph. <em>flag</em> can be a single flag or
 or-combination of flags which are documented in <a class="reference internal" href="#graph-constructor">Graph constructor</a> .</p>
 </div>
 <div class="section" id="has-path">
-<h5><a class="toc-backref" href="#id58"><tt class="docutils literal">has_path</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-54"><tt class="docutils literal">has_path</tt></a></h5>
 <p><strong>has_path</strong> (<em>from_node</em>, <em>to_node</em>)</p>
 <p>Returns <tt class="docutils literal">True</tt> when <em>to_node</em> is reachable starting at <em>start_node</em>.
 <em>start_node</em> and <em>to_node</em> can be a Node object or a node's value.</p>
@@ -664,7 +664,7 @@ or-combination of flags which are documented in <a class="reference internal" hr
 </div>
 </div>
 <div class="section" id="properties">
-<h3><a class="toc-backref" href="#id59">Properties</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-55">Properties</a></h3>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt><em>nnodes</em>:</dt>
@@ -684,24 +684,24 @@ or-combination of flags which are documented in <a class="reference internal" hr
 </ul>
 </div>
 <div class="section" id="high-level-algorithms">
-<h3><a class="toc-backref" href="#id60">High-level algorithms</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-56">High-level algorithms</a></h3>
 <div class="section" id="search">
-<h4><a class="toc-backref" href="#id61">Search</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-57">Search</a></h4>
 <div class="section" id="bfs">
-<h5><a class="toc-backref" href="#id62"><tt class="docutils literal">BFS</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-58"><tt class="docutils literal">BFS</tt></a></h5>
 <p><strong>BFS</strong> (<em>value</em> or <em>node</em>)</p>
 <p>A lazy iterator that returns the nodes in breadth-first order starting from the given <em>value</em> or <em>node</em>. Note that the starting node is included in the returned nodes.</p>
 </div>
 <div class="section" id="dfs">
-<h5><a class="toc-backref" href="#id63"><tt class="docutils literal">DFS</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-59"><tt class="docutils literal">DFS</tt></a></h5>
 <p><strong>DFS</strong> (<em>value</em> or <em>node</em>)</p>
 <p>A lazy iterator that returns the nodes in depth-first order starting from the given <em>value</em> or <em>node</em>.  Note that the starting node is included in the returned nodes.</p>
 </div>
 </div>
 <div class="section" id="shortest-path">
-<h4><a class="toc-backref" href="#id64">Shortest path</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-60">Shortest path</a></h4>
 <div class="section" id="dijkstra-shortest-path">
-<h5><a class="toc-backref" href="#id65"><tt class="docutils literal">dijkstra_shortest_path</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-61"><tt class="docutils literal">dijkstra_shortest_path</tt></a></h5>
 <p><strong>dijkstra_shortest_path</strong> (<em>value</em> or <em>node</em>)</p>
 <p>Calculates the shortest path from the given node to all other reachable nodes using Djikstra's algorithm.</p>
 <p>The return value is a dictionary of paths.  The keys are destination node identifiers and the values are tuples of the form</p>
@@ -710,13 +710,13 @@ or-combination of flags which are documented in <a class="reference internal" hr
 <p>where distance is the distance traveled from the given node to the destination node and <em>nodes</em> is a list of node identifiers in the shortest path to reach the destination node.</p>
 <p>This algorithm will use the <em>cost</em> values associated with each edge if they are given.</p>
 </div>
-<div class="section" id="id1">
-<h5><a class="toc-backref" href="#id66"><tt class="docutils literal">shortest_path</tt></a></h5>
+<div class="section" id="shortest-path-1">
+<h5><a class="toc-backref" href="#toc-entry-62"><tt class="docutils literal">shortest_path</tt></a></h5>
 <p><strong>shortest_path</strong> (<em>value</em> or <em>node</em>)</p>
 <p>An alias for <a class="reference internal" href="#dijkstra-shortest-path">dijkstra_shortest_path</a>.</p>
 </div>
 <div class="section" id="dijkstra-all-pairs-shortest-path">
-<h5><a class="toc-backref" href="#id67"><tt class="docutils literal">dijkstra_all_pairs_shortest_path</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-63"><tt class="docutils literal">dijkstra_all_pairs_shortest_path</tt></a></h5>
 <p><strong>dijkstra_all_pairs_shortest_path</strong> ()</p>
 <p>Calculates the shortest paths between all pairs of nodes in the graph by calling <a class="reference internal" href="#dijkstra-shortest-path">dijkstra_shortest_path</a> multiple times.</p>
 <p>The return value is a dictionary where the keys are source node identifiers and the values are dictionaries of paths keyed by destination
@@ -727,29 +727,29 @@ node identifiers (of the same form as <a class="reference internal" href="#dijks
 <p>This algorithm will use the <em>cost</em> values associated with each edge if they are given.</p>
 </div>
 <div class="section" id="all-pairs-shortest-path">
-<h5><a class="toc-backref" href="#id68"><tt class="docutils literal">all_pairs_shortest_path</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-64"><tt class="docutils literal">all_pairs_shortest_path</tt></a></h5>
 <p><strong>all_pairs_shortest_path</strong> ()</p>
 <p>An alias for <a class="reference internal" href="#dijkstra-all-pairs-shortest-path">dijkstra_all_pairs_shortest_path</a>.</p>
 </div>
 </div>
 <div class="section" id="spanning-trees">
-<h4><a class="toc-backref" href="#id69">Spanning trees</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-65">Spanning trees</a></h4>
 <div class="section" id="create-spanning-tree">
-<h5><a class="toc-backref" href="#id70"><tt class="docutils literal">create_spanning_tree</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-66"><tt class="docutils literal">create_spanning_tree</tt></a></h5>
 <p><strong>create_spanning_tree</strong> (<em>value</em> or <em>node</em>)</p>
 <p>Returns a new graph which is a (probably non-optimal) spanning tree of all nodes reachable from the given node. This tree is created using DFS.</p>
 </div>
 <div class="section" id="create-minimum-spanning-tree">
-<h5><a class="toc-backref" href="#id71"><tt class="docutils literal">create_minimum_spanning_tree</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-67"><tt class="docutils literal">create_minimum_spanning_tree</tt></a></h5>
 <p><strong>create_minimum_spanning_tree</strong> ()</p>
 <p>Creates a minimum spanning tree of the entire graph in place using Kruskal's algorithm.
 A minimum spanning tree connects all nodes using the minimum total edge cost.</p>
 </div>
 </div>
 <div class="section" id="partitions">
-<h4><a class="toc-backref" href="#id72">Partitions</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-68">Partitions</a></h4>
 <div class="section" id="optimize-partitions">
-<h5><a class="toc-backref" href="#id73"><tt class="docutils literal">optimize_partitions</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-69"><tt class="docutils literal">optimize_partitions</tt></a></h5>
 <p><strong>optimize_partitions</strong> (<em>root_node</em>, <em>fittness_func</em>, <em>max_parts_per_group</em> = 5, <em>max_subgraph_size</em> = 16, criterion = &quot;min&quot;)</p>
 <p>A partition is defined as a way to divide a subgraph into groups.  This algorithm finds an optimal
 partition according to the given fitness function.</p>
@@ -775,9 +775,9 @@ average ('avg') confidence.</dd>
 </div>
 </div>
 <div class="section" id="coloration">
-<h4><a class="toc-backref" href="#id74">Coloration</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-70">Coloration</a></h4>
 <div class="section" id="colorize">
-<h5><a class="toc-backref" href="#id75"><tt class="docutils literal">colorize</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-71"><tt class="docutils literal">colorize</tt></a></h5>
 <p><strong>colorize</strong> (<em>ncolors</em>)</p>
 <p>This method colors the graph using <em>ncolors</em> colors with the constraint that adjacent nodes have different colors. When the number of colors is too small for the given graph, a runtime_error is raised.
 The graph coloring algorithm is based on the &quot;6-COLOR&quot; alorithm for planar graphs, as described in:</p>
@@ -796,7 +796,7 @@ of colors (e.g., because the graph is not planar), an exception is thrown.</p>
 </div>
 </div>
 <div class="section" id="get-color">
-<h5><a class="toc-backref" href="#id76"><tt class="docutils literal">get_color</tt></a></h5>
+<h5><a class="toc-backref" href="#toc-entry-72"><tt class="docutils literal">get_color</tt></a></h5>
 <p><strong>get_color</strong> (<em>value</em> or <em>node</em>)</p>
 <p>Returns the color of the node after the graph was colorized with <a class="reference internal" href="#colorize">colorize</a>.</p>
 </div>
@@ -804,14 +804,14 @@ of colors (e.g., because the graph is not planar), an exception is thrown.</p>
 </div>
 </div>
 <div class="section" id="node-objects">
-<h2><a class="toc-backref" href="#id77">Node objects</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-73">Node objects</a></h2>
 <p>Nodes contain a reference to an arbitrary Python value.  Importantly,
 the value is used to identify the node, so the same value may not be
 assigned to more than one node.  In many cases, it is much more convenient to refer
 to nodes by their associated values rather than keeping track of
 their associated <tt class="docutils literal">Node</tt> objects.</p>
-<div class="section" id="id3">
-<h3><a class="toc-backref" href="#id78">Properties</a></h3>
+<div class="section" id="properties-1">
+<h3><a class="toc-backref" href="#toc-entry-74">Properties</a></h3>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt><em>data</em>:</dt>
@@ -839,18 +839,18 @@ be obtained by &quot;calling&quot; the node as in <tt class="docutils literal">n
 </div>
 </div>
 <div class="section" id="edge-objects">
-<h2><a class="toc-backref" href="#id79">Edge objects</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-75">Edge objects</a></h2>
 <div class="section" id="methods">
-<h3><a class="toc-backref" href="#id80">Methods</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-76">Methods</a></h3>
 <div class="section" id="traverse">
-<h4><a class="toc-backref" href="#id81">traverse</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-77">traverse</a></h4>
 <p><strong>traverse</strong> (<em>node</em>)</p>
 <p>Returns the node on the other end of the edge.  (Useful only for
 undirected graphs).</p>
 </div>
 </div>
-<div class="section" id="id4">
-<h3><a class="toc-backref" href="#id82">Properties</a></h3>
+<div class="section" id="properties-2">
+<h3><a class="toc-backref" href="#toc-entry-78">Properties</a></h3>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt><em>from_node</em>:</dt>
@@ -877,10 +877,10 @@ such as <a class="reference internal" href="#create-minimum-spanning-tree">creat
 </div>
 </div>
 <div class="section" id="utilities">
-<h2><a class="toc-backref" href="#id83">Utilities</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-79">Utilities</a></h2>
 <p>The following functions are available in the <tt class="docutils literal">graph_util</tt> module.</p>
 <div class="section" id="graphviz-output">
-<h3><a class="toc-backref" href="#id84"><tt class="docutils literal">graphviz_output</tt></a></h3>
+<h3><a class="toc-backref" href="#toc-entry-80"><tt class="docutils literal">graphviz_output</tt></a></h3>
 <p><strong>graphviz_output</strong> (<em>graph</em>, <em>filename</em>, <em>string_function</em> = str)</p>
 <p>Writes a graph in the format used by the <tt class="docutils literal">dot</tt> tool in the <a class="reference external" href="http://www.graphviz.org/">graphviz</a> package for
 graph visualisation.</p>
@@ -897,7 +897,7 @@ standard <tt class="docutils literal">str</tt> function.</dd>
 </div>
 </div>
 <div class="section" id="implementation-details">
-<h1><a class="toc-backref" href="#id85">Implementation details</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-81">Implementation details</a></h1>
 <p>There are many ways to represent graphs in memory for different
 applications.  Unfortunately, this library only uses one, which may
 not be suitable for all applications.  It is as follows:</p>
@@ -914,16 +914,16 @@ directed, this includes edges going in and out from the node.</li>
 </blockquote>
 </div>
 <div class="section" id="using-the-graph-library-from-c">
-<h1><a class="toc-backref" href="#id86">Using the Graph library from C++</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-82">Using the Graph library from C++</a></h1>
 <p>The module <tt class="docutils literal">gamera.graph</tt> is only a thin Python wrapper around
 a C++ class <tt class="docutils literal">Graph</tt>. This can also be used directly in C++ plugins.</p>
 <div class="section" id="compilation-and-linkage">
-<h2><a class="toc-backref" href="#id87">Compilation and linkage</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-83">Compilation and linkage</a></h2>
 <p>The header file <em>graph.hpp</em> declares the necessary structures in
 the namespace <tt class="docutils literal"><span class="pre">Gamera::Graph</span></tt>. It is installed with the other gamera
 header files, and can thus be included with</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;graph/graph.hpp&quot;</span><span class="cp"></span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">Gamera</span><span class="o">::</span><span class="n">Graph</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;graph/graph.hpp&quot;</span><span class="cp"></span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Gamera</span><span class="o">::</span><span class="nn">Graph</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 <p>The tricky part is getting your plugin module to be linked with the
 actual graph implementation. This is achieved by adding the
@@ -957,7 +957,7 @@ of the gamera module is safer than using <em>get_python_lib()</em> from
 installed into the standard location for python extensions.</p>
 </div>
 <div class="section" id="usage">
-<h2><a class="toc-backref" href="#id88">Usage</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-84">Usage</a></h2>
 <p>Most methods are similar to them in the Python wrapper. For a detailed
 description you can see more details in the implementation and header files
 of Graph. A node is designed for storing a class derived from GraphData. Be
@@ -980,41 +980,41 @@ automatically.</p>
 <p>You can see some examples for derived classes in <tt class="docutils literal">graphdataderived.hpp</tt></p>
 </div>
 <div class="section" id="example">
-<h2><a class="toc-backref" href="#id89">Example</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-85">Example</a></h2>
 <p>Here is a very short example for a C++-Usage:</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;graph/graph.hpp&quot;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;graph/graph.hpp&quot;</span><span class="cp"></span>
 
-<span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
-   <span class="n">Graph</span><span class="o">*</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Graph</span><span class="p">(</span><span class="n">FLAG_UNDIRECTED</span><span class="p">);</span>
-   <span class="n">GraphDataUnsignedInt</span><span class="o">*</span> <span class="n">data1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GraphDataUnsignedInt</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
-   <span class="n">GraphDataUnsignedInt</span><span class="o">*</span> <span class="n">data2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GraphDataUnsignedInt</span><span class="p">(</span><span class="mi">21</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">test</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">Graph</span><span class="o">*</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Graph</span><span class="p">(</span><span class="n">FLAG_UNDIRECTED</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">GraphDataUnsignedInt</span><span class="o">*</span><span class="w"> </span><span class="n">data1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GraphDataUnsignedInt</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">GraphDataUnsignedInt</span><span class="o">*</span><span class="w"> </span><span class="n">data2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GraphDataUnsignedInt</span><span class="p">(</span><span class="mi">21</span><span class="p">);</span><span class="w"></span>
 
-   <span class="n">g</span><span class="o">-&gt;</span><span class="n">add_node</span><span class="p">(</span><span class="n">data1</span><span class="p">);</span>
-   <span class="n">g</span><span class="o">-&gt;</span><span class="n">add_node</span><span class="p">(</span><span class="n">data2</span><span class="p">);</span>
-   <span class="n">g</span><span class="o">-&gt;</span><span class="n">add_edge</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+<span class="w">   </span><span class="n">g</span><span class="o">-&gt;</span><span class="n">add_node</span><span class="p">(</span><span class="n">data1</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">g</span><span class="o">-&gt;</span><span class="n">add_node</span><span class="p">(</span><span class="n">data2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">g</span><span class="o">-&gt;</span><span class="n">add_edge</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span><span class="w"> </span><span class="n">data2</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">);</span><span class="w"></span>
 
-   <span class="k">delete</span> <span class="n">g</span><span class="p">;</span>
-   <span class="k">delete</span> <span class="n">data1</span><span class="p">;</span>
-   <span class="k">delete</span> <span class="n">data2</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">   </span><span class="k">delete</span><span class="w"> </span><span class="n">g</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">delete</span><span class="w"> </span><span class="n">data1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">delete</span><span class="w"> </span><span class="n">data2</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="iterators">
-<h2><a class="toc-backref" href="#id90">Iterators</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-86">Iterators</a></h2>
 <p>Many methods use lazy iterators as their return value. Here is a small
 example on handling iterators in C++.</p>
-<div class="highlight"><pre><span></span><span class="n">Graph</span><span class="o">*</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Graph</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><span class="n">Graph</span><span class="o">*</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Graph</span><span class="p">();</span><span class="w"></span>
 <span class="c1">// add nodes and edges to g</span>
 <span class="c1">// ...</span>
-<span class="n">NodePtrIterator</span> <span class="o">*</span><span class="n">nit</span> <span class="o">=</span> <span class="n">g</span><span class="o">-&gt;</span><span class="n">get_nodes</span><span class="p">();</span> <span class="c1">//iterator is allocated on heap</span>
-<span class="n">Node</span> <span class="o">*</span><span class="n">n</span><span class="p">;</span>
-<span class="k">while</span><span class="p">((</span><span class="n">n</span> <span class="o">=</span> <span class="n">nit</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-   <span class="c1">// next() returns NULL when there are no more elements</span>
-   <span class="c1">// You can do something with node n, but do not add or remove</span>
-   <span class="c1">// nodes to the graph because this would invalidate the iterator.</span>
-<span class="p">}</span>
+<span class="n">NodePtrIterator</span><span class="w"> </span><span class="o">*</span><span class="n">nit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="o">-&gt;</span><span class="n">get_nodes</span><span class="p">();</span><span class="w"> </span><span class="c1">//iterator is allocated on heap</span>
+<span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="k">while</span><span class="p">((</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nit</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">())</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="c1">// next() returns NULL when there are no more elements</span>
+<span class="w">   </span><span class="c1">// You can do something with node n, but do not add or remove</span>
+<span class="w">   </span><span class="c1">// nodes to the graph because this would invalidate the iterator.</span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="k">delete</span> <span class="n">nit</span><span class="p">;</span> <span class="c1">//iterator must be deleted after usage</span>
+<span class="k">delete</span><span class="w"> </span><span class="n">nit</span><span class="p">;</span><span class="w"> </span><span class="c1">//iterator must be deleted after usage</span>
 </pre></div>
 </div>
 </div>

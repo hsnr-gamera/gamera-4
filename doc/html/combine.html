@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Combine</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,32 +11,32 @@
 <div class="document" id="combine">
 <h1 class="title">Combine</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#arithmetic" id="id1">Arithmetic</a><ul>
-<li><a class="reference internal" href="#add-images" id="id2"><tt class="docutils literal">add_images</tt></a></li>
-<li><a class="reference internal" href="#divide-images" id="id3"><tt class="docutils literal">divide_images</tt></a></li>
-<li><a class="reference internal" href="#multiply-images" id="id4"><tt class="docutils literal">multiply_images</tt></a></li>
-<li><a class="reference internal" href="#subtract-images" id="id5"><tt class="docutils literal">subtract_images</tt></a></li>
+<li><a class="reference internal" href="#arithmetic" id="toc-entry-1">Arithmetic</a><ul>
+<li><a class="reference internal" href="#add-images" id="toc-entry-2"><tt class="docutils literal">add_images</tt></a></li>
+<li><a class="reference internal" href="#divide-images" id="toc-entry-3"><tt class="docutils literal">divide_images</tt></a></li>
+<li><a class="reference internal" href="#multiply-images" id="toc-entry-4"><tt class="docutils literal">multiply_images</tt></a></li>
+<li><a class="reference internal" href="#subtract-images" id="toc-entry-5"><tt class="docutils literal">subtract_images</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#logical" id="id6">Logical</a><ul>
-<li><a class="reference internal" href="#and-image" id="id7"><tt class="docutils literal">and_image</tt></a></li>
-<li><a class="reference internal" href="#or-image" id="id8"><tt class="docutils literal">or_image</tt></a></li>
-<li><a class="reference internal" href="#xor-image" id="id9"><tt class="docutils literal">xor_image</tt></a></li>
+<li><a class="reference internal" href="#logical" id="toc-entry-6">Logical</a><ul>
+<li><a class="reference internal" href="#and-image" id="toc-entry-7"><tt class="docutils literal">and_image</tt></a></li>
+<li><a class="reference internal" href="#or-image" id="toc-entry-8"><tt class="docutils literal">or_image</tt></a></li>
+<li><a class="reference internal" href="#xor-image" id="toc-entry-9"><tt class="docutils literal">xor_image</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#diff-images" id="id10"><tt class="docutils literal">diff_images</tt></a></li>
-<li><a class="reference internal" href="#mask" id="id11"><tt class="docutils literal">mask</tt></a></li>
-<li><a class="reference internal" href="#union-images" id="id12"><tt class="docutils literal">union_images</tt></a></li>
+<li><a class="reference internal" href="#diff-images" id="toc-entry-10"><tt class="docutils literal">diff_images</tt></a></li>
+<li><a class="reference internal" href="#mask" id="toc-entry-11"><tt class="docutils literal">mask</tt></a></li>
+<li><a class="reference internal" href="#union-images" id="toc-entry-12"><tt class="docutils literal">union_images</tt></a></li>
 </ul>
 </div>
 <div class="section" id="arithmetic">
-<h1><a class="toc-backref" href="#id1">Arithmetic</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Arithmetic</a></h1>
 <div class="section" id="add-images">
-<h2><a class="toc-backref" href="#id2"><tt class="docutils literal">add_images</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">add_images</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>add_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -71,7 +71,7 @@ contents of the current image.</dd>
 <p><img alt="add_images_plugin_00_00" src="images/add_images_plugin_00_00.png" style="width: 96px; height: 67px;" /> <img alt="add_images_plugin_00_01" src="images/add_images_plugin_00_01.png" style="width: 96px; height: 67px;" /> <img alt="add_images_plugin_00_02" src="images/add_images_plugin_00_02.png" style="width: 96px; height: 67px;" /></p>
 </div>
 <div class="section" id="divide-images">
-<h2><a class="toc-backref" href="#id3"><tt class="docutils literal">divide_images</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">divide_images</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>divide_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -104,7 +104,7 @@ contents of the current image.</dd>
 </dl>
 </div>
 <div class="section" id="multiply-images">
-<h2><a class="toc-backref" href="#id4"><tt class="docutils literal">multiply_images</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">multiply_images</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <strong>multiply_images</strong> (<tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float|RGB|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -137,7 +137,7 @@ contents of the current image.</dd>
 </dl>
 </div>
 <div class="section" id="subtract-images">
-<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">subtract_images</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">subtract_images</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <strong>subtract_images</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -173,9 +173,9 @@ contents of the current image.</dd>
 </div>
 </div>
 <div class="section" id="logical">
-<h1><a class="toc-backref" href="#id6">Logical</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6">Logical</a></h1>
 <div class="section" id="and-image">
-<h2><a class="toc-backref" href="#id7"><tt class="docutils literal">and_image</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">and_image</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>and_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -207,7 +207,7 @@ contents of the current image.</dd>
 <p><img alt="and_image_plugin_00_00" src="images/and_image_plugin_00_00.png" style="width: 69px; height: 67px;" /> <img alt="and_image_plugin_00_01" src="images/and_image_plugin_00_01.png" style="width: 69px; height: 67px;" /> <img alt="and_image_plugin_00_02" src="images/and_image_plugin_00_02.png" style="width: 69px; height: 67px;" /></p>
 </div>
 <div class="section" id="or-image">
-<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">or_image</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8"><tt class="docutils literal">or_image</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>or_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -241,37 +241,37 @@ to the underlying data, therefore creating/destroying a number of
 these on the fly should not have a significant impact on
 performance.</p>
 <p>Padding an image.</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">pad_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pad_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
   <span class="n">new_image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
                     <span class="n">image</span><span class="o">.</span><span class="n">nrows</span> <span class="o">+</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">ncols</span> <span class="o">+</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
                     <span class="n">ONEBIT</span><span class="p">,</span> <span class="n">DENSE</span><span class="p">)</span>
-  <span class="n">new_image</span><span class="o">.</span><span class="n">subimage</span><span class="p">((</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">ncols</span><span class="p">))</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+  <span class="n">new_image</span><span class="o">.</span><span class="n">subimage</span><span class="p">((</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">ncols</span><span class="p">))</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">new_image</span>
 </pre></div>
 <p>Stamping an image over a larger image.  Use subimage to change the
 destination of the stamp.</p>
-<div class="highlight"><pre><span class="c1"># stamp: a small stamp image</span>
+<div class="highlight"><pre><span></span><span class="c1"># stamp: a small stamp image</span>
 <span class="c1"># paper: a larger destination image</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
-  <span class="n">paper</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">ncols</span><span class="p">)</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">stamp</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+  <span class="n">paper</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">nrows</span><span class="p">,</span> <span class="n">stamp</span><span class="o">.</span><span class="n">ncols</span><span class="p">)</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">stamp</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 <p>Putting part of a source image on the upper-left corner of a
 destination image.</p>
-<div class="highlight"><pre><span class="c1"># src: a source image</span>
+<div class="highlight"><pre><span></span><span class="c1"># src: a source image</span>
 <span class="c1"># dest: a destination image</span>
-<span class="n">dest</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">dest</span><span class="o">.</span><span class="n">or_image</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">subimage</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 <p>Removing a connected component from its original image.</p>
-<div class="highlight"><pre><span class="c1"># src: the original image</span>
+<div class="highlight"><pre><span></span><span class="c1"># src: the original image</span>
 <span class="c1"># cc: a cc on that image</span>
-<span class="n">src</span><span class="o">.</span><span class="n">clip_image</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">xor_image</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">src</span><span class="o">.</span><span class="n">clip_image</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">xor_image</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 <hr class="docutils" />
 <p><strong>Example 1:</strong> or_image</p>
 <p><img alt="or_image_plugin_00_00" src="images/or_image_plugin_00_00.png" style="width: 69px; height: 67px;" /> <img alt="or_image_plugin_00_01" src="images/or_image_plugin_00_01.png" style="width: 69px; height: 67px;" /> <img alt="or_image_plugin_00_02" src="images/or_image_plugin_00_02.png" style="width: 69px; height: 67px;" /></p>
 </div>
 <div class="section" id="xor-image">
-<h2><a class="toc-backref" href="#id9"><tt class="docutils literal">xor_image</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-9"><tt class="docutils literal">xor_image</tt></a></h2>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>xor_image</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>, <tt class="docutils literal">bool</tt> <em>in_place</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -304,7 +304,7 @@ contents of the current image.</dd>
 </div>
 </div>
 <div class="section" id="diff-images">
-<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">diff_images</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10"><tt class="docutils literal">diff_images</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [RGB] <strong>diff_images</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>other</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -330,7 +330,7 @@ Pixels in the given image but not in self (&quot;inserted&quot; pixels)
 are green.</p>
 </div>
 <div class="section" id="mask">
-<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">mask</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-11"><tt class="docutils literal">mask</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [GreyScale|RGB] <strong>mask</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>mask</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -354,7 +354,7 @@ image.</p>
 <p>The images must be the same size.</p>
 </div>
 <div class="section" id="union-images">
-<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">union_images</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">union_images</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>union_images</strong> ([object <em>list_of_images</em>])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

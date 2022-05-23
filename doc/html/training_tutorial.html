@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Training tutorial</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,23 +11,23 @@
 <div class="document" id="training-tutorial">
 <h1 class="title">Training tutorial</h1>
 
-<p><strong>Last modified</strong>: September 17, 2019</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#starting-the-gui" id="id5">Starting the GUI</a></li>
-<li><a class="reference internal" href="#console-window" id="id6">Console window</a></li>
-<li><a class="reference internal" href="#classifier-window" id="id7">Classifier window</a></li>
-<li><a class="reference internal" href="#opening-and-segmenting-an-image" id="id8">Opening and segmenting an image</a></li>
-<li><a class="reference internal" href="#selecting-glyphs" id="id9">Selecting glyphs</a></li>
-<li><a class="reference internal" href="#beginning-training" id="id10">Beginning training</a></li>
-<li><a class="reference internal" href="#using-auto-move" id="id11">Using auto-move</a></li>
-<li><a class="reference internal" href="#training-broken-characters" id="id12">Training broken characters</a></li>
-<li><a class="reference internal" href="#saving-the-training-data" id="id13">Saving the training data</a></li>
-<li><a class="reference internal" href="#on-to-the-second-page" id="id14">On to the second page</a></li>
-<li><a class="reference internal" href="#and-another-page" id="id15">And another page...</a></li>
-<li><a class="reference internal" href="#optimizing-the-classifier" id="id16">Optimizing the classifier</a></li>
-<li><a class="reference internal" href="#the-end" id="id17">The end</a></li>
+<li><a class="reference internal" href="#starting-the-gui" id="toc-entry-1">Starting the GUI</a></li>
+<li><a class="reference internal" href="#console-window" id="toc-entry-2">Console window</a></li>
+<li><a class="reference internal" href="#classifier-window" id="toc-entry-3">Classifier window</a></li>
+<li><a class="reference internal" href="#opening-and-segmenting-an-image" id="toc-entry-4">Opening and segmenting an image</a></li>
+<li><a class="reference internal" href="#selecting-glyphs" id="toc-entry-5">Selecting glyphs</a></li>
+<li><a class="reference internal" href="#beginning-training" id="toc-entry-6">Beginning training</a></li>
+<li><a class="reference internal" href="#using-auto-move" id="toc-entry-7">Using auto-move</a></li>
+<li><a class="reference internal" href="#training-broken-characters" id="toc-entry-8">Training broken characters</a></li>
+<li><a class="reference internal" href="#saving-the-training-data" id="toc-entry-9">Saving the training data</a></li>
+<li><a class="reference internal" href="#on-to-the-second-page" id="toc-entry-10">On to the second page</a></li>
+<li><a class="reference internal" href="#and-another-page" id="toc-entry-11">And another page...</a></li>
+<li><a class="reference internal" href="#optimizing-the-classifier" id="toc-entry-12">Optimizing the classifier</a></li>
+<li><a class="reference internal" href="#the-end" id="toc-entry-13">The end</a></li>
 </ul>
 </div>
 <p>This tutorial walks through the process of creating training data
@@ -40,13 +40,13 @@ tutorial will be made available through the Gamera website soon.</p>
 <p>The goal during the run of this tutorial is to create enough training
 data that the classifier will perform well on new pages.</p>
 <div class="section" id="starting-the-gui">
-<h1><a class="toc-backref" href="#id5">Starting the GUI</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Starting the GUI</a></h1>
 <p>There is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your system
 (this location is platform-specific, see <a class="reference external" href="install.html">Building and Installing
 Gamera</a>).  Run it to start the Gamera GUI.</p>
 </div>
 <div class="section" id="console-window">
-<h1><a class="toc-backref" href="#id6">Console window</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Console window</a></h1>
 <blockquote>
 <img alt="images/tutorial_console.png" src="images/tutorial_console.png" />
 </blockquote>
@@ -55,7 +55,7 @@ anything in this tutorial, other than starting up the classifier
 interface.</p>
 </div>
 <div class="section" id="classifier-window">
-<h1><a class="toc-backref" href="#id7">Classifier window</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3">Classifier window</a></h1>
 <p>From the console window, start the interactive classifier window.</p>
 <blockquote>
 <strong>Classify -&gt; Interactive Classifier</strong></blockquote>
@@ -69,7 +69,7 @@ data in the classifier and it does not yet have an image to use as a
 source.</p>
 </div>
 <div class="section" id="opening-and-segmenting-an-image">
-<h1><a class="toc-backref" href="#id8">Opening and segmenting an image</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4">Opening and segmenting an image</a></h1>
 <p>First, load a page image.</p>
 <blockquote>
 <strong>Image -&gt; Open and segment image...</strong></blockquote>
@@ -96,7 +96,7 @@ image will be in the pane below.</p>
 </blockquote>
 </div>
 <div class="section" id="selecting-glyphs">
-<h1><a class="toc-backref" href="#id9">Selecting glyphs</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Selecting glyphs</a></h1>
 <p>Glyphs can be selected in a number of ways:</p>
 <blockquote>
 <ul class="simple">
@@ -118,7 +118,7 @@ interface.</p>
 </blockquote>
 </div>
 <div class="section" id="beginning-training">
-<h1><a class="toc-backref" href="#id10">Beginning training</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6">Beginning training</a></h1>
 <p>Now, to begin training.  Training is simply the act of assigning
 names to each of the glyphs.  In Gamera, these names are made up of
 dot-delimited tokens.  (See <a class="reference external" href="gui.html#class-names">class names</a>.)</p>
@@ -171,7 +171,7 @@ in the following picture.</p>
 </blockquote>
 </div>
 <div class="section" id="using-auto-move">
-<h1><a class="toc-backref" href="#id11">Using auto-move</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7">Using auto-move</a></h1>
 <p>Of course, continuing to train in this fashion gets tedious and
 involves a lot of &quot;mousing around&quot;.  The <strong>auto-move</strong> mode will
 automatically move to the next glyph after each glyph is trained.  It
@@ -212,7 +212,7 @@ training speed.</p>
 quite efficiently by keeping one's hands on the keyboard.</p>
 </div>
 <div class="section" id="training-broken-characters">
-<h1><a class="toc-backref" href="#id12">Training broken characters</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-8">Training broken characters</a></h1>
 <p>Occasionally, characters will be broken into multiple glyphs,
 either because the ink has degraded or the imaging is
 poor.  Also, it may be that the character itself is intentionally
@@ -233,7 +233,7 @@ glyphs that are broken, intentionally like the letter &quot;i&quot; or unintenti
 you must use the <tt class="docutils literal">group_list_automatic</tt> classifier method.</p>
 </div>
 <div class="section" id="saving-the-training-data">
-<h1><a class="toc-backref" href="#id13">Saving the training data</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9">Saving the training data</a></h1>
 <p>It is good practice to regularly save the training data.  Use the menu
 item</p>
 <blockquote>
@@ -256,7 +256,7 @@ tutorial using the menu option <strong>File -&gt; Classifier glyphs
 </div>
 </div>
 <div class="section" id="on-to-the-second-page">
-<h1><a class="toc-backref" href="#id14">On to the second page</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10">On to the second page</a></h1>
 <p>Once the first page has been trained, the next page can be loaded in
 by using</p>
 <blockquote>
@@ -290,7 +290,7 @@ manually classified.</p>
 <p><em>Again, don't forget to save the training data.</em></p>
 </div>
 <div class="section" id="and-another-page">
-<h1><a class="toc-backref" href="#id15">And another page...</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-11">And another page...</a></h1>
 <p>For the sake of this tutorial, it will be assumed that some time has
 lagged between training the second page and the third page, in order
 to demonstrate how the training process can be continued.</p>
@@ -306,7 +306,7 @@ into the classifier using</p>
 well, each successive page should require less manual correction.</p>
 </div>
 <div class="section" id="optimizing-the-classifier">
-<h1><a class="toc-backref" href="#id16">Optimizing the classifier</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12">Optimizing the classifier</a></h1>
 <p>It is impossible to say how much training data is &quot;enough&quot;, and that
 whole question is well beyond the scope of this tutorial.</p>
 <p>When you have a representative amount of data collected, however, it
@@ -318,7 +318,7 @@ intervention is an optimizer based on a Genetic Algorithm (GA). Gamera
 includes a GA for this purpose called <a class="reference external" href="ga_optimization.html">Biollante</a>.</p>
 </div>
 <div class="section" id="the-end">
-<h1><a class="toc-backref" href="#id17">The end</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13">The end</a></h1>
 <p>That's the gist of training with Gamera.  Of course, there are a lot
 more methodologies and tricks possible.  Enjoy!</p>
 </div>

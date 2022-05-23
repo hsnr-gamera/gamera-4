@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Edge</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,19 +11,19 @@
 <div class="document" id="edge">
 <h1 class="title">Edge</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#canny-edge-image" id="id1"><tt class="docutils literal">canny_edge_image</tt></a></li>
-<li><a class="reference internal" href="#difference-of-exponential-crack-edge-image" id="id2"><tt class="docutils literal">difference_of_exponential_crack_edge_image</tt></a></li>
-<li><a class="reference internal" href="#difference-of-exponential-edge-image" id="id3"><tt class="docutils literal">difference_of_exponential_edge_image</tt></a></li>
-<li><a class="reference internal" href="#labeled-region-edges" id="id4"><tt class="docutils literal">labeled_region_edges</tt></a></li>
-<li><a class="reference internal" href="#outline" id="id5"><tt class="docutils literal">outline</tt></a></li>
+<li><a class="reference internal" href="#canny-edge-image" id="toc-entry-1"><tt class="docutils literal">canny_edge_image</tt></a></li>
+<li><a class="reference internal" href="#difference-of-exponential-crack-edge-image" id="toc-entry-2"><tt class="docutils literal">difference_of_exponential_crack_edge_image</tt></a></li>
+<li><a class="reference internal" href="#difference-of-exponential-edge-image" id="toc-entry-3"><tt class="docutils literal">difference_of_exponential_edge_image</tt></a></li>
+<li><a class="reference internal" href="#labeled-region-edges" id="toc-entry-4"><tt class="docutils literal">labeled_region_edges</tt></a></li>
+<li><a class="reference internal" href="#outline" id="toc-entry-5"><tt class="docutils literal">outline</tt></a></li>
 </ul>
 </div>
 <div class="section" id="canny-edge-image">
-<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">canny_edge_image</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1"><tt class="docutils literal">canny_edge_image</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>canny_edge_image</strong> (float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>scale</em> = 0.80, float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>gradient_threshold</em> = 4.00)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -62,7 +62,7 @@ gradient_threshold.</dd>
 <img alt="images/canny_edge_image_plugin_00.png" src="images/canny_edge_image_plugin_00.png" style="width: 96px; height: 67px;" />
 </div>
 <div class="section" id="difference-of-exponential-crack-edge-image">
-<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">difference_of_exponential_crack_edge_image</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">difference_of_exponential_crack_edge_image</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>difference_of_exponential_crack_edge_image</strong> (float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>scale</em> = 0.80, float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>gradient_threshold</em> = 4.00, int(0, 32000) <em>min_edge_length</em> = 0, <tt class="docutils literal">bool</tt> <em>close_gaps</em> = False, <tt class="docutils literal">bool</tt> <em>beautify</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -109,7 +109,7 @@ zero crossing occurs between pixels).</dd>
 <img alt="images/difference_of_exponential_crack_edge_image_plugin_00.png" src="images/difference_of_exponential_crack_edge_image_plugin_00.png" style="width: 193px; height: 135px;" />
 </div>
 <div class="section" id="difference-of-exponential-edge-image">
-<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">difference_of_exponential_edge_image</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">difference_of_exponential_edge_image</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [GreyScale|Grey16|Float] <strong>difference_of_exponential_edge_image</strong> (float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>scale</em> = 0.80, float(0.00, 1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.00) <em>gradient_threshold</em> = 4.00, int(0, 32000) <em>min_edge_length</em> = 0)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -150,7 +150,7 @@ zero crossing occurs between pixels).</dd>
 <img alt="images/difference_of_exponential_edge_image_plugin_00.png" src="images/difference_of_exponential_edge_image_plugin_00.png" style="width: 96px; height: 67px;" />
 </div>
 <div class="section" id="labeled-region-edges">
-<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">labeled_region_edges</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">labeled_region_edges</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>labeled_region_edges</strong> (<tt class="docutils literal">bool</tt> <em>mark_both</em> = False)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -174,7 +174,7 @@ are marked black in the returned image.</p>
 marked, resulting in a two pixel wide edge.</p>
 </div>
 <div class="section" id="outline">
-<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">outline</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">outline</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [OneBit] <strong>outline</strong> (<tt class="docutils literal">Choice</tt> [outer|inner] <em>which</em> = outer)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

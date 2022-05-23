@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>PageSegmentation</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,21 +11,21 @@
 <div class="document" id="pagesegmentation">
 <h1 class="title">PageSegmentation</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#bbox-merging" id="id3"><tt class="docutils literal">bbox_merging</tt></a></li>
-<li><a class="reference internal" href="#kise-block-extraction" id="id4"><tt class="docutils literal">kise_block_extraction</tt></a></li>
-<li><a class="reference internal" href="#projection-cutting" id="id5"><tt class="docutils literal">projection_cutting</tt></a></li>
-<li><a class="reference internal" href="#runlength-smearing" id="id6"><tt class="docutils literal">runlength_smearing</tt></a></li>
-<li><a class="reference internal" href="#segmentation-error" id="id7"><tt class="docutils literal">segmentation_error</tt></a></li>
-<li><a class="reference internal" href="#sub-cc-analysis" id="id8"><tt class="docutils literal">sub_cc_analysis</tt></a></li>
-<li><a class="reference internal" href="#textline-reading-order" id="id9"><tt class="docutils literal">textline_reading_order</tt></a></li>
+<li><a class="reference internal" href="#bbox-merging" id="toc-entry-1"><tt class="docutils literal">bbox_merging</tt></a></li>
+<li><a class="reference internal" href="#kise-block-extraction" id="toc-entry-2"><tt class="docutils literal">kise_block_extraction</tt></a></li>
+<li><a class="reference internal" href="#projection-cutting" id="toc-entry-3"><tt class="docutils literal">projection_cutting</tt></a></li>
+<li><a class="reference internal" href="#runlength-smearing" id="toc-entry-4"><tt class="docutils literal">runlength_smearing</tt></a></li>
+<li><a class="reference internal" href="#segmentation-error" id="toc-entry-5"><tt class="docutils literal">segmentation_error</tt></a></li>
+<li><a class="reference internal" href="#sub-cc-analysis" id="toc-entry-6"><tt class="docutils literal">sub_cc_analysis</tt></a></li>
+<li><a class="reference internal" href="#textline-reading-order" id="toc-entry-7"><tt class="docutils literal">textline_reading_order</tt></a></li>
 </ul>
 </div>
 <div class="section" id="bbox-merging">
-<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">bbox_merging</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1"><tt class="docutils literal">bbox_merging</tt></a></h1>
 <p>[object] <strong>bbox_merging</strong> (int <em>Ex</em> = -1, int <em>Ey</em> = -1, int <em>iterations</em> = 2)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -72,7 +72,7 @@ boxes to be merged, set <em>iterations</em> to one.</dd>
 </dl>
 </div>
 <div class="section" id="kise-block-extraction">
-<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">kise_block_extraction</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">kise_block_extraction</tt></a></h1>
 <p>[object] <strong>kise_block_extraction</strong> (float <em>Ta</em> = 40.00, float <em>fr</em> = 0.34)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -117,7 +117,7 @@ height.</dd>
 </dl>
 </div>
 <div class="section" id="projection-cutting">
-<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">projection_cutting</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">projection_cutting</tt></a></h1>
 <p>[object] <strong>projection_cutting</strong> (int <em>Tx</em> = 0, int <em>Ty</em> = 0, int <em>noise</em> = 0, <tt class="docutils literal">Choice</tt> [cut|ignore] <em>gap_treatment</em> = cut)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -171,7 +171,7 @@ to a segment, in other words, they are ignored.</dd>
 </dl>
 </div>
 <div class="section" id="runlength-smearing">
-<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">runlength_smearing</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">runlength_smearing</tt></a></h1>
 <p>[object] <strong>runlength_smearing</strong> (int <em>Cx</em> = -1, int <em>Cy</em> = -1, int <em>Csm</em> = -1)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -217,7 +217,7 @@ of all connected components.</dd>
 </dl>
 </div>
 <div class="section" id="segmentation-error">
-<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">segmentation_error</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">segmentation_error</tt></a></h1>
 <p><tt class="docutils literal">IntVector</tt> <strong>segmentation_error</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>Gseg</em>, <tt class="docutils literal">Image</tt> [OneBit] <em>Sseg</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -303,11 +303,11 @@ be of use to determine what exactly is wrong with the segmentation.</p>
 <p>As this function is not an image method, but a free function, it
 is not automatically imported with all plugins and you must import
 it explicitly with</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">segmentation_error</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">segmentation_error</span>
 </pre></div>
 </div>
 <div class="section" id="sub-cc-analysis">
-<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">sub_cc_analysis</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">sub_cc_analysis</tt></a></h1>
 <p>tuple <strong>sub_cc_analysis</strong> ([object <em>cclist</em>])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -343,7 +343,7 @@ list of segments returned by the page segmentation algorithm.</p>
 <li>a list of ImageLists, each list containing all connected components
 belonging to the same page segments</li>
 </ul>
-<div class="note">
+<div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The groups will be returned in the same order as given
 in <em>cclist</em>.  This means that you can sort the page segments
@@ -354,7 +354,7 @@ subgroup by reading order.</p>
 </div>
 </div>
 <div class="section" id="textline-reading-order">
-<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">textline_reading_order</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">textline_reading_order</tt></a></h1>
 <p>[object] <strong>textline_reading_order</strong> ([object <em>lineccs</em>])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -395,7 +395,7 @@ in the depth-first-search utilized in the topological sorting.</p>
 <p>As this function is not an image method, but a free function, it
 is not automatically imported with all plugins and you must import
 it explicitly with</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">textline_reading_order</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.plugins.pagesegmentation</span> <span class="kn">import</span> <span class="n">textline_reading_order</span>
 </pre></div>
 </div>
 </div>

@@ -1,6 +1,10 @@
 Changes made between Gamera File Releases
 =========================================
 
+
+ - fixed segfault with gcc 9.4.0 in color_ccs() (call to is_white())
+
+
 Version 4.0.0, Feb 18, 2022
 ----------------------------
 

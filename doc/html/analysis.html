@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Analysis</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,34 +11,34 @@
 <div class="document" id="analysis">
 <h1 class="title">Analysis</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#contour" id="id3">Contour</a><ul>
-<li><a class="reference internal" href="#contour-bottom" id="id4"><tt class="docutils literal">contour_bottom</tt></a></li>
-<li><a class="reference internal" href="#contour-left" id="id5"><tt class="docutils literal">contour_left</tt></a></li>
-<li><a class="reference internal" href="#contour-pavlidis" id="id6"><tt class="docutils literal">contour_pavlidis</tt></a></li>
-<li><a class="reference internal" href="#contour-right" id="id7"><tt class="docutils literal">contour_right</tt></a></li>
-<li><a class="reference internal" href="#contour-samplepoints" id="id8"><tt class="docutils literal">contour_samplepoints</tt></a></li>
-<li><a class="reference internal" href="#contour-top" id="id9"><tt class="docutils literal">contour_top</tt></a></li>
+<li><a class="reference internal" href="#contour" id="toc-entry-1">Contour</a><ul>
+<li><a class="reference internal" href="#contour-bottom" id="toc-entry-2"><tt class="docutils literal">contour_bottom</tt></a></li>
+<li><a class="reference internal" href="#contour-left" id="toc-entry-3"><tt class="docutils literal">contour_left</tt></a></li>
+<li><a class="reference internal" href="#contour-pavlidis" id="toc-entry-4"><tt class="docutils literal">contour_pavlidis</tt></a></li>
+<li><a class="reference internal" href="#contour-right" id="toc-entry-5"><tt class="docutils literal">contour_right</tt></a></li>
+<li><a class="reference internal" href="#contour-samplepoints" id="toc-entry-6"><tt class="docutils literal">contour_samplepoints</tt></a></li>
+<li><a class="reference internal" href="#contour-top" id="toc-entry-7"><tt class="docutils literal">contour_top</tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#diagonal-projections" id="id10"><tt class="docutils literal">diagonal_projections</tt></a></li>
-<li><a class="reference internal" href="#histogram" id="id11"><tt class="docutils literal">histogram</tt></a></li>
-<li><a class="reference internal" href="#min-max-location" id="id12"><tt class="docutils literal">min_max_location</tt></a></li>
-<li><a class="reference internal" href="#projection-cols" id="id13"><tt class="docutils literal">projection_cols</tt></a></li>
-<li><a class="reference internal" href="#projection-rows" id="id14"><tt class="docutils literal">projection_rows</tt></a></li>
-<li><a class="reference internal" href="#projection-skewed-cols" id="id15"><tt class="docutils literal">projection_skewed_cols</tt></a></li>
-<li><a class="reference internal" href="#projection-skewed-rows" id="id16"><tt class="docutils literal">projection_skewed_rows</tt></a></li>
-<li><a class="reference internal" href="#projections" id="id17"><tt class="docutils literal">projections</tt></a></li>
-<li><a class="reference internal" href="#rotation-angle-projections" id="id18"><tt class="docutils literal">rotation_angle_projections</tt></a></li>
+<li><a class="reference internal" href="#diagonal-projections" id="toc-entry-8"><tt class="docutils literal">diagonal_projections</tt></a></li>
+<li><a class="reference internal" href="#histogram" id="toc-entry-9"><tt class="docutils literal">histogram</tt></a></li>
+<li><a class="reference internal" href="#min-max-location" id="toc-entry-10"><tt class="docutils literal">min_max_location</tt></a></li>
+<li><a class="reference internal" href="#projection-cols" id="toc-entry-11"><tt class="docutils literal">projection_cols</tt></a></li>
+<li><a class="reference internal" href="#projection-rows" id="toc-entry-12"><tt class="docutils literal">projection_rows</tt></a></li>
+<li><a class="reference internal" href="#projection-skewed-cols" id="toc-entry-13"><tt class="docutils literal">projection_skewed_cols</tt></a></li>
+<li><a class="reference internal" href="#projection-skewed-rows" id="toc-entry-14"><tt class="docutils literal">projection_skewed_rows</tt></a></li>
+<li><a class="reference internal" href="#projections" id="toc-entry-15"><tt class="docutils literal">projections</tt></a></li>
+<li><a class="reference internal" href="#rotation-angle-projections" id="toc-entry-16"><tt class="docutils literal">rotation_angle_projections</tt></a></li>
 </ul>
 </div>
 <div class="section" id="contour">
-<h1><a class="toc-backref" href="#id3">Contour</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Contour</a></h1>
 <div class="section" id="contour-bottom">
-<h2><a class="toc-backref" href="#id4"><tt class="docutils literal">contour_bottom</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">contour_bottom</tt></a></h2>
 <p><tt class="docutils literal">FloatVector</tt> <strong>contour_bottom</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -66,7 +66,7 @@ inf.</p>
 <p><em>result</em> = array('d', [23.0, 24.0, 25.0, 26.0, 27.0, 44.0, 37.0, 33.0, 30.0, 28.0, 26.0, 25.0, 23.0, 22.0, 22.0, 21.0, 20.0, 8.0, 8.0, 7.0, 7.0, 6.0, 5.0, 5.0, 5.0, 4.0, 4.0, 4.0, 4.0, 3.0, 3.0, 3.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 4.0, 4.0, 4.0, 5.0, 5.0, 5.0, 6.0, 7.0, 7.0, 67.0, 68.0, 68.0, 68.0, 69.0, 69.0, 71.0, 72.0, 74.0, 75.0, 77.0])</p>
 </div>
 <div class="section" id="contour-left">
-<h2><a class="toc-backref" href="#id5"><tt class="docutils literal">contour_left</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">contour_left</tt></a></h2>
 <p><tt class="docutils literal">FloatVector</tt> <strong>contour_left</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -94,7 +94,7 @@ inf.</p>
 <p><em>result</em> = array('d', [42.0, 40.0, 40.0, 50.0, 53.0, 55.0, 57.0, 58.0, 59.0, 60.0, 61.0, 61.0, 62.0, 62.0, 63.0, 64.0, 64.0, 63.0, 63.0, 65.0, 65.0, 65.0, 65.0, 65.0, 64.0, 64.0, 52.0, 50.0, 49.0, 48.0, 26.0, 23.0, 22.0, 19.0, 18.0, 17.0, 16.0, 15.0, 14.0, 13.0, 13.0, 12.0, 11.0, 10.0, 10.0, 9.0, 9.0, 8.0, 8.0, 7.0, 7.0, 7.0, 7.0, 6.0, 6.0, 4.0, 5.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 7.0, 7.0, 7.0, 7.0, 8.0, 8.0, 8.0, 9.0, 9.0, 3.0, 1.0, 0.0, 0.0, 0.0, 13.0, 15.0, 16.0, 17.0, 18.0, 20.0, 22.0, 24.0, 27.0, 34.0, inf, inf, inf, inf, 17.0, 19.0, 21.0, 22.0, 25.0, 29.0, 32.0, 42.0])</p>
 </div>
 <div class="section" id="contour-pavlidis">
-<h2><a class="toc-backref" href="#id6"><tt class="docutils literal">contour_pavlidis</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">contour_pavlidis</tt></a></h2>
 <p>[object] <strong>contour_pavlidis</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -119,7 +119,7 @@ pp. 129-165, Springer, 1982).</p>
 should be applied to a single connected component. If you have an
 image with more than one connected component, do a CC analysis before,
 as in the following example:</p>
-<div class="highlight"><pre><span class="n">ccs</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">ccs</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
 <span class="n">contours</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">ccs</span><span class="p">:</span>
   <span class="n">contours</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">Point</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">offset_y</span><span class="p">)</span> \
@@ -127,7 +127,7 @@ as in the following example:</p>
 </pre></div>
 </div>
 <div class="section" id="contour-right">
-<h2><a class="toc-backref" href="#id7"><tt class="docutils literal">contour_right</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">contour_right</tt></a></h2>
 <p><tt class="docutils literal">FloatVector</tt> <strong>contour_right</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -155,7 +155,7 @@ inf.</p>
 <p><em>result</em> = array('d', [17.0, 14.0, 12.0, 11.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 3.0, 3.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 3.0, 4.0, 4.0, 5.0, 6.0, 6.0, 8.0, 11.0, 12.0, 14.0, 16.0, 18.0, 27.0, 27.0, 27.0, 16.0, 15.0, 15.0, 16.0, 27.0, 27.0, 27.0, 27.0, 27.0, 27.0, 27.0, 27.0, 27.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 17.0, 17.0, 17.0, 17.0, 17.0, 27.0, 28.0, 28.0, 28.0, 28.0, 28.0, 29.0, 31.0, 33.0, 34.0, 17.0, 14.0, 15.0, 15.0, 16.0, 18.0, 19.0, 20.0, 22.0, 24.0, 26.0, 29.0, 33.0, inf, inf, inf, inf, 12.0, 12.0, 14.0, 15.0, 18.0, 21.0, 25.0, 28.0])</p>
 </div>
 <div class="section" id="contour-samplepoints">
-<h2><a class="toc-backref" href="#id8"><tt class="docutils literal">contour_samplepoints</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">contour_samplepoints</tt></a></h2>
 <p>[object] <strong>contour_samplepoints</strong> (int(1, 100) <em>percentage</em> = 25, <tt class="docutils literal">Choice</tt> [outer_projection|full_contour] <em>contour</em> = outer_projection)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -186,7 +186,7 @@ are used.</dd>
 <p>In addition to the points determined by the percentage argument the result
 list also contains the four extreme points (topmost, leftmost, bottommost,
 rightmost).</p>
-<div class="highlight"><pre><span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">ccs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
 <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">ccs</span><span class="p">:</span>
   <span class="k">for</span> <span class="n">samplepoint</span> <span class="ow">in</span> <span class="n">cc</span><span class="o">.</span><span class="n">contour_samplepoints</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
@@ -198,7 +198,7 @@ rightmost).</p>
 <p><em>result</em> = [Point(0, 75), Point(10, 43), Point(20, 33), Point(30, 30), Point(40, 1), Point(50, 0), Point(60, 4), Point(67, 11), Point(69, 23), Point(59, 33), Point(55, 43), Point(43, 53), Point(53, 63), Point(37, 73), Point(48, 83), Point(49, 97), Point(7, 67), Point(17, 92), Point(27, 96), Point(37, 98), Point(50, 96), Point(53, 4), Point(63, 14), Point(64, 24), Point(7, 50), Point(7, 64), Point(22, 84), Point(42, 0), Point(69, 15), Point(42, 99), Point(0, 77)]</p>
 </div>
 <div class="section" id="contour-top">
-<h2><a class="toc-backref" href="#id9"><tt class="docutils literal">contour_top</tt></a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">contour_top</tt></a></h2>
 <p><tt class="docutils literal">FloatVector</tt> <strong>contour_top</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -227,7 +227,7 @@ inf.</p>
 </div>
 </div>
 <div class="section" id="diagonal-projections">
-<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">diagonal_projections</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-8"><tt class="docutils literal">diagonal_projections</tt></a></h1>
 <p>object <strong>diagonal_projections</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,7 +251,7 @@ vertical projections of the rotated image.</p>
 <p>If the GUI is being used, the result is displayed in a window</p>
 </div>
 <div class="section" id="histogram">
-<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">histogram</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9"><tt class="docutils literal">histogram</tt></a></h1>
 <p><tt class="docutils literal">FloatVector</tt> <strong>histogram</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -280,7 +280,7 @@ percentage.</p>
 <p><em>result</em> = array('d', [0.0, 0.0, 0.00030321406913280777, 0.00015160703456640388, 0.0, 0.0, 0.0, 0.00015160703456640388, 0.00030321406913280777, 0.0, 0.00030321406913280777, 0.0, 0.00030321406913280777, 0.0, 0.00015160703456640388, 0.00030321406913280777, 0.00015160703456640388, 0.001212856276531231, 0.001212856276531231, 0.0007580351728320194, 0.0013644633110976349, 0.0007580351728320194, 0.001061249241964827, 0.001212856276531231, 0.0015160703456640388, 0.0006064281382656155, 0.0013644633110976349, 0.0016676773802304426, 0.0015160703456640388, 0.0013644633110976349, 0.001212856276531231, 0.0013644633110976349, 0.0009096422073984233, 0.0013644633110976349, 0.0006064281382656155, 0.0015160703456640388, 0.001212856276531231, 0.0018192844147968466, 0.001212856276531231, 0.00045482110369921165, 0.0013644633110976349, 0.00045482110369921165, 0.001061249241964827, 0.00030321406913280777, 0.00045482110369921165, 0.00015160703456640388, 0.00045482110369921165, 0.00045482110369921165, 0.00015160703456640388, 0.0, 0.00015160703456640388, 0.00045482110369921165, 0.0007580351728320194, 0.00030321406913280777, 0.0, 0.00045482110369921165, 0.0007580351728320194, 0.00045482110369921165, 0.00030321406913280777, 0.00030321406913280777, 0.00030321406913280777, 0.00030321406913280777, 0.00015160703456640388, 0.0006064281382656155, 0.00045482110369921165, 0.00015160703456640388, 0.00030321406913280777, 0.0007580351728320194, 0.001212856276531231, 0.00030321406913280777, 0.00045482110369921165, 0.00045482110369921165, 0.00045482110369921165, 0.0007580351728320194, 0.00030321406913280777, 0.00045482110369921165, 0.00030321406913280777, 0.0006064281382656155, 0.0009096422073984233, 0.001061249241964827, 0.0007580351728320194, 0.00030321406913280777, 0.00030321406913280777, 0.00030321406913280777, 0.00030321406913280777, 0.00015160703456640388, 0.001212856276531231, 0.00045482110369921165, 0.00045482110369921165, 0.0009096422073984233, 0.0007580351728320194, 0.00030321406913280777, 0.0016676773802304426, 0.001061249241964827, 0.00030321406913280777, 0.0006064281382656155, 0.0006064281382656155, 0.00045482110369921165, 0.0006064281382656155, 0.001061249241964827, 0.001212856276531231, 0.0006064281382656155, 0.0009096422073984233, 0.0013644633110976349, 0.0015160703456640388, 0.0015160703456640388, 0.001061249241964827, 0.0006064281382656155, 0.0006064281382656155, 0.0006064281382656155, 0.0007580351728320194, 0.0009096422073984233, 0.0007580351728320194, 0.001061249241964827, 0.0013644633110976349, 0.0013644633110976349, 0.001212856276531231, 0.001061249241964827, 0.0007580351728320194, 0.0016676773802304426, 0.001212856276531231, 0.00045482110369921165, 0.001061249241964827, 0.0013644633110976349, 0.001212856276531231, 0.002122498483929654, 0.001061249241964827, 0.0009096422073984233, 0.0018192844147968466, 0.0019708914493632504, 0.0009096422073984233, 0.0006064281382656155, 0.0016676773802304426, 0.0019708914493632504, 0.0018192844147968466, 0.0016676773802304426, 0.0016676773802304426, 0.0016676773802304426, 0.0019708914493632504, 0.001212856276531231, 0.0013644633110976349, 0.0013644633110976349, 0.0015160703456640388, 0.0013644633110976349, 0.001212856276531231, 0.001061249241964827, 0.0013644633110976349, 0.001061249241964827, 0.0013644633110976349, 0.0009096422073984233, 0.001061249241964827, 0.0009096422073984233, 0.0007580351728320194, 0.0006064281382656155, 0.0016676773802304426, 0.0018192844147968466, 0.0013644633110976349, 0.00045482110369921165, 0.001061249241964827, 0.0013644633110976349, 0.001061249241964827, 0.0013644633110976349, 0.001212856276531231, 0.0009096422073984233, 0.0009096422073984233, 0.001212856276531231, 0.0013644633110976349, 0.002122498483929654, 0.0019708914493632504, 0.001212856276531231, 0.001212856276531231, 0.002425712553062462, 0.0016676773802304426, 0.0018192844147968466, 0.0027289266221952697, 0.002880533656761674, 0.002425712553062462, 0.002425712553062462, 0.004548211036992117, 0.00469981807155852, 0.006215888417222559, 0.007731958762886598, 0.01015767131594906, 0.012583383869011523, 0.01607034566403881, 0.0156155245603396, 0.019254093389933294, 0.02107337780473014, 0.020921770770163734, 0.022589448150394178, 0.026682838083687082, 0.026834445118253485, 0.026682838083687082, 0.030321406913280776, 0.023347483323226198, 0.02653123104912068, 0.023347483323226198, 0.020163735597331717, 0.02274105518496058, 0.021224984839296544, 0.01834445118253487, 0.017738023044269254, 0.016221952698605217, 0.011067313523347484, 0.013341419041843541, 0.01015767131594906, 0.009854457246816252, 0.009702850212249849, 0.012431776834445117, 0.01015767131594906, 0.011825348696179502, 0.01015767131594906, 0.009854457246816252, 0.01137052759248029, 0.009854457246816252, 0.011522134627046696, 0.008944815039417828, 0.012431776834445117, 0.012583383869011523, 0.013947847180109158, 0.014705882352941176, 0.01364463311097635, 0.014251061249241965, 0.017889630078835657, 0.017738023044269254, 0.01804123711340206, 0.018950879320800484, 0.02001212856276531, 0.015463917525773196, 0.01212856276531231, 0.008035172832019405, 0.0036385688295936932, 0.0036385688295936932, 0.0027289266221952697, 0.0015160703456640388, 0.00030321406913280777, 0.00030321406913280777, 0.0007580351728320194, 0.00015160703456640388, 0.00015160703456640388, 0.00015160703456640388, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])</p>
 </div>
 <div class="section" id="min-max-location">
-<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">min_max_location</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10"><tt class="docutils literal">min_max_location</tt></a></h1>
 <p>object <strong>min_max_location</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>mask</em> = None)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -306,7 +306,7 @@ When no <em>mask</em> is given, the entire image is examined. The mask can
 be useful, e.g., to find the lightest and darkest value in the original
 greyscale image belonging to a Cc, as in the following example:</p>
 <blockquote>
-<div class="highlight"><pre><span class="n">onebit</span> <span class="o">=</span> <span class="n">grey</span><span class="o">.</span><span class="n">to_onebit</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">onebit</span> <span class="o">=</span> <span class="n">grey</span><span class="o">.</span><span class="n">to_onebit</span><span class="p">()</span>
 <span class="n">ccs</span> <span class="o">=</span> <span class="n">onebit</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
 <span class="c1"># compute min/max of first cc in original greyscale image</span>
 <span class="p">(</span><span class="n">pmin</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">pmax</span><span class="p">,</span> <span class="n">vmax</span><span class="p">)</span> <span class="o">=</span> <span class="n">grey</span><span class="o">.</span><span class="n">min_max_location</span><span class="p">(</span><span class="n">ccs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -321,7 +321,7 @@ and <em>vmin</em> and <em>vmax</em> the corresponding pixel values.</p>
 <p><em>result</em> = (Point(87, 49), 2, Point(83, 30), 240)</p>
 </div>
 <div class="section" id="projection-cols">
-<h1><a class="toc-backref" href="#id13"><tt class="docutils literal">projection_cols</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-11"><tt class="docutils literal">projection_cols</tt></a></h1>
 <p><tt class="docutils literal">IntVector</tt> <strong>projection_cols</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -347,7 +347,7 @@ number of pixels in each column.</p>
 <p><em>result</em> = array('i', [3, 3, 2, 2, 2, 2, 11, 19, 24, 28, 32, 34, 37, 40, 41, 33, 28, 25, 24, 22, 20, 18, 17, 16, 15, 16, 18, 16, 16, 17, 17, 15, 15, 14, 16, 46, 48, 47, 46, 47, 48, 49, 51, 46, 14, 14, 17, 17, 18, 20, 22, 22, 23, 31, 26, 16, 11, 10, 11, 9, 9, 12, 14, 16, 20, 22, 20, 17, 13, 8])</p>
 </div>
 <div class="section" id="projection-rows">
-<h1><a class="toc-backref" href="#id14"><tt class="docutils literal">projection_rows</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">projection_rows</tt></a></h1>
 <p><tt class="docutils literal">IntVector</tt> <strong>projection_rows</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -373,7 +373,7 @@ number of pixels in each row.</p>
 <p><em>result</em> = array('i', [12, 17, 19, 10, 9, 8, 7, 7, 7, 7, 7, 7, 6, 7, 6, 6, 6, 7, 7, 5, 4, 5, 5, 5, 5, 5, 6, 8, 9, 9, 17, 23, 25, 27, 25, 24, 24, 20, 18, 20, 20, 22, 22, 25, 21, 20, 15, 16, 17, 18, 17, 17, 16, 18, 19, 22, 21, 20, 20, 20, 20, 20, 20, 21, 20, 19, 18, 19, 19, 19, 19, 18, 16, 16, 18, 19, 24, 23, 24, 23, 27, 35, 33, 29, 25, 21, 15, 4, 0, 0, 0, 0, 6, 9, 11, 13, 22, 21, 14, 1])</p>
 </div>
 <div class="section" id="projection-skewed-cols">
-<h1><a class="toc-backref" href="#id15"><tt class="docutils literal">projection_skewed_cols</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">projection_skewed_cols</tt></a></h1>
 <p>object <strong>projection_skewed_cols</strong> (<tt class="docutils literal">FloatVector</tt> <em>Rotation angles</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -399,7 +399,7 @@ conceptually the same, albeit considerably slower.</p>
 list of angles as input. In the first case a single projection
 vector is returned, in the second a list of projections
 vectors. This is explained in the following example:</p>
-<div class="highlight"><pre><span class="c1"># called twice with a single angle as input</span>
+<div class="highlight"><pre><span></span><span class="c1"># called twice with a single angle as input</span>
 <span class="n">proj1</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">projection_skewed_cols</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">proj2</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">projection_skewed_cols</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 
@@ -417,7 +417,7 @@ which restricts this method to small angles.</p>
 <p><em>result</em> = array('i', [0, 26, 23, 20, 19, 18, 18, 21, 19, 20, 18, 18, 15, 19, 18, 19, 23, 26, 28, 29, 32, 38, 37, 41, 36, 38, 33, 29, 28, 24, 20, 16, 15, 6, 3, 9, 10, 12, 13, 12, 13, 18, 16, 13, 9, 6, 5, 7, 7, 6, 8, 9, 9, 9, 13, 12, 17, 22, 23, 23, 17, 16, 10, 2, 0, 0, 0, 0, 0, 0])</p>
 </div>
 <div class="section" id="projection-skewed-rows">
-<h1><a class="toc-backref" href="#id16"><tt class="docutils literal">projection_skewed_rows</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-14"><tt class="docutils literal">projection_skewed_rows</tt></a></h1>
 <p>object <strong>projection_skewed_rows</strong> (<tt class="docutils literal">FloatVector</tt> <em>Rotation angles</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -447,7 +447,7 @@ which restricts this method to small angles.</p>
 <p><em>result</em> = array('i', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9, 12, 9, 8, 7, 6, 7, 6, 5, 6, 6, 6, 6, 5, 7, 6, 6, 6, 6, 5, 6, 7, 8, 5, 12, 16, 19, 19, 23, 22, 26, 30, 33, 34, 42, 41, 37, 31, 23, 18, 17, 18, 21, 23, 22, 19, 18, 17, 19, 19, 20, 19, 19, 19, 20, 21, 21, 22, 23, 23, 25, 23, 22, 18, 19, 19, 18, 19, 14, 17, 17, 17, 12, 13, 12, 18, 26, 32, 30, 25, 18, 16, 5, 3, 3, 4, 5, 3])</p>
 </div>
 <div class="section" id="projections">
-<h1><a class="toc-backref" href="#id17"><tt class="docutils literal">projections</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-15"><tt class="docutils literal">projections</tt></a></h1>
 <p>object <strong>projections</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -474,7 +474,7 @@ where each element is an <tt class="docutils literal">IntVector</tt> of projecti
 <img alt="images/projections.png" src="images/projections.png" />
 </div>
 <div class="section" id="rotation-angle-projections">
-<h1><a class="toc-backref" href="#id18"><tt class="docutils literal">rotation_angle_projections</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-16"><tt class="docutils literal">rotation_angle_projections</tt></a></h1>
 <p><tt class="docutils literal">FloatVector</tt> <strong>rotation_angle_projections</strong> (float <em>minangle</em> = -2.50, float <em>maxangle</em> = 2.50, float <em>accuracy</em> = 0.00)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

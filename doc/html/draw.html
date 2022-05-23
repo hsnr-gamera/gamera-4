@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Draw</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,27 +11,27 @@
 <div class="document" id="draw">
 <h1 class="title">Draw</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#draw-bezier" id="id1"><tt class="docutils literal">draw_bezier</tt></a></li>
-<li><a class="reference internal" href="#draw-circle" id="id2"><tt class="docutils literal">draw_circle</tt></a></li>
-<li><a class="reference internal" href="#draw-filled-rect" id="id3"><tt class="docutils literal">draw_filled_rect</tt></a></li>
-<li><a class="reference internal" href="#draw-hollow-rect" id="id4"><tt class="docutils literal">draw_hollow_rect</tt></a></li>
-<li><a class="reference internal" href="#draw-line" id="id5"><tt class="docutils literal">draw_line</tt></a></li>
-<li><a class="reference internal" href="#draw-marker" id="id6"><tt class="docutils literal">draw_marker</tt></a></li>
-<li><a class="reference internal" href="#draw-text" id="id7"><tt class="docutils literal">draw_text</tt></a></li>
-<li><a class="reference internal" href="#fill" id="id8"><tt class="docutils literal">fill</tt></a></li>
-<li><a class="reference internal" href="#fill-white" id="id9"><tt class="docutils literal">fill_white</tt></a></li>
-<li><a class="reference internal" href="#flood-fill" id="id10"><tt class="docutils literal">flood_fill</tt></a></li>
-<li><a class="reference internal" href="#highlight" id="id11"><tt class="docutils literal">highlight</tt></a></li>
-<li><a class="reference internal" href="#invert" id="id12"><tt class="docutils literal">invert</tt></a></li>
-<li><a class="reference internal" href="#remove-border" id="id13"><tt class="docutils literal">remove_border</tt></a></li>
+<li><a class="reference internal" href="#draw-bezier" id="toc-entry-1"><tt class="docutils literal">draw_bezier</tt></a></li>
+<li><a class="reference internal" href="#draw-circle" id="toc-entry-2"><tt class="docutils literal">draw_circle</tt></a></li>
+<li><a class="reference internal" href="#draw-filled-rect" id="toc-entry-3"><tt class="docutils literal">draw_filled_rect</tt></a></li>
+<li><a class="reference internal" href="#draw-hollow-rect" id="toc-entry-4"><tt class="docutils literal">draw_hollow_rect</tt></a></li>
+<li><a class="reference internal" href="#draw-line" id="toc-entry-5"><tt class="docutils literal">draw_line</tt></a></li>
+<li><a class="reference internal" href="#draw-marker" id="toc-entry-6"><tt class="docutils literal">draw_marker</tt></a></li>
+<li><a class="reference internal" href="#draw-text" id="toc-entry-7"><tt class="docutils literal">draw_text</tt></a></li>
+<li><a class="reference internal" href="#fill" id="toc-entry-8"><tt class="docutils literal">fill</tt></a></li>
+<li><a class="reference internal" href="#fill-white" id="toc-entry-9"><tt class="docutils literal">fill_white</tt></a></li>
+<li><a class="reference internal" href="#flood-fill" id="toc-entry-10"><tt class="docutils literal">flood_fill</tt></a></li>
+<li><a class="reference internal" href="#highlight" id="toc-entry-11"><tt class="docutils literal">highlight</tt></a></li>
+<li><a class="reference internal" href="#invert" id="toc-entry-12"><tt class="docutils literal">invert</tt></a></li>
+<li><a class="reference internal" href="#remove-border" id="toc-entry-13"><tt class="docutils literal">remove_border</tt></a></li>
 </ul>
 </div>
 <div class="section" id="draw-bezier">
-<h1><a class="toc-backref" href="#id1"><tt class="docutils literal">draw_bezier</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1"><tt class="docutils literal">draw_bezier</tt></a></h1>
 <p><strong>draw_bezier</strong> (<tt class="docutils literal">FloatPoint</tt> <em>start</em>, <tt class="docutils literal">FloatPoint</tt> <em>c1</em>, <tt class="docutils literal">FloatPoint</tt> <em>c2</em>, <tt class="docutils literal">FloatPoint</tt> <em>end</em>, Pixel <em>value</em>, float <em>accuracy</em> = 0.10)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -70,7 +70,7 @@ the upper left hand corner of the image.</p>
 <img alt="images/draw_bezier_plugin_00.png" src="images/draw_bezier_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-circle">
-<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">draw_circle</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">draw_circle</tt></a></h1>
 <p><strong>draw_circle</strong> (<tt class="docutils literal">FloatPoint</tt> <em>c</em>, float <em>r</em>, Pixel <em>value</em>, float <em>thickness</em>, float <em>accuracy</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -110,7 +110,7 @@ in the upper left hand corner of the image.</p>
 <img alt="images/draw_circle_plugin_00.png" src="images/draw_circle_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-filled-rect">
-<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">draw_filled_rect</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">draw_filled_rect</tt></a></h1>
 <p><strong>draw_filled_rect</strong> (<tt class="docutils literal">FloatPoint</tt> <em>ul</em>, <tt class="docutils literal">FloatPoint</tt> <em>lr</em>, Pixel <em>value</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -140,7 +140,7 @@ FloatPoints, or one Rect:</p>
 <img alt="images/draw_filled_rect_plugin_00.png" src="images/draw_filled_rect_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-hollow-rect">
-<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">draw_hollow_rect</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">draw_hollow_rect</tt></a></h1>
 <p><strong>draw_hollow_rect</strong> (<tt class="docutils literal">FloatPoint</tt> <em>ul</em>, <tt class="docutils literal">FloatPoint</tt> <em>lr</em>, Pixel <em>value</em>, float <em>thickness</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -178,7 +178,7 @@ Rect:</p>
 <img alt="images/draw_hollow_rect_plugin_00.png" src="images/draw_hollow_rect_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-line">
-<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">draw_line</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">draw_line</tt></a></h1>
 <p><strong>draw_line</strong> (<tt class="docutils literal">FloatPoint</tt> <em>start</em>, <tt class="docutils literal">FloatPoint</tt> <em>end</em>, Pixel <em>value</em>, float <em>thickness</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -216,7 +216,7 @@ IBM Systems Journal 4, pp. 25-30 (1965).</p>
 <img alt="images/draw_line_plugin_00.png" src="images/draw_line_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-marker">
-<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">draw_marker</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">draw_marker</tt></a></h1>
 <p><strong>draw_marker</strong> (<tt class="docutils literal">FloatPoint</tt> <em>location</em>, int <em>size</em> = 5, <tt class="docutils literal">Choice</tt> [+|x|hollow_square|filled_square] <em>style</em> = +, Pixel <em>value</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -255,7 +255,7 @@ will be in the upper left hand corner of the image.</p>
 <img alt="images/draw_marker_plugin_00.png" src="images/draw_marker_plugin_00.png" style="width: 99px; height: 99px;" />
 </div>
 <div class="section" id="draw-text">
-<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">draw_text</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">draw_text</tt></a></h1>
 <p><strong>draw_text</strong> (<tt class="docutils literal">FloatPoint</tt> <em>p</em>, str <em>text</em>, Pixel <em>color</em>, int(3, 512) <em>size</em> = 10, <tt class="docutils literal">Choice</tt> [serif|sans-serif|monospace] <em>font_family</em>, <tt class="docutils literal">bool</tt> <em>italic</em> = False, <tt class="docutils literal">bool</tt> <em>bold</em> = False, <tt class="docutils literal">Choice</tt> [left|center|right] <em>halign</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -319,12 +319,9 @@ typeface on each platform.</p>
 <p class="last">RIGHT JUSTIFIED (2):  The text is right-justified to the point <em>p</em>.</p>
 </dd>
 </dl>
-<hr class="docutils" />
-<p><strong>Example 1:</strong> draw_text</p>
-<img alt="images/draw_text_plugin_00.png" src="images/draw_text_plugin_00.png" style="width: 319px; height: 299px;" />
 </div>
 <div class="section" id="fill">
-<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">fill</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-8"><tt class="docutils literal">fill</tt></a></h1>
 <p><strong>fill</strong> (Pixel <em>value</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -347,7 +344,7 @@ typeface on each platform.</p>
 </dl>
 </div>
 <div class="section" id="fill-white">
-<h1><a class="toc-backref" href="#id9"><tt class="docutils literal">fill_white</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9"><tt class="docutils literal">fill_white</tt></a></h1>
 <p><strong>fill_white</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -366,7 +363,7 @@ typeface on each platform.</p>
 <p>Fills the entire image with white.</p>
 </div>
 <div class="section" id="flood-fill">
-<h1><a class="toc-backref" href="#id10"><tt class="docutils literal">flood_fill</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10"><tt class="docutils literal">flood_fill</tt></a></h1>
 <p><strong>flood_fill</strong> (<tt class="docutils literal">Point</tt> <em>start</em>, Pixel <em>color</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -397,7 +394,7 @@ to the &quot;bucket&quot; tool found in many paint programs.</p>
 <img alt="images/flood_fill_plugin_00.png" src="images/flood_fill_plugin_00.png" style="width: 69px; height: 99px;" />
 </div>
 <div class="section" id="highlight">
-<h1><a class="toc-backref" href="#id11"><tt class="docutils literal">highlight</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-11"><tt class="docutils literal">highlight</tt></a></h1>
 <p><strong>highlight</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>cc</em>, Pixel <em>color</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -428,7 +425,7 @@ type) used to color the <em>cc</em>.</dd>
 <img alt="images/highlight_plugin_00.png" src="images/highlight_plugin_00.png" style="width: 69px; height: 99px;" />
 </div>
 <div class="section" id="invert">
-<h1><a class="toc-backref" href="#id12"><tt class="docutils literal">invert</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">invert</tt></a></h1>
 <p><strong>invert</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -457,7 +454,7 @@ type) used to color the <em>cc</em>.</dd>
 <img alt="images/invert_plugin_02.png" src="images/invert_plugin_02.png" style="width: 69px; height: 99px;" />
 </div>
 <div class="section" id="remove-border">
-<h1><a class="toc-backref" href="#id13"><tt class="docutils literal">remove_border</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">remove_border</tt></a></h1>
 <p><strong>remove_border</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

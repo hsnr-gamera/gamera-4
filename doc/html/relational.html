@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Relational</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,21 +11,21 @@
 <div class="document" id="relational">
 <h1 class="title">Relational</h1>
 
-<p><strong>Last modified</strong>: April 26, 2022</p>
+<p><strong>Last modified</strong>: May 17, 2022</p>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#bounding-box-grouping-function" id="id2"><tt class="docutils literal">bounding_box_grouping_function</tt></a></li>
-<li><a class="reference internal" href="#edit-distance" id="id3"><tt class="docutils literal">edit_distance</tt></a></li>
-<li><a class="reference internal" href="#least-squares-fit" id="id4"><tt class="docutils literal">least_squares_fit</tt></a></li>
-<li><a class="reference internal" href="#least-squares-fit-xy" id="id5"><tt class="docutils literal">least_squares_fit_xy</tt></a></li>
-<li><a class="reference internal" href="#polar-distance" id="id6"><tt class="docutils literal">polar_distance</tt></a></li>
-<li><a class="reference internal" href="#polar-match" id="id7"><tt class="docutils literal">polar_match</tt></a></li>
-<li><a class="reference internal" href="#shaped-grouping-function" id="id8"><tt class="docutils literal">shaped_grouping_function</tt></a></li>
+<li><a class="reference internal" href="#bounding-box-grouping-function" id="toc-entry-1"><tt class="docutils literal">bounding_box_grouping_function</tt></a></li>
+<li><a class="reference internal" href="#edit-distance" id="toc-entry-2"><tt class="docutils literal">edit_distance</tt></a></li>
+<li><a class="reference internal" href="#least-squares-fit" id="toc-entry-3"><tt class="docutils literal">least_squares_fit</tt></a></li>
+<li><a class="reference internal" href="#least-squares-fit-xy" id="toc-entry-4"><tt class="docutils literal">least_squares_fit_xy</tt></a></li>
+<li><a class="reference internal" href="#polar-distance" id="toc-entry-5"><tt class="docutils literal">polar_distance</tt></a></li>
+<li><a class="reference internal" href="#polar-match" id="toc-entry-6"><tt class="docutils literal">polar_match</tt></a></li>
+<li><a class="reference internal" href="#shaped-grouping-function" id="toc-entry-7"><tt class="docutils literal">shaped_grouping_function</tt></a></li>
 </ul>
 </div>
 <div class="section" id="bounding-box-grouping-function">
-<h1><a class="toc-backref" href="#id2"><tt class="docutils literal">bounding_box_grouping_function</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1"><tt class="docutils literal">bounding_box_grouping_function</tt></a></h1>
 <p><tt class="docutils literal">bool</tt> <strong>bounding_box_grouping_function</strong> (<tt class="docutils literal">Rect</tt> <em>a</em>, <tt class="docutils literal">Rect</tt> <em>b</em>, int <em>threshold</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -46,7 +46,7 @@
 than <em>threshold</em>.</p>
 </div>
 <div class="section" id="edit-distance">
-<h1><a class="toc-backref" href="#id3"><tt class="docutils literal">edit_distance</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2"><tt class="docutils literal">edit_distance</tt></a></h1>
 <p>int <strong>edit_distance</strong> (str <em>s1</em>, str <em>s2</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -73,7 +73,7 @@ the lengths of the two strings.</p>
 Journal of the ACM 21, pp. 168-173, 1974.</p>
 </div>
 <div class="section" id="least-squares-fit">
-<h1><a class="toc-backref" href="#id4"><tt class="docutils literal">least_squares_fit</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3"><tt class="docutils literal">least_squares_fit</tt></a></h1>
 <p>object <strong>least_squares_fit</strong> ([object <em>points</em>])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -97,7 +97,7 @@ significance for all points).</p>
 <p>See Numerical Recipes in C, section <a class="reference external" href="http://www.library.cornell.edu/nr/bookcpdf/c15-2.pdf">15.2</a> for more information.</p>
 </div>
 <div class="section" id="least-squares-fit-xy">
-<h1><a class="toc-backref" href="#id5"><tt class="docutils literal">least_squares_fit_xy</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4"><tt class="docutils literal">least_squares_fit_xy</tt></a></h1>
 <p>object <strong>least_squares_fit_xy</strong> ([object <em>points</em>])</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,7 +123,7 @@ and <em>b</em>:</p>
 <p>When <em>x_of_y</em> is zero, <em>y = mx + b</em>. Otherwise <em>x = my + b</em>.</p>
 </div>
 <div class="section" id="polar-distance">
-<h1><a class="toc-backref" href="#id6"><tt class="docutils literal">polar_distance</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5"><tt class="docutils literal">polar_distance</tt></a></h1>
 <p><tt class="docutils literal">FloatVector</tt> <strong>polar_distance</strong> (<tt class="docutils literal">Image</tt> [OneBit|GreyScale|Grey16|RGB|Float|Complex] <em>other</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -146,7 +146,7 @@ direction, and non-normalized polar distance to another glyph
 (based on center of bounding boxes).</p>
 </div>
 <div class="section" id="polar-match">
-<h1><a class="toc-backref" href="#id7"><tt class="docutils literal">polar_match</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6"><tt class="docutils literal">polar_match</tt></a></h1>
 <p>int <strong>polar_match</strong> (float <em>r1</em>, float <em>q1</em>, float <em>r2</em>, float <em>q2</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -162,13 +162,13 @@ direction, and non-normalized polar distance to another glyph
 </tr>
 </tbody>
 </table>
-<div class="warning">
+<div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">No documentation written.</p>
 </div>
 </div>
 <div class="section" id="shaped-grouping-function">
-<h1><a class="toc-backref" href="#id8"><tt class="docutils literal">shaped_grouping_function</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7"><tt class="docutils literal">shaped_grouping_function</tt></a></h1>
 <p><tt class="docutils literal">bool</tt> <strong>shaped_grouping_function</strong> (<tt class="docutils literal">Image</tt> [OneBit] <em>a</em>, <tt class="docutils literal">Image</tt> [OneBit] <em>b</em>, int <em>threshold</em>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

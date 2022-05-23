@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>The Gamera GUI</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,54 +11,54 @@
 <div class="document" id="the-gamera-gui">
 <h1 class="title">The Gamera GUI</h1>
 
-<p><strong>Last modified</strong>: April 28, 2021</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#starting-the-gui" id="id14">Starting the GUI</a></li>
-<li><a class="reference internal" href="#console-window" id="id15">Console window</a><ul>
-<li><a class="reference internal" href="#python-console" id="id16">Python console</a></li>
-<li><a class="reference internal" href="#icon-display" id="id17">Icon display</a><ul>
-<li><a class="reference internal" href="#context-menu" id="id18">Context menu</a></li>
+<li><a class="reference internal" href="#starting-the-gui" id="toc-entry-1">Starting the GUI</a></li>
+<li><a class="reference internal" href="#console-window" id="toc-entry-2">Console window</a><ul>
+<li><a class="reference internal" href="#python-console" id="toc-entry-3">Python console</a></li>
+<li><a class="reference internal" href="#icon-display" id="toc-entry-4">Icon display</a><ul>
+<li><a class="reference internal" href="#context-menu" id="toc-entry-5">Context menu</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#information-pane" id="id19">Information pane</a><ul>
-<li><a class="reference internal" href="#documentation" id="id20">Documentation</a></li>
-<li><a class="reference internal" href="#namespace" id="id21">Namespace</a></li>
-<li><a class="reference internal" href="#history" id="id22">History</a></li>
+<li><a class="reference internal" href="#information-pane" id="toc-entry-6">Information pane</a><ul>
+<li><a class="reference internal" href="#documentation" id="toc-entry-7">Documentation</a></li>
+<li><a class="reference internal" href="#namespace" id="toc-entry-8">Namespace</a></li>
+<li><a class="reference internal" href="#history" id="toc-entry-9">History</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#console-menu" id="id23">Console menu</a><ul>
-<li><a class="reference internal" href="#file-menu" id="id24">File menu</a></li>
-<li><a class="reference internal" href="#classify-menu" id="id25">Classify menu</a></li>
-<li><a class="reference internal" href="#toolkits" id="id26">Toolkits</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#image-display" id="id27">Image display</a></li>
-<li><a class="reference internal" href="#multiple-image-display" id="id28">Multiple image display</a></li>
-<li><a class="reference internal" href="#interactive-classifier-window" id="id29">Interactive classifier window</a><ul>
-<li><a class="reference internal" href="#concepts" id="id30">Concepts</a><ul>
-<li><a class="reference internal" href="#glyph-collections" id="id31">Glyph collections</a></li>
-<li><a class="reference internal" href="#coloring" id="id32">Coloring</a></li>
-<li><a class="reference internal" href="#class-names" id="id33">Class names</a><ul>
-<li><a class="reference internal" href="#special-class-names" id="id34">Special class names</a></li>
+<li><a class="reference internal" href="#console-menu" id="toc-entry-10">Console menu</a><ul>
+<li><a class="reference internal" href="#file-menu" id="toc-entry-11">File menu</a></li>
+<li><a class="reference internal" href="#classify-menu" id="toc-entry-12">Classify menu</a></li>
+<li><a class="reference internal" href="#toolkits" id="toc-entry-13">Toolkits</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#parts-of-the-classifier-window" id="id35">Parts of the classifier window</a><ul>
-<li><a class="reference internal" href="#symbol-table" id="id36">Symbol table</a></li>
-<li><a class="reference internal" href="#connected-component-display" id="id37">Connected component display</a></li>
-<li><a class="reference internal" href="#original-image-display" id="id38">Original image display</a></li>
+<li><a class="reference internal" href="#image-display" id="toc-entry-14">Image display</a></li>
+<li><a class="reference internal" href="#multiple-image-display" id="toc-entry-15">Multiple image display</a></li>
+<li><a class="reference internal" href="#interactive-classifier-window" id="toc-entry-16">Interactive classifier window</a><ul>
+<li><a class="reference internal" href="#concepts" id="toc-entry-17">Concepts</a><ul>
+<li><a class="reference internal" href="#glyph-collections" id="toc-entry-18">Glyph collections</a></li>
+<li><a class="reference internal" href="#coloring" id="toc-entry-19">Coloring</a></li>
+<li><a class="reference internal" href="#class-names" id="toc-entry-20">Class names</a><ul>
+<li><a class="reference internal" href="#special-class-names" id="toc-entry-21">Special class names</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#classifier-menu" id="id39">Classifier menu</a><ul>
-<li><a class="reference internal" href="#id8" id="id40">File menu</a></li>
-<li><a class="reference internal" href="#image-menu" id="id41">Image menu</a></li>
-<li><a class="reference internal" href="#id10" id="id42">Classifier menu</a></li>
-<li><a class="reference internal" href="#rules-menu" id="id43">Rules menu</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parts-of-the-classifier-window" id="toc-entry-22">Parts of the classifier window</a><ul>
+<li><a class="reference internal" href="#symbol-table" id="toc-entry-23">Symbol table</a></li>
+<li><a class="reference internal" href="#connected-component-display" id="toc-entry-24">Connected component display</a></li>
+<li><a class="reference internal" href="#original-image-display" id="toc-entry-25">Original image display</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classifier-menu" id="toc-entry-26">Classifier menu</a><ul>
+<li><a class="reference internal" href="#file-menu-1" id="toc-entry-27">File menu</a></li>
+<li><a class="reference internal" href="#image-menu" id="toc-entry-28">Image menu</a></li>
+<li><a class="reference internal" href="#classifier-menu-1" id="toc-entry-29">Classifier menu</a></li>
+<li><a class="reference internal" href="#rules-menu" id="toc-entry-30">Rules menu</a></li>
 </ul>
 </li>
 </ul>
@@ -66,7 +66,7 @@
 </ul>
 </div>
 <div class="section" id="starting-the-gui">
-<h1><a class="toc-backref" href="#id14">Starting the GUI</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Starting the GUI</a></h1>
 <p>There is a <tt class="docutils literal">gamera_gui</tt> script installed somewhere on your system
 (platform-specific, see <a class="reference external" href="install.html">Building and Installing Gamera</a>).  Run it
 to start the Gamera GUI.</p>
@@ -77,14 +77,14 @@ GUI, saving the memory and runtime overhead.</p>
 </div>
 </div>
 <div class="section" id="console-window">
-<h1><a class="toc-backref" href="#id15">Console window</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Console window</a></h1>
 <blockquote>
 <img alt="images/console.png" src="images/console.png" />
 </blockquote>
 <p>The main Gamera console window is divided into three parts: the Python
 console, the icon display and the information pane.</p>
 <div class="section" id="python-console">
-<h2><a class="toc-backref" href="#id16">Python console</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3">Python console</a></h2>
 <p>On the right is a standard Python console.  You can type code
 here and it is run interactively.  Most operations that you perform
 using the mouse in the GUI will generate code that is entered in the
@@ -99,7 +99,7 @@ members and methods of the image.</p>
 </blockquote>
 </div>
 <div class="section" id="icon-display">
-<h2><a class="toc-backref" href="#id17">Icon display</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4">Icon display</a></h2>
 <p>On the left, all active image objects (displayed as icons.  When you load images,
 they are displayed here.</p>
 <p>The icon indicates the pixel type of the image.  See <a class="reference external" href="image_types.html">Image types</a>
@@ -169,7 +169,7 @@ image will affect another.</p>
 </table>
 </blockquote>
 <div class="section" id="context-menu">
-<h3><a class="toc-backref" href="#id18">Context menu</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-5">Context menu</a></h3>
 <p>Right-clicking on any of these icons brings up a context menu to
 perform operations on an image.</p>
 <blockquote>
@@ -194,35 +194,35 @@ to perform the operation and automatically run in the console:</p>
 </div>
 </div>
 <div class="section" id="information-pane">
-<h2><a class="toc-backref" href="#id19">Information pane</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Information pane</a></h2>
 <p>The information pane includes three modes, selectable via the tabs.
 (These tabs will appear at the top of the information pane on Windows
 and Mac OSX).  This functionality is adapted from the <a class="reference external" href="http://sourceforge.net/projects/pycrust/">PyCrust</a> project
 and should be familiar to users of that tool.</p>
 <div class="section" id="documentation">
-<h3><a class="toc-backref" href="#id20">Documentation</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Documentation</a></h3>
 <p>The documentation pane displays the docstring of the object that was
 last typed in the console window.</p>
 <p>For an example, type &quot;Image(&quot; in the console, and the docstring for
 the Image constructor will be displayed.</p>
 </div>
 <div class="section" id="namespace">
-<h3><a class="toc-backref" href="#id21">Namespace</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Namespace</a></h3>
 <p>This is a &quot;namespace browser&quot; which displays the objects in the
 namespace of the console in a tree like view.</p>
 <p>For an example, type <tt class="docutils literal">x = 5</tt> in the console, and then find the
 variable <tt class="docutils literal">x</tt> in the locals part of the namespace tree.</p>
 </div>
 <div class="section" id="history">
-<h3><a class="toc-backref" href="#id22">History</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-9">History</a></h3>
 <p>History contains a command history that can be copied-and-pasted into
 an editor to develop scripts.</p>
 </div>
 </div>
 <div class="section" id="console-menu">
-<h2><a class="toc-backref" href="#id23">Console menu</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-10">Console menu</a></h2>
 <div class="section" id="file-menu">
-<h3><a class="toc-backref" href="#id24">File menu</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-11">File menu</a></h3>
 <dl class="docutils">
 <dt><strong>Open...</strong></dt>
 <dd>Open an image.</dd>
@@ -231,20 +231,20 @@ an editor to develop scripts.</p>
 </dl>
 </div>
 <div class="section" id="classify-menu">
-<h3><a class="toc-backref" href="#id25">Classify menu</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-12">Classify menu</a></h3>
 <dl class="docutils">
 <dt><strong>Interactive Classifier</strong></dt>
 <dd>Create a new <a class="reference internal" href="#interactive-classifier-window">Interactive Classifier window</a>.</dd>
 </dl>
 </div>
 <div class="section" id="toolkits">
-<h3><a class="toc-backref" href="#id26">Toolkits</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-13">Toolkits</a></h3>
 <p>See <a class="reference external" href="writing_toolkits.html">Writing toolkits</a> for more information.</p>
 </div>
 </div>
 </div>
 <div class="section" id="image-display">
-<h1><a class="toc-backref" href="#id27">Image display</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-14">Image display</a></h1>
 <p>Double-clicking on the image icon will display the image in its own
 window.  Alternatively, you can use the <tt class="docutils literal">display</tt> method:</p>
 <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span><span class="n">image</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
@@ -317,7 +317,7 @@ of wxPython may handle this better.</p>
 </div>
 </div>
 <div class="section" id="multiple-image-display">
-<h1><a class="toc-backref" href="#id28">Multiple image display</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-15">Multiple image display</a></h1>
 <p>Double-clicking on a list of images in the icon display brings up the
 <strong>multi-image display</strong> window.  Alternatively, you can use the
 <tt class="docutils literal">display_multi</tt> function:</p>
@@ -383,7 +383,7 @@ image within each cell.  When the expression evaluates to
 </blockquote>
 </div>
 <div class="section" id="interactive-classifier-window">
-<h1><a class="toc-backref" href="#id29">Interactive classifier window</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-16">Interactive classifier window</a></h1>
 <p>The interactive classifier window is the most involved part of the
 Gamera GUI.  It is where you can train the Gamera classifier to
 recognize different symbol types.</p>
@@ -393,11 +393,11 @@ recognize different symbol types.</p>
 <p>A tutorial introduction to training image data is given in the
 <a class="reference external" href="training_tutorial.html">training tutorial</a>.</p>
 <div class="section" id="concepts">
-<h2><a class="toc-backref" href="#id30">Concepts</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-17">Concepts</a></h2>
 <p>Before the parts of the classifier window are discussed, some general
 concepts should be understood.</p>
 <div class="section" id="glyph-collections">
-<h3><a class="toc-backref" href="#id31">Glyph collections</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-18">Glyph collections</a></h3>
 <p>In the classifier window, there are two sets of glyphs (connected
 components) involved: one in the classifier and one for the current page:</p>
 <dl class="docutils">
@@ -414,7 +414,7 @@ either collection, they are updated in both places.</p>
 the status bar at the bottom of the window.</p>
 </div>
 <div class="section" id="coloring">
-<h3><a class="toc-backref" href="#id32">Coloring</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-19">Coloring</a></h3>
 <p>When connected components are displayed in the classifier, they are
 colored according to how they were classified:</p>
 <blockquote>
@@ -458,7 +458,7 @@ heuristic (non-exemplar-based) process.</td>
 </blockquote>
 </div>
 <div class="section" id="class-names">
-<h3><a class="toc-backref" href="#id33">Class names</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-20">Class names</a></h3>
 <p>&quot;Class names&quot; name a particular class of symbols.  Class names are made
 up of period-delimited parts so that they can be grouped into
 categories.  Names can be invented on the fly.</p>
@@ -481,7 +481,7 @@ in the classifier window that might look something like:</p>
 <img alt="images/symbol_table_example.png" src="images/symbol_table_example.png" />
 </blockquote>
 <div class="section" id="special-class-names">
-<h4><a class="toc-backref" href="#id34">Special class names</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-21">Special class names</a></h4>
 <p>Special class names begin with an underscore (<tt class="docutils literal">_</tt>).</p>
 <dl class="docutils">
 <dt><tt class="docutils literal">_group</tt></dt>
@@ -509,12 +509,12 @@ in the category <tt class="docutils literal">Segmentation</tt>.</blockquote>
 </div>
 </div>
 <div class="section" id="parts-of-the-classifier-window">
-<h2><a class="toc-backref" href="#id35">Parts of the classifier window</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-22">Parts of the classifier window</a></h2>
 <p>The interactive classifier window is divided into three parts: The
 symbol table, the connected component display, and the original image
 display.</p>
 <div class="section" id="symbol-table">
-<h3><a class="toc-backref" href="#id36">Symbol table</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-23">Symbol table</a></h3>
 <p>The symbol table is a hierarchical tree of symbol names that are
 currently in use.  It is preloaded with <a class="reference internal" href="#special-class-names">special class names</a>.</p>
 <p>Symbols can be trained by typing the class name in the text box at
@@ -523,7 +523,7 @@ features auto-completion (similar to the Unix shell), so you can type
 a partial name and then press the &lt;Tab&gt; key to attempt to complete it.</p>
 </div>
 <div class="section" id="connected-component-display">
-<h3><a class="toc-backref" href="#id37">Connected component display</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-24">Connected component display</a></h3>
 <p>The connected component display is made up of two collapsible
 displays.  To expand or collapse the panes, use the <em>+</em> and <em>X</em>
 buttons in the panes' title bars.  By default, only the page glyphs
@@ -568,7 +568,7 @@ selected types: UNCLASSIFIED, AUTOMATIC, HEURISTIC or MANUAL.</td>
 </blockquote>
 </div>
 <div class="section" id="original-image-display">
-<h3><a class="toc-backref" href="#id38">Original image display</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-25">Original image display</a></h3>
 <p>The original image display, for the most part, behaves identically to
 the standard <a class="reference internal" href="#image-display">image display</a>.</p>
 <p>Clicking on a connected component will select it in the connected
@@ -594,9 +594,9 @@ currently selected connected component.</td>
 </div>
 </div>
 <div class="section" id="classifier-menu">
-<h2><a class="toc-backref" href="#id39">Classifier menu</a></h2>
-<div class="section" id="id8">
-<h3><a class="toc-backref" href="#id40">File menu</a></h3>
+<h2><a class="toc-backref" href="#toc-entry-26">Classifier menu</a></h2>
+<div class="section" id="file-menu-1">
+<h3><a class="toc-backref" href="#toc-entry-27">File menu</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you give any of the XML files a <tt class="docutils literal">.gz</tt> extension, they
@@ -639,7 +639,7 @@ name-only Gamera XML file.</dd>
 </dl>
 </div>
 <div class="section" id="image-menu">
-<h3><a class="toc-backref" href="#id41">Image menu</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-28">Image menu</a></h3>
 <dl class="docutils">
 <dt><strong>Open and segment image...</strong></dt>
 <dd>Loads an image from disk and then performs a given segmentation
@@ -674,8 +674,8 @@ components:</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id10">
-<h3><a class="toc-backref" href="#id42">Classifier menu</a></h3>
+<div class="section" id="classifier-menu-1">
+<h3><a class="toc-backref" href="#toc-entry-29">Classifier menu</a></h3>
 <dl class="docutils">
 <dt><strong>Guess all</strong> / <strong>Guess selected</strong></dt>
 <dd>Classifies the glyphs using the automatic classifier.  Glyphs that
@@ -733,7 +733,7 @@ include your own editing algorithms see the <a class="reference external" href="
 </dl>
 </div>
 <div class="section" id="rules-menu">
-<h3><a class="toc-backref" href="#id43">Rules menu</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-30">Rules menu</a></h3>
 <p>Unstable.</p>
 <p>TODO: Write me.</p>
 </div>

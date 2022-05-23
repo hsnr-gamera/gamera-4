@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Getting started with Gamera scripts</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,25 +11,25 @@
 <div class="document" id="getting-started-with-gamera-scripts">
 <h1 class="title">Getting started with Gamera scripts</h1>
 
-<p><strong>Last modified</strong>: September 17, 2019</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#overview" id="id3">Overview</a></li>
-<li><a class="reference internal" href="#hello-world" id="id4">Hello, world!</a></li>
-<li><a class="reference internal" href="#using-the-gui-from-your-scripts" id="id5">Using the GUI from your scripts</a></li>
-<li><a class="reference internal" href="#using-the-classifier" id="id6">Using the classifier</a></li>
-<li><a class="reference internal" href="#advanced-use-of-the-classifier" id="id7">Advanced use of the classifier</a></li>
-<li><a class="reference internal" href="#dealing-with-command-line-options" id="id8">Dealing with command line options</a><ul>
-<li><a class="reference internal" href="#having-gamera-parse-the-command-line" id="id9">Having Gamera parse the command line</a></li>
-<li><a class="reference internal" href="#programmatically-setting-options" id="id10">Programmatically setting options</a></li>
+<li><a class="reference internal" href="#overview" id="toc-entry-1">Overview</a></li>
+<li><a class="reference internal" href="#hello-world" id="toc-entry-2">Hello, world!</a></li>
+<li><a class="reference internal" href="#using-the-gui-from-your-scripts" id="toc-entry-3">Using the GUI from your scripts</a></li>
+<li><a class="reference internal" href="#using-the-classifier" id="toc-entry-4">Using the classifier</a></li>
+<li><a class="reference internal" href="#advanced-use-of-the-classifier" id="toc-entry-5">Advanced use of the classifier</a></li>
+<li><a class="reference internal" href="#dealing-with-command-line-options" id="toc-entry-6">Dealing with command line options</a><ul>
+<li><a class="reference internal" href="#having-gamera-parse-the-command-line" id="toc-entry-7">Having Gamera parse the command line</a></li>
+<li><a class="reference internal" href="#programmatically-setting-options" id="toc-entry-8">Programmatically setting options</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#where-to-go-from-here" id="id11">Where to go from here</a></li>
+<li><a class="reference internal" href="#where-to-go-from-here" id="toc-entry-9">Where to go from here</a></li>
 </ul>
 </div>
 <div class="section" id="overview">
-<h1><a class="toc-backref" href="#id3">Overview</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Overview</a></h1>
 <p>While the GUI is great for experimentation, the ultimate goal of any
 Gamera application is usually an automated application, or script.
 This provides, among other things, the ability to run unattended in
@@ -49,7 +49,7 @@ examples directory of the Gamera distribution.  Each example builds on
 the previous one.</p>
 </div>
 <div class="section" id="hello-world">
-<h1><a class="toc-backref" href="#id4">Hello, world!</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-2">Hello, world!</a></h1>
 <p>To use Gamera in a Python script, you simply need to import the
 <tt class="docutils literal">gamera.core</tt> module and then initialize it:</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gamera.core</span> <span class="kn">import</span> <span class="o">*</span>
@@ -84,7 +84,7 @@ a one-bit (binary) image, and then saves the result to &quot;output.png&quot;.</
 as useful as the ubiquitous &quot;Hello, World!&quot; you see in programming texts.</p>
 </div>
 <div class="section" id="using-the-gui-from-your-scripts">
-<h1><a class="toc-backref" href="#id5">Using the GUI from your scripts</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3">Using the GUI from your scripts</a></h1>
 <p>For interactive use, it may be desirable to have the results of a
 script displayed in a window, rather than saved to a file.  (If you do
 not wish to do this, you can safely skip this section.)  This image
@@ -137,7 +137,7 @@ saving the result to disk, it is displayed in a Gamera display window.</p>
 </pre></div>
 </div>
 <div class="section" id="using-the-classifier">
-<h1><a class="toc-backref" href="#id6">Using the classifier</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4">Using the classifier</a></h1>
 <p>One of Gamera's core features is the classifier, which allows
 individual images to be classified based on some training.  The
 classifier is described in detail in <a class="reference external" href="classify.html">the classifier documentation</a>.</p>
@@ -180,7 +180,7 @@ example to work correctly.</p>
 </pre></div>
 </div>
 <div class="section" id="advanced-use-of-the-classifier">
-<h1><a class="toc-backref" href="#id7">Advanced use of the classifier</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Advanced use of the classifier</a></h1>
 <p>There are a couple of downsides to using the classifier as described
 in the previous section:</p>
 <ul class="simple">
@@ -216,7 +216,7 @@ loaded easily from your production script:</p>
 </pre></div>
 </div>
 <div class="section" id="dealing-with-command-line-options">
-<h1><a class="toc-backref" href="#id8">Dealing with command line options</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-6">Dealing with command line options</a></h1>
 <p>Third party scripts are free to deal with command line arguments as
 they wish.  For instance, the Python standard library has two modules
 for parsing command line arguments, <tt class="docutils literal">getopt</tt> (deprecated) and
@@ -231,7 +231,7 @@ this problem:</p>
 </ol>
 </blockquote>
 <div class="section" id="having-gamera-parse-the-command-line">
-<h2><a class="toc-backref" href="#id9">Having Gamera parse the command line</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7">Having Gamera parse the command line</a></h2>
 <p>Generally, if your script would rather ignore the command line and
 pass all command line arguments verbatim to Gamera, simply do the
 following near the top of the script, but <em>after</em> importing Gamera:</p>
@@ -248,7 +248,7 @@ to parse:</p>
 </pre></div>
 </div>
 <div class="section" id="programmatically-setting-options">
-<h2><a class="toc-backref" href="#id10">Programmatically setting options</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8">Programmatically setting options</a></h2>
 <p>Gamera also provides an API to set its options that normally would
 come from the command line.  Simply use the <tt class="docutils literal">set</tt> method on the
 <tt class="docutils literal">config</tt> object.</p>
@@ -268,7 +268,7 @@ that Gamera uses.</p>
 </div>
 </div>
 <div class="section" id="where-to-go-from-here">
-<h1><a class="toc-backref" href="#id11">Where to go from here</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9">Where to go from here</a></h1>
 <p>Obviously, there's a lot more to Gamera that isn't covered in this
 chapter.  Where you go from here is largely dependent on the
 particular document domain.  Most of the work in many Gamera

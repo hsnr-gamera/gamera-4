@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <title>Migrating from Gamera 2.x to Gamera 3.x</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,32 +11,32 @@
 <div class="document" id="migrating-from-gamera-2-x-to-gamera-3-x">
 <h1 class="title">Migrating from Gamera 2.x to Gamera 3.x</h1>
 
-<p><strong>Last modified</strong>: September 17, 2019</p>
+<p><strong>Last modified</strong>: February 01, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#reasons-for-deprecations" id="id6">Reasons for deprecations</a><ul>
-<li><a class="reference internal" href="#x-y-coordinate-consistency" id="id7">(x, y) coordinate consistency</a><ul>
-<li><a class="reference internal" href="#element-sequences-in-place-of-point-type" id="id8">2-element sequences in place of Point type</a></li>
-<li><a class="reference internal" href="#dimensions-type" id="id9">Dimensions type</a></li>
-<li><a class="reference internal" href="#floatpoint-type" id="id10">FloatPoint type</a></li>
+<li><a class="reference internal" href="#reasons-for-deprecations" id="toc-entry-1">Reasons for deprecations</a><ul>
+<li><a class="reference internal" href="#x-y-coordinate-consistency" id="toc-entry-2">(x, y) coordinate consistency</a><ul>
+<li><a class="reference internal" href="#element-sequences-in-place-of-point-type" id="toc-entry-3">2-element sequences in place of Point type</a></li>
+<li><a class="reference internal" href="#dimensions-type" id="toc-entry-4">Dimensions type</a></li>
+<li><a class="reference internal" href="#floatpoint-type" id="toc-entry-5">FloatPoint type</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#functions-should-be-parameterized-by-arguments-not-by-name" id="id11">Functions should be parameterized by arguments, not by name</a></li>
+<li><a class="reference internal" href="#functions-should-be-parameterized-by-arguments-not-by-name" id="toc-entry-6">Functions should be parameterized by arguments, not by name</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#how-to-migrate-existing-code" id="id12">How to migrate existing code</a><ul>
-<li><a class="reference internal" href="#c-code" id="id13">C++ code</a></li>
-<li><a class="reference internal" href="#python-code" id="id14">Python code</a></li>
+<li><a class="reference internal" href="#how-to-migrate-existing-code" id="toc-entry-7">How to migrate existing code</a><ul>
+<li><a class="reference internal" href="#c-code" id="toc-entry-8">C++ code</a></li>
+<li><a class="reference internal" href="#python-code" id="toc-entry-9">Python code</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#migration-tools" id="id15">Migration tools</a><ul>
-<li><a class="reference internal" href="#gamera-deprecation-filter" id="id16">gamera_deprecation_filter</a></li>
-<li><a class="reference internal" href="#replace-get-set" id="id17">replace_get_set</a></li>
+<li><a class="reference internal" href="#migration-tools" id="toc-entry-10">Migration tools</a><ul>
+<li><a class="reference internal" href="#gamera-deprecation-filter" id="toc-entry-11">gamera_deprecation_filter</a></li>
+<li><a class="reference internal" href="#replace-get-set" id="toc-entry-12">replace_get_set</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#c-deprecations-reference" id="id18">C++ deprecations reference</a></li>
-<li><a class="reference internal" href="#python-deprecations-reference" id="id19">Python deprecations reference</a></li>
+<li><a class="reference internal" href="#c-deprecations-reference" id="toc-entry-13">C++ deprecations reference</a></li>
+<li><a class="reference internal" href="#python-deprecations-reference" id="toc-entry-14">Python deprecations reference</a></li>
 </ul>
 </div>
 <p>The migration from Gamera 2.x to Gamera 3.x is intended to be as
@@ -73,9 +73,9 @@ and a suggested alternative.</li>
 </ul>
 </blockquote>
 <div class="section" id="reasons-for-deprecations">
-<h1><a class="toc-backref" href="#id6">Reasons for deprecations</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-1">Reasons for deprecations</a></h1>
 <div class="section" id="x-y-coordinate-consistency">
-<h2><a class="toc-backref" href="#id7">(x, y) coordinate consistency</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-2">(x, y) coordinate consistency</a></h2>
 <p>In Gamera 2.x, some functions received coordinates in the order (y, x),
 (or (rows, cols)), while others took coordinates in (x, y) order.
 This self-inconsistency and departure from the majority of image
@@ -87,13 +87,13 @@ maintained for backward compatibility, while allowing migration to a
 style that consistently uses (x, y) ordering everywhere.</p>
 <p>For example, <tt class="docutils literal">image.get(r, c)</tt> becomes <tt class="docutils literal">image.get(Point(c, r))</tt>.</p>
 <div class="section" id="element-sequences-in-place-of-point-type">
-<h3><a class="toc-backref" href="#id8">2-element sequences in place of Point type</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-3">2-element sequences in place of Point type</a></h3>
 <p>For convenience in Python code, 2-element sequences can be used
 wherever Point or FloatPoint is expected.  Therefore, <tt class="docutils literal"><span class="pre">image.get((x,</span> y))</tt>
 is equivalent to <tt class="docutils literal">image.get(Point(x, y))</tt>.</p>
 </div>
 <div class="section" id="dimensions-type">
-<h3><a class="toc-backref" href="#id9">Dimensions type</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-4">Dimensions type</a></h3>
 <p>Additionally, the <tt class="docutils literal">Dimensions</tt> class, whose constructor is
 <tt class="docutils literal">Dimensions(nrows, ncols)</tt>, has been deprecated because it is
 inconsistent with the new requirement of &quot;(x, y) everywhere&quot;.  Since
@@ -105,7 +105,7 @@ the <tt class="docutils literal">Dimensions</tt> type are deprecated and should 
 instead.</p>
 </div>
 <div class="section" id="floatpoint-type">
-<h3><a class="toc-backref" href="#id10">FloatPoint type</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-5">FloatPoint type</a></h3>
 <p>A new FloatPoint type has been added to hold coordinates using
 floating point numbers.  The standard Gamera <tt class="docutils literal">Point</tt> stores
 coordinates as unsigned (positive) integers, and doesn't have any
@@ -124,7 +124,7 @@ performed when accessing from Python, but not when accessing from C++.)</p>
 </div>
 </div>
 <div class="section" id="functions-should-be-parameterized-by-arguments-not-by-name">
-<h2><a class="toc-backref" href="#id11">Functions should be parameterized by arguments, not by name</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Functions should be parameterized by arguments, not by name</a></h2>
 <p>There are certain groups of plugin functions that perform essentially
 the same functionality.  Take for example:</p>
 <pre class="literal-block">
@@ -159,11 +159,11 @@ run_histogram(color, direction)
 </div>
 </div>
 <div class="section" id="how-to-migrate-existing-code">
-<h1><a class="toc-backref" href="#id12">How to migrate existing code</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-7">How to migrate existing code</a></h1>
 <p>There are two distinct techniques for finding deprecated functions:
 one for C++ code and one for Python code.</p>
 <div class="section" id="c-code">
-<h2><a class="toc-backref" href="#id13">C++ code</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8">C++ code</a></h2>
 <p>On the C++ side, all deprecated function calls will be caught at
 compile time.  Simply recompiling your C++ code will provide compiler
 warnings to this effect.</p>
@@ -177,7 +177,7 @@ your deprecated calls.</p>
 </div>
 </div>
 <div class="section" id="python-code">
-<h2><a class="toc-backref" href="#id14">Python code</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-9">Python code</a></h2>
 <p>Finding the deprecated calls in Python code is somewhat more
 difficult, since the exact function calls being made cannot be
 determined until runtime.</p>
@@ -194,7 +194,7 @@ functions in Gamera is presented in the <a class="reference internal" href="#pyt
 </div>
 </div>
 <div class="section" id="migration-tools">
-<h1><a class="toc-backref" href="#id15">Migration tools</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-10">Migration tools</a></h1>
 <p>There are a number of scripts in the <tt class="docutils literal">migration_tools</tt> directory
 that make the process of migrating code from Gamera 2.x to 3.x easier.</p>
 <blockquote>
@@ -206,7 +206,7 @@ form to the new form.</li>
 </ul>
 </blockquote>
 <div class="section" id="gamera-deprecation-filter">
-<h2><a class="toc-backref" href="#id16">gamera_deprecation_filter</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-11">gamera_deprecation_filter</a></h2>
 <p>The <tt class="docutils literal">gamera_deprecation_filter</tt> tool is useful for correcting
 calls to deprecated Gamera functions from you C++ code.</p>
 <p>This tool only works with <tt class="docutils literal">gcc</tt>, and only on non-MS Windows
@@ -248,7 +248,7 @@ $ ./gamera_deprecation_filter log
 </pre>
 </div>
 <div class="section" id="replace-get-set">
-<h2><a class="toc-backref" href="#id17">replace_get_set</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-12">replace_get_set</a></h2>
 <p>This script searches through C++ source files and corrects all uses of
 get and set in the deprecated Gamera 2.x style to the new Gamera 3.x
 style.  For example:</p>
@@ -274,7 +274,7 @@ $ cat source.hpp | ./replace_get_set &gt; source.hpp.new
 </div>
 </div>
 <div class="section" id="c-deprecations-reference">
-<h1><a class="toc-backref" href="#id18">C++ deprecations reference</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13">C++ deprecations reference</a></h1>
 <p>This is an alphabetical list of the deprecated C++ functions.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -719,7 +719,7 @@ deprecated. [<a class="reference external" href="#functions-should-be-parameteri
 </table>
 </div>
 <div class="section" id="python-deprecations-reference">
-<h1><a class="toc-backref" href="#id19">Python deprecations reference</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-14">Python deprecations reference</a></h1>
 <p>This is an alphabetical list of the deprecated Python functions.</p>
 <table border="1" class="docutils">
 <colgroup>
