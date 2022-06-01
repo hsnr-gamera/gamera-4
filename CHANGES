@@ -1,6 +1,7 @@
 Changes made between Gamera File Releases
 =========================================
 
+ - fixed endianness issue when writing GREY16 images
 
  - fixed segfault with gcc 9.4.0 in color_ccs() (call to is_white())
 

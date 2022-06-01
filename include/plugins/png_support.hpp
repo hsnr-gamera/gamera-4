@@ -414,8 +414,8 @@ struct PNG_saver<Grey16Pixel> {
   void operator()(T& image, png_structp png_ptr) {
     //png_bytep row = new png_byte[image.ncols() * 2];
     uint16_t* row = new uint16_t[image.ncols()];
-    if (byte_order_little_endian())
-      png_set_swap(png_ptr);
+    //if (byte_order_little_endian())
+    //  png_set_swap(png_ptr); // must not be done on writing!
     try {
       typename T::row_iterator r = image.row_begin();
       for (; r != image.row_end(); ++r) {
