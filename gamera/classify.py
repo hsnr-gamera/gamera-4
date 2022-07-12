@@ -11,7 +11,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -31,38 +31,45 @@ contain a reference to a core classifier class (unusally written in C++).
 They add functionality for XML loading/saving, splitting/grouping, and
 keeping track of a database of glyphs (in the Interactive case.)"""
 
+
 class ClassifierError(Exception):
-   pass
+    pass
+
 
 class _Classifier:
-   """The base class for both the interactive and noninteractive classifier."""
+    """The base class for both the interactive and noninteractive classifier."""
 
-   ########################################
-   # INFORMATION
-   def get_name(self):
-      return self.__class__.__name__
+    ########################################
+    # INFORMATION
+    def get_name(self):
+        return self.__class__.__name__
 
-   def is_dirty(self):
-      return self._database.is_dirty and len(self._database)
-   def _set_is_dirty(self, val):
-      self._database.is_dirty = val
-   is_dirty = property(is_dirty, _set_is_dirty)
+    def is_dirty(self):
+        return self._database.is_dirty and len(self._database)
 
-   def get_database(self):
-      return self._database
-   def set_database(self, other):
-      raise RuntimeError("You can't change the database.  This exception should never be raised.  Please report it to the authors.")
-   database = property(get_database, set_database)
+    def _set_is_dirty(self, val):
+        self._database.is_dirty = val
 
-   def __len__(self):
-      return len(self._database)
+    is_dirty = property(is_dirty, _set_is_dirty)
 
-   ########################################
-   # GROUPING
-   def group_list_automatic(self, glyphs, grouping_function=None,
-                            evaluate_function=None, max_parts_per_group=4,
-                            max_graph_size=16, criterion="min"):
-      """**group_list_automatic** (ImageList *glyphs*, Function
+    def get_database(self):
+        return self._database
+
+    def set_database(self, other):
+        raise RuntimeError(
+            "You can't change the database.  This exception should never be raised.  Please report it to the authors.")
+
+    database = property(get_database, set_database)
+
+    def __len__(self):
+        return len(self._database)
+
+    ########################################
+    # GROUPING
+    def group_list_automatic(self, glyphs, grouping_function=None,
+                             evaluate_function=None, max_parts_per_group=4,
+                             max_graph_size=16, criterion="min"):
+        """**group_list_automatic** (ImageList *glyphs*, Function
 *grouping_function* = ``None``, Function *evaluate_function* = ``None``,
 int *max_parts_per_group* = 4, int *max_graph_size* = 16, *criterion* = ``'min'``)
 
@@ -72,54 +79,54 @@ of a joined glyph is classified as HEURISTIC with the prefix
 ``_group``.
 
 *glyphs*
-  The list of glyphs to group and classify.
+The list of glyphs to group and classify.
 
 *grouping_function*
-  A function that determines how glyphs are initially
-  combined.  This function must take exactly two arguments, which the
-  grouping algorithm will pass an arbitrary pair of glyphs from
-  *glyphs*.  If the two glyphs should be considered for grouping, the
-  function should return ``True``, else ``False``.  
+A function that determines how glyphs are initially
+combined.  This function must take exactly two arguments, which the
+grouping algorithm will pass an arbitrary pair of glyphs from
+*glyphs*.  If the two glyphs should be considered for grouping, the
+function should return ``True``, else ``False``.
 
-  In ``gamera.classify``, there are two predefined grouping functions:
+In ``gamera.classify``, there are two predefined grouping functions:
 
-  **BoundingBoxGroupingFunction** (*threshold*)
-      A callable class that returns ``True`` when the bounding boxes
-      are at most *threshold* apart.
+**BoundingBoxGroupingFunction** (*threshold*)
+        A callable class that returns ``True`` when the bounding boxes
+        are at most *threshold* apart.
 
-  **ShapedGroupingFunction** (*threshold*)
-      A callable class that returns ``True`` when the closest distance
-      between the black pixels is at most *threshold*.
+**ShapedGroupingFunction** (*threshold*)
+        A callable class that returns ``True`` when the closest distance
+        between the black pixels is at most *threshold*.
 
-  When *grouping_function* is ``None``, *BoundingBoxGroupingFunction(4)*
-  is used.
+When *grouping_function* is ``None``, *BoundingBoxGroupingFunction(4)*
+is used.
 
 *evaluate_function*
-   A function that evaluates a grouping of glyphs.  This function must
-   take exactly one argument which is a list of glyphs.  The function
-   should return a confidence value between 0 and 1 (1 being most
-   confident) representing how confidently the grouping forms a valid
-   character.
+ A function that evaluates a grouping of glyphs.  This function must
+ take exactly one argument which is a list of glyphs.  The function
+ should return a confidence value between 0 and 1 (1 being most
+ confident) representing how confidently the grouping forms a valid
+ character.
 
-   If no *evaluate_function* is provided, a default one will be used
-   that returns the CONFIDENCE_DEFAULT of the knn classification.
+ If no *evaluate_function* is provided, a default one will be used
+ that returns the CONFIDENCE_DEFAULT of the knn classification.
 
 *max_parts_per_group*
-   The maximum number of connected components that will be grouped
-   together and tested as a group.  For performance reasons, this
-   number should be kept relatively small.
+ The maximum number of connected components that will be grouped
+ together and tested as a group.  For performance reasons, this
+ number should be kept relatively small.
 
 *max_graph_size*
-   Subgraphs (potentially connected areas of the image) larger than
-   the given number of nodes will be ignored.  This is a hack to
-   prevent the runtime of the algorithm from exploding.
+ Subgraphs (potentially connected areas of the image) larger than
+ the given number of nodes will be ignored.  This is a hack to
+ prevent the runtime of the algorithm from exploding.
 
 *criterion*
-   Determines how the grouping candidates ccs are evaluated against
-   each other in the optimization step. Default = *min* choses the 
-   grouping with the highest minimum confidence, and *avg* that one
-   with the highest average confidence.
-   
+ Determines how the grouping candidates ccs are evaluated against
+ each other in the optimization step. Default = *min* choses the
+ grouping with the highest minimum confidence, and *avg* that one
+ with the highest average confidence.
+
 The function returns a 2-tuple (pair) of lists: (*add*, *remove*).
 *add* is a list of glyphs that were created by classifying any glyphs
 as a split (See Initialization_) or grouping.  *remove* is a list of
@@ -131,116 +138,131 @@ are classified as ``_group._part.*``, where ``*`` stands for the class
 name of the grouped glyph. This means that after calling this function,
 you must remove the *remove* CCs and all CCs with a class name beginning with
 ```_group._part`` from *glyph*, and you must add all glyphs from *add*
-to it. Or you can instead call group_and_update_list_automatic_, which does 
+to it. Or you can instead call group_and_update_list_automatic_, which does
 this automatically for you.
 """
-      glyphs = [x for x in glyphs if x.classification_state != 3]
-      if len(glyphs) == 0:
-         return [], []
+        glyphs = [x for x in glyphs if x.classification_state != 3]
+        if len(glyphs) == 0:
+            return [], []
 
-      splits, removed = self.classify_list_automatic(glyphs)
-      glyphs = [x for x in glyphs if not x.get_main_id().startswith('split')]
-      if grouping_function is None:
-         grouping_function = BoundingBoxGroupingFunction(4)
-      G = self._pregroup(glyphs, grouping_function)
-      if evaluate_function is None:
-         evaluate_function = self._evaluate_subgroup
-      found_unions = self._find_group_unions(
-         G, evaluate_function, max_parts_per_group, max_graph_size, criterion)
-      return found_unions + splits, removed
+        splits, removed = self.classify_list_automatic(glyphs)
+        glyphs = [x for x in glyphs if not x.get_main_id().startswith('split')]
+        if grouping_function is None:
+            grouping_function = BoundingBoxGroupingFunction(4)
+        G = self._pregroup(glyphs, grouping_function)
+        if evaluate_function is None:
+            evaluate_function = self._evaluate_subgroup
+        found_unions = self._find_group_unions(
+            G, evaluate_function, max_parts_per_group, max_graph_size, criterion)
+        return found_unions + splits, removed
 
-   def group_and_update_list_automatic(self, glyphs, *args, **kwargs):
-      """**group_and_update_list_automatic** (ImageList *glyphs*, Function
+    def group_and_update_list_automatic(self, glyphs, *args, **kwargs):
+        """**group_and_update_list_automatic** (ImageList *glyphs*, Function
 *grouping_function* = ``None``, Function *evaluate_function* = ``None``,
 int *max_parts_per_group* = 5, int *max_graph_size* = 16, string *criterion* = ``'min'``)
 
 A convenience wrapper around group_list_automatic_ that returns
 a list of glyphs that is already updated for splitting and grouping."""
-      added, removed = self.group_list_automatic(glyphs, *args, **kwargs)
-      glyphs = [g for g in glyphs if not g.get_main_id().startswith("_group._part")]
-      return self._update_after_classification(glyphs, added, removed)
+        added, removed = self.group_list_automatic(glyphs, *args, **kwargs)
+        glyphs = [g for g in glyphs if not g.get_main_id(
+        ).startswith("_group._part")]
+        return self._update_after_classification(glyphs, added, removed)
 
-   def _pregroup(self, glyphs, function):
-      from gamera import graph
-      G = graph.Undirected()
-      # assert G.add_nodes(glyphs)
-      #  TODO only for testing
-      for glyph in glyphs:
-         print(glyph)
-         assert G.add_node(glyph)
-         assert G.has_node(glyph)
+    def _pregroup(self, glyphs, function):
+        from gamera import graph
+        G = graph.Undirected()
+        # Duplicate the last index glyph to the glyphs list in order to avoid assertion errors
+        glyphs.append(glyphs[len(glyphs) - 1])
 
-      progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
-      try:
-         for i in range(len(glyphs)):
-            gi = glyphs[i]
-            for j in range(i + 1, len(glyphs)):
-               gj = glyphs[j]
-               if function(gi, gj):
-                  G.add_edge(gi, gj)
-            progress.step()
-      finally:
-         progress.kill()
-      return G
+        for i in range(len(glyphs)):
+            glyph = glyphs[i]
 
-   def _evaluate_subgroup(self, subgroup):
-      import image_utilities
-      if len(subgroup) > 1:
-         union = image_utilities.union_images(subgroup)
-         classification, confidence = self.guess_glyph_automatic(union)
-         classification_name = classification[0][1]
-         if (classification_name.startswith("_split") or
-             classification_name.startswith("skip")):
-            return 0.0
-         else:
-            return classification[0][0]
-      if len(subgroup):
-         classification = subgroup[0].id_name[0]
-         if classification[1].startswith('_group._part'):
-            return 0.0
-         return classification[0]
-      raise ValueError("Something is wrong here...  Either you don't have classifier data or there is an internal error in the grouping algorithm.")
+            try:
+                assert G.has_node(glyph)
+                continue
+            except AssertionError:
+                # print("##################################################################################################")
+                # print("Tried adding the dummy node - NOT ADDED")
+                # print("The glyph is not in the graph")
+                # print(("The graph is {0}").format(G))
+                # print("The glyph resulting the fail is: {0} and has index: {1} -- the length of glyphs being: {2} without the dummy node".format(glyph, i, len(glyphs) - 1))
+                # print("##################################################################################################")
+                break
 
-   def _find_group_unions(self, G, evaluate_function, max_parts_per_group=5,
-                          max_graph_size=16, criterion="min"):
-      import image_utilities
-      progress = util.ProgressFactory("Grouping glyphs...", G.nsubgraphs)
-      try:
-         found_unions = []
-         for root in G.get_subgraph_roots():
-            if G.size_of_subgraph(root) > max_graph_size:
-               continue
-            best_grouping = G.optimize_partitions(
-               root, evaluate_function, max_parts_per_group, max_graph_size, criterion)
-            if not best_grouping is None:
-               for subgroup in best_grouping:
-                  if len(subgroup) > 1:
-                     union = image_utilities.union_images(subgroup)
-                     found_unions.append(union)
-                     classification, confidence = self.guess_glyph_automatic(union)
-                     union.classify_heuristic(classification)
-                     part_name = "_group._part." + classification[0][1]
-                     for glyph in subgroup:
-                        glyph.classify_heuristic(part_name)
-            progress.step()
-      finally:
-         progress.kill()
-      return found_unions
+        progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
+        try:
+            for i in range(len(glyphs)):
+                gi = glyphs[i]
+                for j in range(i + 1, len(glyphs)):
+                    gj = glyphs[j]
+                    if function(gi, gj):
+                        G.add_edge(gi, gj)
+                progress.step()
+        finally:
+            progress.kill()
+        return G
 
-   ########################################
-   # AUTOMATIC CLASSIFICATION
-   def classify_glyph_automatic(self, glyph, max_recursion=10, recursion_level=0):
-      """**classify_glyph_automatic** (Image *glyph*, int *max_recursion* = 10)
+    def _evaluate_subgroup(self, subgroup):
+        import image_utilities
+        if len(subgroup) > 1:
+            union = image_utilities.union_images(subgroup)
+            classification, confidence = self.guess_glyph_automatic(union)
+            classification_name = classification[0][1]
+            if (classification_name.startswith("_split") or
+                    classification_name.startswith("skip")):
+                return 0.0
+            else:
+                return classification[0][0]
+        if len(subgroup):
+            classification = subgroup[0].id_name[0]
+            if classification[1].startswith('_group._part'):
+                return 0.0
+            return classification[0]
+        raise ValueError(
+            "Something is wrong here...  Either you don't have classifier data or there is an internal error in the grouping algorithm.")
+
+    def _find_group_unions(self, G, evaluate_function, max_parts_per_group=5,
+                           max_graph_size=16, criterion="min"):
+        import image_utilities
+        progress = util.ProgressFactory("Grouping glyphs...", G.nsubgraphs)
+        try:
+            found_unions = []
+            for root in G.get_subgraph_roots():
+                if G.size_of_subgraph(root) > max_graph_size:
+                    continue
+                best_grouping = G.optimize_partitions(
+                    root, evaluate_function, max_parts_per_group, max_graph_size, criterion)
+                if not best_grouping is None:
+                    for subgroup in best_grouping:
+                        if len(subgroup) > 1:
+                            union = image_utilities.union_images(subgroup)
+                            found_unions.append(union)
+                            classification, confidence = self.guess_glyph_automatic(
+                                union)
+                            union.classify_heuristic(classification)
+                            part_name = "_group._part." + classification[0][1]
+                            for glyph in subgroup:
+                                glyph.classify_heuristic(part_name)
+                progress.step()
+        except:
+            pass
+
+            return found_unions
+
+    ########################################
+    # AUTOMATIC CLASSIFICATION
+    def classify_glyph_automatic(self, glyph, max_recursion=10, recursion_level=0):
+        """**classify_glyph_automatic** (Image *glyph*, int *max_recursion* = 10)
 
 Classifies a glyph and sets its ``classification_state`` and
 ``id_name``.  (If you don't want the glyph changed, use
 guess_glyph_automatic_.)
 
 *glyph*
-  The glyph to classify.
+The glyph to classify.
 
 *max_recursion* (optional)
-  Limit the number of split recursions.
+Limit the number of split recursions.
 
 Returns a 2-tuple (pair) of lists: (*add*, *remove*).  *add* is a list
 of glyphs that were created by classifying *glyph* as a split (See
@@ -249,346 +271,350 @@ valid due to reclassifying *glyph* from a split to something else.
 Most often, both of these lists will be empty.  You will normally want
 to use these lists to update the collection of glyphs on the current
 page."""
-      if recursion_level > max_recursion:
-         return [], []
-      # Since we only have one glyph to classify, we can't do any grouping
-      if (len(self.database) and
-          glyph.classification_state in (core.UNCLASSIFIED, core.AUTOMATIC)):
-         self.generate_features(glyph)
-         removed = glyph.children_images
-         (id, conf) = self._classify_automatic_impl(glyph)
-         glyph.classify_automatic(id)
-         glyph.confidence = conf
-         splits = self._do_splits(self, glyph)
-         all_splits = splits[:]
-         for g2 in splits:
-            recurse_splits, recurse_removed = self.classify_glyph_automatic(
-               g2, max_recursion, recursion_level + 1)
-            all_splits.extend(recurse_splits)
-            removed.extend(recurse_removed)
-         return all_splits, removed
-      return [], []
-
-   def _classify_list_automatic(self, glyphs, max_recursion=10, recursion_level=0, progress=None):
-
-      # There is a slightly convoluted handling of the progress bar here, since
-      # this function is called recursively on split glyphs
-      if recursion_level == 0:
-         progress = util.ProgressFactory("Classifying glyphs...", len(glyphs))
-      try:
-         if (recursion_level > max_recursion):
+        if recursion_level > max_recursion:
             return [], []
-         added = []
-         removed = {}
-         for glyph in glyphs:
-            if glyph.classification_state in (core.UNCLASSIFIED, core.AUTOMATIC):
-               for child in glyph.children_images:
-                  removed[child] = None
-         for glyph in glyphs:
-            if glyph not in removed:
-               self.generate_features(glyph)
-               if (glyph.classification_state in
-                   (core.UNCLASSIFIED, core.AUTOMATIC)):
-                  (id, conf) = self._classify_automatic_impl(glyph)
-                  glyph.classify_automatic(id)
-                  glyph.confidence = conf
-                  adds = self._do_splits(self, glyph)
-                  progress.add_length(len(adds))
-                  added.extend(adds)
-            progress.step()
-         if len(added):
-            added_recurse, removed_recurse = self._classify_list_automatic(
-               added, max_recursion, recursion_level+1, progress)
-            added.extend(added_recurse)
-            for glyph in removed_recurse:
-               removed[glyph] = None
-      finally:
-         if recursion_level == 0:
-            progress.kill()
-      return added, list(removed.keys())
+        # Since we only have one glyph to classify, we can't do any grouping
+        if (len(self.database) and
+                glyph.classification_state in (core.UNCLASSIFIED, core.AUTOMATIC)):
+            self.generate_features(glyph)
+            removed = glyph.children_images
+            (id, conf) = self._classify_automatic_impl(glyph)
+            glyph.classify_automatic(id)
+            glyph.confidence = conf
+            splits = self._do_splits(self, glyph)
+            all_splits = splits[:]
+            for g2 in splits:
+                recurse_splits, recurse_removed = self.classify_glyph_automatic(
+                    g2, max_recursion, recursion_level + 1)
+                all_splits.extend(recurse_splits)
+                removed.extend(recurse_removed)
+            return all_splits, removed
+        return [], []
 
-   def classify_list_automatic(self, glyphs, max_recursion=10, progress=None):
-      """**classify_list_automatic** (ImageList *glyphs*, int *max_recursion* = 10)
+    def _classify_list_automatic(self, glyphs, max_recursion=10, recursion_level=0, progress=None):
+
+        # There is a slightly convoluted handling of the progress bar here, since
+        # this function is called recursively on split glyphs
+        if recursion_level == 0:
+            progress = util.ProgressFactory(
+                "Classifying glyphs...", len(glyphs))
+        try:
+            if (recursion_level > max_recursion):
+                return [], []
+            added = []
+            removed = {}
+            for glyph in glyphs:
+                if glyph.classification_state in (core.UNCLASSIFIED, core.AUTOMATIC):
+                    for child in glyph.children_images:
+                        removed[child] = None
+            for glyph in glyphs:
+                if glyph not in removed:
+                    self.generate_features(glyph)
+                    if (glyph.classification_state in
+                            (core.UNCLASSIFIED, core.AUTOMATIC)):
+                        (id, conf) = self._classify_automatic_impl(glyph)
+                        glyph.classify_automatic(id)
+                        glyph.confidence = conf
+                        adds = self._do_splits(self, glyph)
+                        progress.add_length(len(adds))
+                        added.extend(adds)
+                progress.step()
+            if len(added):
+                added_recurse, removed_recurse = self._classify_list_automatic(
+                    added, max_recursion, recursion_level + 1, progress)
+                added.extend(added_recurse)
+                for glyph in removed_recurse:
+                    removed[glyph] = None
+        finally:
+            if recursion_level == 0:
+                progress.kill()
+        return added, list(removed.keys())
+
+    def classify_list_automatic(self, glyphs, max_recursion=10, progress=None):
+        """**classify_list_automatic** (ImageList *glyphs*, int *max_recursion* = 10)
 
 Classifies a list of glyphs and sets the classification_state and
 id_name of each glyph.  (If you don't want it set, use guess_glyph_automatic_.)
 
 *glyphs*
-  A list of glyphs to classify.
+A list of glyphs to classify.
 
 *max_recursion*
-  The maximum level of recursion to follow when splitting glyphs.
-  Since some glyphs will split into parts that then classify as
-  ``_split`` in turn, a maximum depth should be set to avoid infinite
-  recursion.  This number can normally be set quite low, depending on
-  the application.
+The maximum level of recursion to follow when splitting glyphs.
+Since some glyphs will split into parts that then classify as
+``_split`` in turn, a maximum depth should be set to avoid infinite
+recursion.  This number can normally be set quite low, depending on
+the application.
 
 Return type: (*add*, *remove*)
 
-  The list *glyphs* is never modified by the function.  Instead, it
-  returns a 2-tuple (pair) of lists: (*add*, *remove*).  *add* is a
-  list of glyphs that were created by classifying glyphs as a
-  split (See Initialization_).  *remove* is a list of glyphs that are
-  no longer valid due to reclassifying glyphs from a split to
-  something else.  Most often, both of these lists will be empty.  You
-  will normally want to use these lists to update the collection of
-  glyphs on the current page.  If you just want a new list returned
-  with these updates already made, use classify_and_update_list_automatic_.
+The list *glyphs* is never modified by the function.  Instead, it
+returns a 2-tuple (pair) of lists: (*add*, *remove*).  *add* is a
+list of glyphs that were created by classifying glyphs as a
+split (See Initialization_).  *remove* is a list of glyphs that are
+no longer valid due to reclassifying glyphs from a split to
+something else.  Most often, both of these lists will be empty.  You
+will normally want to use these lists to update the collection of
+glyphs on the current page.  If you just want a new list returned
+with these updates already made, use classify_and_update_list_automatic_.
 """
-      return self._classify_list_automatic(glyphs, max_recursion, 0, progress)
+        return self._classify_list_automatic(glyphs, max_recursion, 0, progress)
 
-   def _update_after_classification(self, glyphs, added, removed):
-      result = glyphs + added
-      for g in removed:
-         if g in result:
-            result.remove(g)
-      return result
+    def _update_after_classification(self, glyphs, added, removed):
+        result = glyphs + added
+        for g in removed:
+            if g in result:
+                result.remove(g)
+        return result
 
-   def classify_and_update_list_automatic(self, glyphs, *args, **kwargs):
-      """**classify_and_update_list_automatic** (ImageList *glyphs*, Int
+    def classify_and_update_list_automatic(self, glyphs, *args, **kwargs):
+        """**classify_and_update_list_automatic** (ImageList *glyphs*, Int
 *max_recursion* = ``10``)
 
 A convenience wrapper around classify_list_automatic_ that returns
 a list of glyphs that is already updated based on splitting."""
-      added, removed = self.classify_list_automatic(glyphs, *args, **kwargs)
-      return self._update_after_classification(glyphs, added, removed)
+        added, removed = self.classify_list_automatic(glyphs, *args, **kwargs)
+        return self._update_after_classification(glyphs, added, removed)
 
-   # Since splitting glyphs is optional (when the classifier instance is
-   # created) we have two versions of this function, so that there needn't
-   # be an 'if' statement everywhere.
-   def _do_splits_impl(self, glyph):
-      id = glyph.get_main_id()
-      if (id.startswith('_split.')):
-         parts = id.split('.')
-         if (len(parts) != 2 or not hasattr(glyph, parts[1])):
-            raise ClassifierError("'%s' is not a known or valid split function." % parts[1])
-         try:
-            if sys.version_info[:2] < (2, 4):
-               splits = getattr(glyph, parts[1]).__call__(glyph)
+    # Since splitting glyphs is optional (when the classifier instance is
+    # created) we have two versions of this function, so that there needn't
+    # be an 'if' statement everywhere.
+    def _do_splits_impl(self, glyph):
+        id = glyph.get_main_id()
+        if (id.startswith('_split.')):
+            parts = id.split('.')
+            if (len(parts) != 2 or not hasattr(glyph, parts[1])):
+                raise ClassifierError(
+                    "'%s' is not a known or valid split function." % parts[1])
+            try:
+                if sys.version_info[:2] < (2, 4):
+                    splits = getattr(glyph, parts[1]).__call__(glyph)
+                else:
+                    splits = getattr(glyph, parts[1]).__call__()
+            except core.SegmentationError:
+                if len(glyph.id_name) >= 2:
+                    glyph.id_name = glyph.id_name[1:]
+                else:
+                    glyph.id_name = [(0.0, '_ERROR')]
+                return []
             else:
-               splits = getattr(glyph, parts[1]).__call__()
-         except core.SegmentationError:
-            if len(glyph.id_name) >= 2:
-               glyph.id_name = glyph.id_name[1:]
-            else:
-               glyph.id_name = [(0.0, '_ERROR')]
-            return []
-         else:
-            glyph.children_images = splits
-            return splits
-      return []
+                glyph.children_images = splits
+                return splits
+        return []
 
-   def _do_splits_null(self, glyph):
-      return []
+    def _do_splits_null(self, glyph):
+        return []
 
-   ########################################
-   # XML
-   # Note that unclassified glyphs in the XML file are ignored.
-   def to_xml(self, stream, with_features=True):
-      """**to_xml** (stream *stream*)
+    ########################################
+    # XML
+    # Note that unclassified glyphs in the XML file are ignored.
+    def to_xml(self, stream, with_features=True):
+        """**to_xml** (stream *stream*)
 
 Saves the training data in XML format to the given stream (which could
 be any object supporting the file protocol, such as a file object or StringIO
 object)."""
-      self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs()
-                if not g.get_main_id().startswith("_group._part")]
-      return gamera_xml.WriteXML(
-         glyphs=glyphs, with_features=with_features).write_stream(stream)
+        self.is_dirty = False
+        glyphs = [g for g in self.get_glyphs()
+                  if not g.get_main_id().startswith("_group._part")]
+        return gamera_xml.WriteXML(
+            glyphs=glyphs, with_features=with_features).write_stream(stream)
 
-   def to_xml_filename(self, filename, with_features=True):
-      """**to_xml_filename** (FileSave *filename*)
+    def to_xml_filename(self, filename, with_features=True):
+        """**to_xml_filename** (FileSave *filename*)
 
 Saves the training data in XML format to the given filename."""
-      self.is_dirty = False
-      glyphs = [g for g in self.get_glyphs()
-                if (type(g.get_main_id()) == str and
-                    not g.get_main_id().startswith("_group._part")) or
-                (
-                        type(g.get_main_id()) == bytes and
-                        not g.get_main_id().startswith(b"_group._part")
-                )
-                ]
-      return gamera_xml.WriteXMLFile(
-         glyphs=glyphs).write_filename(filename, with_features)
+        self.is_dirty = False
+        glyphs = [g for g in self.get_glyphs()
+                  if (type(g.get_main_id()) == str and
+                      not g.get_main_id().startswith("_group._part")) or
+                  (
+            type(g.get_main_id()) == bytes and
+            not g.get_main_id().startswith(b"_group._part")
+        )
+        ]
+        return gamera_xml.WriteXMLFile(
+            glyphs=glyphs).write_filename(filename, with_features)
 
-   def from_xml(self, stream):
-      """**from_xml** (stream *stream*)
+    def from_xml(self, stream):
+        """**from_xml** (stream *stream*)
 
-Loads the training data from the given stream (which could be any object 
+Loads the training data from the given stream (which could be any object
 supporting the file protocol, such as a file object or StringIO object.)"""
-      self._from_xml(gamera_xml.LoadXML().parse_stream(stream))
+        self._from_xml(gamera_xml.LoadXML().parse_stream(stream))
 
-   def from_xml_filename(self, filename):
-      """**from_xml_filename** (FileOpen *filename*)
+    def from_xml_filename(self, filename):
+        """**from_xml_filename** (FileOpen *filename*)
 
 Loads the training data from the given filename."""
-      stream = gamera_xml.LoadXML().parse_filename(filename)
-      self._from_xml(stream)
+        stream = gamera_xml.LoadXML().parse_filename(filename)
+        self._from_xml(stream)
 
-   def _from_xml(self, xml):
-      database = [x for x in xml.glyphs
-                  if x.classification_state != core.UNCLASSIFIED]
-      self.set_glyphs(database)
+    def _from_xml(self, xml):
+        database = [x for x in xml.glyphs
+                    if x.classification_state != core.UNCLASSIFIED]
+        self.set_glyphs(database)
 
-   def merge_from_xml(self, stream):
-      """**merge_from_xml** (stream *stream*)
+    def merge_from_xml(self, stream):
+        """**merge_from_xml** (stream *stream*)
 
 Loads the training data from the given stream (which could be a file
 handle or StringIO object) and adds it to the existing training data."""
-      self._merge_xml(gamera_xml.LoadXML().parse_stream(stream))
+        self._merge_xml(gamera_xml.LoadXML().parse_stream(stream))
 
-   def merge_from_xml_filename(self, filename):
-      """**merge_from_xml_filename** (stream *stream*)
+    def merge_from_xml_filename(self, filename):
+        """**merge_from_xml_filename** (stream *stream*)
 
 Loads the training data from the given filename and adds it to the
 existing training data."""
-      self._merge_xml(gamera_xml.LoadXML().parse_filename(filename))
+        self._merge_xml(gamera_xml.LoadXML().parse_filename(filename))
 
-   def _merge_xml(self, xml):
-      database = [x for x in xml.glyphs
-                  if x.classification_state != core.UNCLASSIFIED]
-      self.merge_glyphs(database)
+    def _merge_xml(self, xml):
+        database = [x for x in xml.glyphs
+                    if x.classification_state != core.UNCLASSIFIED]
+        self.merge_glyphs(database)
 
-   ##############################################
-   # Features
-   def generate_features_on_glyphs(self, glyphs):
-      """Generates features for all the given glyphs."""
-      progress = util.ProgressFactory("Generating features...",
-                                      len(glyphs), numsteps=32)
-      try:
-         for i, glyph in enumerate(glyphs):
-            self.generate_features(glyph)
-            progress.step()
-      finally:
-         progress.kill()
+    ##############################################
+    # Features
+    def generate_features_on_glyphs(self, glyphs):
+        """Generates features for all the given glyphs."""
+        progress = util.ProgressFactory("Generating features...",
+                                        len(glyphs), numsteps=32)
+        try:
+            for i, glyph in enumerate(glyphs):
+                self.generate_features(glyph)
+                progress.step()
+        finally:
+            progress.kill()
+
 
 class NonInteractiveClassifier(_Classifier):
-   def __init__(self, database=[], perform_splits=True):
-      """**NonInteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
+    def __init__(self, database=[], perform_splits=True):
+        """**NonInteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
 
 Creates a new classifier instance.
 
 *database*
-        Can come in two forms:
+          Can come in two forms:
 
-           - When a list (or Python iterable) each element is a glyph to
-             use as training data for the classifier
+                 - When a list (or Python iterable) each element is a glyph to
+                   use as training data for the classifier
 
-           - *For non-interactive classifiers only*, when *database* is a filename,
-             the classifier will be "unserialized" from the given file.
+                 - *For non-interactive classifiers only*, when *database* is a filename,
+                   the classifier will be "unserialized" from the given file.
 
-        Any images in the list that were manually classified (have
-	classification_state == MANUAL) will be used as training data
-	for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
-	classified images will be ignored.
+          Any images in the list that were manually classified (have
+  classification_state == MANUAL) will be used as training data
+  for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
+  classified images will be ignored.
 
-	When initializing a noninteractive classifier, the database
-	*must* be non-empty.
+  When initializing a noninteractive classifier, the database
+  *must* be non-empty.
 
 *perform_splits*
-          If ``perform_splits`` is ``True``, glyphs trained with names
-	  beginning with ``_split.`` are run through a given splitting
-	  algorithm.  For instance, glyphs that need to be broken into
-	  upper and lower halves for further classification of those
-	  parts would be trained as ``_split.splity``.  When the
-	  automatic classifier encounters glyphs that most closely
-	  match those trained as ``_split``, it will perform the
-	  splitting algorithm and then continue to recursively
-	  classify its parts.
+                If ``perform_splits`` is ``True``, glyphs trained with names
+        beginning with ``_split.`` are run through a given splitting
+        algorithm.  For instance, glyphs that need to be broken into
+        upper and lower halves for further classification of those
+        parts would be trained as ``_split.splity``.  When the
+        automatic classifier encounters glyphs that most closely
+        match those trained as ``_split``, it will perform the
+        splitting algorithm and then continue to recursively
+        classify its parts.
 
-	  The `splitting algorithms`__ are documented in the plugin documentation.
+        The `splitting algorithms`__ are documented in the plugin documentation.
 
 .. __: plugins.html#segmentation
 
-          New splitting algorithms can be created by `writing plugin`__ methods
-          in the category ``Segmentation``.  
+                New splitting algorithms can be created by `writing plugin`__ methods
+                in the category ``Segmentation``.
 
 .. __: writing_plugins.html
 
-      """
-      if type(database) is list:
-         self._database = util.CallbackList(database)
-         self.set_glyphs(database)
-      elif database[-4:] == ".xml":
-         self._database = util.CallbackList(database)
-         self.from_xml_filename(database)
-      else:
-         self._database = util.CallbackList([])
-         self.unserialize(database)
+        """
+        if type(database) is list:
+            self._database = util.CallbackList(database)
+            self.set_glyphs(database)
+        elif database[-4:] == ".xml":
+            self._database = util.CallbackList(database)
+            self.from_xml_filename(database)
+        else:
+            self._database = util.CallbackList([])
+            self.unserialize(database)
 
-      if perform_splits:
-         self._do_splits = self.__class__._do_splits_impl
-      else:
-         self._do_splits = self.__class__._do_splits_null
-      self._perform_splits = perform_splits
+        if perform_splits:
+            self._do_splits = self.__class__._do_splits_impl
+        else:
+            self._do_splits = self.__class__._do_splits_null
+        self._perform_splits = perform_splits
 
-      self.confidence_types = [CONFIDENCE_DEFAULT]
+        self.confidence_types = [CONFIDENCE_DEFAULT]
 
-   def __del__(self):
-      # Seems redundant, but this triggers a callback to the GUI, if running.
-      del self._database
+    def __del__(self):
+        # Seems redundant, but this triggers a callback to the GUI, if running.
+        del self._database
 
-   def is_interactive():
-      """Boolean **is_interactive** ()
+    def is_interactive():
+        """Boolean **is_interactive** ()
 
 Returns ``True`` if classifier is interactive, else ``False``."""
-      return False
-   is_interactive = staticmethod(is_interactive)
+        return False
 
-   ########################################
-   # BASIC DATABASE MANIPULATION FUNCTIONS
-   def get_glyphs(self):
-      """ImageList **get_glyphs** ()
+    is_interactive = staticmethod(is_interactive)
+
+    ########################################
+    # BASIC DATABASE MANIPULATION FUNCTIONS
+    def get_glyphs(self):
+        """ImageList **get_glyphs** ()
 
 Returns a list of the glyphs in the classifier."""
-      return list(self.database)
+        return list(self.database)
 
-   def set_glyphs(self, glyphs):
-      """**set_glyphs** (ImageList *glyphs*)
+    def set_glyphs(self, glyphs):
+        """**set_glyphs** (ImageList *glyphs*)
 
 Sets the training data for the classifier to the given list of glyphs.
 
 On some non-interactive classifiers, this operation can be quite
 expensive.
 """
-      self.generate_features_on_glyphs(glyphs)
-      self.database.clear()
-      self.database.extend(glyphs)
-      self.instantiate_from_images(self.database, self.normalize)
+        self.generate_features_on_glyphs(glyphs)
+        self.database.clear()
+        self.database.extend(glyphs)
+        self.instantiate_from_images(self.database, self.normalize)
 
-   def merge_glyphs(self, glyphs):
-      """**merge_glyphs** (ImageList *glyphs*)
+    def merge_glyphs(self, glyphs):
+        """**merge_glyphs** (ImageList *glyphs*)
 
 Adds the given glyphs to the current set of training data.
 
 On some non-interactive classifiers, this operation can be quite
 expensive."""
-      self.generate_features_on_glyphs(glyphs)
-      self.database.extend(glyphs)
-      self.instantiate_from_images(self.database, self.normalize)
+        self.generate_features_on_glyphs(glyphs)
+        self.database.extend(glyphs)
+        self.instantiate_from_images(self.database, self.normalize)
 
-   def clear_glyphs(self):
-      """**clear_glyphs** ()
+    def clear_glyphs(self):
+        """**clear_glyphs** ()
 
 Removes all training data from the classifier.
 """
-      self.database.clear()
+        self.database.clear()
 
-   def load_settings(self, filename):
-      """**load_settings** (FileOpen *filename*)
+    def load_settings(self, filename):
+        """**load_settings** (FileOpen *filename*)
 
 Loads classifier-specific settings from the given filename.  The
 format of this file is entirely dependent on the concrete classifier
 type."""
-      _Classifier.load_settings(self, filename)
-      self.instantiate_from_images(self.database, self.normalize)
+        _Classifier.load_settings(self, filename)
+        self.instantiate_from_images(self.database, self.normalize)
 
-   ########################################
-   # AUTOMATIC CLASSIFICATION
-   # (most of this is implemented in the base class, _Classifier)
-   def guess_glyph_automatic(self, glyph):
-      """(id_name, confidencemap) **guess_glyph_automatic** (Image *glyph*)
+    ########################################
+    # AUTOMATIC CLASSIFICATION
+    # (most of this is implemented in the base class, _Classifier)
+    def guess_glyph_automatic(self, glyph):
+        """(id_name, confidencemap) **guess_glyph_automatic** (Image *glyph*)
 
 Classifies the given *glyph* without setting its classification.  The
 return value is a tuple of the form ``(id_name,confidencemap)``, where
@@ -599,142 +625,144 @@ map of the form `confidence`_ listing the confidences of the main id.
 
 .. _confidence: #confidence
 """
-      self.generate_features(glyph)
-      return self.classify(glyph)
+        self.generate_features(glyph)
+        return self.classify(glyph)
 
-   def _classify_automatic_impl(self, glyph):
-      return self.classify(glyph)
+    def _classify_automatic_impl(self, glyph):
+        return self.classify(glyph)
+
 
 class InteractiveClassifier(_Classifier):
-   def __init__(self, database=[], perform_splits=True):
-      """**InteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
+    def __init__(self, database=[], perform_splits=True):
+        """**InteractiveClassifier** (ImageList *database* = ``[]``, bool *perform_splits* = ``True``)
 
 Creates a new classifier instance.
 
 *database*
-        Must be a list (or Python interable) containing glyphs to use
-        as training data for the classifier.
+          Must be a list (or Python interable) containing glyphs to use
+          as training data for the classifier.
 
-        Any images in the list that were manually classified (have
-	classification_state == MANUAL) will be used as training data
-	for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
-	classified images will be ignored.
+          Any images in the list that were manually classified (have
+  classification_state == MANUAL) will be used as training data
+  for the classifier.  Any UNCLASSIFIED or AUTOMATICALLY
+  classified images will be ignored.
 
-	When initializing a noninteractive classifier, the database
-	*must* be non-empty.
+  When initializing a noninteractive classifier, the database
+  *must* be non-empty.
 
 *perform_splits*
-	  If ``perform_splits`` is ``True``, glyphs trained with names
-	  beginning with ``_split.`` are run through a given splitting
-	  algorithm.  For instance, glyphs that need to be broken into
-	  upper and lower halves for further classification of those
-	  parts would be trained as ``_split.splity``.  When the
-	  automatic classifier encounters glyphs that most closely
-	  match those trained as ``_split``, it will perform the
-	  splitting algorithm and then continue to recursively
-	  classify its parts.
+        If ``perform_splits`` is ``True``, glyphs trained with names
+        beginning with ``_split.`` are run through a given splitting
+        algorithm.  For instance, glyphs that need to be broken into
+        upper and lower halves for further classification of those
+        parts would be trained as ``_split.splity``.  When the
+        automatic classifier encounters glyphs that most closely
+        match those trained as ``_split``, it will perform the
+        splitting algorithm and then continue to recursively
+        classify its parts.
 
-	  The `splitting algorithms`__ are documented in the plugin documentation.
+        The `splitting algorithms`__ are documented in the plugin documentation.
 
 .. __: plugins.html#segmentation
 
-          New splitting algorithms can be created by `writing plugin`__ methods
-          in the category ``Segmentation``.  
+                New splitting algorithms can be created by `writing plugin`__ methods
+                in the category ``Segmentation``.
 
 .. __: writing_plugins.html
 
-      """
-      self._database = util.CallbackSet()
-      self.set_glyphs(database)
-      if perform_splits:
-         self._do_splits = self.__class__._do_splits_impl
-      else:
-         self._do_splits = self.__class__._do_splits_null
-      self._perform_splits = perform_splits
-      self._display = None
-      self.confidence_types = [CONFIDENCE_DEFAULT]
+        """
+        self._database = util.CallbackSet()
+        self.set_glyphs(database)
+        if perform_splits:
+            self._do_splits = self.__class__._do_splits_impl
+        else:
+            self._do_splits = self.__class__._do_splits_null
+        self._perform_splits = perform_splits
+        self._display = None
+        self.confidence_types = [CONFIDENCE_DEFAULT]
 
-   def __del__(self):
-      # Seems redundant, but this triggers a callback to the GUI, if running.
-      del self._database
+    def __del__(self):
+        # Seems redundant, but this triggers a callback to the GUI, if running.
+        del self._database
 
-   def is_interactive():
-      return True
-   is_interactive = staticmethod(is_interactive)
+    def is_interactive():
+        return True
 
-   ########################################
-   # BASIC DATABASE MANIPULATION FUNCTIONS
-   def get_glyphs(self):
-      return self.database
+    is_interactive = staticmethod(is_interactive)
 
-   def set_glyphs(self, glyphs):
-      glyphs = util.make_sequence(glyphs)
-      self.clear_glyphs()
-      self.generate_features_on_glyphs(glyphs)
-      self.database.extend(glyphs)
+    ########################################
+    # BASIC DATABASE MANIPULATION FUNCTIONS
+    def get_glyphs(self):
+        return self.database
 
-   def merge_glyphs(self, glyphs):
-      glyphs = util.make_sequence(glyphs)
-      self.generate_features_on_glyphs(glyphs)
-      self.database.extend(glyphs)
+    def set_glyphs(self, glyphs):
+        glyphs = util.make_sequence(glyphs)
+        self.clear_glyphs()
+        self.generate_features_on_glyphs(glyphs)
+        self.database.extend(glyphs)
 
-   def clear_glyphs(self):
-      self.database.clear()
+    def merge_glyphs(self, glyphs):
+        glyphs = util.make_sequence(glyphs)
+        self.generate_features_on_glyphs(glyphs)
+        self.database.extend(glyphs)
 
-   ########################################
-   # AUTOMATIC CLASSIFICATION
-   def _classify_automatic_impl(self, glyph):
-      if len(self.database) == 0:
-         raise ClassifierError(
-            "Cannot classify using an empty production database.")
-      for child in glyph.children_images:
-         if child in self.database:
-            self.database.remove(child)
-      return self.classify_with_images(self.database, glyph)
+    def clear_glyphs(self):
+        self.database.clear()
 
-   def guess_glyph_automatic(self, glyph):
-      if len(self.database):
-         self.generate_features(glyph)
-         return self.classify_with_images(self.database, glyph)
-      else:
-         return [(0.0, 'unknown')], {}
+    ########################################
+    # AUTOMATIC CLASSIFICATION
+    def _classify_automatic_impl(self, glyph):
+        if len(self.database) == 0:
+            raise ClassifierError(
+                "Cannot classify using an empty production database.")
+        for child in glyph.children_images:
+            if child in self.database:
+                self.database.remove(child)
+        return self.classify_with_images(self.database, glyph)
 
-   ########################################
-   # MANUAL CLASSIFICATION
-   def classify_glyph_manual(self, glyph, id):
-      """**classify_glyph_manual** (Image *glyph*, String *id*)
+    def guess_glyph_automatic(self, glyph):
+        if len(self.database):
+            self.generate_features(glyph)
+            return self.classify_with_images(self.database, glyph)
+        else:
+            return [(0.0, 'unknown')], {}
+
+    ########################################
+    # MANUAL CLASSIFICATION
+    def classify_glyph_manual(self, glyph, id):
+        """**classify_glyph_manual** (Image *glyph*, String *id*)
 
 Sets the classification of the given *glyph* to the given *id* and
 then adds the glyph to the training data.  Call this function when the
 end user definitively knows the identity of the glyph.
 
 *glyph*
-	The glyph to classify.
+  The glyph to classify.
 
 *id*
-	The class name.
+  The class name.
 
 .. note::
-   Here *id* is a simple string, not of the `id_name`_ format, since
-   the confidence of a manual classification is always 1.0."""
-      # Deal with grouping
-      if id.startswith('_group'):
-         raise ClassifierError(
-            "You must select more than one connected component " +
-            "to create a group")
+ Here *id* is a simple string, not of the `id_name`_ format, since
+ the confidence of a manual classification is always 1.0."""
+        # Deal with grouping
+        if id.startswith('_group'):
+            raise ClassifierError(
+                "You must select more than one connected component " +
+                "to create a group")
 
-      removed = {}
-      for child in glyph.children_images:
-         removed[child] = None
-         if child in self.database:
-            self.database.remove(child)
-      glyph.classify_manual([(1.0, id)])
-      self.generate_features(glyph)
-      self.database.append(glyph)
-      return self._do_splits(self, glyph), list(removed.keys())
+        removed = {}
+        for child in glyph.children_images:
+            removed[child] = None
+            if child in self.database:
+                self.database.remove(child)
+        glyph.classify_manual([(1.0, id)])
+        self.generate_features(glyph)
+        self.database.append(glyph)
+        return self._do_splits(self, glyph), list(removed.keys())
 
-   def classify_list_manual(self, glyphs, id):
-      """**classify_list_manual** (ImageList *glyphs*, String *id*)
+    def classify_list_manual(self, glyphs, id):
+        """**classify_list_manual** (ImageList *glyphs*, String *id*)
 
 Sets the classification of the given *glyphs* to the given *id* and
 then adds the glyphs to the training data.  Call this function when the
@@ -746,152 +774,157 @@ data.  This is useful for characters that always appear with multiple
 connnected components, such as the lower-case *i*.
 
 *glyphs*
-	The glyphs to classify.
+  The glyphs to classify.
 
 *id*
-	The class name.
+  The class name.
 
 .. note::
-   Here *id* is a simple string, not of the `id_name`_ format, since
-   the confidence of a manual classification is always 1.0."""
-      if id.startswith('_group'):
-         if len(glyphs) > 1:
-            import image_utilities
-            parts = id.split('.')
-            sub = '.'.join(parts[1:])
-            union = image_utilities.union_images(glyphs)
-            for glyph in glyphs:
-               if glyph.nrows > 2 and glyph.ncols > 2:
-                  glyph.classify_heuristic('_group._part.' + sub)
-                  self.generate_features(glyph)
-            added, removed = self.classify_glyph_manual(union, sub)
-            #added.append(union)  # this would lead to doublets
-            return added, removed
-         else:
-            # grouping a single glyph corrupts the classifier_glyph.xml file
-            raise ClassifierError("Grouping of only a single glyph is not allowed.")
+ Here *id* is a simple string, not of the `id_name`_ format, since
+ the confidence of a manual classification is always 1.0."""
+        if id.startswith('_group'):
+            if len(glyphs) > 1:
+                import image_utilities
+                parts = id.split('.')
+                sub = '.'.join(parts[1:])
+                union = image_utilities.union_images(glyphs)
+                for glyph in glyphs:
+                    if glyph.nrows > 2 and glyph.ncols > 2:
+                        glyph.classify_heuristic('_group._part.' + sub)
+                        self.generate_features(glyph)
+                added, removed = self.classify_glyph_manual(union, sub)
+                # added.append(union)  # this would lead to doublets
+                return added, removed
+            else:
+                # grouping a single glyph corrupts the classifier_glyph.xml file
+                raise ClassifierError(
+                    "Grouping of only a single glyph is not allowed.")
 
-      added = []
-      removed = set()
-      for glyph in glyphs:
-         for child in glyph.children_images:
-            removed.add(child)
+        added = []
+        removed = set()
+        for glyph in glyphs:
+            for child in glyph.children_images:
+                removed.add(child)
 
-      new_glyphs = []
-      for glyph in glyphs:
-         # Don't re-insert removed children glyphs
-         if glyph not in removed:
-            if glyph not in self.database:
-               self.generate_features(glyph)
-               new_glyphs.append(glyph)
-            glyph.classify_manual([(1.0, id)])
-            added.extend(self._do_splits(self, glyph))
-      self.database.extend(new_glyphs)
-      return added, list(removed)
+        new_glyphs = []
+        for glyph in glyphs:
+            # Don't re-insert removed children glyphs
+            if glyph not in removed:
+                if glyph not in self.database:
+                    self.generate_features(glyph)
+                    new_glyphs.append(glyph)
+                glyph.classify_manual([(1.0, id)])
+                added.extend(self._do_splits(self, glyph))
+        self.database.extend(new_glyphs)
+        return added, list(removed)
 
-   def classify_and_update_list_manual(self, glyphs, *args, **kwargs):
-      """**classify_and_update_list_manual** (ImageList *glyphs*, Function
+    def classify_and_update_list_manual(self, glyphs, *args, **kwargs):
+        """**classify_and_update_list_manual** (ImageList *glyphs*, Function
 *grouping_function* = ``None``, Function *evaluate_function* = ``None``,
 int *max_size* = 5)
 
 A convenience wrapper around group_list_automatic_ that returns
 a list of glyphs that is already updated for splitting and grouping."""
-      added, removed = self.classify_list_manual(glyphs, *args, **kwargs)
-      return self._update_after_classification(glyphs, added, removed)
+        added, removed = self.classify_list_manual(glyphs, *args, **kwargs)
+        return self._update_after_classification(glyphs, added, removed)
 
-   def add_to_database(self, glyphs):
-      """**add_to_database** (ImageList *glyphs*)
+    def add_to_database(self, glyphs):
+        """**add_to_database** (ImageList *glyphs*)
 
 Adds the given glyph (or list of glyphs) to the classifier training data.  Will not add duplicates
 to the training data.  Unlike classify_glyph_manual_, no grouping support is performed.
 """
-      glyphs = util.make_sequence(glyphs)
-      new_glyphs = []
-      for glyph in glyphs:
-         if (glyph.classification_state == core.MANUAL and
-             not glyph in self.database):
-            self.generate_features(glyph)
-            new_glyphs.append(glyph)
-      self.database.extend(new_glyphs)
+        glyphs = util.make_sequence(glyphs)
+        new_glyphs = []
+        for glyph in glyphs:
+            if (glyph.classification_state == core.MANUAL and
+                    not glyph in self.database):
+                self.generate_features(glyph)
+                new_glyphs.append(glyph)
+        self.database.extend(new_glyphs)
 
-   def remove_from_database(self, glyphs):
-      """**remove_from_database** (ImageList *glyphs*)
+    def remove_from_database(self, glyphs):
+        """**remove_from_database** (ImageList *glyphs*)
 
 Removes the given glyphs from the classifier training data.  Ignores silently
 if a given glyph is not in the training data.
 """
-      glyphs = util.make_sequence(glyphs)
-      for glyph in glyphs:
-         if glyph in self.database:
-            self.database.remove(glyph)
+        glyphs = util.make_sequence(glyphs)
+        for glyph in glyphs:
+            if glyph in self.database:
+                self.database.remove(glyph)
 
-   def display(self, current_database=[], context_image=None, symbol_table=[]):
-      """**display** (ImageList *current_database* = ``[]``, Image
+    def display(self, current_database=[], context_image=None, symbol_table=[]):
+        """**display** (ImageList *current_database* = ``[]``, Image
 *context_image* = ``None``, List *symbol_table* = ``[]``)
 
 Displays the `interactive classifier window`__, which is where manual
 training usually takes place.
 
 *current_database*
-  A list of glyphs yet to be trained.
+A list of glyphs yet to be trained.
 
 *context_image*
-  An image of the page where the glyphs in *current_database* came
-  from.
+An image of the page where the glyphs in *current_database* came
+from.
 
 *symbol_table*
-  A set of id names to insert by default into the symbol table.
+A set of id names to insert by default into the symbol table.
 
 .. __: gui.html#interactive-classifier-window"""
-      if has_gui.gui and self._display is None:
-         self._display = has_gui.gui.ShowClassifier(
-            self, current_database, context_image, symbol_table)
-      else:
-         self._display.Show(1)
-      return self._display
+        if has_gui.gui and self._display is None:
+            self._display = has_gui.gui.ShowClassifier(
+                self, current_database, context_image, symbol_table)
+        else:
+            self._display.Show(1)
+        return self._display
 
-   def set_display(self, display):
-      self._display = display
+    def set_display(self, display):
+        self._display = display
+
 
 ########################################
 # GROUPING UTILITIES
 
 class BasicGroupingFunction:
-   def __init__(self, threshold):
-      self._threshold = threshold
+    def __init__(self, threshold):
+        self._threshold = threshold
 
-   def __call__(self, a, b):
-      return Fudge(a, self._threshold).intersects(b)
+    def __call__(self, a, b):
+        return Fudge(a, self._threshold).intersects(b)
+
 
 class ShapedGroupingFunction:
-   def __init__(self, threshold):
-      from gamera.plugins import structural
-      self._function = structural.shaped_grouping_function
-      self._threshold = threshold
+    def __init__(self, threshold):
+        from gamera.plugins import structural
+        self._function = structural.shaped_grouping_function
+        self._threshold = threshold
 
-   def __call__(self, a, b):
-      return self._function(a, b, self._threshold)
+    def __call__(self, a, b):
+        return self._function(a, b, self._threshold)
+
 
 class BoundingBoxGroupingFunction:
-   def __init__(self, threshold):
-      from gamera.plugins import structural
-      self._function = structural.bounding_box_grouping_function
-      self._threshold = threshold
+    def __init__(self, threshold):
+        from gamera.plugins import structural
+        self._function = structural.bounding_box_grouping_function
+        self._threshold = threshold
 
-   def __call__(self, a, b):
-      return self._function(a, b, self._threshold)
+    def __call__(self, a, b):
+        return self._function(a, b, self._threshold)
+
 
 def average_bb_distance(ccs):
-   """Calculates the average distance between the bounding boxes
+    """Calculates the average distance between the bounding boxes
 in the given list of ccs."""
-   average = 0
-   for i, cc in enumerate(ccs):
-      minimum = None
-      for j in range(i + 1, len(ccs)):
-         distance = cc.distance_bb(ccs[j])
-         if distance < minimum or minimum is None:
-            minimum = distance
-      if not minimum is None:
-         average += minimum
-   average /= float(len(ccs))
-   return average
+    average = 0
+    for i, cc in enumerate(ccs):
+        minimum = None
+        for j in range(i + 1, len(ccs)):
+            distance = cc.distance_bb(ccs[j])
+            if distance < minimum or minimum is None:
+                minimum = distance
+        if not minimum is None:
+            average += minimum
+    average /= float(len(ccs))
+    return average
