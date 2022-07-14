@@ -97,13 +97,13 @@ namespace Gamera {
     }
     size_t n = PyList_Size(list);
     size_t j = 1;
-    while (j < n && PyObject_Compare(PyList_GET_ITEM(list, j - 1), PyList_GET_ITEM(list, j)) > -1)
+    while (j < n && PyObject_RichCompareBool(PyList_GET_ITEM(list, j - 1), PyList_GET_ITEM(list, j), Py_GE))
       ++j;
     if (j >= n)
       return 0;
     size_t l = 0;
     PyObject* tmp = PyList_GET_ITEM(list, j);
-    while (PyObject_Compare(PyList_GET_ITEM(list, l), tmp) > -1)
+    while (PyObject_RichCompareBool(PyList_GET_ITEM(list, l), tmp, Py_GE))
       ++l;
   
     PyList_SET_ITEM(list, j, PyList_GET_ITEM(list, l));

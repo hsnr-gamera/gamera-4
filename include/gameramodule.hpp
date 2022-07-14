@@ -1113,6 +1113,7 @@ inline PyObject* create_ImageInfoObject(ImageInfo* x) {
   return (PyObject*)o;
 }
 
+/*
 inline int PyObject_Compare(PyObject* o1,PyObject* o2) {
 	if (PyObject_RichCompareBool(o1, o2, Py_EQ) == 1) {
 		return 0;
@@ -1122,6 +1123,7 @@ inline int PyObject_Compare(PyObject* o1,PyObject* o2) {
 		return -1;
 	}
 }
+*/
 
 #ifndef GAMERACORE_INTERNAL
 inline PyObject* ImageList_to_python(std::list<Image*>* image_list) {
