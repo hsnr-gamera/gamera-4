@@ -163,12 +163,12 @@ a list of glyphs that is already updated for splitting and grouping."""
    def _pregroup(self, glyphs, function):
       from gamera import graph
       G = graph.Undirected()
-      # assert G.add_nodes(glyphs)
+      G.add_nodes(glyphs)
+      #assert G.add_nodes(glyphs)
       #  TODO only for testing
-      for glyph in glyphs:
-         print(glyph)
-         assert G.add_node(glyph)
-         assert G.has_node(glyph)
+      #for glyph in glyphs:
+      #   assert G.add_node(glyph)
+      #   assert G.has_node(glyph)
 
       progress = util.ProgressFactory("Pre-grouping glyphs...", len(glyphs))
       try:

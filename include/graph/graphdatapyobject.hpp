@@ -64,7 +64,12 @@ struct GraphDataPyObject: public GraphData {
    }
 
    int compare(const GraphData& b) const override {
-	  return PyObject_Compare(data, dynamic_cast<const GraphDataPyObject &>(b).data);
+     if (PyObject_RichCompareBool(data, dynamic_cast<const GraphDataPyObject &>(b).data, Py_LT))
+       return -1;
+     else if (PyObject_RichCompareBool(data, dynamic_cast<const GraphDataPyObject &>(b).data, Py_GT))
+       return 1;
+     else
+       return 0;
    }
 
 
