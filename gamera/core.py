@@ -638,7 +638,7 @@ class Cc(gameracore.Cc, ImageBase):
       return self.__eq__(other) or self.__gt__(other)
 
    def __lt__(self, other):
-      return not self.__gt__(other)
+      return not self.__ge__(other)
 
    def __le__(self, other):
       return self.__eq__(other) or not self.__gt__(other)
