@@ -356,7 +356,7 @@ class PageMultiImageDisplay(ExtendedMultiImageDisplay):
          self.updating = True
          last_index = matches[-1]
          for index in matches:
-            row = index / self.cols
+            row = index // self.cols
             col = index % self.cols
             if index == last_index:
                self.updating = False
@@ -734,7 +734,7 @@ class ClassifierFrame(ImageFrameBase):
          if not aui:
             if not self.splitterhr0.IsSplit():
                self.splitterhr0.SplitHorizontally(
-                  self.splitterhr1, self.single_iw, self._frame.GetSize()[1] / 2)
+                  self.splitterhr1, self.single_iw, self._frame.GetSize()[1] // 2)
                if self.splitterhr1.IsSplit():
                   self.splitterhr1.SetSashPosition(self._frame.GetSize()[1] / 4)
                self.single_iw.Show()
@@ -755,7 +755,7 @@ class ClassifierFrame(ImageFrameBase):
          try:
             self.splitterhr1.SplitHorizontally(
                self.class_iw, self.multi_iw,
-               self.splitterhr1.GetSize()[1] / 2)
+               self.splitterhr1.GetSize()[1] // 2)
             self.class_iw.Show(True)
             self.class_iw.id.sort_images()
             self.multi_iw.Show(True)
@@ -1750,7 +1750,7 @@ class ClassifierFrame(ImageFrameBase):
          else:
             self.splitterhl.SplitHorizontally(
                self.symbol_editor, self.rule_engine_runner,
-               self._frame.GetSize()[1] / 2)
+               self._frame.GetSize()[1] // 2)
             self.rule_engine_runner.Show()
 
    def _OnOpenRuleModule(self, event):
@@ -1761,7 +1761,7 @@ class ClassifierFrame(ImageFrameBase):
       if not aui and not self.splitterhl.IsSplit():
          self.splitterhl.SplitHorizontally(
             self.symbol_editor, self.rule_engine_runner,
-            self._frame.GetSize()[1] / 2)
+            self._frame.GetSize()[1] // 2)
          self.rule_engine_runner.Show()
 
    ########################################
