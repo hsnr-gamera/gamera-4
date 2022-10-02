@@ -105,7 +105,11 @@ static PyMethodDef region_methods[] = {
 };
 
 void init_RegionType(PyObject* module_dict) {
-  Py_TYPE(&RegionType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&RegionType, &PyType_Type);
+  #else
+    Py_TYPE(&RegionType) = &PyType_Type;
+  #endif
   RegionType.tp_name =  "gameracore.Region";
   RegionType.tp_basicsize = sizeof(RegionObject);
   RegionType.tp_dealloc = region_dealloc;

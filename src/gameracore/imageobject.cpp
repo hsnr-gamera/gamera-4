@@ -1950,7 +1950,11 @@ static PyMethodDef mlcc_methods[] = {
 };
 
 void init_ImageType(PyObject *module_dict) {
-	Py_TYPE(&ImageType) = &PyType_Type;
+	#ifdef Py_SET_TYPE
+		Py_SET_TYPE(&ImageType, &PyType_Type);
+	#else
+		Py_TYPE(&ImageType) = &PyType_Type;
+	#endif
 	ImageType.tp_name =  "gameracore.Image";
 	ImageType.tp_basicsize = sizeof(ImageObject);
 	ImageType.tp_dealloc = image_dealloc;
@@ -1994,7 +1998,11 @@ void init_ImageType(PyObject *module_dict) {
 	PyType_Ready(&ImageType);
 	PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType);
 	
-	Py_TYPE(&SubImageType) = &PyType_Type;
+	#ifdef Py_SET_TYPE
+		Py_SET_TYPE(&SubImageType, &PyType_Type);
+	#else
+		Py_TYPE(&SubImageType) = &PyType_Type;
+	#endif
 	SubImageType.tp_name =  "gameracore.SubImage";
 	SubImageType.tp_basicsize = sizeof(SubImageObject);
 	SubImageType.tp_dealloc = image_dealloc;
@@ -2023,7 +2031,11 @@ void init_ImageType(PyObject *module_dict) {
 	PyType_Ready(&SubImageType);
 	PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType);
 	
-	Py_TYPE(&CCType) = &PyType_Type;
+	#ifdef Py_SET_TYPE
+		Py_SET_TYPE(&CCType, &PyType_Type);
+	#else
+		Py_TYPE(&CCType) = &PyType_Type;
+	#endif
 	CCType.tp_name =  "gameracore.Cc";
 	CCType.tp_basicsize = sizeof(CCObject);
 	CCType.tp_dealloc = image_dealloc;
@@ -2054,7 +2066,11 @@ void init_ImageType(PyObject *module_dict) {
 	PyType_Ready(&CCType);
 	PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType);
 	
-	Py_TYPE(&MLCCType) = &PyType_Type;
+	#ifdef Py_SET_TYPE
+		Py_SET_TYPE(&MLCCType, &PyType_Type);
+	#else
+		Py_TYPE(&MLCCType) = &PyType_Type;
+	#endif
 	MLCCType.tp_name =  "gameracore.MlCc";
 	MLCCType.tp_basicsize = sizeof(MLCCObject);
 	MLCCType.tp_dealloc = image_dealloc;

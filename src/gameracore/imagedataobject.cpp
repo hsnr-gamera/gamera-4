@@ -163,7 +163,11 @@ static PyMethodDef imagedata_methods[] = {
 };
 
 void init_ImageDataType(PyObject* module_dict) {
-  Py_TYPE(&ImageDataType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&ImageDataType, &PyType_Type);
+  #else
+    Py_TYPE(&ImageDataType) = &PyType_Type;
+  #endif
   ImageDataType.tp_name =  "gameracore.ImageData";
   ImageDataType.tp_basicsize = sizeof(ImageDataObject);
   ImageDataType.tp_dealloc = imagedata_dealloc;

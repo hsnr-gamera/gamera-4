@@ -961,7 +961,11 @@ PyGetSetDef graph_getset[] = {
 
 // -----------------------------------------------------------------------------
 bool init_GraphType(PyObject* d) {
-    Py_TYPE(&GraphType) = &PyType_Type;
+    #ifdef Py_SET_TYPE
+      Py_SET_TYPE(&GraphType, &PyType_Type);
+    #else
+      Py_TYPE(&GraphType) = &PyType_Type;
+    #endif
     GraphType.tp_name =  "gamera.graph.Graph";
     GraphType.tp_basicsize = sizeof(GraphObject);
     GraphType.tp_dealloc = graph_dealloc;

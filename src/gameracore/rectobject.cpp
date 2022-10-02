@@ -617,7 +617,11 @@ static PyMethodDef rect_methods[] = {
 
 
 void init_RectType(PyObject* module_dict) {
-  Py_TYPE(&RectType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&RectType, &PyType_Type);
+  #else
+    Py_TYPE(&RectType) = &PyType_Type;
+  #endif
   RectType.tp_name =  "gameracore.Rect";
   RectType.tp_basicsize = sizeof(RectObject);
   RectType.tp_dealloc = rect_dealloc;

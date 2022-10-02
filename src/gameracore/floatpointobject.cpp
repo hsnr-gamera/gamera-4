@@ -208,7 +208,11 @@ void init_FloatPointType(PyObject* module_dict) {
   floatpoint_number_methods.nb_positive = floatpoint_positive;
   floatpoint_number_methods.nb_absolute = floatpoint_absolute;
 
-  Py_TYPE(&FloatPointType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&FloatPointType, &PyType_Type);
+  #else
+    Py_TYPE(&FloatPointType) = &PyType_Type;
+  #endif
   FloatPointType.tp_name =  "gameracore.FloatPoint";
   FloatPointType.tp_basicsize = sizeof(FloatPointObject);
   FloatPointType.tp_dealloc = floatpoint_dealloc;

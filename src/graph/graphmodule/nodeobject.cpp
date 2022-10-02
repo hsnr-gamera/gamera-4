@@ -201,7 +201,11 @@ PyGetSetDef node_getset[] = {
 
 // -----------------------------------------------------------------------------
 void init_NodeType() {
-    Py_TYPE(&NodeType) = &PyType_Type;
+    #ifdef Py_SET_TYPE
+      Py_SET_TYPE(&NodeType, &PyType_Type);
+    #else
+      Py_TYPE(&NodeType) = &PyType_Type;
+    #endif
     NodeType.tp_name =  "gamera.graph.Node";
     NodeType.tp_basicsize = sizeof(NodeObject);
     NodeType.tp_dealloc = node_dealloc;

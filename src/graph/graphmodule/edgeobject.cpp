@@ -241,7 +241,11 @@ PyGetSetDef edge_getset[] = {
 
 // -----------------------------------------------------------------------------
 void init_EdgeType() {
-	Py_TYPE(&EdgeType) = &PyType_Type;
+	#ifdef Py_SET_TYPE
+		Py_SET_TYPE(&EdgeType, &PyType_Type);
+	#else
+		Py_TYPE(&EdgeType) = &PyType_Type;
+	#endif
 	EdgeType.tp_name =  "gamera.graph.Edge";
 	EdgeType.tp_basicsize = sizeof(EdgeObject);
 	EdgeType.tp_dealloc = edge_dealloc;
