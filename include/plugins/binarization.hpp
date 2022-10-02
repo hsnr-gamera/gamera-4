@@ -1024,8 +1024,9 @@ Image* brink_threshold(const T& image)
   for (i = 1; i < 256; ++i)         // get cumulative sum
     for (j = 0; j < 256; ++j)
       tmpMat1[i][j] = tmpMat1[i-1][j] + tmp4[i][j];
-    for (i = 0; i < 256; ++i)       // set to diagonal
-      tmpVec1[i] = tmpMat1[i][i];   // tmpVec1 is now the diagonal of the cumulative sum of tmp4
+
+  for (i = 0; i < 256; ++i)       // set to diagonal
+    tmpVec1[i] = tmpMat1[i][i];   // tmpVec1 is now the diagonal of the cumulative sum of tmp4
  
 
   // same operation but for background moment, NOTE: tmp1 through tmp4 get overwritten
