@@ -1,0 +1,65 @@
+name: CI
+
+on:
+- push
+- pull_request
+
+jobs:
+  main:
+    strategy:
+      matrix:
+        python: [3.8, 3.9, '3.10']
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+    - name: apt update
+      run:
+        sudo apt-get update
+    - name: apt install GCC
+      run:
+        sudo apt-get install gcc
+    - name: prepare pip
+      run:
+        python -m pip install --upgrade pip wheel
+    - name: install apt deps
+      run:
+        sudo apt-get install
+          libwebkit2gtk-4.0-dev
+          libjpeg-dev
+          libtiff-dev
+          libgtk-3-dev
+          libgtk3.0
+          autoconf
+          build-essential
+          libsdl1.2-dev
+          libgstreamer-plugins-base1.0-dev
+          freeglut3
+          libpng16-16
+          libpng-dev
+          freeglut3
+          freeglut3-dev
+          libsm-dev
+          libnotify-dev
+          dpkg-dev
+          build-essential
+          libxtst-dev
+    - name: build Gamera
+      run: |
+        python setup.py --nowx build
+    - name: install Gamera
+      run: |
+        python setup.py --nowx install
+    # The directory seems to be required, otherwise we get some errors:
+    #    gamera.gamera_xml.XMLError: Cannot create a file at '/home/runner/work/gamera-4/gamera-4/tmp'
+    - name: prepare tests
+      run: |
+        python -m pip install --upgrade pytest docutils pygments
+        mkdir tmp
+    - name: run tests
+      run:
+        pytest
