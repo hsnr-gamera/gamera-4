@@ -43,4 +43,14 @@ files are modified:
      fix for gcc 4.7. This change is already included in the
      development branch of VIGRA
 
+ - functortraits.hxx
+     remove deprecated std::binder1st and std::binder2nd. This
+     change has been backported from the development branch of
+     VIGRA
+
+ - static_assert.hxx
+     remove unnecessary parentheses (warning in gcc 9). This
+     change has been backported from the development branch of
+     VIGRA
+
 Christoph Dalitz
