@@ -1515,7 +1515,11 @@ PyMODINIT_FUNC PyInit_knncore(void) {
     PyObject *m = PyModule_Create(&moduledef);
     PyObject* d = PyModule_GetDict(m);
 
-    Py_TYPE(&KnnType) = &PyType_Type;
+    #ifdef Py_SET_TYPE
+      Py_SET_TYPE(&KnnType, &PyType_Type);
+    #else
+      Py_TYPE(&KnnType) = &PyType_Type;
+    #endif
     KnnType.tp_name =  "gamera.knncore.kNN";
     KnnType.tp_basicsize = sizeof(KnnObject);
     KnnType.tp_dealloc = knn_dealloc;

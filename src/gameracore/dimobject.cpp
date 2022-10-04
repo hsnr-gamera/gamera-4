@@ -124,7 +124,11 @@ static PyGetSetDef dim_getset[] = {
 
 
 void init_DimType(PyObject* module_dict) {
-  Py_TYPE(&DimType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&DimType, &PyType_Type);
+  #else
+    Py_TYPE(&DimType) = &PyType_Type;
+  #endif
   DimType.tp_name =  "gameracore.Dim";
   DimType.tp_basicsize = sizeof(DimObject);
   DimType.tp_dealloc = dim_dealloc;

@@ -121,7 +121,11 @@ PyGetSetDef kdnode_getset[] = {
 };
 
 void init_KdNodeType(PyObject* d) {
-    Py_TYPE(&KdNodeType) = &PyType_Type;
+    #ifdef Py_SET_TYPE
+      Py_SET_TYPE(&KdNodeType, &PyType_Type);
+    #else
+      Py_TYPE(&KdNodeType) = &PyType_Type;
+    #endif
     KdNodeType.tp_name =  "gamera.kdtree.KdNode";
     KdNodeType.tp_basicsize = sizeof(KdNodeObject);
     KdNodeType.tp_dealloc = kdnode_dealloc;
@@ -368,7 +372,11 @@ PyGetSetDef kdtree_getset[] = {
 };
 
 void init_KdTreeType(PyObject* d) {
-  Py_TYPE(&KdTreeType) = &PyType_Type;
+  #ifdef Py_SET_TYPE
+    Py_SET_TYPE(&KdTreeType, &PyType_Type);
+  #else
+    Py_TYPE(&KdTreeType) = &PyType_Type;
+  #endif
   KdTreeType.tp_name =  "gamera.kdtree.KdTree";
   KdTreeType.tp_basicsize = sizeof(KdTreeObject);
   KdTreeType.tp_dealloc = kdtree_dealloc;
