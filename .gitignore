@@ -1,10 +1,12 @@
 build/
+dist/
 
 gamera/__compiletime_config__.py
 gamera/__version__.py
 gamera/plugins/*.cpp
 tests/tmp/*.*
 gamera_gui
+gamera.egg-info/
 
 # IDEs
 .idea/
