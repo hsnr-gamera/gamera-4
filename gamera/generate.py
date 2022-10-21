@@ -21,17 +21,33 @@
 import platform
 
 from .pyplate import *
-from os import path
-import os
+from os import path, stat
 import sys
-import re
-from distutils.core import Extension
-from distutils.dep_util import newer
-from distutils import sysconfig
-from gamera import paths, args_wrappers
+from setuptools.extension import Extension
 
 global std_import
 global plugins_to_ignore
+
+def newer(source, target):
+    """Return true if 'source' exists and is more recently modified than
+    'target', or if 'source' exists and 'target' doesn't.  Return false if
+    both exist and 'target' is the same age or younger than 'source'.
+    Raise RuntimeError if 'source' does not exist.
+    """
+    if not path.exists(source):
+        raise RuntimeError("file '%s' does not exist" % path.abspath(source))
+    if not path.exists(target):
+        return 1
+
+    from stat import ST_MTIME
+
+    mtime1 = stat(source)[ST_MTIME]
+    mtime2 = stat(target)[ST_MTIME]
+
+    return mtime1 > mtime2
+
+
+# newer ()
 
 # magic_import and magic_import_setup
 #
@@ -313,11 +329,9 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
      include_dirs.extend(gamera_setup.get_gamera_include_dirs())
   if not regenerate:
     for header in plugin_module.module.cpp_headers:
-      found_header = 0
       for include_dir in include_dirs:
         header_filename = path.join(include_dir, header)
         if path.exists(header_filename):
-          found_header = 1
           if newer(header_filename, cpp_filename):
             regenerate = True
             break
@@ -331,16 +345,12 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
   else:
     print("skipping wrapper generation for", module_name, "plugin (output up-to-date)")
 
-  # make the a distutils extension class for this plugin
+  # make the a setupptols extension class for this plugin
   cpp_files = [cpp_filename]
   for file in plugin_module.module.cpp_sources:
     cpp_files.append(file)
 
   extra_libraries = plugin_module.module.extra_libraries
-  # This is to make up for a bug in distutils.
-  if '--compiler=mingw32' in sys.argv or not sys.platform == 'win32':
-     if "stdc++" not in extra_libraries:
-        extra_libraries.append("stdc++")
 
   return Extension(location + "._" + module_name, cpp_files,
                    include_dirs=include_dirs,

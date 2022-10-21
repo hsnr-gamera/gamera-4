@@ -23,43 +23,7 @@
 
 import sys
 import os
-import platform
 import glob
-from distutils.sysconfig import get_python_lib, get_python_inc, PREFIX
-from distutils.command import install_data
-
-# Fix RPM building
-#
-# This is a total hack to patch up an error in distutils.command.bdist_rpm
-import distutils.command.bdist_rpm
-def rpm_run(self):
-   try:
-      original_rpm_run(self)
-   except AssertionError as e:
-      if str(e).startswith("unexpected number of RPM files found"):
-         rpms = glob.glob(os.path.join(os.path.join(self.rpm_base, 'RPMS'),
-                                       "*/*.rpm"))
-         for rpm in rpms:
-            self.move_file(rpm, self.dist_dir)
-      else:
-         raise e
-original_rpm_run = distutils.command.bdist_rpm.bdist_rpm.run
-setattr(distutils.command.bdist_rpm.bdist_rpm, 'run', rpm_run)
-
-class smart_install_data(install_data.install_data):
-   def run(self):
-      install_cmd = self.get_finalized_command("install")
-      install_dir = os.path.join(getattr(install_cmd, "install_lib"), "gamera")
-      print("INSTALL DIRECTORY", install_dir)
-      output = []
-      for path, files in self.data_files:
-         if "$LIB" in path:
-            path = path[path.find("$LIB"):]
-            path = path.replace("$LIB", install_dir)
-         output.append((path, files))
-      self.data_files = output
-      return install_data.install_data.run(self)
-
 
 extras = {
    'extra_compile_args': [
@@ -74,12 +38,14 @@ extras = {
    ]
 }
 
-cmdclass = {'install_data': smart_install_data}
-if sys.platform == "darwin":
-   from gamera.mac import gamera_mac_setup
-   cmdclass['bdist_osx'] = gamera_mac_setup.bdist_osx
-   extras['extra_compile_args'].append('-Wmacro-redefined')
-elif sys.platform == "win32":
+cmdclass = {}
+# TODO change it to setuptools
+# if sys.platform == "darwin":
+#    from gamera.mac import gamera_mac_setup
+#    cmdclass['bdist_osx'] = gamera_mac_setup.bdist_osx
+#    extras['extra_compile_args'].append('-Wmacro-redefined')
+# el
+if sys.platform == "win32":
    try:
       from win32 import bdist_msi
       cmdclass['bdist_msi'] = bdist_msi.bdist_msi
@@ -109,9 +75,6 @@ if version < required_version:
    print("You are running the following Python version:")
    print(sys.version)
    sys.exit(1)
-
-lib_path = os.path.join(get_python_lib()[len(PREFIX)+1:], "gamera")
-include_path = os.path.join(get_python_inc()[len(PREFIX)+1:], "gamera")
 
 def get_plugin_filenames(path):
    """Return all of the python plugin files in a specified path. This is not
@@ -160,10 +123,8 @@ def generate_plugins(plugins, location, compiling_gamera=0):
    generate.restore_import()
    return plugin_extensions
 
+
 def get_gamera_include_dirs():
    # the "usr/local" prefix is for recent Ubunut versions, which
    # install addon modules no longer along with the python core
-   return [os.path.join(get_python_inc(), "gamera"),
-           os.path.join(get_python_inc(prefix="/usr/local"), "gamera"),
-           os.path.join(get_python_inc(), "../gamera"),
-           "/usr/include/gamera"]
+   return []

@@ -21,12 +21,11 @@
 #
 import datetime
 import glob
-import multiprocessing
 import os
 import platform
-from distutils.ccompiler import CCompiler
-from distutils.command.build_ext import build_ext
-
+from setuptools import setup
+from setuptools.extension import Extension
+from gamera import gamera_setup
 import sys
 
 # # unfortunately this does not help installing data_files
@@ -96,9 +95,6 @@ else:
     print("Compiling genetic algorithms without parallelization (OpenMP)")
 f.close()
 
-from distutils.core import setup, Extension
-from gamera import gamera_setup
-
 ##########################################
 # generate the command line startup scripts
 command_line_utils = (
@@ -152,7 +148,6 @@ scripts = [x[command_line_filename_at] for x in command_line_utils] + ['gamera_p
 
 ##########################################
 # generate the plugins
-plugin_extensions = []
 plugins = gamera_setup.get_plugin_filenames('gamera/plugins/')
 plugin_extensions = gamera_setup.generate_plugins(
     plugins, "gamera.plugins", True)
@@ -224,7 +219,7 @@ extensions = [Extension("gamera.gameracore",
 extensions.extend(plugin_extensions)
 
 ##########################################
-# Here's the basic distutils stuff
+# Here's the basic setuptools stuff
 
 # read versions from compile computer
 pythonversion = "%d.%d" % (sys.version_info[0], sys.version_info[1])
@@ -242,8 +237,7 @@ else:
                    "\tPlease ensure that Python " + pythonversion +
                    "\tare installed before proceeding.")
 
-includes = [(os.path.join(gamera_setup.include_path, path),
-             glob.glob(os.path.join("include", os.path.join(path, ext))))
+includes = [glob.glob(os.path.join("include", os.path.join(path, ext)))
             for path, ext in
             [("", "*.hpp"),
              ("plugins", "*.hpp"),
@@ -251,8 +245,7 @@ includes = [(os.path.join(gamera_setup.include_path, path),
              ("geostructs", "*.hpp"),
              ("graph", "*.hpp")]]
 
-srcfiles = [(os.path.join(gamera_setup.lib_path, path),
-             glob.glob(os.path.join(path, ext)))
+srcfiles = [(glob.glob(os.path.join(path, ext)))
             for path, ext in
             [("src/geostructs", "*.cpp"), ("src/graph", "*.cpp")]]
 
@@ -263,8 +256,7 @@ if sys.hexversion >= 0x02040000:
     data_files = includes
     package_data = {"gamera": ["test/*.tiff"]}
 else:
-    data_files = [(os.path.join(gamera_setup.lib_path, "$LIB/test"),
-                   glob.glob("gamera/test/*.tiff"))] + includes
+    data_files = [glob.glob("gamera/test/*.tiff")] + includes
     package_data = {}
 
 data_files += srcfiles
@@ -272,63 +264,7 @@ data_files += srcfiles
 if sys.platform == 'darwin':
     packages.append("gamera.mac")
 
-# https://stackoverflow.com/a/13176803
-# multithreading building
-try:
-    from concurrent.futures import ThreadPoolExecutor as Pool
-except ImportError:
-    from multiprocessing.pool import ThreadPool as LegacyPool
-
-    # To ensure the with statement works. Required for some older 2.7.x releases
-    class Pool(LegacyPool):
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            self.close()
-            self.join()
-
-
-def build_extensions(self):
-    """Function to monkey-patch
-    distutils.command.build_ext.build_ext.build_extensions
-
-    """
-    self.check_extensions_list(self.extensions)
-
-    try:
-        num_jobs = os.cpu_count()
-    except AttributeError:
-        num_jobs = multiprocessing.cpu_count()
-
-    with Pool(num_jobs) as pool:
-        pool.map(self.build_extension, self.extensions)
-
-
-def compile(self, sources, output_dir=None, macros=None, include_dirs=None, debug=0, extra_preargs=None,
-            extra_postargs=None, depends=None):
-    """Function to monkey-patch distutils.ccompiler.CCompiler"""
-    macros, objects, extra_postargs, pp_opts, build = self._setup_compile(
-        output_dir, macros, include_dirs, sources, depends, extra_postargs
-    )
-    cc_args = self._get_cc_args(pp_opts, debug, extra_preargs)
-
-    for obj in objects:
-        try:
-            src, ext = build[obj]
-        except KeyError:
-            continue
-        self._compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
-
-    # Return *all* object filenames, not just the ones we just built.
-    return objects
-
-
-build_ext.build_extensions = build_extensions
-CCompiler.compile = compile
-
-setup(cmdclass=gamera_setup.cmdclass,
-      name="gamera",
+setup(name="gamera",
       version=gamera_version,
       url="http://gamera.sourceforge.net/",
       author="Michael Droettboom and Christoph Dalitz",
@@ -338,5 +274,5 @@ setup(cmdclass=gamera_setup.cmdclass,
       packages=packages,
       scripts=scripts,
       package_data=package_data,
-      data_files=data_files,
+      data_files=data_files
       )

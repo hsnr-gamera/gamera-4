@@ -40,8 +40,7 @@ import datetime
 import os
 import shutil
 import sys
-from distutils.util import get_platform
-import subprocess
+import sysconfig
 
 import pysvn
 
@@ -105,7 +104,7 @@ def update_version(version):
     fd.close()
 
 def build(version):
-    build_dir = os.path.abspath(os.path.join(WORKING_PATH, "build", "lib.%s-%s" % (get_platform(), sys.version[0:3])))
+    build_dir = os.path.abspath(os.path.join(WORKING_PATH, "build", "lib.%s-%s" % (sysconfig.get_platform(), sys.version[0:3])))
     if "--clean" in sys.argv:
         myrmtree(os.path.join(WORKING_PATH, "build"))
         myrmtree(os.path.join(WORKING_PATH, "dist"))

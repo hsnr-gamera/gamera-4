@@ -18,16 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-
 from distutils.core import Command
-from distutils.util import get_platform
-from distutils.sysconfig import get_python_lib
 from distutils import log
 from distutils.dir_util import remove_tree, create_tree, copy_tree
 from distutils.file_util import copy_file
+import sysconfig
 from os.path import join
 import os
-import glob
 import subprocess
 import datetime
 def _run_command(exc, line):
@@ -58,7 +55,7 @@ class bdist_osx(Command):
                     "temporary directory for creating the distribution"),
                    ('plat-name=', 'p',
                     "platform name to embed in generated filenames "
-                    "(default: %s)" % get_platform()),
+                    "(default: %s)" % sysconfig.get_platform()),
                    ('dist-dir=', 'd',
                     "directory to put final built distributions in"),
 		   ('nightly','n',"Name output file according to nightly build format")
@@ -114,7 +111,6 @@ class bdist_osx(Command):
       copy_file('LICENSE', 'gamera/mac/resources/License.txt')
 
       from . import buildpkg
-      import __version__
       log.info("Building %s.pkg..." % fullname)
       pm = buildpkg.PackageMaker(fullname, version, description)
       pm.build(self.bdist_dir, "gamera/mac/resources",
