@@ -237,7 +237,7 @@ else:
                    "\tPlease ensure that Python " + pythonversion +
                    "\tare installed before proceeding.")
 
-includes = [glob.glob(os.path.join("include", os.path.join(path, ext)))
+includes = [(os.path.join(path), glob.glob(os.path.join("include", os.path.join(path, ext))))
             for path, ext in
             [("", "*.hpp"),
              ("plugins", "*.hpp"),
@@ -245,18 +245,18 @@ includes = [glob.glob(os.path.join("include", os.path.join(path, ext)))
              ("geostructs", "*.hpp"),
              ("graph", "*.hpp")]]
 
-srcfiles = [(glob.glob(os.path.join(path, ext)))
+srcfiles = [(os.path.join(path), glob.glob(os.path.join(path, ext)))
             for path, ext in
             [("src/geostructs", "*.cpp"), ("src/graph", "*.cpp")]]
 
 packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
             'gamera.toolkits', 'gamera.backport']
 
+data_files = includes
 if sys.hexversion >= 0x02040000:
-    data_files = includes
     package_data = {"gamera": ["test/*.tiff"]}
 else:
-    data_files = [glob.glob("gamera/test/*.tiff")] + includes
+    data_files += [(glob.glob("gamera/test/*.tiff"))]
     package_data = {}
 
 data_files += srcfiles
@@ -265,6 +265,7 @@ if sys.platform == 'darwin':
     packages.append("gamera.mac")
 
 setup(name="gamera",
+      cmdclass=gamera_setup.cmdclass,
       version=gamera_version,
       url="http://gamera.sourceforge.net/",
       author="Michael Droettboom and Christoph Dalitz",
@@ -273,6 +274,5 @@ setup(name="gamera",
       description=description,
       packages=packages,
       scripts=scripts,
-      package_data=package_data,
-      data_files=data_files
+      package_data=package_data
       )

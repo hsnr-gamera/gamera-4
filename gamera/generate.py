@@ -27,6 +27,8 @@ from setuptools.extension import Extension
 
 global std_import
 global plugins_to_ignore
+# we need this import for compiling
+from gamera import args_wrappers
 
 def newer(source, target):
     """Return true if 'source' exists and is more recently modified than

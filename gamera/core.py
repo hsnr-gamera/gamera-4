@@ -49,7 +49,7 @@ from types import *
 # import the classification states
 try:
    from gamera.gameracore import UNCLASSIFIED, AUTOMATIC, HEURISTIC, MANUAL
-except ImportError:
+except ImportError as err:
    raise ImportError("Couldn't import the core of Gamera.  Are you trying to start the GUI from the root of the Gamera source tree?  This confuses the Python module loading mechanism.")
 # import the pixel types
 from gamera.gameracore import ONEBIT, GREYSCALE, GREY16, RGB, FLOAT, COMPLEX
@@ -57,8 +57,7 @@ from .enums import ALL, NONIMAGE
 # import the storage types
 from gamera.gameracore import DENSE, RLE
 # import some of the basic types
-from gamera.gameracore import ImageData, Size, Dim, Point, \
-     FloatPoint, Rect, Region, RegionMap, ImageInfo, RGBPixel
+from gamera.gameracore import ImageData, Size, Dim, Point, FloatPoint, Rect, Region, RegionMap, ImageInfo, RGBPixel
 # import confidence types
 from gamera.gameracore import CONFIDENCE_DEFAULT, CONFIDENCE_KNNFRACTION, CONFIDENCE_LINEARWEIGHT, CONFIDENCE_INVERSEWEIGHT, CONFIDENCE_NUN, CONFIDENCE_NNDISTANCE, CONFIDENCE_AVGDISTANCE
 # import gamera.gameracore for subclassing

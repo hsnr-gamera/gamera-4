@@ -39,6 +39,7 @@ extras = {
 }
 
 cmdclass = {}
+
 # TODO change it to setuptools
 # if sys.platform == "darwin":
 #    from gamera.mac import gamera_mac_setup
