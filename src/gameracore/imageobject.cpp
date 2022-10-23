@@ -1995,8 +1995,12 @@ void init_ImageType(PyObject *module_dict) {
 			"  An integer value specifying the method used to store the image data.\n"
 			"  See `storage formats`__ for more information.\n\n"
 			".. __: image_types.html#storage-formats\n";
-	PyType_Ready(&ImageType);
-	PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType);
+	if(PyType_Ready(&ImageType) != 0){
+		return Py_FatalError("PyType_Ready for 'Image' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'Image' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&SubImageType, &PyType_Type);
@@ -2010,6 +2014,7 @@ void init_ImageType(PyObject *module_dict) {
 	                        Py_TPFLAGS_HAVE_GC;
 	SubImageType.tp_base = &ImageType;
 	SubImageType.tp_new = sub_image_new;
+	SubImageType.tp_traverse = image_traverse;
 	SubImageType.tp_init = (initproc) sub_image_init;
 	SubImageType.tp_getattro = PyObject_GenericGetAttr;
 	SubImageType.tp_alloc = nullptr; // PyType_GenericAlloc;
@@ -2028,8 +2033,13 @@ void init_ImageType(PyObject *module_dict) {
 			"   relative to the image origin. Hence, for all practical use cases, you must\n"
 			"   add the image offset to the coordinates, e.g.::\n\n"
 			"     subimg = SubImage(image, Point(p.x + image.offset_x, p.y + image.offset_y), dim)\n";
-	PyType_Ready(&SubImageType);
-	PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType);
+	if(PyType_Ready(&SubImageType) != 0){
+		PyErr_Print();
+		return Py_FatalError("PyType_Ready for 'SubImage' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'SubImage' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&CCType, &PyType_Type);
@@ -2046,6 +2056,7 @@ void init_ImageType(PyObject *module_dict) {
 	CCType.tp_init = (initproc) cc_init;
 	CCType.tp_getset = cc_getset;
 	CCType.tp_methods = cc_methods;
+	CCType.tp_traverse = image_traverse;
 	CCType.tp_getattro = PyObject_GenericGetAttr;
 	CCType.tp_alloc = nullptr;
 	CCType.tp_richcompare = cc_richcompare;
@@ -2063,8 +2074,12 @@ void init_ImageType(PyObject *module_dict) {
 			"  - **Cc** (Image *image*, Int *label*, Point *upper_left*, Dimensions *dimensions*)\n\n"
 			"  - **Cc** (Image *image*, Int *label*, Int *offset_y*, Int *offset_x*, Int *nrows*, Int *ncols*)\n\n"
 			"*label*\n  The pixel value used to represent this Cc.";
-	PyType_Ready(&CCType);
-	PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType);
+	if(PyType_Ready(&CCType) != 0){
+		return Py_FatalError("PyType_Ready for 'Cc' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'Cc' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&MLCCType, &PyType_Type);
@@ -2078,6 +2093,7 @@ void init_ImageType(PyObject *module_dict) {
 	                    Py_TPFLAGS_HAVE_GC;
 	MLCCType.tp_base = &ImageType;
 	MLCCType.tp_new = mlcc_new;
+	MLCCType.tp_traverse = image_traverse;
 	MLCCType.tp_init = (initproc) mlcc_init;
 	MLCCType.tp_methods = mlcc_methods;
 	MLCCType.tp_getattro = PyObject_GenericGetAttr;
@@ -2096,9 +2112,12 @@ void init_ImageType(PyObject *module_dict) {
 			"**Deprecated forms:**\n\n"
 			"  - **MlCc** (Image *image*, int *label*, Point *upper_left*, Dimensions *dimensions*)\n\n"
 			"  - **MlCc** (Image *image*, int *label*, Int *offset_y*, Int *offset_x*, Int *nrows*, Int *ncols*)\n\n";
-	PyType_Ready(&MLCCType);
-	PyDict_SetItemString(module_dict, "MlCc", (PyObject *) &MLCCType);
-	
+	if(PyType_Ready(&MLCCType) != 0){
+		return Py_FatalError("PyType_Ready for 'Cc' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "MlCc", (PyObject *) &MLCCType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'MlCc' failed");
+	}
 	// some constants
 	//-------------------------------
 	// classification states

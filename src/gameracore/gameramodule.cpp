@@ -63,7 +63,7 @@ PyMODINIT_FUNC PyInit_gameracore(void) {
     PyObject *m = PyModule_Create(&moduledef);
     //PyObject* m = Py_InitModule( "gameracore", gamera_module_methods);
     PyObject *d = PyModule_GetDict(m);
-
+	
     init_SizeType(d);
     init_PointType(d);
     init_FloatPointType(d);
