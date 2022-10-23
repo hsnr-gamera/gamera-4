@@ -1,0 +1,35 @@
+[project]
+name = "gamera"
+version = "4.1.0"
+description = "Gamera is a framework for building document analysis applications. It is not a packaged document recognition system, but a toolkit for building document image recognition systems."
+authors = [
+    {name = "Michael Droettboom and hristoph Dalitz", email="gamera-devel@yahoogroups.com"}
+]
+license = {file = "LICENSE.txt"}
+readme = "README.md"
+requires-python = ">=3.5"
+
+keywords = ["Gamera"]
+
+dependencies = [
+    "numpy>=1.20"
+]
+
+[project.optional-dependencies]
+gui = [
+    "wxPython>=4.0.0",
+]
+
+[project.urls]
+homepage = "https://gamera.informatik.hsnr.de"
+documentation = "https://gamera.informatik.hsnr.de/docs/gamera-docs/"
+repository = "https://github.com/hsnr-gamera/gamera-4"
+
+[build-system]
+requires = [
+    "setuptools >= 35.0.2",
+    "wxPython>=4.0.0",
+    "pytest>=7.1.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
