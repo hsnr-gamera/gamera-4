@@ -327,8 +327,6 @@ def generate_plugin(plugin_filename, location, compiling_gamera,
   # we compiled
   include_dirs = (["include", plug_path, "include/plugins"] +
                   plugin_module.module.cpp_include_dirs)
-  if not compiling_gamera:
-     include_dirs.extend(gamera_setup.get_gamera_include_dirs())
   if not regenerate:
     for header in plugin_module.module.cpp_headers:
       for include_dir in include_dirs:

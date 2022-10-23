@@ -5,7 +5,7 @@ description = "Gamera is a framework for building document analysis applications
 authors = [
     {name = "Michael Droettboom and hristoph Dalitz", email="gamera-devel@yahoogroups.com"}
 ]
-license = {file = "LICENSE.txt"}
+license = {file = "LICENSE"}
 readme = "README.md"
 requires-python = ">=3.5"
 
@@ -20,6 +20,9 @@ gui = [
     "wxPython>=4.0.0",
 ]
 
+[option.entry_points]
+gui_scripts = "gamera_gui"
+
 [project.urls]
 homepage = "https://gamera.informatik.hsnr.de"
 documentation = "https://gamera.informatik.hsnr.de/docs/gamera-docs/"
@@ -28,8 +31,11 @@ repository = "https://github.com/hsnr-gamera/gamera-4"
 [build-system]
 requires = [
     "setuptools >= 35.0.2",
+    "setuptools-scm",
     "wxPython>=4.0.0",
     "pytest>=7.1.0",
-    "wheel"
+    "wheel",
+    "docutils",
+    "pygments"
 ]
 build-backend = "setuptools.build_meta"

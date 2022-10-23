@@ -23,7 +23,7 @@ import datetime
 import glob
 import os
 import platform
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.extension import Extension
 from gamera import gamera_setup
 import sys
@@ -39,8 +39,6 @@ if sys.hexversion < 0x03050000:
     print("At least Python 3.5 is required to build Gamera.  You have")
     print(sys.version)
     sys.exit(1)
-
-cross_compiling = False
 
 # We do this first, so that when gamera.__init__ loads gamera.__version__,
 # it is in fact the new and updated version
@@ -61,9 +59,6 @@ for argument in sys.argv:
         gamera_version = "2_nightly_%s%s%s" % (d.year, monthstring, daystring)
         sys.argv.remove(argument)
         break
-    elif argument == '--compiler=mingw32_cross':
-        sys.argv[sys.argv.index('--compiler=mingw32_cross')] = '--compiler=mingw32'
-        cross_compiling = True
     elif argument == '--openmp=yes':
         has_openmp = True
         sys.argv.remove(argument)
@@ -73,6 +68,7 @@ for argument in sys.argv:
     elif argument == '--nowx':
         no_wx = True
         sys.argv.remove(argument)
+
 open("gamera/__version__.py", "w").write("ver = '%s'\n\n" % gamera_version)
 print("Gamera version:", gamera_version)
 
@@ -177,14 +173,6 @@ if not no_wx:
 
     wx_version_info = wx.__version__.split(".")
     wxversion = "%s.%s" % (wx_version_info[0], wx_version_info[1])
-    description = ("This is the Gamera installer.\n" +
-                   "\tPlease ensure that Python " + pythonversion +
-                   " and wxPython " + wxversion + "\n" +
-                   "\tare installed before proceeding.")
-else:
-    description = ("This is the Gamera installer.\n" +
-                   "\tPlease ensure that Python " + pythonversion +
-                   "\tare installed before proceeding.")
 
 includes = [(os.path.join(path), glob.glob(os.path.join("include", os.path.join(path, ext))))
             for path, ext in
@@ -198,30 +186,11 @@ srcfiles = [(os.path.join(path), glob.glob(os.path.join(path, ext)))
             for path, ext in
             [("src/geostructs", "*.cpp"), ("src/graph", "*.cpp")]]
 
-packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
-            'gamera.toolkits', 'gamera.backport']
-
 data_files = includes
-if sys.hexversion >= 0x02040000:
-    package_data = {"gamera": ["test/*.tiff"]}
-else:
-    data_files += [(glob.glob("gamera/test/*.tiff"))]
-    package_data = {}
 
 data_files += srcfiles
 
-if sys.platform == 'darwin':
-    packages.append("gamera.mac")
-
-setup(name="gamera",
-      cmdclass=gamera_setup.cmdclass,
+setup(cmdclass=gamera_setup.cmdclass,
       version=gamera_version,
-      url="http://gamera.sourceforge.net/",
-      author="Michael Droettboom and Christoph Dalitz",
-      author_email="gamera-devel@yahoogroups.com",
       ext_modules=extensions,
-      description=description,
-      packages=packages,
-      scripts=["gamera_gui"],
-      package_data=package_data
-      )
+      packages=find_packages('gamera', exclude=["test", "pixmaps", "mac"]))

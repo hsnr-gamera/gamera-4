@@ -123,9 +123,3 @@ def generate_plugins(plugins, location, compiling_gamera=0):
    
    generate.restore_import()
    return plugin_extensions
-
-
-def get_gamera_include_dirs():
-   # the "usr/local" prefix is for recent Ubunut versions, which
-   # install addon modules no longer along with the python core
-   return []
