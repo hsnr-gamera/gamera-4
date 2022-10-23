@@ -20,7 +20,8 @@ repository = "https://github.com/hsnr-gamera/gamera-4"
 
 [build-system]
 requires = [
-    "setuptools >= 40.8.0",
-    "setuptools_scm >= 2.0.0, <3",
+    "setuptools",
+    "setuptools_scm",
+    "Cython",
     "wheel"
 ]
