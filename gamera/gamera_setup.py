@@ -84,10 +84,10 @@ def get_plugin_filenames(path):
    plugins = glob.glob(path + "/*.py")
    norm_plugins = []
    for x in plugins:
-      norm_plugins.append(os.path.normpath(os.path.abspath(x)))
+      norm_plugins.append(os.path.normpath(x))
    plugins = norm_plugins
    try:
-      path = os.path.normpath(os.path.abspath(path + "/__init__.py"))
+      path = os.path.normpath(path + "/__init__.py")
       plugins.remove(path)
    except Exception:
       pass

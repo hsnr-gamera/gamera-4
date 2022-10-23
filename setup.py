@@ -23,10 +23,9 @@ import datetime
 import glob
 import os
 import platform
-from setuptools import setup, find_packages
-from setuptools.extension import Extension
-from gamera import gamera_setup
+from setuptools import setup, Extension
 import sys
+from gamera import gamera_setup
 
 # # unfortunately this does not help installing data_files
 # # to the same dir as gamera :(
@@ -94,8 +93,7 @@ f.close()
 ##########################################
 # generate the plugins
 plugins = gamera_setup.get_plugin_filenames('gamera/plugins/')
-plugin_extensions = gamera_setup.generate_plugins(
-    plugins, "gamera.plugins", True)
+plugin_extensions = gamera_setup.generate_plugins(plugins, "gamera.plugins", True)
 
 ########################################
 # Non-plugin extensions
@@ -111,25 +109,22 @@ graph_files = glob.glob("src/graph/*.cpp") + glob.glob("src/graph/graphmodule/*.
 kdtree_files = ["src/geostructs/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
 
 # libstdc++ does not exist with MS VC, but is linke dby default
-if ('--compiler=mingw32' not in sys.argv) and (sys.platform == 'win32'):
-    galibraries = []
-else:
-    galibraries = ["stdc++"]
+galibraries = ["stdc++"]
 if has_openmp:
-    ExtGA = Extension("gamera.knnga",
-                      ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
-                      include_dirs=["include", "src"] + eodev_includes,
-                      libraries=galibraries,
-                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
-                      extra_link_args=["-fopenmp"]
-                      )
+   ExtGA = Extension("gamera.knnga",
+                     ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
+                     include_dirs=["include", "src"] + eodev_includes,
+                     libraries=galibraries,
+                     extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
+                     extra_link_args=["-fopenmp"]
+                     )
 else:
-    ExtGA = Extension("gamera.knnga",
-                      ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
-                      include_dirs=["include", "src"] + eodev_includes,
-                      libraries=galibraries,
-                      extra_compile_args=gamera_setup.extras['extra_compile_args']
-                      )
+   ExtGA = Extension("gamera.knnga",
+                     ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
+                     include_dirs=["include", "src"] + eodev_includes,
+                     libraries=galibraries,
+                     extra_compile_args=gamera_setup.extras['extra_compile_args']
+                     )
 
 extensions = [Extension("gamera.gameracore",
                         ["src/gameracore/gameramodule.cpp",
@@ -165,14 +160,8 @@ extensions.extend(plugin_extensions)
 
 ##########################################
 # Here's the basic setuptools stuff
-
-# read versions from compile computer
-pythonversion = "%d.%d" % (sys.version_info[0], sys.version_info[1])
-if not no_wx:
-    import wx
-
-    wx_version_info = wx.__version__.split(".")
-    wxversion = "%s.%s" % (wx_version_info[0], wx_version_info[1])
+packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
+            'gamera.toolkits', 'gamera.backport']
 
 includes = [(os.path.join(path), glob.glob(os.path.join("include", os.path.join(path, ext))))
             for path, ext in
@@ -187,10 +176,12 @@ srcfiles = [(os.path.join(path), glob.glob(os.path.join(path, ext)))
             [("src/geostructs", "*.cpp"), ("src/graph", "*.cpp")]]
 
 data_files = includes
-
 data_files += srcfiles
 
-setup(cmdclass=gamera_setup.cmdclass,
-      version=gamera_version,
+setup(version=gamera_version,
       ext_modules=extensions,
-      packages=find_packages('gamera', exclude=["test", "pixmaps", "mac"]))
+      data_files=data_files,
+      entry_points={
+         'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
+      },
+      packages=packages)
