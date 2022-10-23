@@ -20,6 +20,8 @@
 #define kwm11052002_runlength
 
 #ifndef GAMERA_NO_PYTHON
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #endif
 #include "gamera.hpp"

@@ -21,6 +21,8 @@
 #ifndef kwm01102002_to_string
 #define kwm01102002_to_string
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gamera.hpp"
 #include "vigra/resizeimage.hxx"

@@ -25,6 +25,8 @@
   implements the generic classifier interface for Gamera.
 */
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gameramodule.hpp"
 #include "knn.hpp"

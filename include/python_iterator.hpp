@@ -45,6 +45,8 @@
 #ifndef mgd010105_iterator_hpp
 #define mgd010105_iterator_hpp
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gameramodule.hpp"
 

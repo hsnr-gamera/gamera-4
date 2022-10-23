@@ -21,6 +21,8 @@
 #ifndef KWM06292002_imagemodule
 #define KWM06292002_imagemodule
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gamera.hpp"
 

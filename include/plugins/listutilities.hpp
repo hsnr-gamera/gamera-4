@@ -22,6 +22,8 @@
 #ifndef mgd04302003_listutilities
 #define mgd04302003_listutilities
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gameramodule.hpp"
 #include "canonicpyobject.hpp"

@@ -19,6 +19,8 @@
 #ifndef _GRAPHDATAPYOBJECT_HPP_367750A70EE140
 #define _GRAPHDATAPYOBJECT_HPP_367750A70EE140
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "graphdata.hpp"
 #include "gameramodule.hpp"
