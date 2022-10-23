@@ -3,15 +3,15 @@ name = "gamera"
 version = "4.1.0"
 description = "Gamera is a framework for building document analysis applications. It is not a packaged document recognition system, but a toolkit for building document image recognition systems."
 authors = [
-    {name = "Michael Droettboom and hristoph Dalitz", email="gamera-devel@yahoogroups.com"}
+    { name = "Michael Droettboom and hristoph Dalitz", email = "gamera-devel@yahoogroups.com" }
 ]
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.5"
 keywords = ["Gamera"]
 
 [option.entry_points]
-gui_scripts= ["gamera_gui=gamera.gamera_gui:gamera_gui"]
+gui_scripts = ["gamera_gui=gamera.gamera_gui:gamera_gui"]
 
 [project.urls]
 homepage = "https://gamera.informatik.hsnr.de"
