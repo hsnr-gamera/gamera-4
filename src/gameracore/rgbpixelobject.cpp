@@ -189,7 +189,7 @@ static PyGetSetDef rgbpixel_getset[] = {
                 (char *)"(int property)\n\nThe magenta value [0, 255]", 0 },
         { (char *)"yellow", (getter)rgbpixel_get_yellow, 0,
                 (char *)"(int property)\n\nThe yellow value [0, 255]", 0 },
-        { NULL }
+        { nullptr }
 };
 
 void init_RGBPixelType(PyObject* module_dict) {
@@ -204,10 +204,10 @@ void init_RGBPixelType(PyObject* module_dict) {
   RGBPixelType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   RGBPixelType.tp_new = rgbpixel_new;
   RGBPixelType.tp_getattro = PyObject_GenericGetAttr;
-  RGBPixelType.tp_alloc = NULL; // PyType_GenericAlloc;
+  RGBPixelType.tp_alloc = nullptr; // PyType_GenericAlloc;
   RGBPixelType.tp_richcompare = rgbpixel_richcompare;
   RGBPixelType.tp_getset = rgbpixel_getset;
-  RGBPixelType.tp_free = NULL; // _PyObject_Del;
+  RGBPixelType.tp_free = nullptr; // _PyObject_Del;
   RGBPixelType.tp_repr = rgbpixel_repr;
   RGBPixelType.tp_str = rgbpixel_str;
   RGBPixelType.tp_hash = rgbpixel_hash;

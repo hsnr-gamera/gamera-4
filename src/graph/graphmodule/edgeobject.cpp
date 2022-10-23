@@ -40,7 +40,7 @@ PyObject* edge_new(Edge* edge) {
    EdgeObject* so;
    so = (EdgeObject*)EdgeType.tp_alloc(&EdgeType, 0);
    so->_edge = edge;
-   so->_graph = NULL;
+   so->_graph = nullptr;
    return (PyObject*)so;
 }
 
@@ -54,8 +54,8 @@ PyObject* edge_deliver(Edge* edge, GraphObject* graph) {
       edge->to_node->_value << std::endl;
 #endif
 
-   if(graph == NULL || edge == NULL)
-      return NULL;
+   if(graph == nullptr || edge == nullptr)
+      return nullptr;
 
 #ifdef __DEBUG_GAPI__
    std::cerr << "size: " << graph->assigned_edgeobjects->size() << std::endl;
@@ -91,7 +91,7 @@ static void edge_dealloc(PyObject* self) {
    if(so->_graph) {
       so->_graph->assigned_edgeobjects->erase(so->_edge);
       Py_XDECREF(so->_graph);
-      so->_graph = NULL;
+      so->_graph = nullptr;
    } 
    self->ob_type->tp_free(self);
 }
@@ -101,7 +101,7 @@ static void edge_dealloc(PyObject* self) {
 // -----------------------------------------------------------------------------
 static PyObject* edge_traverse(PyObject* self, PyObject* pyobject) {
    INIT_SELF_EDGE();
-   Node* other_node = NULL;
+   Node* other_node = nullptr;
    if(is_NodeObject(pyobject)) {
       other_node = so->_edge->traverse(((NodeObject*)pyobject)->_node->_value);
    }
@@ -208,16 +208,16 @@ PyMethodDef edge_methods[] = {
 		{  "traverse", edge_traverse, METH_O,
 				 "**traverse** (*node*)\n\n"
 				              "Get the other node in an edge"},
-		{NULL}
+		{nullptr}
 };
 
 
 // -----------------------------------------------------------------------------
 static PyObject* edge___call__(PyObject* self, PyObject* args, PyObject* kwds) {
-	PyObject* data = NULL;
+	PyObject* data = nullptr;
 	if(PyArg_ParseTuple(args,  "|O:Edge.__call__", &data) <= 0)
-		return NULL;
-	if (data == NULL)
+		return nullptr;
+	if (data == nullptr)
 		return edge_get_cost(self);
 	
 	edge_set_cost(self, data);
@@ -234,7 +234,7 @@ PyGetSetDef edge_getset[] = {
 				 "cost assigned to this edge (get/set)", 0},
 		{  "label", (getter)edge_get_label, (setter)edge_set_label,
 				 "label assigned to this edge (get/set)", 0},
-		{ NULL }
+		{ nullptr }
 };
 
 
@@ -252,8 +252,8 @@ void init_EdgeType() {
 	EdgeType.tp_repr = edge___repr__;
 	EdgeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
 	EdgeType.tp_getattro = PyObject_GenericGetAttr;
-	EdgeType.tp_alloc = NULL; // PyType_GenericAlloc;
-	EdgeType.tp_free = NULL; // _PyObject_Del;
+	EdgeType.tp_alloc = nullptr; // PyType_GenericAlloc;
+	EdgeType.tp_free = nullptr; // _PyObject_Del;
 	EdgeType.tp_call = edge___call__;
 	EdgeType.tp_methods = edge_methods;
 	EdgeType.tp_getset = edge_getset;

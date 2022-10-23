@@ -39,7 +39,7 @@ PyObject* iterator_get_iter(PyObject* self) {
 PyObject* iterator_next(PyObject* self) {
   IteratorObject* so = (IteratorObject*)self;
   PyObject* result = (*(so->m_fp_next))(so);
-  if (result == NULL) {
+  if (result == nullptr) {
     PyErr_SetString(PyExc_StopIteration, "");
     return 0;
   }
@@ -57,8 +57,8 @@ void init_IteratorType(PyObject* module_dict) {
   IteratorType.tp_dealloc = iterator_dealloc;
   IteratorType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   IteratorType.tp_getattro = PyObject_GenericGetAttr;
-  IteratorType.tp_alloc = NULL; // PyType_GenericAlloc;
-  IteratorType.tp_free = NULL; // _PyObject_Del;
+  IteratorType.tp_alloc = nullptr; // PyType_GenericAlloc;
+  IteratorType.tp_free = nullptr; // _PyObject_Del;
   IteratorType.tp_iter = iterator_get_iter;
   IteratorType.tp_iternext = iterator_next;
   PyType_Ready(&IteratorType);

@@ -41,7 +41,7 @@ struct KdNodeObject {
 };
 
 static PyTypeObject KdNodeType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -49,7 +49,7 @@ static PyObject* kdnode_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   KdNodeObject* self;
   size_t n, i;
   PyObject* point;
-  PyObject* data = NULL;
+  PyObject* data = nullptr;
   PyObject* sequence;
   PyObject* entry;
   // do some plausibility checks
@@ -109,7 +109,7 @@ static PyObject* kdnode_get_data(PyObject* self) {
 }
 
 PyMethodDef kdnode_methods[] = {
-  { NULL }
+  { nullptr }
 };
 
 PyGetSetDef kdnode_getset[] = {
@@ -117,7 +117,7 @@ PyGetSetDef kdnode_getset[] = {
     (char *)"geometric point of the kd-node", 0 },
   { (char *)"data", (getter)kdnode_get_data, 0,
     (char *)"data stroed with the kd-node", 0 },
-  { NULL }
+  { nullptr }
 };
 
 void init_KdNodeType(PyObject* d) {
@@ -132,8 +132,8 @@ void init_KdNodeType(PyObject* d) {
     KdNodeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
     KdNodeType.tp_new = kdnode_new;
     KdNodeType.tp_getattro = PyObject_GenericGetAttr;
-    KdNodeType.tp_alloc = NULL; // PyType_GenericAlloc;
-    KdNodeType.tp_free = NULL; // _PyObject_Del;
+    KdNodeType.tp_alloc = nullptr; // PyType_GenericAlloc;
+    KdNodeType.tp_free = nullptr; // _PyObject_Del;
     KdNodeType.tp_methods = kdnode_methods;
     KdNodeType.tp_getset = kdnode_getset;
     KdNodeType.tp_weaklistoffset = 0;
@@ -159,7 +159,7 @@ struct KdTreeObject {
 };
 
 static PyTypeObject KdTreeType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
+  PyVarObject_HEAD_INIT(nullptr, 0)
 };
 
 
@@ -167,7 +167,7 @@ static PyObject* kdtree_new(PyTypeObject* pytype, PyObject* args, PyObject* kwds
   KdTreeObject* self;
   int distance_type=2;
   size_t i,j,n,dimension;
-  PyObject* list = NULL;
+  PyObject* list = nullptr;
   PyObject *obj1,*obj2;
   Kdtree::KdNodeVector nodes4tree;
   // do some plausibility checks and extract basic properties
@@ -240,7 +240,7 @@ static PyObject* kdtree_set_distance(PyObject* self, PyObject* args) {
   KdTreeObject* so = (KdTreeObject*)self;
   int distance_type;
   size_t n,i;
-  PyObject* weights = NULL;
+  PyObject* weights = nullptr;
   PyObject* entry;
   if (PyArg_ParseTuple(args,  "i|O", &distance_type, &weights) <= 0) {
     return 0;
@@ -294,7 +294,7 @@ struct KdNodePredicate_Py : public Gamera::Kdtree::KdNodePredicate {
     PyObject *result;
     bool retval;
     //printf("KdNodePredicate_Py called\n");
-    result = PyObject_CallFunctionObjArgs(pyfunctor,(PyObject*)kn.data,NULL);
+    result = PyObject_CallFunctionObjArgs(pyfunctor,(PyObject*)kn.data,nullptr);
     retval = PyObject_IsTrue(result);
     Py_XDECREF(result);
     return retval;
@@ -305,7 +305,7 @@ static PyObject* kdtree_k_nearest_neighbors(PyObject* self, PyObject* args) {
   KdTreeObject* so = (KdTreeObject*)self;
   Kdtree::CoordPoint point(so->dimension);
   PyObject *list, *entry;
-  PyObject *predicate = NULL;
+  PyObject *predicate = nullptr;
   int k;
   size_t i,n;
   Kdtree::KdNodeVector result;
@@ -362,13 +362,13 @@ PyMethodDef kdtree_methods[] = {
     (char *)"**set_distance** (*distance_type*, *weights* = ``None``)\n\nSets the distance metrics used in subsequent k nearest neighbor searches.\n\n*distance_type* can be 0 (Linfinite or maximum norm), 1 (L1 or city block norm), or 2 (L2 or euklidean norm).\n\n*weights* is a list of floating point values, where each specifies a weight for a coordinate index in the distance computation. When weights are provided, the weight list must have exactly *d* entries, where *d* is the dimension of the kdtree. When no weights are provided, all coordinates are equally weighted with 1.0." },
   { (char *)"k_nearest_neighbors", kdtree_k_nearest_neighbors, METH_VARARGS,
     (char *)"**k_nearest_neighbors** (*point*, *k*, *predicate* = ``None``)\n\nReturns the *k* nearest neighbors to the given *point* in O(log(n)) time. The parameter *point* must not be of Gamera's data type ``Point``, but a list or tuple of numbers representing the coordinates. *point* must be of the same dimension as the kd-tree.\n\nThe result is a list of nodes ordered by distance from *point*,i.e. the closest node is the first. If your query point happens to coincide with a node, you can skip it by simply removing the first entry from the result list.\n\nThe optional parameter *predicate* is a function or callable class that takes a ``KdNode`` as argument and returns ``False`` when this node shall not be among the returned neighbors." },
-  { NULL }
+  { nullptr }
 };
 
 PyGetSetDef kdtree_getset[] = {
   { (char *)"dimension", (getter)kdtree_get_dimension, 0,
     (char *)"Dimension of the kd-tree", 0 },
-  { NULL }
+  { nullptr }
 };
 
 void init_KdTreeType(PyObject* d) {
@@ -383,8 +383,8 @@ void init_KdTreeType(PyObject* d) {
   KdTreeType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   KdTreeType.tp_new = kdtree_new;
   KdTreeType.tp_getattro = PyObject_GenericGetAttr;
-  KdTreeType.tp_alloc = NULL; // PyType_GenericAlloc;
-  KdTreeType.tp_free = NULL; // _PyObject_Del;
+  KdTreeType.tp_alloc = nullptr; // PyType_GenericAlloc;
+  KdTreeType.tp_free = nullptr; // _PyObject_Del;
   KdTreeType.tp_methods = kdtree_methods;
   KdTreeType.tp_getset = kdtree_getset;
   KdTreeType.tp_weaklistoffset = 0;
@@ -404,19 +404,19 @@ void init_KdTreeType(PyObject* d) {
 //======================================================================
 
 PyMethodDef kdtree_module_methods[] = {
-  {NULL}
+  {nullptr}
 };
 
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.kdtree",
-        NULL,
+        nullptr,
         -1,
         kdtree_module_methods,
-        NULL,
-        NULL,
-        NULL,
-        NULL
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
 };
 
 PyMODINIT_FUNC PyInit_kdtree(void) {

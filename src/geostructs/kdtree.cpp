@@ -44,7 +44,7 @@ class kdtree_node {
 public:
   kdtree_node() {
     dataindex = cutdim = 0;
-    loson = hison = (kdtree_node*)NULL;
+    loson = hison = (kdtree_node*)nullptr;
   }
   ~kdtree_node() {
     if (loson) delete loson;
@@ -78,9 +78,9 @@ class DistanceL0 : virtual public DistanceMeasure
 {
   DoubleVector* w;
  public:
-  DistanceL0(const DoubleVector* weights = NULL) {
+  DistanceL0(const DoubleVector* weights = nullptr) {
     if (weights) w = new DoubleVector(*weights);
-    else         w = (DoubleVector*)NULL;
+    else         w = (DoubleVector*)nullptr;
   }
   ~DistanceL0() {
     if (w) delete w;
@@ -113,9 +113,9 @@ class DistanceL1 : virtual public DistanceMeasure
 {
   DoubleVector* w;
  public:
-  DistanceL1(const DoubleVector* weights = NULL) {
+  DistanceL1(const DoubleVector* weights = nullptr) {
     if (weights) w = new DoubleVector(*weights);
-    else         w = (DoubleVector*)NULL;
+    else         w = (DoubleVector*)nullptr;
   }
   ~DistanceL1() {
     if (w) delete w;
@@ -144,9 +144,9 @@ class DistanceL2 : virtual public DistanceMeasure
 {
   DoubleVector* w;
  public:
-  DistanceL2(const DoubleVector* weights = NULL) {
+  DistanceL2(const DoubleVector* weights = nullptr) {
     if (weights) w = new DoubleVector(*weights);
-    else         w = (DoubleVector*)NULL;
+    else         w = (DoubleVector*)nullptr;
   }
   ~DistanceL2() {
     if (w) delete w;
@@ -188,7 +188,7 @@ KdTree::KdTree(const KdNodeVector* nodes, int distance_type /*=2*/)
   dimension = nodes->begin()->point.size();
   allnodes = *nodes;
   // initialize distance values
-  distance = NULL;
+  distance = nullptr;
   set_distance(distance_type);
   // compute global bounding box
   lobound = nodes->begin()->point;
@@ -205,7 +205,7 @@ KdTree::KdTree(const KdNodeVector* nodes, int distance_type /*=2*/)
 }
 
 // distance_type can be 0 (Maximum), 1 (Manhatten), or 2 (Euklidean)
-void KdTree::set_distance(int distance_type, const DoubleVector* weights /*=NULL*/)
+void KdTree::set_distance(int distance_type, const DoubleVector* weights /*=nullptr*/)
 {
   if (distance) delete distance;
   if (distance_type == 0) {
@@ -265,7 +265,7 @@ kdtree_node* KdTree::build_tree(size_t depth, size_t a, size_t b)
 // derived from KdNodePredicate. When Null (default, no search
 // predicate is applied).
 //--------------------------------------------------------------
-    void KdTree::k_nearest_neighbors(const CoordPoint &point, size_t k, KdNodeVector* result, KdNodePredicate* pred /*=NULL*/)
+    void KdTree::k_nearest_neighbors(const CoordPoint &point, size_t k, KdNodeVector* result, KdNodePredicate* pred /*=nullptr*/)
 {
   size_t i;
   KdNode temp;

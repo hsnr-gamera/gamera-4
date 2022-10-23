@@ -98,7 +98,7 @@ static PyGetSetDef imageinfo_getset[] = {
                 (setter)imageinfo_set_depth, (char *)"The bit depth of the image (in bits)." },
         { (char *)"ncolors", (getter)imageinfo_get_ncolors,
                 (setter)imageinfo_set_ncolors, (char *)"The number of colors in the image." },
-        { NULL }
+        { nullptr }
 };
 
 void init_ImageInfoType(PyObject* module_dict) {
@@ -113,9 +113,9 @@ void init_ImageInfoType(PyObject* module_dict) {
   ImageInfoType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   ImageInfoType.tp_new = imageinfo_new;
   ImageInfoType.tp_getattro = PyObject_GenericGetAttr;
-  ImageInfoType.tp_alloc = NULL; // PyType_GenericAlloc;
+  ImageInfoType.tp_alloc = nullptr; // PyType_GenericAlloc;
   ImageInfoType.tp_getset = imageinfo_getset;
-  ImageInfoType.tp_free = NULL; // _PyObject_Del;
+  ImageInfoType.tp_free = nullptr; // _PyObject_Del;
   ImageInfoType.tp_doc =
 "__init__()\n\n"
 "The ImageInfo class allows the properties of a disk-based image file "

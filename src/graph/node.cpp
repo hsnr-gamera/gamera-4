@@ -60,7 +60,7 @@ Node::Node(Node* node) {
 
 // -----------------------------------------------------------------------------
 EdgePtrIterator* Node::get_edges(bool both_directions) {
-   Node* from_node = NULL;
+   Node* from_node = nullptr;
    if(_graph->is_directed() && !both_directions)
       from_node = this;
 
@@ -73,7 +73,7 @@ EdgePtrIterator* Node::get_edges(bool both_directions) {
 
 // -----------------------------------------------------------------------------
 NodePtrEdgeIterator* Node::get_nodes() {
-   Node* from_node = NULL;
+   Node* from_node = nullptr;
    from_node = this;
 
    NodePtrEdgeIterator* it = new NodePtrEdgeIterator(_graph, _edges.begin(), 
@@ -88,7 +88,7 @@ bool Node::has_edge_to(Node* node) {
    Edge* e;
    bool ret = false;
    EdgePtrIterator* it = get_edges();
-   while((e = it->next()) != NULL && !ret) {
+   while((e = it->next()) != nullptr && !ret) {
       if (e->to_node == node)
          ret = true;
    }
@@ -103,7 +103,7 @@ bool Node::has_edge_from(Node* node) {
    Edge* e;
    bool ret = false;
    EdgePtrIterator* it = get_edges();
-   while((e = it->next()) != NULL && ret==false) {
+   while((e = it->next()) != nullptr && ret==false) {
       if (e->from_node == node)
          ret = true;
    }
@@ -141,7 +141,7 @@ void Node::remove_self(bool glue) {
    if(glue) {
       EdgePtrIterator* it = get_edges(true);
       Edge* e;
-      while((e = it->next()) != NULL) {
+      while((e = it->next()) != nullptr) {
          if(*e->from_node->_value == *this->_value && 
                *e->to_node->_value != *this->_value) {
 
@@ -166,14 +166,14 @@ void Node::remove_self(bool glue) {
    size_t i = _edges.size();
    for(EdgeIterator it = to_remove.begin(); it != to_remove.end(); it++) {
       Edge* e = *it;
-      if(e->to_node != NULL && e->from_node != NULL) {
-         if (e->to_node != this && e->to_node != NULL)
+      if(e->to_node != nullptr && e->from_node != nullptr) {
+         if (e->to_node != this && e->to_node != nullptr)
             e->to_node->_edges.remove(e);
-         if (e->from_node != this && e->from_node != NULL)
+         if (e->from_node != this && e->from_node != nullptr)
             e->from_node->_edges.remove(e);
      
-         e->to_node = NULL;
-         e->from_node = NULL;
+         e->to_node = nullptr;
+         e->from_node = nullptr;
          _graph->_edges.remove(e);
          e->weight = 2000;
          delete e;

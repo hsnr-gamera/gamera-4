@@ -38,7 +38,7 @@ void BfsIterator::init(Node* start) {
 // -----------------------------------------------------------------------------
 Node* BfsIterator::next() {
    if(_queue.empty())
-      return NULL;
+      return nullptr;
 
    Node* current = _queue.front();
    _queue.pop();
@@ -47,7 +47,7 @@ Node* BfsIterator::next() {
          it != current->_edges.end(); it++) {
 
       Node* n = (*it)->traverse(current);
-      if(n != NULL && !is_visited(n)) {
+      if(n != nullptr && !is_visited(n)) {
          visit(n);
          _queue.push(n);
       }
@@ -70,7 +70,7 @@ void DfsIterator::init(Node* start) {
 // -----------------------------------------------------------------------------
 Node* DfsIterator::next() {
    if(_stack.empty())
-      return NULL;
+      return nullptr;
 
    Node* current = _stack.top();
    _stack.pop();

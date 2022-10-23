@@ -186,17 +186,17 @@ static PyObject* floatpoint_absolute(PyObject* self) {
 }
 
 static PyGetSetDef floatpoint_getset[] = {
-        { (char *)"x", (getter)floatpoint_get_x, NULL,
+        { (char *)"x", (getter)floatpoint_get_x, nullptr,
                 (char *)"(float property)\n\nGet the current x value", 0},
-        { (char *)"y", (getter)floatpoint_get_y, NULL,
+        { (char *)"y", (getter)floatpoint_get_y, nullptr,
                 (char *)"(float property)\n\nGet the current y value", 0},
-        { NULL }
+        { nullptr }
 };
 
 static PyMethodDef floatpoint_methods[] = {
         {  "distance", floatpoint_distance, METH_O,
                  "**distance** (POINT *p*)\n\nCalculates the Euclidean distance from this point to another point."},
-        { NULL }
+        { nullptr }
 };
 
 void init_FloatPointType(PyObject* module_dict) {
@@ -219,10 +219,10 @@ void init_FloatPointType(PyObject* module_dict) {
   FloatPointType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   FloatPointType.tp_new = floatpoint_new;
   FloatPointType.tp_getattro = PyObject_GenericGetAttr;
-  FloatPointType.tp_alloc = NULL; // PyType_GenericAlloc;
+  FloatPointType.tp_alloc = nullptr; // PyType_GenericAlloc;
   FloatPointType.tp_richcompare = floatpoint_richcompare;
   FloatPointType.tp_getset = floatpoint_getset;
-  FloatPointType.tp_free = NULL; // _PyObject_Del;
+  FloatPointType.tp_free = nullptr; // _PyObject_Del;
   FloatPointType.tp_methods = floatpoint_methods;
   FloatPointType.tp_repr = floatpoint_repr;
   FloatPointType.tp_doc =

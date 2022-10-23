@@ -131,8 +131,8 @@ namespace Gamera { namespace Delaunaytree {
   TriangleList::~TriangleList() {
     if(next) {
 		delete next;
-		next = NULL;
-		triangle = NULL;
+		next = nullptr;
+		triangle = nullptr;
     }
   }
 
@@ -334,7 +334,7 @@ namespace Gamera { namespace Delaunaytree {
 	
     this->flag.setInfinite(3);
     this->number = 0;
-    this->sons = NULL;
+    this->sons = nullptr;
   }
 
   Triangle::Triangle(DelaunayTree *tree, Triangle *parent, int i) {
@@ -346,7 +346,7 @@ namespace Gamera { namespace Delaunaytree {
 	
     this->flag.setInfinite(4);
     this->number = 0;
-    this->sons = NULL;
+    this->sons = nullptr;
 	
     this->neighbors[i] = parent;
     parent->neighbors[i] = this;
@@ -385,7 +385,7 @@ namespace Gamera { namespace Delaunaytree {
     }
 	
     number = 0;
-    sons = NULL;
+    sons = nullptr;
     parent->sons = new TriangleList( parent->sons, this );
     parent->neighbors[i]->sons = new TriangleList(parent->neighbors[i]->sons, this);
     parent->neighbors[i]->neighbors[ parent->neighbors[i]->NeighborIndex(parent) ] = this;
@@ -418,7 +418,7 @@ namespace Gamera { namespace Delaunaytree {
 
   Triangle * Triangle::findConflict(Vertex *v) {
     if( !Conflict(v) ) {
-		return NULL;
+		return nullptr;
     }
 	
     if(!flag.isDead()) {
@@ -435,7 +435,7 @@ namespace Gamera { namespace Delaunaytree {
 		}
     }
 	
-    return NULL;
+    return nullptr;
   }
 
   bool Triangle::Conflict(Vertex *v) {

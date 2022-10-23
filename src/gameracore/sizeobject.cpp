@@ -120,7 +120,7 @@ static PyGetSetDef size_getset[] = {
                 (char *)"(int property)\n\nThe width of an object is the right boundary minus the left. This is the same as the number of columns *minus one.*", 0 },
         { (char *)"height", (getter)size_get_height, (setter)size_set_height,
                 (char *)"(int property)\n\nThe height of an object is the lower boundary minus the upper boundary (remember that *y* is counted in the negative direction). This is the same as the number of rows *minus one*.", 0 },
-        { NULL }
+        { nullptr }
 };
 
 void init_SizeType(PyObject* module_dict) {
@@ -136,9 +136,9 @@ void init_SizeType(PyObject* module_dict) {
   SizeType.tp_getset = size_getset;
   SizeType.tp_new = size_new;
   SizeType.tp_getattro = PyObject_GenericGetAttr;
-  SizeType.tp_alloc = NULL; // PyType_GenericAlloc;
+  SizeType.tp_alloc = nullptr; // PyType_GenericAlloc;
   SizeType.tp_richcompare = size_richcompare;
-  SizeType.tp_free = NULL; // _PyObject_Del;
+  SizeType.tp_free = nullptr; // _PyObject_Del;
   SizeType.tp_repr = size_repr;
   SizeType.tp_doc =  "Size stores a size (*width*, *height*). This is almost the same as ``Dim``, but stores the number of columns/rows minus one:\n\n  *width* == *ncols* - 1\n\n  *height* == *nrows* - 1";
   PyType_Ready(&SizeType);
