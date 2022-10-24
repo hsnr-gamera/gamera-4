@@ -1,5 +1,5 @@
-# -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
-# vim: set tabstop=3 shiftwidth=3 expandtab:
+# -*- mode: python; indent-tabs-mode: nil; tab-width: 4 -*-
+# vim: set tabstop=4 shiftwidth=4 expandtab:
 #
 # Copyright (C) 2001-2005 Ichiro Fujinaga, Michael Droettboom, Karl MacMillan
 #               2010      Christoph Dalitz
@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import platform
+from pathlib import Path
 
 from .pyplate import *
 from os import path, stat
@@ -29,6 +29,7 @@ global std_import
 global plugins_to_ignore
 # we need this import for compiling
 from gamera import args_wrappers
+
 
 def newer(source, target):
     """Return true if 'source' exists and is more recently modified than
@@ -57,32 +58,41 @@ def newer(source, target):
 # magic_import_setup. generate_plugin uses this to prevent
 # the loading of C++ modules that may not exist yet during
 # the build process.
-def magic_import(name, globals_={}, locals_={}, fromlist=[], level=0):
-   if fromlist is not None and "core" in fromlist:
-      fromlist = list(fromlist)
-      fromlist.remove("core")
+def magic_import(name, globals_=None, locals_=None, fromlist=None, level=0):
+    if fromlist is None:
+        fromlist = []
+    if locals_ is None:
+        locals_ = {}
+    if globals_ is None:
+        globals_ = {}
+    if fromlist is not None and "core" in fromlist:
+        fromlist = list(fromlist)
+        fromlist.remove("core")
 
-   for x in plugins_to_ignore:
-      if name == x:
-         return None
+    for x in plugins_to_ignore:
+        if name == x:
+            return None
 
-   if float(sys.version[0:3]) < 2.45:
-      return std_import(name, globals_, locals_, fromlist)
-   else:
-      return std_import(name, globals_, locals_, fromlist, level)
+    if float(sys.version[0:3]) < 2.45:
+        return std_import(name, globals_, locals_, fromlist)
+    else:
+        return std_import(name, globals_, locals_, fromlist, level)
+
 
 def magic_import_setup(ignore):
-   global plugins_to_ignore
-   global std_import
-   plugins_to_ignore = ignore
-   # Save the standard __import__ function so we can chain to it
-   std_import = __builtins__['__import__']
-   # Override the __import__ function with our new one
-   __builtins__['__import__'] = magic_import
+    global plugins_to_ignore
+    global std_import
+    plugins_to_ignore = ignore
+    # Save the standard __import__ function so we can chain to it
+    std_import = __builtins__['__import__']
+    # Override the __import__ function with our new one
+    __builtins__['__import__'] = magic_import
+
 
 def restore_import():
-   global std_import
-   __builtins__['__import__'] = std_import
+    global std_import
+    __builtins__['__import__'] = std_import
+
 
 template = Template("""
   [[exec from os import path]]
@@ -293,68 +303,73 @@ template = Template("""
   }
   """)
 
+
 def generate_plugin(plugin_filename, location,
                     extra_compile_args=None, extra_link_args=None,
                     define_macros=None):
-  if define_macros is None:
-      define_macros = []
-  if extra_link_args is None:
-      extra_link_args = []
-  if extra_compile_args is None:
-      extra_compile_args = []
+    if define_macros is None:
+        define_macros = []
+    if extra_link_args is None:
+        extra_link_args = []
+    if extra_compile_args is None:
+        extra_compile_args = []
 
-  plug_path, filename = path.split(plugin_filename)
-  module_name = filename.split('.')[0]
-  cpp_filename = path.join(plug_path, "_" + module_name + ".cpp")
+    plug_path, filename = path.split(plugin_filename)
+    module_name = filename.split('.')[0]
+    cpp_filename = path.join(plug_path, "_" + module_name + ".cpp")
 
-  regenerate = False
-  if newer(plugin_filename, cpp_filename) or '-f' in sys.argv:
-    regenerate = True
+    regenerate = False
+    if newer(plugin_filename, cpp_filename) or '-f' in sys.argv:
+        regenerate = True
 
-  sys.path.append(plug_path)
+    sys.path.append(plug_path)
 
-  #import plugin
-  plugin_module = __import__(module_name)
-  if not hasattr(plugin_module, 'module'):
-     return None
-  if plugin_module.module.pure_python:
-     return None
+    # import plugin
+    plugin_module = __import__(module_name)
+    if not hasattr(plugin_module, 'module'):
+        return None
+    if plugin_module.module.pure_python:
+        return None
 
-  # see if any of the header files have changed since last time
-  # we compiled
-  include_dirs = (["include", plug_path, "include/plugins"] +
-                  plugin_module.module.cpp_include_dirs)
-  if not regenerate:
-    for header in plugin_module.module.cpp_headers:
-      for include_dir in include_dirs:
-        header_filename = path.join(include_dir, header)
-        if path.exists(header_filename):
-          if newer(header_filename, cpp_filename):
-            regenerate = True
-            break
-          break
-      if regenerate:
-        break
+    # see if any of the header files have changed since last time
+    # we compiled
 
-  if regenerate:
-    print("generating wrappers for", module_name, "plugin")
-    template.execute_file(cpp_filename, plugin_module.__dict__)
-  else:
-    print("skipping wrapper generation for", module_name, "plugin (output up-to-date)")
+    # find gamera include directory
+    gamera_include = Path(__file__).parent.joinpath("include/gamera")
 
-  # make the a setupptols extension class for this plugin
-  cpp_files = [cpp_filename]
-  for file in plugin_module.module.cpp_sources:
-    cpp_files.append(file)
+    include_dirs = ([gamera_include.absolute().__str__(), plug_path,
+                     gamera_include.joinpath("plugins").absolute().__str__()] +
+                    plugin_module.module.cpp_include_dirs)
+    if not regenerate:
+        for header in plugin_module.module.cpp_headers:
+            for include_dir in include_dirs:
+                header_filename = path.join(include_dir, header)
+                if path.exists(header_filename):
+                    if newer(header_filename, cpp_filename):
+                        regenerate = True
+                        break
+                    break
+            if regenerate:
+                break
 
-  extra_libraries = plugin_module.module.extra_libraries
+    if regenerate:
+        print("generating wrappers for", module_name, "plugin")
+        template.execute_file(cpp_filename, plugin_module.__dict__)
+    else:
+        print("skipping wrapper generation for", module_name, "plugin (output up-to-date)")
 
-  return Extension(location + "._" + module_name, cpp_files,
-                   include_dirs=include_dirs,
-                   library_dirs=plugin_module.module.library_dirs,
-                   libraries=extra_libraries,
-                   extra_compile_args=plugin_module.module.extra_compile_args + extra_compile_args,
-                   extra_link_args=plugin_module.module.extra_link_args + extra_link_args,
-                   define_macros=plugin_module.module.define_macros + define_macros,
-                   extra_objects=plugin_module.module.extra_objects)
+    # make the setuptools extension class for this plugin
+    cpp_files = [cpp_filename]
+    for file in plugin_module.module.cpp_sources:
+        cpp_files.append(file)
 
+    extra_libraries = plugin_module.module.extra_libraries
+
+    return Extension(location + "._" + module_name, cpp_files,
+                     include_dirs=include_dirs,
+                     library_dirs=plugin_module.module.library_dirs,
+                     libraries=extra_libraries,
+                     extra_compile_args=plugin_module.module.extra_compile_args + extra_compile_args,
+                     extra_link_args=plugin_module.module.extra_link_args + extra_link_args,
+                     define_macros=plugin_module.module.define_macros + define_macros,
+                     extra_objects=plugin_module.module.extra_objects)

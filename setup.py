@@ -1,6 +1,5 @@
-#!/usr/bin/env python
-# -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
-# vim: set tabstop=3 shiftwidth=3 expandtab:
+# -*- mode: python; indent-tabs-mode: nil; tab-width: 4 -*-
+# vim: set tabstop=4 shiftwidth=4 expandtab:
 #
 # Copyright (C) 2001-2005 Ichiro Fujinaga, Michael Droettboom, Karl MacMillan
 #               2010-2012 Christoph Dalitz
@@ -110,18 +109,18 @@ kdtree_files = ["src/geostructs/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
 
 # libstdc++ does not exist with MS VC, but is linke dby default
 if has_openmp:
-   ExtGA = Extension("gamera.knnga",
-                     ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
-                     include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
-                     extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
-                     extra_link_args=["-fopenmp"]
-                     )
+    ExtGA = Extension("gamera.knnga",
+                      ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
+                      include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
+                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
+                      extra_link_args=["-fopenmp"]
+                      )
 else:
-   ExtGA = Extension("gamera.knnga",
-                     ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
-                     include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
-                     extra_compile_args=gamera_setup.extras['extra_compile_args']
-                     )
+    ExtGA = Extension("gamera.knnga",
+                      ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
+                      include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
+                      extra_compile_args=gamera_setup.extras['extra_compile_args']
+                      )
 
 extensions = [Extension("gamera.gameracore",
                         ["src/gameracore/gameramodule.cpp",
@@ -148,7 +147,8 @@ extensions = [Extension("gamera.gameracore",
                         ),
               ExtGA,
               Extension("gamera.graph", graph_files,
-                        include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/graph", "src/graph/graphmodule"],
+                        include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/graph",
+                                      "src/graph/graphmodule"],
                         **gamera_setup.extras),
               Extension("gamera.kdtree", kdtree_files,
                         include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/geostructs"],
@@ -159,10 +159,19 @@ extensions.extend(plugin_extensions)
 # Here's the basic setuptools stuff
 packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
             'gamera.toolkits', 'gamera.backport']
+includes = []
+for path, ext in [("", "*.hpp"), ("plugins", "*.hpp"), ("vigra", "*.hxx"), ("geostructs", "*.hpp"), ("graph", "*.hpp")]:
+    includes += glob.glob(os.path.join("gamera/include/gamera", os.path.join(path, ext)))
 
-setup(version=gamera_version,
-      ext_modules=extensions,
-      entry_points={
-         'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
-      },
-      packages=packages)
+if __name__ == "__main__":
+    setup(name="Gamera",
+          version=gamera_version,
+          ext_modules=extensions,
+          url="https://gamera.sourceforge.net/",
+          author="Michael Droettboom and Christoph Dalitz",
+          author_email="gamera-devel@yahoogroups.com",
+          entry_points={
+              'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
+          },
+          include_package_data=True,
+          packages=packages)
