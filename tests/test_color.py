@@ -22,10 +22,10 @@ def test_color_to_ccs():
     img.draw_filled_rect((3, 3), (5, 5), RGBPixel(255, 0, 0))
     img.draw_filled_rect((10, 3), (15, 35), RGBPixel(0, 255, 0))
     img.draw_filled_rect((5, 20), (30, 25), RGBPixel(0, 0, 255))
-    labeled = img.colors_to_labels({ \
-        RGBPixel(255, 0, 0): 6, \
-        RGBPixel(0, 255, 0): 2, \
-        RGBPixel(0, 0, 255): 7, \
+    labeled = img.colors_to_labels({
+        RGBPixel(255, 0, 0): 6,
+        RGBPixel(0, 255, 0): 2,
+        RGBPixel(0, 0, 255): 7,
         })
     assert 6 == labeled.get((4, 4))
     assert 2 == labeled.get((12, 18))

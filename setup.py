@@ -18,11 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import datetime
+import multiprocessing
 import glob
 import os
 import platform
 from setuptools import setup, Extension
+from distutils.ccompiler import CCompiler
+from distutils.command.build_ext import build_ext
 from pathlib import Path
 import sys
 from gamera import gamera_setup
@@ -44,44 +46,18 @@ if sys.hexversion < 0x03050000:
 gamera_version = open("version", 'r').readlines()[0].strip()
 long_description = Path('README.md').read_text()
 
-has_openmp = None
-no_wx = False
-i = 0
-for argument in sys.argv:
-    i = i + 1
-    if argument == "--dated_version":
-        d = datetime.date.today()
-        monthstring = str(d.month)
-        daystring = str(d.day)
-        if d.month < 10:
-            monthstring = '0' + monthstring
-        if d.day < 10:
-            daystring = '0' + daystring
-        gamera_version = "2_nightly_%s%s%s" % (d.year, monthstring, daystring)
-        sys.argv.remove(argument)
-        break
-    elif argument == '--openmp=yes':
-        has_openmp = True
-        sys.argv.remove(argument)
-    elif argument == '--openmp=no':
-        has_openmp = False
-        sys.argv.remove(argument)
-    elif argument == '--nowx':
-        no_wx = True
-        sys.argv.remove(argument)
-
 open("gamera/__version__.py", "w").write("ver = '%s'\n\n" % gamera_version)
 print("Gamera version:", gamera_version)
 
 # query OpenMP (parallelization) support and save it to compile time config file
-if has_openmp is None:
-    has_openmp = False
-    if platform.system() == "Linux":
-        p = os.popen("gcc -dumpversion", "r")
-        gccv = p.readline().strip().split(".")
-        p.close()
-        if int(gccv[0]) > 4 or (int(gccv[0]) == 4 and int(gccv[1]) >= 3):
-            has_openmp = True
+has_openmp = False
+
+if platform.system() in ["Linux", "Darwin"]:
+    p = os.popen("gcc -dumpversion", "r")
+    gccv = p.readline().strip().split(".")
+    p.close()
+    if int(gccv[0]) > 4 or (int(gccv[0]) == 4 and int(gccv[1]) >= 3):
+        has_openmp = True
 f = open("gamera/__compiletime_config__.py", "w")
 f.write("# automatically generated configuration at compile time\n")
 if has_openmp:
@@ -110,13 +86,17 @@ for entry in eodev_dir:
 graph_files = glob.glob("src/graph/*.cpp") + glob.glob("src/graph/graphmodule/*.cpp")
 kdtree_files = ["src/geostructs/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
 
-# libstdc++ does not exist with MS VC, but is linke dby default
 if has_openmp:
+    args = []
+    # Mac OS X need the Xpreprocessor flag for openmp
+    if platform.system() == "Darwin":
+        args += ["-Xpreprocessor"]
+    args += ["-fopenmp"]
     ExtGA = Extension("gamera.knnga",
                       ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
                       include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
-                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + ["-fopenmp"],
-                      extra_link_args=["-fopenmp"]
+                      extra_compile_args=gamera_setup.extras['extra_compile_args'] + args,
+                      extra_link_args=args
                       )
 else:
     ExtGA = Extension("gamera.knnga",
@@ -162,6 +142,60 @@ extensions.extend(plugin_extensions)
 # Here's the basic setuptools stuff
 packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
             'gamera.toolkits', 'gamera.backport']
+
+# https://stackoverflow.com/a/13176803
+# multithreading building, can also be used with setuptools
+try:
+    from concurrent.futures import ThreadPoolExecutor as Pool
+except ImportError:
+    from multiprocessing.pool import ThreadPool as LegacyPool
+
+    # To ensure the with statement works. Required for some older 2.7.x releases
+    class Pool(LegacyPool):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            self.close()
+            self.join()
+
+
+def _build_extensions(self):
+    """Function to monkey-patch
+    distutils.command.build_ext.build_ext.build_extensions
+    """
+    self.check_extensions_list(self.extensions)
+
+    try:
+        num_jobs = os.cpu_count()
+    except AttributeError:
+        num_jobs = multiprocessing.cpu_count()
+
+    with Pool(num_jobs) as pool:
+        pool.map(self.build_extension, self.extensions)
+
+
+def _compile(self, sources, output_dir=None, macros=None, include_dirs=None, debug=0, extra_preargs=None,
+             extra_postargs=None, depends=None):
+    """Function to monkey-patch distutils.ccompiler.CCompiler"""
+    macros, objects, extra_postargs, pp_opts, build = self._setup_compile(
+        output_dir, macros, include_dirs, sources, depends, extra_postargs
+    )
+    cc_args = self._get_cc_args(pp_opts, debug, extra_preargs)
+
+    for obj in objects:
+        try:
+            src, ext = build[obj]
+        except KeyError:
+            continue
+        self._compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
+
+    # Return *all* object filenames, not just the ones we just built.
+    return objects
+
+
+build_ext.build_extensions = _build_extensions
+CCompiler.compile = _compile
 
 if __name__ == "__main__":
     setup(name="Gamera",
