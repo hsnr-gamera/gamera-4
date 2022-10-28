@@ -23,6 +23,7 @@ import glob
 import os
 import platform
 from setuptools import setup, Extension
+from pathlib import Path
 import sys
 from gamera import gamera_setup
 
@@ -41,6 +42,8 @@ if sys.hexversion < 0x03050000:
 # We do this first, so that when gamera.__init__ loads gamera.__version__,
 # it is in fact the new and updated version
 gamera_version = open("version", 'r').readlines()[0].strip()
+long_description = Path('README.md').read_text()
+
 has_openmp = None
 no_wx = False
 i = 0
@@ -159,19 +162,26 @@ extensions.extend(plugin_extensions)
 # Here's the basic setuptools stuff
 packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
             'gamera.toolkits', 'gamera.backport']
-includes = []
-for path, ext in [("", "*.hpp"), ("plugins", "*.hpp"), ("vigra", "*.hxx"), ("geostructs", "*.hpp"), ("graph", "*.hpp")]:
-    includes += glob.glob(os.path.join("gamera/include/gamera", os.path.join(path, ext)))
 
 if __name__ == "__main__":
     setup(name="Gamera",
           version=gamera_version,
           ext_modules=extensions,
+          python_requires='>=3.5',
+          license='GNU GENERAL PUBLIC LICENSE Version 2',
+          description='Gamera is a framework for building document analysis applications. It is not a packaged '
+                      'document recognition system, but a toolkit for building document image recognition systems.',
+          long_description=long_description,
+          long_description_content_type='text/markdown',
           url="https://gamera.sourceforge.net/",
           author="Michael Droettboom and Christoph Dalitz",
           author_email="gamera-devel@yahoogroups.com",
           entry_points={
               'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
+          },
+          project_urls={
+              'Documentation': 'https://gamera.informatik.hsnr.de/docs/gamera-docs/',
+              'Source': 'https://github.com/hsnr-gamera/gamera-4'
           },
           include_package_data=True,
           packages=packages)
