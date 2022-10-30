@@ -6,39 +6,31 @@ Introduction
 ============
 
 Gamera does not contain its own unit testing framework, but instead
-uses the great `py.test`__ framework.  
+uses the great `pytest`__ framework.  
 
-.. note::
+.. __: https://pytest.org/
 
-  **py.test** is still considered beta-level software, and is somewhat
-  cumbersome to install (perhaps the same could be said about
-  Gamera).  It is not required for proper operation of Gamera, and is
-  only needed for those developers who wish to port Gamera to new
-  platforms or write unit tests for new code.
-
-.. __: http://codespeak.net/py/dist/test.html
-
-This document does not attempt to replicate the `py.test`__
+This document does not attempt to replicate the `pytest`__
 documentation, and will only discuss Gamera-specific additions.
 
-.. __: http://codespeak.net/py/dist/test.html
+.. __: https://pytest.org/
 
 
 Running the provided unit tests
 ===============================
 
-1. Install and test `py.test` using the instructions here__.
+1. Install and test `pytest` using the instructions here__.
 
-.. __: http://codespeak.net/py/dist/test.html
+.. __: https://pytest.org/
 
 2. From the *gamera/tests* directory, run all the unit tests with the
    command::
 
-     py.test --tb=no
+     pytest --tb=no
 
    Alternatively, you can run an individual test, say *test_graph.py* with::
 
-     py.test --tb=no test_graph.py
+     pytest --tb=no test_graph.py
 
    In case of failures you can obtain more information
    by omitting the option "--tb=no".
@@ -46,7 +38,7 @@ Running the provided unit tests
 3. If you only want to run a single test function from a unit test
    script, use the "keyword" option "-k", e.g.::
 
-     py.test -k test_glyphs_from_xml_gz test_xml.py
+     pytest -k test_glyphs_from_xml_gz test_xml.py
 
 
 Adding new unit tests
@@ -55,15 +47,15 @@ Adding new unit tests
 A new unit test, say *test_mystuff.py*, is added by the following steps:
 
 1. Create a new test script *test_mystuff.py* which imports gamera
-   and py.test:
+   and pytest:
 
 .. code:: Python
 
-   import py.test
+   import pytest
    from gamera.core import *
    init_gamera()
 
-2. Define for each test a function with the prefix ``test_``. py.test
+2. Define for each test a function with the prefix ``test_``. pytest
    will run all these functions. To verify certain results, use the
    ``assert`` statement, e.g.:
 
@@ -74,7 +66,7 @@ A new unit test, say *test_mystuff.py*, is added by the following steps:
        assert img.myplugin(3) == 42
 
 3. To verify that certain circumstances (e.g., wrong input data) lead
-   to an exception, use ``py.test.raises``:
+   to an exception, use ``pytest.raises``:
 
 .. code:: Python
 
@@ -82,11 +74,11 @@ A new unit test, say *test_mystuff.py*, is added by the following steps:
        def _fail(img):
            img.myplugin("should only be numeric")
        img = load_image("data/OneBit_generic.png")
-       py.test.raises(Exception, _fail, img)
+       pytest.raises(Exception, _fail, img)
 
-For more details, see the `py.test documentation`__.
+For more details, see the `pytest documentation`__.
 
-.. __: http://codespeak.net/py/dist/test.html
+.. __: https://pytest.org/
 
 
 Testing Gamera plugins

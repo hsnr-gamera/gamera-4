@@ -7,7 +7,7 @@ from gamera import plugin
 
 # This is a fairly complex test harness, which generates
 # a "wrapper" call around every plugin so each plugin can
-# be tested separately by py.test
+# be tested separately by pytest
 
 class PluginTester(gendoc.PluginDocumentationGenerator):
     def __init__(self):

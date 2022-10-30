@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -50,7 +50,7 @@ def _test_image_constructors(type, value, storage):
     assert Rect(image) == Rect(image5)
     image6 = Image(Point(25, 25), Dim(50, 50), type, storage)
     assert Rect(image) == Rect(image6)
-    py.test.raises(TypeError, _fail1)
+    pytest.raises(TypeError, _fail1)
 
 
 test_image_constructors = make_test(_test_image_constructors)
@@ -85,8 +85,8 @@ def _test_subimage(type, value, storage):
     image7 = image.subimage(Point(30, 30), Dim(40, 40))
     assert Rect(image7) == Rect(image2)
     assert image7.data == image.data
-    py.test.raises(RuntimeError, _fail1)
-    py.test.raises(RuntimeError, _fail2)
+    pytest.raises(RuntimeError, _fail1)
+    pytest.raises(RuntimeError, _fail2)
     # image7 = image2.subimage(35, 35, 20, 20) # deprecated call
     image7 = image2.subimage(Point(35, 35), Dim(20, 20))
     assert image7.data == image.data
@@ -114,8 +114,8 @@ def _test_get_set(type, value, storage):
         for c in range(50):
             image.set((r, c), val)
             assert image.get((r, c)) == val
-    py.test.raises(IndexError, _fail1)
-    py.test.raises(IndexError, _fail2)
+    pytest.raises(IndexError, _fail1)
+    pytest.raises(IndexError, _fail2)
 
 
 test_get_set = make_test(_test_get_set)
@@ -141,8 +141,8 @@ def _test_index(type, value, storage):
         if p != val:
             print(i)
         assert p == val
-    py.test.raises(IndexError, _fail1)
-    py.test.raises(IndexError, _fail2)
+    pytest.raises(IndexError, _fail1)
+    pytest.raises(IndexError, _fail2)
 
 
 test_index = make_test(_test_index)

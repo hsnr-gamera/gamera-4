@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -15,7 +15,7 @@ def test_color_to_ccs():
         img = load_image("data/too_many_colors.png")
         labeled = img.colors_to_labels()
 
-    py.test.raises(Exception, _too_many_colors)
+    pytest.raises(Exception, _too_many_colors)
 
     # test labeling
     img = Image((0, 0), (40, 40), RGB)

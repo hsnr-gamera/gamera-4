@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -20,11 +20,11 @@ def test_wrongparams():
         image.voronoi_from_points(points, labels)
 
     # number of points and labels must match
-    py.test.raises(Exception, _voronoi_from_points_input, [(2, 2), (5, 5)], [2, 3, 4])
+    pytest.raises(Exception, _voronoi_from_points_input, [(2, 2), (5, 5)], [2, 3, 4])
     # labels must be int's and points must be coordinates
-    py.test.raises(Exception, _voronoi_from_points_input, [(2, 2), (5, 5)], [(2, 2), (5, 5)])
+    pytest.raises(Exception, _voronoi_from_points_input, [(2, 2), (5, 5)], [(2, 2), (5, 5)])
     # TODO: no plausi check in Gamera's passing of PointVector => crash
-    # py.test.raises(Exception, _voronoi_from_points_input, [2,,5], [2,5])
+    # pytest.raises(Exception, _voronoi_from_points_input, [2,,5], [2,5])
 
 
 #

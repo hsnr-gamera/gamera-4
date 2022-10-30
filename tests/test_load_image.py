@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -9,7 +9,7 @@ def test_load_image_rgb_rle():
     def _load_image_fail1():
         image = load_image("not_a_path")
 
-    py.test.raises(IOError, _load_image_fail1)
+    pytest.raises(IOError, _load_image_fail1)
 
 
 def test_load_image_onebit():
@@ -54,8 +54,8 @@ def test_load_image_greyscale_rle():
     def _load_image_greyscale_rle2():
         greyscale3 = load_image("data/GreyScale_generic.tiff", RLE)
 
-    py.test.raises(Exception, _load_image_greyscale_rle1)
-    py.test.raises(Exception, _load_image_greyscale_rle2)
+    pytest.raises(Exception, _load_image_greyscale_rle1)
+    pytest.raises(Exception, _load_image_greyscale_rle2)
 
 
 def test_load_image_rgb():
@@ -108,5 +108,5 @@ def load_image_grey16_rle2():
     grey16 = load_image("data/Grey16_generic.tiff", RLE)
 
 # def test_load_image_grey16_rle():
-#    py.test.raises(Exception, load_image_grey16_rle1)
-#    py.test.raises(Exception, load_image_grey16_rle2)
+#    pytest.raises(Exception, load_image_grey16_rle1)
+#    pytest.raises(Exception, load_image_grey16_rle2)
