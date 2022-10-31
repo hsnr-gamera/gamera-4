@@ -69,7 +69,7 @@ The Gamera source tree looks something like this:
 |                     |               | compiling convenience on MS-Windows and Mac    |
 |                     |               | OS-X.                                          |
 +---------------------+---------------+------------------------------------------------+
-| tests/              | Includes unit tests for running with the ``py.test`` framework.|
+| tests/              | Includes unit tests for running with the ``pytest`` framework. |
 |                     | These files are mainly useful only for the developers of       |
 |                     | Gamera.                                                        |
 +---------------------+---------------+------------------------------------------------+
