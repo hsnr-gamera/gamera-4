@@ -29,13 +29,6 @@ from pathlib import Path
 import sys
 from gamera import gamera_setup
 
-# # unfortunately this does not help installing data_files
-# # to the same dir as gamera :(
-# for scheme in INSTALL_SCHEMES.values():
-#     scheme['data'] = scheme['purelib']
-
-# sys.exit(0)
-
 if sys.hexversion < 0x03050000:
     print("At least Python 3.5 is required to build Gamera.  You have")
     print(sys.version)
@@ -217,5 +210,6 @@ if __name__ == "__main__":
               'Documentation': 'https://gamera.informatik.hsnr.de/docs/gamera-docs/',
               'Source': 'https://github.com/hsnr-gamera/gamera-4'
           },
+          setup_requires=['py2app'],
           include_package_data=True,
           packages=packages)

@@ -30,15 +30,14 @@ import inspect
 
 # Python standard library
 # import interactive
-import imp
 import os
 import os.path
-import sys
 import traceback
 # wxPython
 import wx
 import wx.py
 
+# this import is need, but not directly used
 from gamera import paths, util
 from gamera.config import config
 from gamera.core import *
