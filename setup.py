@@ -210,6 +210,5 @@ if __name__ == "__main__":
               'Documentation': 'https://gamera.informatik.hsnr.de/docs/gamera-docs/',
               'Source': 'https://github.com/hsnr-gamera/gamera-4'
           },
-          setup_requires=['py2app'],
           include_package_data=True,
           packages=packages)
