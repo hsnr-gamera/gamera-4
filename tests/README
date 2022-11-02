@@ -1,22 +1,20 @@
 The tests in this directory test Gamera using the
-py.test framework.
+pytest framework.
 
-The py.test framework must be installed from 
+The pytest framework must be installed from 
 
-    http://codespeak.net/py/
+    https://pytest.org/
 
 This package is not required for the proper functioning
 of Gamera, only to run the tests. You can run all tests
 with
 
-    py.test --tb=no
+    pytest --tb=no
 
 Alternatively, you can run an individual unit test, say 
 test_graph.py, with
 
-    py.test --tb=no test_graph.py
+    pytest --tb=no test_graph.py
 
 In case of failures you can obtain more information
 by omitting the option "--tb=no".
-
-

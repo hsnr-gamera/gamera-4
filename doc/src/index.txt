@@ -98,7 +98,7 @@ Reference
 
 - `Directory hierarchy`__: Where the files are.
 
-.. __: directory_heirarchy.html
+.. __: directory_hierarchy.html
 
 - `Image types`__: The different types of images available in Gamera
 

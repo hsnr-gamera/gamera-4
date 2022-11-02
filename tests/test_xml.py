@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -104,11 +104,11 @@ def test_missing_attributes():
     def _test_missing_attributes():
         glyphs = gamera_xml.glyphs_from_xml("data/missing_attributes.xml")
 
-    py.test.raises(gamera_xml.XMLError, _test_missing_attributes)
+    pytest.raises(gamera_xml.XMLError, _test_missing_attributes)
 
 
 def test_malformed():
     def _test_malformed():
         glyphs = gamera_xml.glyphs_from_xml("data/malformed.xml")
 
-    py.test.raises(gamera_xml.XMLError, _test_malformed)
+    pytest.raises(gamera_xml.XMLError, _test_malformed)
