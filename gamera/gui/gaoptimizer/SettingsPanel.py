@@ -164,7 +164,7 @@ class SettingsPanel(wx.ScrolledWindow):
         self.SetSizer(topSizer)
 
         width, height = topSizer.GetMinSize()
-        self.SetScrollbars(10, 10, width/10, height/10)
+        self.SetScrollbars(10, 10, int(width/10), int(height/10))
 
     #---------------------------------------------------------------------------
     def MakeExpertPane(self, pane):
