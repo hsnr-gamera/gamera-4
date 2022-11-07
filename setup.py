@@ -23,10 +23,9 @@ import glob
 import os
 import platform
 
-from setuptools import setup, Extension, Distribution
+from setuptools import setup, Extension
 from distutils.ccompiler import CCompiler
 from distutils.command.build_ext import build_ext
-from setuptools.command.install import install
 from pathlib import Path
 import sys
 from gamera import gamera_setup
@@ -60,12 +59,45 @@ for entry in eodev_dir:
     if os.path.isdir(entry):
         eodev_includes.append(entry)
 
-graph_files = glob.glob("src/graph/*.cpp") + glob.glob("src/graph/graphmodule/*.cpp")
-kdtree_files = ["src/geostructs/kdtreemodule.cpp", "src/geostructs/kdtree.cpp"]
+graph_files = glob.glob("gamera/src/graph/*.cpp") + glob.glob("gamera/src/graph/graphmodule/*.cpp")
+kdtree_files = ["gamera/src/geostructs/kdtreemodule.cpp", "gamera/src/geostructs/kdtree.cpp"]
+# set it to false if you want to disable this feature
+has_openmp = None
+
+if has_openmp is None:
+    has_openmp = False
+    # try to check if openmp can be used
+    if platform.system() in ["Linux", "Darwin"]:
+        p = os.popen("gcc -dumpversion", "r")
+        gccv = p.readline().strip().split(".")
+        p.close()
+        if int(gccv[0]) > 4 or (int(gccv[0]) == 4 and int(gccv[1]) >= 3):
+            has_openmp = True
+
+# write openmp config
+f = open("gamera/__compiletime_config__.py", "w")
+f.write("# automatically generated configuration at compile time\n")
+if has_openmp:
+    f.write("has_openmp = True\n")
+    print("Compiling genetic algorithms with parallelization (OpenMP)")
+else:
+    f.write("has_openmp = False\n")
+    print("Compiling genetic algorithms without parallelization (OpenMP)")
+f.close()
+
+args = []
+if has_openmp:
+    # Mac OS X need the Xpreprocessor flag for openmp
+    if platform.system() == "Darwin":
+        args += ["-Xpreprocessor"]
+    args += ["-fopenmp"]
+
+
 ExtGA = Extension("gamera.knnga",
                   ["src/knnga/knnga.cpp", "src/knnga/knngamodule.cpp"] + eodev_files,
                   include_dirs=["gamera/include/gamera", "src"] + eodev_includes,
-                  extra_compile_args=gamera_setup.extras['extra_compile_args']
+                  extra_compile_args=gamera_setup.extras['extra_compile_args'] + args,
+                  extra_link_args=args
                   )
 
 extensions = [Extension("gamera.gameracore",
@@ -94,7 +126,7 @@ extensions = [Extension("gamera.gameracore",
               ExtGA,
               Extension("gamera.graph", graph_files,
                         include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/graph",
-                                      "src/graph/graphmodule"],
+                                      "gamera/src/graph/graphmodule"],
                         **gamera_setup.extras),
               Extension("gamera.kdtree", kdtree_files,
                         include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/geostructs"],
@@ -162,54 +194,7 @@ CCompiler.compile = _compile
 
 if __name__ == "__main__":
 
-    class InstallCommand(install):
-        user_options = install.user_options + [
-            ('openmp=', None, 'Compile with openmp')
-        ]
-
-        def __init__(self, dist: Distribution):
-            super().__init__(dist)
-            self.openmp = None
-
-        def finalize_options(self):
-            super().finalize_options()
-            if isinstance(self.openmp, str):
-                if self.openmp.casefold() == "no".casefold():
-                    self.openmp = False
-                elif self.openmp.casefold() == "yes".casefold():
-                    self.openmp = True
-            if self.openmp is None:
-                self.openmp = False
-                # try to check if openmp can be used
-                if platform.system() in ["Linux", "Darwin"]:
-                    p = os.popen("gcc -dumpversion", "r")
-                    gccv = p.readline().strip().split(".")
-                    p.close()
-                    if int(gccv[0]) > 4 or (int(gccv[0]) == 4 and int(gccv[1]) >= 3):
-                        self.openmp = True
-
-        def run(self):
-            f = open("gamera/__compiletime_config__.py", "w")
-            f.write("# automatically generated configuration at compile time\n")
-            if self.openmp:
-                f.write("has_openmp = True\n")
-                print("Compiling genetic algorithms with parallelization (OpenMP)")
-            else:
-                f.write("has_openmp = False\n")
-                print("Compiling genetic algorithms without parallelization (OpenMP)")
-            f.close()
-            for extension in extensions:
-                args = []
-                # Mac OS X need the Xpreprocessor flag for openmp
-                if platform.system() == "Darwin":
-                    args += ["-Xpreprocessor"]
-                args += ["-fopenmp"]
-                extension.extra_link_args += args
-                extension.extra_compile_args += args
-            super().run()
-
-    setup(cmdclass={'install': InstallCommand},
-          name="Gamera",
+    setup(name="Gamera",
           version=gamera_version,
           ext_modules=extensions,
           python_requires='>=3.5',
@@ -229,4 +214,5 @@ if __name__ == "__main__":
               'Source': 'https://github.com/hsnr-gamera/gamera-4'
           },
           include_package_data=True,
+          zip_safe=False,
           packages=packages)
