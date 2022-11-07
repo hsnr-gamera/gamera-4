@@ -6,7 +6,7 @@ The annotate() routine appends slashes to directories."""
 
 import os
 
-__all__ = ["listdir", "opendir", "annotate", "reset"]
+__all__ = ["listdir", "annotate", "reset"]
 
 cache = {}
 

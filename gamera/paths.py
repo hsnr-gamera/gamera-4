@@ -23,6 +23,7 @@
 import glob
 import os
 import sys
+from gamera.backport import dircache
 
 if 1:
     def dummy():
@@ -39,6 +40,19 @@ toolkits = os.path.realpath(os.path.join(lib, "toolkits"))
 test = os.path.realpath(os.path.join(lib, "test"))
 test_results = os.path.realpath(os.path.join(lib, "test/results"))
 
+def get_toolkit_names(dir):
+    toolkits = []
+    listing = dircache.listdir(dir)
+    dircache.annotate(dir, listing)
+    for toolkit in listing:
+        if toolkit.endswith(".py") and toolkit != "__init__.py":
+            toolkits.append(toolkit[:-3])
+        elif toolkit.endswith("module.so"):
+            toolkits.append(toolkit[:-9])
+        elif (toolkit.endswith("/") and
+              "__init__.py" in dircache.listdir(os.path.join(dir, toolkit))):
+            toolkits.append(toolkit[:-1])
+    return toolkits
 
 def import_directory(dir, gl, lo, verbose=0):
     modules = glob.glob(os.path.join(dir, "*.py"))
