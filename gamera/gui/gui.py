@@ -35,6 +35,7 @@ import os.path
 import traceback
 # wxPython
 import wx
+import sys
 import wx.py
 
 # this import is need, but not directly used
