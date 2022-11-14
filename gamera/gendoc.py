@@ -27,7 +27,7 @@ import codecs
 import getopt
 import glob
 import inspect
-import io as ioutil
+import io
 import locale
 import os.path
 import shutil

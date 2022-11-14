@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Building and installing Gamera</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -18,14 +18,14 @@
 <li><a class="reference internal" href="#linux-and-other-nix" id="toc-entry-1">Linux (and other *nix)</a><ul>
 <li><a class="reference internal" href="#prerequisites" id="toc-entry-2">Prerequisites</a></li>
 <li><a class="reference internal" href="#standard-build-and-install" id="toc-entry-3">Standard Build and Install</a></li>
-<li><a class="reference internal" href="#running" id="toc-entry-5">Running</a></li>
+<li><a class="reference internal" href="#running" id="toc-entry-4">Running</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#mac-os-x" id="toc-entry-7">Mac OS-X</a><ul>
-<li><a class="reference internal" href="#installation-on-10-11-el-captain-and-above" id="toc-entry-8">Installation on 10.11 (El Captain) and above</a><ul>
-<li><a class="reference internal" href="#prerequisites-1" id="toc-entry-9">Prerequisites</a></li>
-<li><a class="reference internal" href="#build-and-install" id="toc-entry-10">Build and install</a></li>
-<li><a class="reference internal" href="#running-1" id="toc-entry-11">Running</a></li>
+<li><a class="reference internal" href="#mac-os-x" id="toc-entry-5">Mac OS-X</a><ul>
+<li><a class="reference internal" href="#installation-on-10-11-el-captain-and-above" id="toc-entry-6">Installation on 10.11 (El Captain) and above</a><ul>
+<li><a class="reference internal" href="#prerequisites-1" id="toc-entry-7">Prerequisites</a></li>
+<li><a class="reference internal" href="#build-and-install" id="toc-entry-8">Build and install</a></li>
+<li><a class="reference internal" href="#running-1" id="toc-entry-9">Running</a></li>
 </ul>
 </li>
 </ul>
@@ -42,8 +42,6 @@ recommended.</p>
 <p>You will need to have the headers (but not the complete source) to
 build Gamera from source code.  Most Linux distributions include
 these as a separate package (eg. <tt class="docutils literal"><span class="pre">python-dev</span></tt> or <tt class="docutils literal"><span class="pre">python-devel</span></tt>).</p>
-</li>
-<li><p class="first">python3-distutils</p>
 </li>
 <li><p class="first">python3-pip</p>
 </li>
@@ -94,25 +92,24 @@ pip install .
 </pre>
 </div>
 <div class="section" id="running">
-<h2><a class="toc-backref" href="#toc-entry-5">Running</a></h2>
-<p>Run the <tt class="docutils literal">gamera_gui</tt> script, which should have installed to
-<tt class="docutils literal">/usr/local/bin</tt>.  This file can also be copied anywhere (such as
-the Desktop) and double-clicked to run Gamera.</p>
+<h2><a class="toc-backref" href="#toc-entry-4">Running</a></h2>
+<p>Run the <tt class="docutils literal">gamera_gui</tt> script, which is installed in the <tt class="docutils literal">bin</tt> directory of Python</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Running the script from the root of the source tree will not
 work, since it will not be able to find the compiled version of Gamera.</p>
 </div>
 </div>
+</div>
 <div class="section" id="mac-os-x">
-<h1><a class="toc-backref" href="#toc-entry-7">Mac OS-X</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Mac OS-X</a></h1>
 <div class="section" id="installation-on-10-11-el-captain-and-above">
-<h2><a class="toc-backref" href="#toc-entry-8">Installation on 10.11 (El Captain) and above</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Installation on 10.11 (El Captain) and above</a></h2>
 <p>Due to the OS-X builtin &quot;system integrity protection&quot; (SIP), wxPython
 and Gamera  cannot be installed into the python branch shipped with OS-X.
 You must therefore install wxPython and Gamera into a <a class="reference external" href="https://virtualenv.pypa.io/">virtual environment</a>.</p>
 <div class="section" id="prerequisites-1">
-<h3><a class="toc-backref" href="#toc-entry-9">Prerequisites</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Prerequisites</a></h3>
 <p>As Gamera must be installed from the C++ sources, you must have Xcode
 and the Xcode Command Line Tools installed. When Xcode is already installed,
 the command line tools can be installed with <em>xcode-select --install</em>.</p>
@@ -136,7 +133,7 @@ pip install -U wxPython
 </pre>
 </div>
 <div class="section" id="build-and-install">
-<h3><a class="toc-backref" href="#toc-entry-10">Build and install</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Build and install</a></h3>
 <p>You can install Gamera into the same virtual environment with:</p>
 <pre class="literal-block">
 source /usr/local/lib/py2gamera/bin/activate
@@ -145,7 +142,7 @@ pip install .
 </pre>
 </div>
 <div class="section" id="running-1">
-<h3><a class="toc-backref" href="#toc-entry-11">Running</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-9">Running</a></h3>
 <p>On OS-X, wxPython applications do not run in virtualenvs, because
 wxPython requires a &quot;Framework build of python&quot;. Fortunately, there is
 a simple workaround: store the following shell script as <em>gamera_gui</em>
