@@ -26,14 +26,13 @@
 <li><a class="reference internal" href="#colors-to-labels" id="toc-entry-9"><tt class="docutils literal">colors_to_labels</tt></a></li>
 <li><a class="reference internal" href="#cyan" id="toc-entry-10"><tt class="docutils literal">cyan</tt></a></li>
 <li><a class="reference internal" href="#false-color" id="toc-entry-11"><tt class="docutils literal">false_color</tt></a></li>
-<li><a class="reference internal" href="#graph-color-ccs-1" id="toc-entry-12"><tt class="docutils literal">graph_color_ccs</tt></a></li>
-<li><a class="reference internal" href="#green" id="toc-entry-13"><tt class="docutils literal">green</tt></a></li>
-<li><a class="reference internal" href="#hue" id="toc-entry-14"><tt class="docutils literal">hue</tt></a></li>
-<li><a class="reference internal" href="#magenta" id="toc-entry-15"><tt class="docutils literal">magenta</tt></a></li>
-<li><a class="reference internal" href="#red" id="toc-entry-16"><tt class="docutils literal">red</tt></a></li>
-<li><a class="reference internal" href="#saturation" id="toc-entry-17"><tt class="docutils literal">saturation</tt></a></li>
-<li><a class="reference internal" href="#value" id="toc-entry-18"><tt class="docutils literal">value</tt></a></li>
-<li><a class="reference internal" href="#yellow" id="toc-entry-19"><tt class="docutils literal">yellow</tt></a></li>
+<li><a class="reference internal" href="#green" id="toc-entry-12"><tt class="docutils literal">green</tt></a></li>
+<li><a class="reference internal" href="#hue" id="toc-entry-13"><tt class="docutils literal">hue</tt></a></li>
+<li><a class="reference internal" href="#magenta" id="toc-entry-14"><tt class="docutils literal">magenta</tt></a></li>
+<li><a class="reference internal" href="#red" id="toc-entry-15"><tt class="docutils literal">red</tt></a></li>
+<li><a class="reference internal" href="#saturation" id="toc-entry-16"><tt class="docutils literal">saturation</tt></a></li>
+<li><a class="reference internal" href="#value" id="toc-entry-17"><tt class="docutils literal">value</tt></a></li>
+<li><a class="reference internal" href="#yellow" id="toc-entry-18"><tt class="docutils literal">yellow</tt></a></li>
 </ul>
 </div>
 <div class="section" id="blue">
@@ -366,81 +365,8 @@ you must first convert the image to a float image.</p>
 <img alt="images/GreyScale_generic.png" src="images/GreyScale_generic.png" style="width: 96px; height: 67px;" />
 <img alt="images/false_color_plugin_01.png" src="images/false_color_plugin_01.png" style="width: 96px; height: 67px;" />
 </div>
-<div class="section" id="graph-color-ccs-1">
-<h1><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">graph_color_ccs</tt></a></h1>
-<p><tt class="docutils literal">Image</tt> [RGB] <strong>graph_color_ccs</strong> ([object <em>ccs</em>], [RGBPixel <em>colors</em>] = None, <tt class="docutils literal">Choice</tt> [CC center|20% contour points|voronoi diagram] <em>method</em> = 20% contour points, <tt class="docutils literal">bool</tt> <em>unique</em> = False)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Operates on:</th><td class="field-body"><tt class="docutils literal">Image</tt> [OneBit]</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal">Image</tt> [RGB]</td>
-</tr>
-<tr class="field"><th class="field-name">Category:</th><td class="field-body">Color</td>
-</tr>
-<tr class="field"><th class="field-name">Defined in:</th><td class="field-body">geometry.py</td>
-</tr>
-<tr class="field"><th class="field-name">Author:</th><td class="field-body">Oliver Christen, Tobias Bolten, Christoph Dalitz</td>
-</tr>
-</tbody>
-</table>
-<p>Returns an RGB Image where each segment is colored with one of the colors
-from <em>colors</em> in such a way that neighboring segments have different
-colors. Optionally, each segment can also be colored uniquely with
-a color that is close to one of the given <em>colors</em>.</p>
-<p>Reference:</p>
-<blockquote>
-C. Dalitz, T. Bolten, O. Christion:
-<a class="reference external" href="http://lionel.kr.hsnr.de/~dalitz/data/publications/ivapp13-coloring.pdf">&quot;Color Visualization of 2D Segmentations.&quot;</a>
-International Conference on Information Visualization Theory
-and Applications (IVAPP), pp. 567-572 (2013)</blockquote>
-<p>This function can be used to verify that the pagesegmentation
-e.g. <tt class="docutils literal">runlength_smearing</tt> is working correctly for your image.</p>
-<p>Arguments:</p>
-<dl class="docutils">
-<dt><em>ccs</em>:</dt>
-<dd>ImageList which contains ccs to be colored. Must be views on
-the image on which this method is called.</dd>
-<dt><em>colors</em>:</dt>
-<dd>list of colors (instances of RGBPixel) which will be used for coloring.
-When <tt class="docutils literal">None</tt>, the default set of seven colors given in the example
-below is used.</dd>
-<dt><em>method</em>:</dt>
-<dd><p class="first">Controls the calculation of the neighborhood graph:</p>
-<blockquote class="last">
-<p>0 = from the CC center points
-(fastest, but can be inaccurate for large CC's)</p>
-<p>1 = from a 20 percent sample of the contour points
-(reasonable compromise between speed and accuracy)</p>
-<p>2 = from the exact area Voronoi diagram
-(can be slow on large images)</p>
-</blockquote>
-</dd>
-<dt><em>unique</em>:</dt>
-<dd>When <tt class="docutils literal">True</tt>, each segment obtains a unique color that is
-close to one of the colors in <em>colors</em> with the restriction
-that neighboring segments obtain sufficiently different colors.
-See the reference above for details.</dd>
-</dl>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><span class="n">ccs</span> <span class="o">=</span> <span class="n">imgage</span><span class="o">.</span><span class="n">cc_analysis</span><span class="p">()</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span> <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-           <span class="n">RGBPixel</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="p">]</span>
-<span class="n">rgb</span> <span class="o">=</span> <span class="n">imgage</span><span class="o">.</span><span class="n">graph_color_ccs</span><span class="p">(</span><span class="n">ccs</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><em>colors</em> must not contain less than six colors.</p>
-</div>
-</div>
 <div class="section" id="green">
-<h1><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">green</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-12"><tt class="docutils literal">green</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>green</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -466,7 +392,7 @@ of the original.</p>
 <img alt="images/green_plugin_00.png" src="images/green_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="hue">
-<h1><a class="toc-backref" href="#toc-entry-14"><tt class="docutils literal">hue</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-13"><tt class="docutils literal">hue</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>hue</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -493,7 +419,7 @@ in range [0, 1).  Since the hue space is cyclic, the shortest
 <img alt="images/hue_plugin_00.png" src="images/hue_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="magenta">
-<h1><a class="toc-backref" href="#toc-entry-15"><tt class="docutils literal">magenta</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-14"><tt class="docutils literal">magenta</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>magenta</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -519,7 +445,7 @@ component of the RGB original.</p>
 <img alt="images/magenta_plugin_00.png" src="images/magenta_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="red">
-<h1><a class="toc-backref" href="#toc-entry-16"><tt class="docutils literal">red</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-15"><tt class="docutils literal">red</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>red</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -545,7 +471,7 @@ the RGB original.</p>
 <img alt="images/red_plugin_00.png" src="images/red_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="saturation">
-<h1><a class="toc-backref" href="#toc-entry-17"><tt class="docutils literal">saturation</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-16"><tt class="docutils literal">saturation</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>saturation</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -571,7 +497,7 @@ HSV space in range [0, 1].</p>
 <img alt="images/saturation_plugin_00.png" src="images/saturation_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="value">
-<h1><a class="toc-backref" href="#toc-entry-18"><tt class="docutils literal">value</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-17"><tt class="docutils literal">value</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>value</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -598,7 +524,7 @@ space.</p>
 <img alt="images/value_plugin_00.png" src="images/value_plugin_00.png" style="width: 227px; height: 129px;" />
 </div>
 <div class="section" id="yellow">
-<h1><a class="toc-backref" href="#toc-entry-19"><tt class="docutils literal">yellow</tt></a></h1>
+<h1><a class="toc-backref" href="#toc-entry-18"><tt class="docutils literal">yellow</tt></a></h1>
 <p><tt class="docutils literal">Image</tt> [Float] <strong>yellow</strong> ()</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
