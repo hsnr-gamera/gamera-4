@@ -1,6 +1,12 @@
 Changes made between Gamera File Releases
 =========================================
 
+Version 4.1.0, TODO Set release date
+
+ - Update install instructions, to use pip
+
+ - Change distutils to setuptools
+
  - fixed endianness issue when writing GREY16 images
 
  - fixed segfault with gcc 9.4.0 in color_ccs() (call to is_white())
