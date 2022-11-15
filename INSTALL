@@ -42,7 +42,7 @@ Standard Build and Install
 Gamera can be installed via pip. Open a
 terminal and type::
 
-  pip install git+https://github.com/hsnr-gamera/gamera-4
+  pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
 
 By default, parallelization of the genetic algorithms is only compiled
 into Gamera under Linux and with gcc version > 4.2, because we could only
