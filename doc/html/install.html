@@ -11,7 +11,7 @@
 <div class="document" id="building-and-installing-gamera">
 <h1 class="title">Building and installing Gamera</h1>
 
-<p><strong>Last modified</strong>: November 15, 2022</p>
+<p><strong>Last modified</strong>: November 23, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -69,6 +69,12 @@ export CFLAGS LDFLAGS
 <h2><a class="toc-backref" href="#toc-entry-3">Standard Build and Install</a></h2>
 <p>Gamera can be installed via pip. Open a
 terminal and type:</p>
+<pre class="literal-block">
+git clone https://github.com/hsnr-gamera/gamera-4
+cd gamera-4
+pip install .
+</pre>
+<p>Alternatively, Gamera can also be installed directly:</p>
 <pre class="literal-block">
 pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
 </pre>
