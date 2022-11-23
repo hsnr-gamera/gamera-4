@@ -5,6 +5,13 @@ import textwrap
 def gamera_gui():
 	print("Loading GAMERA...")
 	print("Use 'gamera_gui --help' to display command line options")
+	# test wx import
+	try:
+		from wx import aui
+	except ImportError:
+		print("'gamera_gui' need wxPython installed. Please install it, throw 'pip install wxPython'")
+		exit(-1)
+
 	try:
 		from gamera.config import config
 		from gamera.gui import gui
