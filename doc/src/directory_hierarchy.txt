@@ -7,7 +7,7 @@ The Gamera source tree looks something like this:
 +---------------------+----------------------------------------------------------------+
 | ./                  | Basic information files for building Gamera.                   |
 |                     +---------------+------------------------------------------------+
-|                     | setup.py      | A Python ``setuptools``-based build script.     |
+|                     | setup.py      | A Python ``setuptools``-based build script.    |
 |                     |               | See `building and installing Gamera`_.         |
 +---------------------+---------------+------------------------------------------------+
 | doc/                | Documentation for Gamera                                       |
