@@ -8,7 +8,7 @@ def gamera_gui():
 	try:
 		from wx import aui
 	except ImportError:
-		print(f"\033[91m Error: 'gamera_gui' need wxPython installed. Please install it, throw 'pip install wxPython'")
+		print(f"\033[91m Error: 'gamera_gui' need wxPython installed. Please install it, throw 'pip install wxPython'\033[0m")
 		exit(-1)
 
 	try:
