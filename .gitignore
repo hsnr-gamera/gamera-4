@@ -19,3 +19,8 @@ gamera/gui/__pycache__/
 gamera/mac/__pycache__/
 gamera/plugins/__pycache__/
 .pytest_cache
+
+CMakeLists.txt
+src/CMakeLists.txt
+src/*/CMakeLists.txt
+gamera/src/*/CMakeLists.txt
