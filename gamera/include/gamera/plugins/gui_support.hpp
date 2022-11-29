@@ -211,7 +211,7 @@ PyObject* to_string(T& m) {
 }
 
 static char *get_writable_buffer(PyObject *py_buffer, size_t nrows, size_t ncols) {
-	if (PyObject_CheckReadBuffer(py_buffer) == 1) {
+	if (PyObject_CheckBuffer(py_buffer) == 1) {
 		// Old Buffer Protocol
 		char *buffer;
 		Py_ssize_t buffer_len;

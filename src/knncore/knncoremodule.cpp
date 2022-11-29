@@ -1375,7 +1375,7 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 	Py_ssize_t len;
 	int *selections;
 	
-	if (!PyObject_CheckReadBuffer(array)) {
+	if (PyObject_CheckBuffer(array) != 1) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
@@ -1412,7 +1412,7 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 	}
 	Py_ssize_t len;
 	double* weights;
-	if (!PyObject_CheckReadBuffer(array)) {
+	if (PyObject_CheckBuffer(array) != 1) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}

@@ -50,7 +50,7 @@ enum DistanceType {
 inline int image_get_fv(PyObject* image, double** buf, Py_ssize_t* len) {
 	ImageObject* x = (ImageObject*)image;
 	
-	if (PyObject_CheckReadBuffer(x->m_features) < 0) {
+	if (PyObject_CheckBuffer(x->m_features) != 1) {
 		return -1;
 	}
 	

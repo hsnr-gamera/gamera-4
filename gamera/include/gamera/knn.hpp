@@ -22,6 +22,7 @@
 #define kwm08142002_knn
 
 #include "gamera_limits.hpp"
+#include "gamera.hpp"
 #include <vector>
 #include <map>
 #include <cmath>
