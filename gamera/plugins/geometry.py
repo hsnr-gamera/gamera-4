@@ -426,22 +426,23 @@ class hough_lines(PluginFunction):
 
 
 class GeometryModule(PluginModule):
-  cpp_headers = ["geometry.hpp"]
-  category = "Geometry"
-  import glob
-  cpp_sources=["src/geostructs/kdtree.cpp", "src/geostructs/delaunaytree.cpp"] + glob.glob("src/graph/*.cpp")
-  functions = [voronoi_from_labeled_image,
-               voronoi_from_points,
-               labeled_region_neighbors,
-               delaunay_from_points,
-               graph_color_ccs,
-               convex_hull_from_points,
-               convex_hull_as_points,
-               convex_hull_as_image,
-               max_empty_rect,
-               hough_lines]
-  author = "Christoph Dalitz"
-  url = "http://gamera.sourceforge.net/"
+    cpp_headers = ["geometry.hpp"]
+    category = "Geometry"
+    import glob
+    cpp_sources = ["gamera/src/geostructs/kdtree.cpp", "gamera/src/geostructs/delaunaytree.cpp"] \
+                  + glob.glob("gamera/src/graph/*.cpp")
+    functions = [voronoi_from_labeled_image,
+                 voronoi_from_points,
+                 labeled_region_neighbors,
+                 delaunay_from_points,
+                 graph_color_ccs,
+                 convex_hull_from_points,
+                 convex_hull_as_points,
+                 convex_hull_as_image,
+                 max_empty_rect,
+                 hough_lines]
+    author = "Christoph Dalitz"
+    url = "http://gamera.sourceforge.net/"
 
 module = GeometryModule()
 
