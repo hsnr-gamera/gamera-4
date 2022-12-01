@@ -53,11 +53,13 @@ inline int image_get_fv(PyObject* image, double** buf, Py_ssize_t* len) {
 	if (PyObject_CheckBuffer(x->m_features) != 1) {
 		return -1;
 	}
-	
-	if (PyObject_AsReadBuffer(x->m_features, (const void**)buf, len) < 0) {
+	Py_buffer buffer;
+	if (PyObject_GetBuffer(image, &buffer, PyBUF_SIMPLE) != 0) {
 		PyErr_SetString(PyExc_TypeError, "knn: Could not use image as read buffer.");
 		return -1;
 	}
+	*buf = (double *)buffer.buf;
+	*len = buffer.len;
 	if (*len == 0) {
 		return -1;
 	}

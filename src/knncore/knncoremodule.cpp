@@ -1379,11 +1379,12 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
-	
-	if ((PyObject_AsReadBuffer(array, (const void**)&selections, &len) != 0)) {
+	Py_buffer buffer;
+	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
+	selections = (int*)buffer.buf;
 	
 	if ( (size_t) len != o->num_features * sizeof(int)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: selection vector is not the correct size.");
@@ -1416,10 +1417,12 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
-	if ((PyObject_AsReadBuffer(array, (const void**)&weights, &len) != 0)) {
+	Py_buffer buffer;
+	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
+	weights = (double*)buffer.buf;
 	if (size_t(len) != o->num_features * sizeof(double)) {
 		PyErr_SetString(PyExc_ValueError, "knn: weight vector is not the correct size.");
 		return nullptr;
