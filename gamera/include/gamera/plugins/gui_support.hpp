@@ -210,31 +210,25 @@ PyObject* to_string(T& m) {
 	return str;
 }
 
-static char *get_writable_buffer(PyObject *py_buffer, size_t nrows, size_t ncols) {
-	if (PyObject_CheckBuffer(py_buffer) == 1) {
-		// Old Buffer Protocol
+static char *get_writable_buffer(PyObject *pyObject, size_t nrows, size_t ncols) {
+	if (PyObject_CheckBuffer(pyObject) == 1) {
 		char *buffer;
-		Py_ssize_t buffer_len;
-		PyObject_AsWriteBuffer(py_buffer, (void **)&buffer, &buffer_len);
-		
-		if ((size_t)buffer_len != nrows * ncols * 3 || buffer == nullptr) {
-			printf("The image passed to to_buffer is not of the correct size.\n");
+		Py_buffer view{};
+		if (PyObject_GetBuffer(pyObject, &view, PyBUF_SIMPLE) != 0) {
+			PyErr_SetString(PyExc_BufferError, "Could not get buffer");
+			return nullptr;
+		}
+		buffer = (char *) view.buf;
+		Py_ssize_t buffer_len = view.len;
+		if ((size_t) buffer_len != nrows * ncols * 3 || buffer == nullptr) {
+			PyErr_SetString(PyExc_BufferError, "The image passed to to_buffer is not of the correct size.");
 			return nullptr;
 		}
 		return buffer;
-	} else if (PyMemoryView_Check(py_buffer) == 1) {
-    // New Buffer Protocol
-    Py_buffer *buffer = PyMemoryView_GET_BUFFER(py_buffer);
-
-    if ((size_t)buffer->len != nrows * ncols * 3) {
-      printf("The image passed to to_buffer is not of the correct size.\n");
-      return nullptr;
-    }
-    return (char *)buffer->buf;
-  }
-
-  printf("Buffer object is of an unknown type.\n");
-  return NULL;
+	}
+	
+	printf("Buffer object is of an unknown type.\n");
+	return nullptr;
 }
 
 template<class T>
