@@ -1376,12 +1376,12 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 	int *selections;
 	
 	if (PyObject_CheckBuffer(array) != 1) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
-	Py_buffer buffer;
+	Py_buffer buffer{};
 	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
 	selections = (int*)buffer.buf;
@@ -1414,12 +1414,12 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 	Py_ssize_t len;
 	double* weights;
 	if (PyObject_CheckBuffer(array) != 1) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
-	Py_buffer buffer;
+	Py_buffer buffer{};
 	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
 	weights = (double*)buffer.buf;

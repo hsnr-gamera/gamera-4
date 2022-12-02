@@ -53,9 +53,9 @@ inline int image_get_fv(PyObject* image, double** buf, Py_ssize_t* len) {
 	if (PyObject_CheckBuffer(x->m_features) != 1) {
 		return -1;
 	}
-	Py_buffer buffer;
-	if (PyObject_GetBuffer(image, &buffer, PyBUF_SIMPLE) != 0) {
-		PyErr_SetString(PyExc_TypeError, "knn: Could not use image as read buffer.");
+	Py_buffer buffer{};
+	if (PyObject_GetBuffer(x->m_features, &buffer, PyBUF_SIMPLE) != 0) {
+		PyErr_SetString(PyExc_BufferError, "knn: Could not use image as read buffer.");
 		return -1;
 	}
 	*buf = (double *)buffer.buf;
