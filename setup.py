@@ -214,5 +214,4 @@ if __name__ == "__main__":
               'Source': 'https://github.com/hsnr-gamera/gamera-4'
           },
           include_package_data=True,
-          zip_safe=False,
           packages=packages)
