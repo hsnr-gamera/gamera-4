@@ -93,7 +93,7 @@ else:
                 offset,
                 Dim(array.shape[1], array.shape[0]),
                 pixel_type, DENSE,
-                array.tostring())
+                array.tobytes())
 
         __call__ = staticmethod(__call__)
 
