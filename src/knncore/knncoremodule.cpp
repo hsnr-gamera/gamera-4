@@ -1323,10 +1323,11 @@ static PyObject* knn_unserialize(PyObject* self, PyObject* args) {
 static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
   KnnObject *o = (KnnObject*) self;
   PyObject *arglist = Py_BuildValue( "(s)", "i");
-  PyObject *array = PyEval_CallObject(array_init, arglist);
+  PyObject *array = PyObject_CallObject(array_init, arglist);
 
   if ( array == 0 ) {
     PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
+    Py_XDECREF(arglist);
     return 0;
   }
   Py_XDECREF(arglist);
@@ -1339,17 +1340,16 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
     }
     Py_XDECREF(result);
   }
-
-  Py_XDECREF(arglist);
 	return array;
 }
 
 static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
 	KnnObject *o = (KnnObject *) self;
 	PyObject *arglist = Py_BuildValue("(s)", "d");
-	PyObject *array = PyEval_CallObject(array_init, arglist);
+	PyObject *array = PyObject_CallObject(array_init, arglist);
 	if (array == nullptr) {
 		PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
+		Py_XDECREF(arglist);
 		return nullptr;
 	}
 	Py_XDECREF(arglist);
@@ -1360,7 +1360,6 @@ static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
 			return nullptr;
 		Py_XDECREF(result);
 	}
-	Py_XDECREF(arglist);
 	return array;
 }
 
