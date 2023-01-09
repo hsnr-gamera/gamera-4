@@ -16,4 +16,4 @@ recursive-include migration_tools README gamera_deprecation_filter generate_migr
 include CHANGES INSTALL LICENSE ACKNOWLEDGEMENTS KNOWN_BUGS MANIFEST.in TODO setup.cfg gamera_post_install.py version
 recursive-include tests *.py README
 recursive-include tests/data *
-include tests/tmp/.empty_dir
+include tests/tmp/.gitignore

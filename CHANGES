@@ -1,10 +1,19 @@
 Changes made between Gamera File Releases
 =========================================
 
+Version 4.0.1, Jan 09, 2023
+----------------------------
+
+ - fixed comparison operator for CCs (broke grouping algorithm)
+
  - fixed endianness issue when writing GREY16 images
 
  - fixed segfault with gcc 9.4.0 in color_ccs() (call to is_white())
 
+ - replaced py.test with pytest
+
+ - added empty tests/tmp directory so that unit tests work
+ 
 
 Version 4.0.0, Feb 18, 2022
 ----------------------------
