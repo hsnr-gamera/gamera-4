@@ -18,7 +18,7 @@
 
 # This is a compatibility wrapper to enable parallel support of wxPython 3 and 4
 
-from distutils.version import LooseVersion
+from packaging import version
 
 import wx
 IS_WXP4 = wx.VERSION >= (4,0)
@@ -221,14 +221,14 @@ def init_image_handlers():
    Initialization of all image handlers (for versions below 2.9)
    """
    #if int(wx.__version__.split('.')[0]) < 3 and int(wx.__version__.split('.')[1]) < 9:
-   if LooseVersion(wx.__version__) < LooseVersion('2.9'):
+   if version.parse(wx.__version__) < version.parse('2.9'):
       wx.InitAllImageHandlers() # deprecated since wxPython 2.9
 
 def set_control_down(key_event):
    """
    Sets the control key down for the specified key-event based on the wx-Version.
    """
-   if LooseVersion(wx.__version__) < LooseVersion('3.0'):
+   if version.parse(wx.__version__) < version.parse('3.0'):
       key_event.m_controlDown = True
    else:
       key_event.SetControlDown(True)
