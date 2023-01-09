@@ -1,4 +1,4 @@
-import py.test
+import pytest
 
 from gamera.core import *
 
@@ -9,11 +9,11 @@ def test_mlcc_wrongcalls():
     img = Image((0, 0), (8, 8))
     img.draw_filled_rect((1, 1), (3, 3), 2)
     img.set((1, 5), 3)
-    py.test.raises(Exception, MlCc, img, 2, 1)
-    py.test.raises(Exception, MlCc, img, "a", Rect((0, 0), (8, 8)))
-    py.test.raises(Exception, MlCc, "abc", 2, Rect((0, 0), (8, 8)))
-    py.test.raises(Exception, MlCc, [1, 2])
-    py.test.raises(Exception, MlCc, [img])
+    pytest.raises(Exception, MlCc, img, 2, 1)
+    pytest.raises(Exception, MlCc, img, "a", Rect((0, 0), (8, 8)))
+    pytest.raises(Exception, MlCc, "abc", 2, Rect((0, 0), (8, 8)))
+    pytest.raises(Exception, MlCc, [1, 2])
+    pytest.raises(Exception, MlCc, [img])
 
 
 def test_mlcc():

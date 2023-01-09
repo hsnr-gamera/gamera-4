@@ -1,4 +1,4 @@
-import py.test
+import pytest
 #
 # Tests for nearest neighbor finding with kd-trees
 #
@@ -17,13 +17,13 @@ def test_wrongparams():
         tree = KdTree(nodes)
 
     # all point coordinates must be numeric
-    py.test.raises(Exception, _kdnode_input, [1, 2, "a"])
-    py.test.raises(Exception, _kdnode_input, [])
+    pytest.raises(Exception, _kdnode_input, [1, 2, "a"])
+    pytest.raises(Exception, _kdnode_input, [])
     # all nodes must be KdNode's and of same dimension
-    py.test.raises(Exception, _kdtree_input, [KdNode([1, 2]), KdNode([2, 3, 4])])
-    py.test.raises(Exception, _kdtree_input, [KdNode([1, 2]), [2, 3]])
-    py.test.raises(Exception, _kdtree_input, None)
-    py.test.raises(Exception, _kdtree_input, [])
+    pytest.raises(Exception, _kdtree_input, [KdNode([1, 2]), KdNode([2, 3, 4])])
+    pytest.raises(Exception, _kdtree_input, [KdNode([1, 2]), [2, 3]])
+    pytest.raises(Exception, _kdtree_input, None)
+    pytest.raises(Exception, _kdtree_input, [])
 
 
 #

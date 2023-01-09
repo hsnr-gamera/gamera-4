@@ -1038,7 +1038,7 @@ def _test_memory_all():
 
 
 # ------------------------------------------------------------------------------
-# prepare py.test
+# prepare pytest
 class TestGraph:
     pass
 
