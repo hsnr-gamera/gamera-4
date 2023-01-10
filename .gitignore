@@ -14,6 +14,7 @@ gamera_setup
 # IDEs
 .idea/
 gamera/__pycache__/
+tests/__pycache__/
 gamera/backport/__pycache__/
 gamera/gui/__pycache__/
 gamera/mac/__pycache__/
