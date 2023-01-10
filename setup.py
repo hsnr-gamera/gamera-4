@@ -194,7 +194,7 @@ CCompiler.compile = _compile
 
 if __name__ == "__main__":
 
-    setup(name="Gamera",
+    setup(name="gamera",
           version=gamera_version,
           ext_modules=extensions,
           python_requires='>=3.5',
