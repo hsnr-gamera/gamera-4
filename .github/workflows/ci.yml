@@ -8,7 +8,7 @@ jobs:
   main:
     strategy:
       matrix:
-        python: [3.8, 3.9, '3.10']
+        python: ['3.8', '3.9', '3.10', '3.11']
     runs-on: ubuntu-latest
     name: Python ${{ matrix.python }}
     steps:
@@ -25,35 +25,26 @@ jobs:
         sudo apt-get install gcc
     - name: prepare pip
       run:
-        python -m pip install --upgrade pip wheel
+        python -m pip install --upgrade pip wheel setuptools numpy
     - name: install apt deps
       run:
         sudo apt-get install
-          libwebkit2gtk-4.0-dev
           libjpeg-dev
           libtiff-dev
           libgtk-3-dev
           libgtk3.0
           autoconf
           build-essential
-          libsdl1.2-dev
-          libgstreamer-plugins-base1.0-dev
-          freeglut3
           libpng16-16
           libpng-dev
-          freeglut3
-          freeglut3-dev
-          libsm-dev
-          libnotify-dev
           dpkg-dev
           build-essential
-          libxtst-dev
     - name: build Gamera
       run: |
-        python setup.py --nowx build
+        python -m pip .
     - name: install Gamera
       run: |
-        python setup.py --nowx install
+        python -m pip .
     # The directory seems to be required, otherwise we get some errors:
     #    gamera.gamera_xml.XMLError: Cannot create a file at '/home/runner/work/gamera-4/gamera-4/tmp'
     - name: prepare tests
