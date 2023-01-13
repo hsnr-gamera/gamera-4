@@ -178,7 +178,7 @@ In the gamera core code, the following works:
    class ExampleModule(PluginModule):
        category = "MyPlugins"
        cpp_headers = ["myplugins.hpp"]
-       cpp_sources = ["src/geostructs/kdtree.cpp"]
+       cpp_sources = ["gamera/src/geostructs/kdtree.cpp"]
        functions = [myplugin1, myplugin2]
    module = ExampleModule()
 
@@ -195,10 +195,10 @@ as follows:
        # ...
        import os, sys, gamera
        gamera_root = os.path.dirname(gamera.__file__)
-       cppfile = os.path.join(gamera_root,"src/geostructs/kdtree.cpp")
+       cppfile = os.path.join(gamera_root,"gamera/src/geostructs/kdtree.cpp")
        if not os.path.exists(cppfile):
            gamera_root = os.path.join(sys.exec_prefix,"gamera")
-           cppfile = os.path.join(gamera_root,"src/geostructs/kdtree.cpp")
+           cppfile = os.path.join(gamera_root,"gamera/src/geostructs/kdtree.cpp")
        cpp_sources=[cppfile]
        # ...
 

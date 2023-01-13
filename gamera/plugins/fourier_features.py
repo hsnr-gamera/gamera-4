@@ -52,7 +52,7 @@ class FourierFeaturesModule(PluginModule):
     cpp_headers = ["fourier_features.hpp"]
     category = "Features"
     functions = [fourier_broken]
-    cpp_sources = ["src/geostructs/kdtree.cpp", "src/geostructs/delaunaytree.cpp"]
+    cpp_sources = ["gamera/src/geostructs/kdtree.cpp", "gamera/src/geostructs/delaunaytree.cpp"]
     extra_compile_args = ["-DFDLENGTH=48"]
     author = "Christian Brandt and Christoph Dalitz"
     url = "http://gamera.sourceforge.net/"
