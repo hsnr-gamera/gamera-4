@@ -15,8 +15,6 @@ Prerequisites
   build Gamera from source code.  Most Linux distributions include
   these as a separate package (eg. ``python-dev`` or ``python-devel``).
 
-- python3-distutils
-
 - python3-pip
 
 - libgtk-3-dev
@@ -41,85 +39,43 @@ pass its locations to the build script, e.g.::
 Standard Build and Install
 --------------------------
 
-Gamera is built using the Python-standard Distutils system.  Open a
+Gamera can be installed via pip. Open a
 terminal and type::
 
-  python setup.py build
-  sudo python setup.py install
+  git clone https://github.com/hsnr-gamera/gamera-4
+  cd gamera-4
+  pip install .
+
+Alternatively, Gamera can also be installed directly::
+
+    pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
 
 By default, parallelization of the genetic algorithms is only compiled
 into Gamera under Linux and with gcc version > 4.2, because we could only
 get it running in this environment. If you are sure that you have unbroken
-OpenMP support on your system, you can compile Gamera with::
+OpenMP support on your system, need to clone the git repo and edit the setup.py::
 
-  python setup.py build --openmp=yes
+  git clone https://github.com/hsnr-gamera/gamera-4
+  cd gamera-4
+  sed -i 's/has_openmp = None/has_openmp = True/' setup.py
+  pip install .
 
 If Gamera is compiled with OpenMP on your system, but OpenMP does not work
 on your system for some reason, you can switch it off with::
 
-  python setup.py build --openmp=no
+  git clone https://github.com/hsnr-gamera/gamera-4
+  cd gamera-4
+  sed -i 's/has_openmp = None/has_openmp = False/' setup.py
+  pip install .
 
-
-Installing without root privileges
-----------------------------------
-
-.. _without_root:
-
-If you do not have root access to your machine, you can make a local
-installation of Gamera.
-
-A quick-and-easy way to do this is to use the ``virtual_python.py``
-script available here__, and then follow the standard installation
-instructions (without using sudo)::
-
-  python setup.py build
-  python setup.py install
-
-.. __: http://peak.telecommunity.com/DevCenter/EasyInstall#creating-a-virtual-python
-
-Alternatively, you can set up a local installation by hand.
-
-Make a local python module directory somewhere that you have write
-privileges (such as your home directory)::
-
-  mkdir ~/python
-
-From the Gamera build directory, install Gamera into that directory::
-
-  python setup.py install --home=~/python
-
-Set up an environment variables so Python can find stuff there (you
-may want to add this to your ~/.bash_profile file)::
-
-  export PYTHONPATH=~/python/lib/python
-
-Add the local Python scripts directory to your path::
-
-  export PATH=~/python/bin:$PATH
-
-Now you should be able to run the ``gamera_gui`` script from the
-command line.
 
 Running
 -------
 
-Run the ``gamera_gui`` script, which should have installed to
-``/usr/local/bin``.  This file can also be copied anywhere (such as
-the Desktop) and double-clicked to run Gamera.
+Run the ``gamera_gui`` script, which is installed in the ``bin`` directory of Python
 
 .. note:: Running the script from the root of the source tree will not
   work, since it will not be able to find the compiled version of Gamera.
-
-Installing without wxPython
----------------------------
-
-When you need Gamera as a backend for document processing routines on
-a server and do not need the GUI, it can save a lot of trouble to
-avoid the installation of wxPython. For this case, use the option
-``--nowx`` for ``setup.py``::
-
-  python setup.py --nowx build
-  sudo python setup.py --nowx install
 
 
 Mac OS-X
@@ -148,25 +104,13 @@ Standard Build and Install
 
 Gamera is built using the Python-standard Distutils system.
 
-To build Gamera, open a terminal and type::
+To install Gamera (you'll need to have admin privileges)::
 
-  python setup.py build
-
-and then to install (you'll need to have admin privileges)::
-
-  sudo python setup.py install
+  pip install git+https://github.com/hsnr-gamera/gamera-4
 
 On OS-X 10.11, the script ``gamera_gui`` is installed to ``/usr/local/bin``,
 which is also in the default search PATH for programs.
 
-
-Installing without root privileges
-``````````````````````````````````
-
-The instructions for `installing without root (administrator)
-privileges`__ can also be used on Mac OS-X.
-
-__ without_root_
 
 Running
 ```````

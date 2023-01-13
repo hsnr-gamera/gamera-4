@@ -7,7 +7,7 @@ The Gamera source tree looks something like this:
 +---------------------+----------------------------------------------------------------+
 | ./                  | Basic information files for building Gamera.                   |
 |                     +---------------+------------------------------------------------+
-|                     | setup.py      | A Python ``distutils``-based build script.     |
+|                     | setup.py      | A Python ``setuptools``-based build script.    |
 |                     |               | See `building and installing Gamera`_.         |
 +---------------------+---------------+------------------------------------------------+
 | doc/                | Documentation for Gamera                                       |
@@ -38,7 +38,7 @@ The Gamera source tree looks something like this:
 |                     |               | source code (``gamera/gui/gamera_icons.py``)   |
 |                     |               | using the ``convert_images.py`` script.        |
 +---------------------+---------------+------------------------------------------------+
-| include/            | C++ header (``.hpp``) files.                                   |
+| gamera/include/     | C++ header (``.hpp``) files.                                   |
 |                     | Since the Gamera C++ code is so heavily                        |
 |                     | templatized, most of the code is here.                         |
 |                     +---------------+------------------------------------------------+
@@ -60,8 +60,6 @@ The Gamera source tree looks something like this:
 |                     |               | Evolutionary Computation Framework             |
 |                     |               | used to optimize the kNN classifier.           |
 |                     +---------------+------------------------------------------------+
-|                     | graph/        | A graph library.  API should be considered     |
-|                     |               | unstable.                                      |
 |                     +---------------+------------------------------------------------+
 |                     | libtiff/      | libtiff_: A library for reading/writing Tagged |
 |                     |               | Image Format Files (otherwise known as *Tons of|

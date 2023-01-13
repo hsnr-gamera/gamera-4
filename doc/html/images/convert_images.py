@@ -22,7 +22,7 @@
 # to convert all of the pngs in the this directory into a python script
 # called gamera_icons.py. This script can be copied to the main gamera
 # directory to be used by gamera. This is easier to manage than the
-# individual files, especially since distutils doesn't handle arbitrary
+# individual files, especially since setuptools doesn't handle arbitrary
 # data files.
 
 import sys, glob, os

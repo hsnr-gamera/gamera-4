@@ -103,7 +103,7 @@ class match_id_name(PluginFunction):
     args = Args([String('regex')])
     def __call__(self, regex):
         global regex_cache
-        if regex is str:
+        if util.is_string_or_unicode(regex):
             compiled = regex_cache.get(regex, None)
             if compiled is None:
                 compiled = build_id_regex(regex)

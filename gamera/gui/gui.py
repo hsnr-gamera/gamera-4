@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+import importlib
 
 # This stuff must come the very first before any other gui-specific things
 # are imported.
@@ -29,15 +30,15 @@ import inspect
 
 # Python standard library
 # import interactive
-import imp
 import os
 import os.path
-import sys
 import traceback
 # wxPython
 import wx
+import sys
 import wx.py
 
+# this import is need, but not directly used
 from gamera import paths, util
 from gamera.config import config
 from gamera.core import *
@@ -334,7 +335,8 @@ class ShellFrame(wx.Frame):
             file = sys.argv[0]
             try:
                 name = os.path.basename(file)[:-3]
-                module = imp.load_source(name, file)
+                # module = imp.load_source(name, file)
+                module = importlib.import_module(name, file)
                 self.shell.locals[name] = module
                 self.shell.push(name)
                 imported = True

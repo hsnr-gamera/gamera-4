@@ -224,8 +224,8 @@ static int rect_set_dim(PyObject* self, PyObject* value) {
 */
 static PyObject* rect_set(PyObject* self, PyObject* args) {
   Rect* x = ((RectObject*)self)->m_x;
-  PyObject* py_other = rect_new(get_RectType(), args, NULL);
-  if (py_other == NULL) {
+  PyObject* py_other = rect_new(get_RectType(), args, nullptr);
+  if (py_other == nullptr) {
     PyErr_Clear();
     PyErr_SetString(PyExc_TypeError, "Incorrect arguments to rect_set.  See doc(rect_set) for valid arguments.");
     return 0;
@@ -396,7 +396,7 @@ static PyObject* rect_intersection (PyObject* self, PyObject* args) {
 
 static PyObject* rect_union_rects(PyObject* _ /* staticmethod */, PyObject* l) {
   PyObject* seq = PySequence_Fast(l, "First argument must be iterable of Rects");
-  if (seq == NULL)
+  if (seq == nullptr)
     return 0;
 
   int num_rects = PySequence_Fast_GET_SIZE(seq);
@@ -569,13 +569,13 @@ static PyGetSetDef rect_getset[] = {
                 "(int property)\n\nThe left edge of the rectangle in the logical coordinate space."},
         {"offset_y", (getter)rect_get_offset_y, (setter)rect_set_offset_y,
                 "(int property)\n\nThe upper edge of the rectable in the logical coordinate space."},
-        {"center", (getter)rect_get_center, NULL,
+        {"center", (getter)rect_get_center, nullptr,
                 "(Point property)\n\nThe coordinate at the exact center of the rectangle in the logical coordinate space."},
-        {"center_x", (getter)rect_get_center_x, NULL,
+        {"center_x", (getter)rect_get_center_x, nullptr,
                 "(int property)\n\nThe x-location at the exact center of the rectangle in the logical coordinate space."},
-        {"center_y", (getter)rect_get_center_y, NULL,
+        {"center_y", (getter)rect_get_center_y, nullptr,
                 "(int property)\n\nThe y-location at the exact center of the rectangle in the logical coordinate space."},
-        { NULL }
+        { nullptr }
 };
 
 static PyMethodDef rect_methods[] = {
@@ -612,7 +612,7 @@ static PyMethodDef rect_methods[] = {
                 "int **distance_cx** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the horizontal direction."},
         {"distance_cy", rect_distance_cy, METH_VARARGS,
                 "int **distance_cy** (Rect *other*)\n\nReturns the distance of the center points of this rectangle and the given rectangle in the vertical direction."},
-        {NULL, NULL}
+        {nullptr, nullptr}
 };
 
 
@@ -630,9 +630,9 @@ void init_RectType(PyObject* module_dict) {
   RectType.tp_getset = rect_getset;
   RectType.tp_new = rect_new;
   RectType.tp_getattro = PyObject_GenericGetAttr;
-  RectType.tp_alloc = NULL;
+  RectType.tp_alloc = nullptr;
   RectType.tp_richcompare = rect_richcompare;
-  RectType.tp_free = NULL;
+  RectType.tp_free = nullptr;
   RectType.tp_repr = rect_repr;
   RectType.tp_hash = rect_hash;
   RectType.tp_doc =

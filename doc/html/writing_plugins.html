@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Writing Gamera Plugins</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,7 +11,7 @@
 <div class="document" id="writing-gamera-plugins">
 <h1 class="title">Writing Gamera Plugins</h1>
 
-<p><strong>Last modified</strong>: February 01, 2022</p>
+<p><strong>Last modified</strong>: November 23, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -310,16 +310,16 @@ something like:</p>
 <span class="w">    </span><span class="n">image_get_fv</span><span class="p">(</span><span class="n">real_self</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">real_self_image</span><span class="o">-&gt;</span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">real_self_image</span><span class="o">-&gt;</span><span class="n">features_len</span><span class="p">);</span><span class="w"></span>
 <span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">get_image_combination</span><span class="w"> </span><span class="p">(</span><span class="n">real_self</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nl">ONEBITRLEIMAGEVIEW</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">ONEBITRLEIMAGEVIEW</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="n">return_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">OneBitRleImageView</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">real_self_image</span><span class="p">));</span><span class="w"></span>
 <span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nl">RLECC</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">RLECC</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="n">return_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">RleCc</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">real_self_image</span><span class="p">));</span><span class="w"></span>
 <span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nl">CC</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">CC</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="n">return_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">Cc</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">real_self_image</span><span class="p">));</span><span class="w"></span>
 <span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nl">ONEBITIMAGEVIEW</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">ONEBITIMAGEVIEW</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="n">return_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">OneBitImageView</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">real_self_image</span><span class="p">));</span><span class="w"></span>
 <span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
 <span class="w">      </span><span class="k">default</span><span class="o">:</span><span class="w"></span>

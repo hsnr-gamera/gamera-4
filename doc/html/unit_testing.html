@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Unit testing with Gamera</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,7 +11,7 @@
 <div class="document" id="unit-testing-with-gamera">
 <h1 class="title">Unit testing with Gamera</h1>
 
-<p><strong>Last modified</strong>: February 01, 2022</p>
+<p><strong>Last modified</strong>: November 23, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -24,32 +24,24 @@
 <div class="section" id="introduction">
 <h1><a class="toc-backref" href="#toc-entry-1">Introduction</a></h1>
 <p>Gamera does not contain its own unit testing framework, but instead
-uses the great <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test</a> framework.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><strong>py.test</strong> is still considered beta-level software, and is somewhat
-cumbersome to install (perhaps the same could be said about
-Gamera).  It is not required for proper operation of Gamera, and is
-only needed for those developers who wish to port Gamera to new
-platforms or write unit tests for new code.</p>
-</div>
-<p>This document does not attempt to replicate the <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test</a>
+uses the great <a class="reference external" href="https://pytest.org/">pytest</a> framework.</p>
+<p>This document does not attempt to replicate the <a class="reference external" href="https://pytest.org/">pytest</a>
 documentation, and will only discuss Gamera-specific additions.</p>
 </div>
 <div class="section" id="running-the-provided-unit-tests">
 <h1><a class="toc-backref" href="#toc-entry-2">Running the provided unit tests</a></h1>
 <ol class="arabic simple">
-<li>Install and test <cite>py.test</cite> using the instructions <a class="reference external" href="http://codespeak.net/py/dist/test.html">here</a>.</li>
+<li>Install and test <cite>pytest</cite> using the instructions <a class="reference external" href="https://pytest.org/">here</a>.</li>
 </ol>
 <ol class="arabic" start="2">
 <li><p class="first">From the <em>gamera/tests</em> directory, run all the unit tests with the
 command:</p>
 <pre class="literal-block">
-py.test --tb=no
+pytest --tb=no
 </pre>
 <p>Alternatively, you can run an individual test, say <em>test_graph.py</em> with:</p>
 <pre class="literal-block">
-py.test --tb=no test_graph.py
+pytest --tb=no test_graph.py
 </pre>
 <p>In case of failures you can obtain more information
 by omitting the option &quot;--tb=no&quot;.</p>
@@ -57,7 +49,7 @@ by omitting the option &quot;--tb=no&quot;.</p>
 <li><p class="first">If you only want to run a single test function from a unit test
 script, use the &quot;keyword&quot; option &quot;-k&quot;, e.g.:</p>
 <pre class="literal-block">
-py.test -k test_glyphs_from_xml_gz test_xml.py
+pytest -k test_glyphs_from_xml_gz test_xml.py
 </pre>
 </li>
 </ol>
@@ -67,14 +59,14 @@ py.test -k test_glyphs_from_xml_gz test_xml.py
 <p>A new unit test, say <em>test_mystuff.py</em>, is added by the following steps:</p>
 <ol class="arabic simple">
 <li>Create a new test script <em>test_mystuff.py</em> which imports gamera
-and py.test:</li>
+and pytest:</li>
 </ol>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">py.test</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">gamera.core</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">init_gamera</span><span class="p">()</span>
 </pre></div>
 <ol class="arabic simple" start="2">
-<li>Define for each test a function with the prefix <tt class="docutils literal">test_</tt>. py.test
+<li>Define for each test a function with the prefix <tt class="docutils literal">test_</tt>. pytest
 will run all these functions. To verify certain results, use the
 <tt class="docutils literal">assert</tt> statement, e.g.:</li>
 </ol>
@@ -84,15 +76,15 @@ will run all these functions. To verify certain results, use the
 </pre></div>
 <ol class="arabic simple" start="3">
 <li>To verify that certain circumstances (e.g., wrong input data) lead
-to an exception, use <tt class="docutils literal">py.test.raises</tt>:</li>
+to an exception, use <tt class="docutils literal">pytest.raises</tt>:</li>
 </ol>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_wronginput</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">_fail</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
         <span class="n">img</span><span class="o">.</span><span class="n">myplugin</span><span class="p">(</span><span class="s2">&quot;should only be numeric&quot;</span><span class="p">)</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s2">&quot;data/OneBit_generic.png&quot;</span><span class="p">)</span>
-    <span class="n">py</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">_fail</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">_fail</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
 </pre></div>
-<p>For more details, see the <a class="reference external" href="http://codespeak.net/py/dist/test.html">py.test documentation</a>.</p>
+<p>For more details, see the <a class="reference external" href="https://pytest.org/">pytest documentation</a>.</p>
 </div>
 <div class="section" id="testing-gamera-plugins">
 <h1><a class="toc-backref" href="#toc-entry-4">Testing Gamera plugins</a></h1>

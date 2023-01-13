@@ -1,5 +1,5 @@
-# -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
-# vim: set tabstop=3 shiftwidth=3 expandtab:
+# -*- mode: python; indent-tabs-mode: nil; tab-width: 4 -*-
+# vim: set tabstop=4 shiftwidth=4 expandtab:
 #
 # Copyright (C) 2001-2005 Ichiro Fujinaga, Michael Droettboom, Karl MacMillan
 #               2010-2012 Christoph Dalitz

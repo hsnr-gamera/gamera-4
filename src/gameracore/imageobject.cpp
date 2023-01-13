@@ -76,8 +76,8 @@ static PyObject *_image_new(PyTypeObject *pytype, const Point &offset, const Dim
 	  through RTTI, but it is simpler to use an enum and makes it easier to
 	  export to Python.
 	*/
-	ImageDataObject *py_data = NULL;
-	Rect *image = NULL;
+	ImageDataObject *py_data = nullptr;
+	Rect *image = nullptr;
 	try {
 		if (format == DENSE) {
 			if (pixel == ONEBIT) {
@@ -106,7 +106,7 @@ static PyObject *_image_new(PyTypeObject *pytype, const Point &offset, const Dim
 				image = (Rect *) new ImageView<ImageData<ComplexPixel> >(*data, offset, dim);
 			} else {
 				PyErr_Format(PyExc_TypeError, "Unknown pixel type '%d'.", pixel);
-				return NULL;
+				return nullptr;
 			}
 		} else if (format == RLE) {
 			if (pixel == ONEBIT) {
@@ -116,17 +116,17 @@ static PyObject *_image_new(PyTypeObject *pytype, const Point &offset, const Dim
 			} else {
 				PyErr_SetString(PyExc_TypeError,
 				                "Pixel type must be ONEBIT if storage format is RLE.");
-				return NULL;
+				return nullptr;
 			}
 		} else {
 			PyErr_SetString(PyExc_TypeError, "Unknown pixel type/storage format combination.");
-			return NULL;
+			return nullptr;
 		}
 	} catch (std::exception &e) {
 		Py_XDECREF(py_data);
 		delete image;
 		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return NULL;
+		return nullptr;
 	}
 	
 	ImageObject *o;
@@ -134,7 +134,7 @@ static PyObject *_image_new(PyTypeObject *pytype, const Point &offset, const Dim
 	// required initializations
 	o = (ImageObject *) pytype->tp_alloc(pytype, 0);
 	// initialize the weakreflist
-	o->m_weakreflist = NULL;
+	o->m_weakreflist = nullptr;
 	o->m_data = (PyObject *) py_data;
 	((RectObject *) o)->m_x = image;
 	PyObject *o2 = init_image_members(o);
@@ -146,11 +146,11 @@ static PyObject *image_new(PyTypeObject *pytype, PyObject *args,
 	int num_args = PyTuple_GET_SIZE(args);
 	
 	if (num_args >= 2 && num_args <= 4) {
-		PyObject *a = NULL;
-		PyObject *b = NULL;
+		PyObject *a = nullptr;
+		PyObject *b = nullptr;
 		int pixel = 0;
 		int format = 0;
-		static const char *kwlist[] = {"a", "b", "pixel_type", "storage_format", NULL};
+		static const char *kwlist[] = {"a", "b", "pixel_type", "storage_format", nullptr};
 		if (PyArg_ParseTupleAndKeywords(args, kwds, (char *) "OO|ii", (char **) kwlist, &a, &b, &pixel, &format)) {
 			Point point_a;
 			try {
@@ -199,10 +199,10 @@ static PyObject *image_new(PyTypeObject *pytype, PyObject *args,
 	PyErr_Clear();
 	
 	if (num_args >= 1 && num_args <= 3) {
-		PyObject *src = NULL;
+		PyObject *src = nullptr;
 		int pixel = -1;
 		int format = -1;
-		static const char *kwlist[] = {"image", "pixel_type", "storage_format", NULL};
+		static const char *kwlist[] = {"image", "pixel_type", "storage_format", nullptr};
 		if (PyArg_ParseTupleAndKeywords(args, kwds, (char *) "O|ii", (char **) kwlist,
 		                                &src, &pixel, &format)) {
 			if (is_RectObject(src)) {
@@ -233,7 +233,7 @@ static PyObject *image_new(PyTypeObject *pytype, PyObject *args,
 	  int offset_y, offset_x, nrows, ncols;
 	  int pixel = 0;
 	  int format = 0;
-	  static char *kwlist[] = {"offset_y", "offset_x", "nrows", "ncols", "pixel_type", "storage_format", NULL};
+	  static char *kwlist[] = {"offset_y", "offset_x", "nrows", "ncols", "pixel_type", "storage_format", nullptr};
 	  if (PyArg_ParseTupleAndKeywords(args, kwds, "iiii|ii", kwlist,
 									  &offset_y, &offset_x, &nrows, &ncols, &pixel, &format)) {
 		if (send_deprecation_warning(
@@ -259,14 +259,14 @@ static PyObject *_sub_image_new(PyTypeObject *pytype, PyObject *py_src, const Po
 		const Dim &dim) {
 	if (!is_ImageObject(py_src)) {
 		PyErr_SetString(PyExc_TypeError, "First argument to SubImage constructor must be an Image (or SubImage).");
-		return NULL;
+		return nullptr;
 	}
 	
 	int pixel, format;
 	ImageObject *src = (ImageObject *) py_src;
 	pixel = ((ImageDataObject *) src->m_data)->m_pixel_type;
 	format = ((ImageDataObject *) src->m_data)->m_storage_format;
-	Rect *subimage = NULL;
+	Rect *subimage = nullptr;
 	
 	try {
 		if (format == DENSE) {
@@ -296,7 +296,7 @@ static PyObject *_sub_image_new(PyTypeObject *pytype, PyObject *py_src, const Po
 				subimage = (Rect *) new ImageView<ImageData<ComplexPixel> >(*data, offset, dim);
 			} else {
 				PyErr_Format(PyExc_TypeError, "Unknown pixel type '%d'.  Receiving this error indicates an internal inconsistency or memory corruption.  Please report it on the Gamera mailing list.", pixel);
-				return NULL;
+				return nullptr;
 			}
 		} else if (format == RLE) {
 			if (pixel == ONEBIT) {
@@ -306,16 +306,16 @@ static PyObject *_sub_image_new(PyTypeObject *pytype, PyObject *py_src, const Po
 			} else {
 				PyErr_SetString(PyExc_TypeError,
 				                "Pixel type must be ONEBIT if storage format is RLE.  Receiving this error indicates an internal inconsistency or memory corruption.  Please report it on the Gamera mailing list.");
-				return NULL;
+				return nullptr;
 			}
 		} else {
 			PyErr_SetString(PyExc_TypeError, "Unknown pixel type/storage format combination.  Receiving this error indicates an internal inconsistency or memory corruption.  Please report it on the Gamera mailing list.");
-			return NULL;
+			return nullptr;
 		}
 	} catch (std::exception &e) {
 		delete subimage;
 		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return NULL;
+		return nullptr;
 	}
 	
 	ImageObject *o;
@@ -414,7 +414,7 @@ static PyObject *_cc_new(PyTypeObject *pytype, PyObject *py_src, int label,
 		const Point &offset, const Dim &dim) {
 	if (!is_ImageObject(py_src)) {
 		PyErr_SetString(PyExc_TypeError, "First argument to the Cc constructor must be an Image (or SubImage).");
-		return NULL;
+		return nullptr;
 	}
 	
 	int pixel, format;
@@ -422,12 +422,12 @@ static PyObject *_cc_new(PyTypeObject *pytype, PyObject *py_src, int label,
 	pixel = ((ImageDataObject *) src->m_data)->m_pixel_type;
 	format = ((ImageDataObject *) src->m_data)->m_storage_format;
 	
-	Rect *cc = NULL;
+	Rect *cc = nullptr;
 	
 	try {
 		if (pixel != ONEBIT) {
 			PyErr_SetString(PyExc_TypeError, "Cc objects may only be created from ONEBIT Images.");
-			return NULL;
+			return nullptr;
 		}
 		
 		if (format == DENSE) {
@@ -440,12 +440,12 @@ static PyObject *_cc_new(PyTypeObject *pytype, PyObject *py_src, int label,
 			cc = (Rect *) new ConnectedComponent<RleImageData<OneBitPixel> >(*data, label, offset, dim);
 		} else {
 			PyErr_SetString(PyExc_TypeError, "Unknown pixel type/storage format combination.   Receiving this error indicates an internal inconsistency or memory corruption.  Please report it on the Gamera mailing list.");
-			return NULL;
+			return nullptr;
 		}
 	} catch (std::exception &e) {
 		delete cc;
 		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return NULL;
+		return nullptr;
 	}
 	
 	ImageObject *o;
@@ -460,7 +460,7 @@ static PyObject *_cc_new(PyTypeObject *pytype, PyObject *py_src, int label,
 
 PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	int num_args = PyTuple_GET_SIZE(args);
-	PyObject *image = NULL;
+	PyObject *image = nullptr;
 	
 	if (num_args == 4) {
 		PyObject *a, *b;
@@ -547,15 +547,15 @@ PyObject *cc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 static int image_clear(PyObject *self) {
 	ImageObject *o = (ImageObject *) self;
 	PyObject *tmp = o->m_id_name;
-	o->m_id_name = NULL;
+	o->m_id_name = nullptr;
 	Py_XDECREF(tmp);
 	
 	tmp = o->m_confidence;
-	o->m_confidence = NULL;
+	o->m_confidence = nullptr;
 	Py_XDECREF(tmp);
 	
 	tmp = o->m_children_images;
-	o->m_children_images = NULL;
+	o->m_children_images = nullptr;
 	Py_XDECREF(tmp);
 	
 	return 0;
@@ -564,7 +564,7 @@ static int image_clear(PyObject *self) {
 static void image_dealloc(PyObject *self) {
 	ImageObject *o = (ImageObject *) self;
 	
-	if (o->m_weakreflist != NULL) {
+	if (o->m_weakreflist != nullptr) {
 		PyObject_ClearWeakRefs(self);
 	}
 	
@@ -1546,7 +1546,7 @@ static PyObject *mlcc_convert_to_cc(PyObject *self) {
 static PyObject *_mlcc_new(PyTypeObject *pytype, PyObject *py_src, int label, const Point &offset, const Dim &dim) {
 	if (!is_ImageObject(py_src)) {
 		PyErr_SetString(PyExc_TypeError, "First argument to the MlCc constructor must be an Image (or SubImage).");
-		return NULL;
+		return nullptr;
 	}
 	
 	int pixel, format;
@@ -1554,12 +1554,12 @@ static PyObject *_mlcc_new(PyTypeObject *pytype, PyObject *py_src, int label, co
 	pixel = ((ImageDataObject *) src->m_data)->m_pixel_type;
 	format = ((ImageDataObject *) src->m_data)->m_storage_format;
 	
-	Rect *mlcc = NULL;
+	Rect *mlcc = nullptr;
 	
 	try {
 		if (pixel != ONEBIT) {
 			PyErr_SetString(PyExc_TypeError, "MlCc objects may only be created from ONEBIT Images.");
-			return NULL;
+			return nullptr;
 		}
 		
 		if (format == DENSE) {
@@ -1568,15 +1568,15 @@ static PyObject *_mlcc_new(PyTypeObject *pytype, PyObject *py_src, int label, co
 			mlcc = (Rect *) new MultiLabelCC<ImageData<OneBitPixel> >(*data, label, offset, dim);
 		} else if (format == RLE) {
 			PyErr_SetString(PyExc_TypeError, "MultiLabelCCs cannot be used with runline length encoding.");
-			return NULL;
+			return nullptr;
 		} else {
 			PyErr_SetString(PyExc_TypeError, "Unknown pixel type/storage format combination. Receiving this error indicates an internal inconsistency or memory corruption.  Please report it on the Gamera mailing list.");
-			return NULL;
+			return nullptr;
 		}
 	} catch (std::exception &e) {
 		delete mlcc;
 		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return NULL;
+		return nullptr;
 	}
 	
 	ImageObject *o;
@@ -1591,7 +1591,7 @@ static PyObject *_mlcc_new(PyTypeObject *pytype, PyObject *py_src, int label, co
 
 PyObject *mlcc_new(PyTypeObject *pytype, PyObject *args, PyObject *kwds) {
 	int num_args = PyTuple_GET_SIZE(args);
-	PyObject *image = NULL;
+	PyObject *image = nullptr;
 	
 	if (num_args == 1) {
 		// create MLCC from list of CCs
@@ -1822,12 +1822,12 @@ static PyGetSetDef image_getset[] = {
 				"(read/write property)\n\n"
 				"The resolution of the image",
 				                                     0},
-		{NULL}
+		{nullptr}
 };
 
 static PyGetSetDef cc_getset[] = {
 		{"label", (getter) cc_get_label, (setter) cc_set_label, "(read/write property)\n\nThe pixel label value for the Cc", 0},
-		{NULL}
+		{nullptr}
 };
 
 static PyMethodDef cc_methods[] = {
@@ -1836,7 +1836,7 @@ static PyMethodDef cc_methods[] = {
 				"Converts the ConnectedComponent into a MultiLabelCC."
 		},
 		{"__hash__",        cc_hash,                          METH_NOARGS},
-		{NULL} //Sentinel//
+		{nullptr} //Sentinel//
 };
 
 static PyMethodDef image_methods[] = {
@@ -1878,7 +1878,7 @@ static PyMethodDef image_methods[] = {
 		{"__hash__",    image_hash,    METH_NOARGS},
 		// Removed 07/28/04 MGD.  Can't figure out why this is useful.
 		// { "sort", image_sort, METH_NOARGS },
-		{NULL}
+		{nullptr}
 };
 
 
@@ -1966,8 +1966,8 @@ void init_ImageType(PyObject *module_dict) {
 	ImageType.tp_new = image_new;
 	ImageType.tp_init = (initproc) image_init;
 	ImageType.tp_getattro = PyObject_GenericGetAttr;
-	ImageType.tp_alloc = NULL; // PyType_GenericAlloc;
-	ImageType.tp_free = NULL; //_PyObject_Del;
+	ImageType.tp_alloc = nullptr; // PyType_GenericAlloc;
+	ImageType.tp_free = nullptr; //_PyObject_Del;
 	ImageType.tp_richcompare = image_richcompare;
 	ImageType.tp_weaklistoffset = offsetof(ImageObject, m_weakreflist);
 	ImageType.tp_traverse = image_traverse;
@@ -1995,8 +1995,12 @@ void init_ImageType(PyObject *module_dict) {
 			"  An integer value specifying the method used to store the image data.\n"
 			"  See `storage formats`__ for more information.\n\n"
 			".. __: image_types.html#storage-formats\n";
-	PyType_Ready(&ImageType);
-	PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType);
+	if(PyType_Ready(&ImageType) != 0){
+		return Py_FatalError("PyType_Ready for 'Image' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "Image", (PyObject *) &ImageType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'Image' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&SubImageType, &PyType_Type);
@@ -2010,10 +2014,11 @@ void init_ImageType(PyObject *module_dict) {
 	                        Py_TPFLAGS_HAVE_GC;
 	SubImageType.tp_base = &ImageType;
 	SubImageType.tp_new = sub_image_new;
+	SubImageType.tp_traverse = image_traverse;
 	SubImageType.tp_init = (initproc) sub_image_init;
 	SubImageType.tp_getattro = PyObject_GenericGetAttr;
-	SubImageType.tp_alloc = NULL; // PyType_GenericAlloc;
-	SubImageType.tp_free = NULL; // _PyObject_Del;
+	SubImageType.tp_alloc = nullptr; // PyType_GenericAlloc;
+	SubImageType.tp_free = nullptr; // _PyObject_Del;
 	SubImageType.tp_doc =
 			"Creates a new view on existing data.\n\nThere are a number of ways to create a subimage:\n\n"
 			"  - **SubImage** (Image *image*, Point *upper_left*, Point *lower_right*)\n\n"
@@ -2028,8 +2033,13 @@ void init_ImageType(PyObject *module_dict) {
 			"   relative to the image origin. Hence, for all practical use cases, you must\n"
 			"   add the image offset to the coordinates, e.g.::\n\n"
 			"     subimg = SubImage(image, Point(p.x + image.offset_x, p.y + image.offset_y), dim)\n";
-	PyType_Ready(&SubImageType);
-	PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType);
+	if(PyType_Ready(&SubImageType) != 0){
+		PyErr_Print();
+		return Py_FatalError("PyType_Ready for 'SubImage' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "SubImage", (PyObject *) &SubImageType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'SubImage' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&CCType, &PyType_Type);
@@ -2046,10 +2056,11 @@ void init_ImageType(PyObject *module_dict) {
 	CCType.tp_init = (initproc) cc_init;
 	CCType.tp_getset = cc_getset;
 	CCType.tp_methods = cc_methods;
+	CCType.tp_traverse = image_traverse;
 	CCType.tp_getattro = PyObject_GenericGetAttr;
-	CCType.tp_alloc = NULL;
+	CCType.tp_alloc = nullptr;
 	CCType.tp_richcompare = cc_richcompare;
-	CCType.tp_free = NULL; //_PyObject_Del;
+	CCType.tp_free = nullptr; //_PyObject_Del;
 	CCType.tp_doc =
 			"Creates a connected component representing part of a OneBit image.\n\n"
 			"It is rare to create one of these objects directly: most often you "
@@ -2063,8 +2074,12 @@ void init_ImageType(PyObject *module_dict) {
 			"  - **Cc** (Image *image*, Int *label*, Point *upper_left*, Dimensions *dimensions*)\n\n"
 			"  - **Cc** (Image *image*, Int *label*, Int *offset_y*, Int *offset_x*, Int *nrows*, Int *ncols*)\n\n"
 			"*label*\n  The pixel value used to represent this Cc.";
-	PyType_Ready(&CCType);
-	PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType);
+	if(PyType_Ready(&CCType) != 0){
+		return Py_FatalError("PyType_Ready for 'Cc' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "Cc", (PyObject *) &CCType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'Cc' failed");
+	}
 	
 	#ifdef Py_SET_TYPE
 		Py_SET_TYPE(&MLCCType, &PyType_Type);
@@ -2078,12 +2093,13 @@ void init_ImageType(PyObject *module_dict) {
 	                    Py_TPFLAGS_HAVE_GC;
 	MLCCType.tp_base = &ImageType;
 	MLCCType.tp_new = mlcc_new;
+	MLCCType.tp_traverse = image_traverse;
 	MLCCType.tp_init = (initproc) mlcc_init;
 	MLCCType.tp_methods = mlcc_methods;
 	MLCCType.tp_getattro = PyObject_GenericGetAttr;
-	MLCCType.tp_alloc = NULL;
+	MLCCType.tp_alloc = nullptr;
 	MLCCType.tp_richcompare = mlcc_richcompare;
-	MLCCType.tp_free = NULL; //_PyObject_Del;
+	MLCCType.tp_free = nullptr; //_PyObject_Del;
 	MLCCType.tp_doc =
 			"Creates a multi label connected component (MultiLabelCC) representing part of a OneBit image.\n\n"
 			"Most often you will create a MultiLabelCCs from a list of Cc's.\n\n"
@@ -2096,9 +2112,12 @@ void init_ImageType(PyObject *module_dict) {
 			"**Deprecated forms:**\n\n"
 			"  - **MlCc** (Image *image*, int *label*, Point *upper_left*, Dimensions *dimensions*)\n\n"
 			"  - **MlCc** (Image *image*, int *label*, Int *offset_y*, Int *offset_x*, Int *nrows*, Int *ncols*)\n\n";
-	PyType_Ready(&MLCCType);
-	PyDict_SetItemString(module_dict, "MlCc", (PyObject *) &MLCCType);
-	
+	if(PyType_Ready(&MLCCType) != 0){
+		return Py_FatalError("PyType_Ready for 'Cc' failed");
+	}
+	if(PyDict_SetItemString(module_dict, "MlCc", (PyObject *) &MLCCType) != 0){
+		return Py_FatalError("PyDict_SetItemString for 'MlCc' failed");
+	}
 	// some constants
 	//-------------------------------
 	// classification states

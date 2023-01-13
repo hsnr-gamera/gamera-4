@@ -1,16 +1,27 @@
 build/
+dist/
+venv/
 
 gamera/__compiletime_config__.py
 gamera/__version__.py
 gamera/plugins/*.cpp
+gamera/plugins/*.so
+gamera/*.so
 tests/tmp/*.*
-gamera_gui
+gamera.egg-info/
+gamera_setup
 
 # IDEs
 .idea/
 gamera/__pycache__/
+tests/__pycache__/
 gamera/backport/__pycache__/
 gamera/gui/__pycache__/
 gamera/mac/__pycache__/
 gamera/plugins/__pycache__/
 .pytest_cache
+
+CMakeLists.txt
+src/CMakeLists.txt
+src/*/CMakeLists.txt
+gamera/src/*/CMakeLists.txt

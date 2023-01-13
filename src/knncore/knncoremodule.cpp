@@ -25,6 +25,8 @@
   implements the generic classifier interface for Gamera.
 */
 
+//@see https://docs.python.org/3/c-api/intro.html#include-files
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "gameramodule.hpp"
 #include "knn.hpp"
@@ -62,7 +64,7 @@ static PyObject* array_init;
 static void knn_delete_feature_data(KnnObject* o) {
   size_t num_feature_vectors;
 
-  if (o->feature_vectors == NULL ) {
+  if (o->feature_vectors == nullptr ) {
     num_feature_vectors = 0;
   } else {
     num_feature_vectors = o->feature_vectors->size();
@@ -209,7 +211,7 @@ static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args) {
     size ahead of time is _much_ easier.
   */
   PyObject* images_seq = PySequence_Fast(images, "First argument must be iterable");
-  if (images_seq == NULL)
+  if (images_seq == nullptr)
     return 0;
 
   // Test the normalization parameter
@@ -270,7 +272,7 @@ static PyObject* knn_instantiate_from_images(PyObject* self, PyObject* args) {
     if (o->normalize != 0) {
       o->normalize->add(tmp_fv, tmp_fv + o->num_features);
     }
-    char* tmp_id_name = NULL;
+    char* tmp_id_name = nullptr;
     int len = 0;
     if (image_get_id_name(cur_image, &tmp_id_name, &len) < 0) {
       knn_delete_feature_data(o);
@@ -401,7 +403,7 @@ static PyObject* knn_classify_with_images(PyObject* self, PyObject* args) {
 
   iterator = PyObject_GetIter(container);
 
-  if (iterator == NULL) {
+  if (iterator == nullptr) {
     PyErr_SetString(PyExc_TypeError, "Known features must be iterable.");
     return 0;
   }
@@ -576,7 +578,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
     return 0;
   // images is a list of Gamera/Python ImageObjects
   PyObject* images_seq = PySequence_Fast(images, "First argument must be iterable.");
-  if (images_seq == NULL)
+  if (images_seq == nullptr)
     return 0;
 
   int images_len = PySequence_Fast_GET_SIZE(images_seq);
@@ -616,7 +618,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
   kNN::Normalize norm(len_a);
   for (int i = 0; i < images_len; ++i) {
     cur_a = PySequence_Fast_GET_ITEM(images_seq, i);
-    if (cur_a == NULL)
+    if (cur_a == nullptr)
       goto mat_error;
     if (!is_ImageObject(cur_a)) {
       PyErr_SetString(PyExc_TypeError, "knn: expected an image");
@@ -638,7 +640,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
   // do the distance calculations
   for (int i = 0; i < images_len; ++i) {
     cur_a = PySequence_Fast_GET_ITEM(images_seq, i);
-    if (cur_a == NULL)
+    if (cur_a == nullptr)
       goto mat_error;
     if (image_get_fv(cur_a, &buf_a, &len_a) < 0)
       goto mat_error;
@@ -646,7 +648,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
       norm.apply(buf_a, buf_a + len_a, tmp_a);
     for (int j = i + 1; j < images_len; ++j) {
       cur_b = PySequence_Fast_GET_ITEM(images_seq, j);
-      if (cur_b == NULL)
+      if (cur_b == nullptr)
         goto mat_error;
       if (image_get_fv(cur_b, &buf_b, &len_b) < 0)
         goto mat_error;
@@ -663,7 +665,7 @@ PyObject* knn_distance_matrix(PyObject* self, PyObject* args) {
       mat->set(Point(i, j), distance);
     }
     if (progress)
-      PyObject_CallObject(progress, NULL);
+      PyObject_CallObject(progress, nullptr);
   }
   delete[] tmp_a;
   delete[] tmp_b;
@@ -691,7 +693,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
     return 0;
   // images is a list of Gamera/Python ImageObjects
   PyObject* images_seq = PySequence_Fast(images, "First argument must be iterable.");
-  if (images_seq == NULL)
+  if (images_seq == nullptr)
     return 0;
 
   int images_len = PySequence_Fast_GET_SIZE(images_seq);
@@ -735,7 +737,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
       Py_XDECREF(images_seq);
       return 0;
     }
-    if (cur_a == NULL) {
+    if (cur_a == nullptr) {
       Py_XDECREF(images_seq);
       return 0;
     }
@@ -754,7 +756,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
   size_t index = 0;
   for (int i = 0; i < images_len; ++i) {
     cur_a = PySequence_Fast_GET_ITEM(images_seq, i);
-    if (cur_a == NULL)
+    if (cur_a == nullptr)
       goto uniq_error;
     if (image_get_fv(cur_a, &buf_a, &len_a) < 0)
       goto uniq_error;
@@ -762,7 +764,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
       norm.apply(buf_a, buf_a + len_a, tmp_a);
     for (int j = i + 1; j < images_len; ++j) {
       cur_b = PySequence_Fast_GET_ITEM(images_seq, j);
-      if (cur_b == NULL)
+      if (cur_b == nullptr)
         goto uniq_error;
       if (image_get_fv(cur_b, &buf_b, &len_b) < 0)
         goto uniq_error;
@@ -784,7 +786,7 @@ PyObject* knn_unique_distances(PyObject* self, PyObject* args) {
       index++;
     }
     // call the progress object
-    PyObject_CallObject(progress, NULL);
+    PyObject_CallObject(progress, nullptr);
   }
 
   delete[] tmp_a; delete[] tmp_b;
@@ -884,7 +886,7 @@ static PyObject* knn_leave_one_out(PyObject* self, PyObject* args) {
   } else {
     // Get the list of indexes
     PyObject* indexes_seq = PySequence_Fast(indexes, "Indexes must be an iterable list of indexes.");
-    if (indexes_seq == NULL)
+    if (indexes_seq == nullptr)
       return 0;
 
     int indexes_size = PySequence_Fast_GET_SIZE(indexes_seq);
@@ -975,7 +977,7 @@ static PyObject* knn_knndistance_statistics(PyObject* self, PyObject* args) {
     PyTuple_SET_ITEM(entry, 1, PyUnicode_FromString(o->id_names[i]));
     PyList_SetItem(result, i, entry);
     if (progress)
-      PyObject_CallObject(progress, NULL);
+      PyObject_CallObject(progress, nullptr);
   }
   return result;
 }
@@ -1321,10 +1323,11 @@ static PyObject* knn_unserialize(PyObject* self, PyObject* args) {
 static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
   KnnObject *o = (KnnObject*) self;
   PyObject *arglist = Py_BuildValue( "(s)", "i");
-  PyObject *array = PyEval_CallObject(array_init, arglist);
+  PyObject *array = PyObject_CallObject(array_init, arglist);
 
   if ( array == 0 ) {
     PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
+    Py_XDECREF(arglist);
     return 0;
   }
   Py_XDECREF(arglist);
@@ -1337,17 +1340,16 @@ static PyObject* knn_get_selections(PyObject* self, PyObject* args) {
     }
     Py_XDECREF(result);
   }
-
-  Py_XDECREF(arglist);
 	return array;
 }
 
 static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
 	KnnObject *o = (KnnObject *) self;
 	PyObject *arglist = Py_BuildValue("(s)", "d");
-	PyObject *array = PyEval_CallObject(array_init, arglist);
+	PyObject *array = PyObject_CallObject(array_init, arglist);
 	if (array == nullptr) {
 		PyErr_SetString(PyExc_IOError, "knn: Error creating array.");
+		Py_XDECREF(arglist);
 		return nullptr;
 	}
 	Py_XDECREF(arglist);
@@ -1358,7 +1360,6 @@ static PyObject* knn_get_weights(PyObject* self, PyObject* args) {
 			return nullptr;
 		Py_XDECREF(result);
 	}
-	Py_XDECREF(arglist);
 	return array;
 }
 
@@ -1373,15 +1374,16 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 	Py_ssize_t len;
 	int *selections;
 	
-	if (!PyObject_CheckReadBuffer(array)) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
+	if (PyObject_CheckBuffer(array) != 1) {
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
-	
-	if ((PyObject_AsReadBuffer(array, (const void**)&selections, &len) != 0)) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting selection array buffer.");
+	Py_buffer buffer{};
+	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting selection array buffer.");
 		return nullptr;
 	}
+	selections = (int*)buffer.buf;
 	
 	if ( (size_t) len != o->num_features * sizeof(int)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: selection vector is not the correct size.");
@@ -1410,14 +1412,16 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 	}
 	Py_ssize_t len;
 	double* weights;
-	if (!PyObject_CheckReadBuffer(array)) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
+	if (PyObject_CheckBuffer(array) != 1) {
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
-	if ((PyObject_AsReadBuffer(array, (const void**)&weights, &len) != 0)) {
-		PyErr_SetString(PyExc_RuntimeError, "knn: Error getting weight array buffer.");
+	Py_buffer buffer{};
+	if (PyObject_GetBuffer(array, &buffer, PyBUF_SIMPLE) != 0) {
+		PyErr_SetString(PyExc_BufferError, "knn: Error getting weight array buffer.");
 		return nullptr;
 	}
+	weights = (double*)buffer.buf;
 	if (size_t(len) != o->num_features * sizeof(double)) {
 		PyErr_SetString(PyExc_ValueError, "knn: weight vector is not the correct size.");
 		return nullptr;
@@ -1479,7 +1483,7 @@ PyMethodDef knn_methods[] = {
                                                                                          "" },
         { "serialize", knn_serialize, METH_VARARGS, "" },
         { "unserialize", knn_unserialize, METH_VARARGS, "" },
-        { NULL }
+        { nullptr }
 };
 
 PyGetSetDef knn_getset[] = {
@@ -1491,24 +1495,24 @@ PyGetSetDef knn_getset[] = {
                 "The types of confidences computed during classification.", 0 },
         { "num_features", (getter)knn_get_num_features, (setter)knn_set_num_features,
                 "The current number of features.", 0 },
-        { NULL }
+        { nullptr }
 };
 
 
 PyMethodDef knn_module_methods[] = {
-        { NULL }
+        { nullptr }
 };
 
 static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "gamera.knncore",
-        NULL,
+        nullptr,
         -1,
         knn_module_methods,
-        NULL,
-        NULL,
-        NULL,
-        NULL
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
 };
 
 PyMODINIT_FUNC PyInit_knncore(void) {
@@ -1526,8 +1530,8 @@ PyMODINIT_FUNC PyInit_knncore(void) {
     KnnType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
     KnnType.tp_new = knn_new;
     KnnType.tp_getattro = PyObject_GenericGetAttr;
-    KnnType.tp_alloc = NULL; // PyType_GenericAlloc;
-    KnnType.tp_free = NULL; // _PyObject_Del;
+    KnnType.tp_alloc = nullptr; // PyType_GenericAlloc;
+    KnnType.tp_free = nullptr; // _PyObject_Del;
     KnnType.tp_methods = knn_methods;
     KnnType.tp_getset = knn_getset;
     PyType_Ready(&KnnType);
@@ -1540,11 +1544,11 @@ PyMODINIT_FUNC PyInit_knncore(void) {
                          Py_BuildValue( "i", FAST_EUCLIDEAN));
 
     PyObject* array_dict = get_module_dict("array");
-    if (array_dict == NULL) {
+    if (array_dict == nullptr) {
         return m;
     }
     array_init = PyDict_GetItemString(array_dict, "array");
-    if (array_init == NULL) {
+    if (array_init == nullptr) {
         PyErr_SetString(PyExc_RuntimeError, "Unable to get array init method\n");
         return m;
     }

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Building and installing Gamera</title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
@@ -11,23 +11,21 @@
 <div class="document" id="building-and-installing-gamera">
 <h1 class="title">Building and installing Gamera</h1>
 
-<p><strong>Last modified</strong>: February 01, 2022</p>
+<p><strong>Last modified</strong>: November 23, 2022</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#linux-and-other-nix" id="toc-entry-1">Linux (and other *nix)</a><ul>
 <li><a class="reference internal" href="#prerequisites" id="toc-entry-2">Prerequisites</a></li>
 <li><a class="reference internal" href="#standard-build-and-install" id="toc-entry-3">Standard Build and Install</a></li>
-<li><a class="reference internal" href="#installing-without-root-privileges" id="toc-entry-4">Installing without root privileges</a></li>
-<li><a class="reference internal" href="#running" id="toc-entry-5">Running</a></li>
-<li><a class="reference internal" href="#installing-without-wxpython" id="toc-entry-6">Installing without wxPython</a></li>
+<li><a class="reference internal" href="#running" id="toc-entry-4">Running</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#mac-os-x" id="toc-entry-7">Mac OS-X</a><ul>
-<li><a class="reference internal" href="#installation-on-10-11-el-captain-and-above" id="toc-entry-8">Installation on 10.11 (El Captain) and above</a><ul>
-<li><a class="reference internal" href="#prerequisites-1" id="toc-entry-9">Prerequisites</a></li>
-<li><a class="reference internal" href="#build-and-install" id="toc-entry-10">Build and install</a></li>
-<li><a class="reference internal" href="#running-1" id="toc-entry-11">Running</a></li>
+<li><a class="reference internal" href="#mac-os-x" id="toc-entry-5">Mac OS-X</a><ul>
+<li><a class="reference internal" href="#installation-on-10-11-el-captain-and-above" id="toc-entry-6">Installation on 10.11 (El Captain) and above</a><ul>
+<li><a class="reference internal" href="#prerequisites-1" id="toc-entry-7">Prerequisites</a></li>
+<li><a class="reference internal" href="#build-and-install" id="toc-entry-8">Build and install</a></li>
+<li><a class="reference internal" href="#running-1" id="toc-entry-9">Running</a></li>
 </ul>
 </li>
 </ul>
@@ -44,8 +42,6 @@ recommended.</p>
 <p>You will need to have the headers (but not the complete source) to
 build Gamera from source code.  Most Linux distributions include
 these as a separate package (eg. <tt class="docutils literal"><span class="pre">python-dev</span></tt> or <tt class="docutils literal"><span class="pre">python-devel</span></tt>).</p>
-</li>
-<li><p class="first">python3-distutils</p>
 </li>
 <li><p class="first">python3-pip</p>
 </li>
@@ -71,90 +67,55 @@ export CFLAGS LDFLAGS
 </div>
 <div class="section" id="standard-build-and-install">
 <h2><a class="toc-backref" href="#toc-entry-3">Standard Build and Install</a></h2>
-<p>Gamera is built using the Python-standard Distutils system.  Open a
+<p>Gamera can be installed via pip. Open a
 terminal and type:</p>
 <pre class="literal-block">
-python setup.py build
-sudo python setup.py install
+git clone https://github.com/hsnr-gamera/gamera-4
+cd gamera-4
+pip install .
+</pre>
+<p>Alternatively, Gamera can also be installed directly:</p>
+<pre class="literal-block">
+pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
 </pre>
 <p>By default, parallelization of the genetic algorithms is only compiled
 into Gamera under Linux and with gcc version &gt; 4.2, because we could only
 get it running in this environment. If you are sure that you have unbroken
-OpenMP support on your system, you can compile Gamera with:</p>
+OpenMP support on your system, need to clone the git repo and edit the setup.py:</p>
 <pre class="literal-block">
-python setup.py build --openmp=yes
+git clone https://github.com/hsnr-gamera/gamera-4
+cd gamera-4
+sed -i 's/has_openmp = None/has_openmp = True/' setup.py
+pip install .
 </pre>
 <p>If Gamera is compiled with OpenMP on your system, but OpenMP does not work
 on your system for some reason, you can switch it off with:</p>
 <pre class="literal-block">
-python setup.py build --openmp=no
+git clone https://github.com/hsnr-gamera/gamera-4
+cd gamera-4
+sed -i 's/has_openmp = None/has_openmp = False/' setup.py
+pip install .
 </pre>
-</div>
-<div class="section" id="installing-without-root-privileges">
-<h2><a class="toc-backref" href="#toc-entry-4">Installing without root privileges</a></h2>
-<p id="without-root">If you do not have root access to your machine, you can make a local
-installation of Gamera.</p>
-<p>A quick-and-easy way to do this is to use the <tt class="docutils literal">virtual_python.py</tt>
-script available <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall#creating-a-virtual-python">here</a>, and then follow the standard installation
-instructions (without using sudo):</p>
-<pre class="literal-block">
-python setup.py build
-python setup.py install
-</pre>
-<p>Alternatively, you can set up a local installation by hand.</p>
-<p>Make a local python module directory somewhere that you have write
-privileges (such as your home directory):</p>
-<pre class="literal-block">
-mkdir ~/python
-</pre>
-<p>From the Gamera build directory, install Gamera into that directory:</p>
-<pre class="literal-block">
-python setup.py install --home=~/python
-</pre>
-<p>Set up an environment variables so Python can find stuff there (you
-may want to add this to your ~/.bash_profile file):</p>
-<pre class="literal-block">
-export PYTHONPATH=~/python/lib/python
-</pre>
-<p>Add the local Python scripts directory to your path:</p>
-<pre class="literal-block">
-export PATH=~/python/bin:$PATH
-</pre>
-<p>Now you should be able to run the <tt class="docutils literal">gamera_gui</tt> script from the
-command line.</p>
 </div>
 <div class="section" id="running">
-<h2><a class="toc-backref" href="#toc-entry-5">Running</a></h2>
-<p>Run the <tt class="docutils literal">gamera_gui</tt> script, which should have installed to
-<tt class="docutils literal">/usr/local/bin</tt>.  This file can also be copied anywhere (such as
-the Desktop) and double-clicked to run Gamera.</p>
+<h2><a class="toc-backref" href="#toc-entry-4">Running</a></h2>
+<p>Run the <tt class="docutils literal">gamera_gui</tt> script, which is installed in the <tt class="docutils literal">bin</tt> directory of Python</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Running the script from the root of the source tree will not
 work, since it will not be able to find the compiled version of Gamera.</p>
 </div>
 </div>
-<div class="section" id="installing-without-wxpython">
-<h2><a class="toc-backref" href="#toc-entry-6">Installing without wxPython</a></h2>
-<p>When you need Gamera as a backend for document processing routines on
-a server and do not need the GUI, it can save a lot of trouble to
-avoid the installation of wxPython. For this case, use the option
-<tt class="docutils literal"><span class="pre">--nowx</span></tt> for <tt class="docutils literal">setup.py</tt>:</p>
-<pre class="literal-block">
-python setup.py --nowx build
-sudo python setup.py --nowx install
-</pre>
-</div>
 </div>
 <div class="section" id="mac-os-x">
-<h1><a class="toc-backref" href="#toc-entry-7">Mac OS-X</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Mac OS-X</a></h1>
 <div class="section" id="installation-on-10-11-el-captain-and-above">
-<h2><a class="toc-backref" href="#toc-entry-8">Installation on 10.11 (El Captain) and above</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Installation on 10.11 (El Captain) and above</a></h2>
 <p>Due to the OS-X builtin &quot;system integrity protection&quot; (SIP), wxPython
 and Gamera  cannot be installed into the python branch shipped with OS-X.
 You must therefore install wxPython and Gamera into a <a class="reference external" href="https://virtualenv.pypa.io/">virtual environment</a>.</p>
 <div class="section" id="prerequisites-1">
-<h3><a class="toc-backref" href="#toc-entry-9">Prerequisites</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Prerequisites</a></h3>
 <p>As Gamera must be installed from the C++ sources, you must have Xcode
 and the Xcode Command Line Tools installed. When Xcode is already installed,
 the command line tools can be installed with <em>xcode-select --install</em>.</p>
@@ -162,33 +123,32 @@ the command line tools can be installed with <em>xcode-select --install</em>.</p
 the prerequisites for virtual environments with:</p>
 <pre class="literal-block">
 sudo easy_install pip
-sudo pip3 install virtualenv
+sudo pip install virtualenv
 </pre>
 <p>If this runs into problems with SIP or if you prefer to use the homebrew
 version of Python, you can install the prerequisites instead with:</p>
 <pre class="literal-block">
 brew install python3
-pip3 install virtualenv
+pip install virtualenv
 </pre>
 <p>Then you can set up a virtual environment and install wxPython therein:</p>
 <pre class="literal-block">
 virtualenv /usr/local/lib/py2gamera
 source /usr/local/lib/py2gamera/bin/activate
-pip3 install -U wxPython
+pip install -U wxPython
 </pre>
 </div>
 <div class="section" id="build-and-install">
-<h3><a class="toc-backref" href="#toc-entry-10">Build and install</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Build and install</a></h3>
 <p>You can install Gamera into the same virtual environment with:</p>
 <pre class="literal-block">
 source /usr/local/lib/py2gamera/bin/activate
 cd root_to_gamera_sources
-python setup.py build
-python setup.py install
+pip install .
 </pre>
 </div>
 <div class="section" id="running-1">
-<h3><a class="toc-backref" href="#toc-entry-11">Running</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-9">Running</a></h3>
 <p>On OS-X, wxPython applications do not run in virtualenvs, because
 wxPython requires a &quot;Framework build of python&quot;. Fortunately, there is
 a simple workaround: store the following shell script as <em>gamera_gui</em>

@@ -1,6 +1,12 @@
 Changes made between Gamera File Releases
 =========================================
 
+Version 4.1.0, TODO Set release date
+
+ - Update install instructions, to use pip
+
+ - Change distutils to setuptools
+
 Version 4.0.1, Jan 09, 2023
 ----------------------------
 

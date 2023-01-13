@@ -101,7 +101,7 @@ static PyObject* region_add(PyObject* self, PyObject* args) {
 static PyMethodDef region_methods[] = {
         {  "get", region_get, METH_VARARGS },
         {  "add", region_add, METH_VARARGS },
-        { NULL }
+        { nullptr }
 };
 
 void init_RegionType(PyObject* module_dict) {
@@ -118,8 +118,8 @@ void init_RegionType(PyObject* module_dict) {
   RegionType.tp_methods = region_methods;
   RegionType.tp_new = region_new;
   RegionType.tp_getattro = PyObject_GenericGetAttr;
-  RegionType.tp_alloc = NULL; // PyType_GenericAlloc;
-  RegionType.tp_free = NULL; // _PyObject_Del;
+  RegionType.tp_alloc = nullptr; // PyType_GenericAlloc;
+  RegionType.tp_free = nullptr; // _PyObject_Del;
   PyType_Ready(&RegionType);
   PyDict_SetItemString(module_dict, "Region", (PyObject*)&RegionType);
 }

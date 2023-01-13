@@ -39,8 +39,8 @@ static PyObject* imagedata_new(PyTypeObject* pytype, PyObject* args,
   int num_args = PyTuple_GET_SIZE(args);
 
   if (num_args == 4) {
-    PyObject* py_point = NULL;
-    PyObject* py_dim = NULL;
+    PyObject* py_point = nullptr;
+    PyObject* py_dim = nullptr;
     if (PyArg_ParseTuple(args,  "OOii", &py_dim, &py_point, &pixel, &format)) {
       if (is_DimObject(py_dim)) {
 	try {
@@ -154,12 +154,12 @@ static PyGetSetDef imagedata_getset[] = {
                 (char *)"(int property get/set)\n\nThe type of the pixels.  See `pixel types`__ for more info.\n\n.. __: image_types.html#pixel-types", 0 },
         { (char *)"storage_format", (getter)imagedata_get_storage_format, 0,
                 (char *)"(int property get/set)\n\nThe format of the storage.  See `storage formats`__ for more info.\n\n.. __: image_types.html#storage-formats", 0 },
-        { NULL }
+        { nullptr }
 };
 
 static PyMethodDef imagedata_methods[] = {
         {  "dimensions", imagedata_dimensions, METH_VARARGS },
-        { NULL }
+        { nullptr }
 };
 
 void init_ImageDataType(PyObject* module_dict) {
@@ -176,8 +176,8 @@ void init_ImageDataType(PyObject* module_dict) {
   ImageDataType.tp_methods = imagedata_methods;
   ImageDataType.tp_new = imagedata_new;
   ImageDataType.tp_getattro = PyObject_GenericGetAttr;
-  ImageDataType.tp_alloc = NULL; // PyType_GenericAlloc;
-  ImageDataType.tp_free = NULL; // _PyObject_Del;
+  ImageDataType.tp_alloc = nullptr; // PyType_GenericAlloc;
+  ImageDataType.tp_free = nullptr; // _PyObject_Del;
   ImageDataType.tp_doc =
 "There are many ways to initialize ImageData:\n\n"
 "  - ImageData(Dim *dim*, Point *offset*, Int *pixel_type*, Int *storage_format*)\n\n"

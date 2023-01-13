@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
-# vim: set tabstop=3 shiftwidth=3 expandtab:
+# -*- mode: python; indent-tabs-mode: nil; tab-width: 4 -*-
+# vim: set tabstop=4 shiftwidth=4 expandtab:
 #
 # Copyright (C) 2001-2005 Ichiro Fujinaga, Michael Droettboom, Karl MacMillan
 #               2016      Christoph Dalitz
@@ -33,7 +33,7 @@ import os.path
 import shutil
 import sys
 import traceback
-from distutils.version import StrictVersion, LooseVersion
+from pkg_resources import parse_version
 from stat import ST_MTIME
 from time import strftime, localtime
 
@@ -48,7 +48,7 @@ try:
     from docutils.core import publish_file
     import docutils.parsers.rst
 
-    if StrictVersion(docutils.__version__) < StrictVersion('0.4'):
+    if parse_version(docutils.__version__) < parse_version('0.4'):
         print("docutils version (" + docutils.__version__ + ") too old")
         raise ImportError()
 except ImportError as e:
@@ -65,7 +65,7 @@ try:
     import pygments.formatters
 
     source_highlighter = 'pygments'
-    if LooseVersion(pygments.__version__) < LooseVersion('0.6'):
+    if parse_version(pygments.__version__) < parse_version('0.6'):
         print("pygments version (" + pygments.__version__ + ") too old")
         raise ImportError()
 except ImportError as e:
@@ -112,7 +112,7 @@ elif source_highlighter == 'silvercity':
                 "No SilverCity lexer found for language '%s'." % language,
                 docutils.nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        io = io.StringIO()
+        io = ioutil.StringIO()
         generator().generate_html(io, '\n'.join(content))
         html = '<div class="code-block">\n%s\n</div>\n' % io.getvalue()
         raw = docutils.nodes.raw('', html, format='html')

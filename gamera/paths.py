@@ -1,5 +1,5 @@
-# -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
-# vim: set tabstop=3 shiftwidth=3 expandtab:
+# -*- mode: python; indent-tabs-mode: nil; tab-width: 4 -*-
+# vim: set tabstop=4 shiftwidth=4 expandtab:
 #
 # Copyright (C) 2001-2005 Ichiro Fujinaga, Michael Droettboom,
 #                          and Karl MacMillan
@@ -20,11 +20,14 @@
 #
 
 
-import os, sys, glob, imp  # Python standard library
+import glob
+import os
+import sys
 from gamera.backport import dircache
+
 if 1:
-   def dummy():
-      pass
+    def dummy():
+        pass
 
 lib = os.path.dirname(os.path.realpath(dummy.__code__.co_filename))
 lib_gui = os.path.realpath(os.path.join(lib, "gui"))
@@ -38,67 +41,49 @@ test = os.path.realpath(os.path.join(lib, "test"))
 test_results = os.path.realpath(os.path.join(lib, "test/results"))
 
 def get_toolkit_names(dir):
-   toolkits = []
-   listing = dircache.listdir(dir)
-   dircache.annotate(dir, listing)
-   for toolkit in listing:
-      if toolkit.endswith(".py") and toolkit != "__init__.py":
-         toolkits.append(toolkit[:-3])
-      elif toolkit.endswith("module.so"):
-         toolkits.append(toolkit[:-9])
-      elif (toolkit.endswith("/") and
-            "__init__.py" in dircache.listdir(os.path.join(dir, toolkit))):
-         toolkits.append(toolkit[:-1])
-   return toolkits
-
-def get_directory_of_modules(dir, base=''):
-   modules = glob.glob(os.path.join(dir, "*.py"))
-   names = [os.path.basename(x).split('.')[0] for x in modules]
-   mods = []
-   suffixes = imp.get_suffixes()
-   for i in suffixes:
-      if i[0] == '.py':
-         suffix = i
-         break
-   for m, name in zip(modules, names):
-      try:
-         module = imp.load_module(base + name, file(m, 'r'), m, suffix)
-         mods.append(module)
-      except Exception as e:
-         print(e)
-   return mods
+    toolkits = []
+    listing = dircache.listdir(dir)
+    dircache.annotate(dir, listing)
+    for toolkit in listing:
+        if toolkit.endswith(".py") and toolkit != "__init__.py":
+            toolkits.append(toolkit[:-3])
+        elif toolkit.endswith("module.so"):
+            toolkits.append(toolkit[:-9])
+        elif (toolkit.endswith("/") and
+              "__init__.py" in dircache.listdir(os.path.join(dir, toolkit))):
+            toolkits.append(toolkit[:-1])
+    return toolkits
 
 def import_directory(dir, gl, lo, verbose=0):
-   modules = glob.glob(os.path.join(dir, "*.py"))
-   modules = [os.path.basename(x).split('.')[0] for x in modules]
-   if verbose:
-      sys.stdout.write("Loading plugins: " + "-" * 40 + "\n")
-   column = 0
-   first = 1
-   result = []
-     
-   for m in modules:
-      if m == '__init__':
-         continue
-      try:
-         module = __import__(m, gl, lo, [])
-         failed = 0
-      except Exception as e:
-         failed = e
-      if failed:
-         display = '[%s %s]' % (m, str(failed))
-      else:
-         display = m
-         result.append(module)
-      if m != modules[-1]:
-         display += ", "
-      column += len(display)
-      if verbose:
-         if column > 70:
-            sys.stdout.write("\n")
-            column = len(display)
-         sys.stdout.write(display)
-         sys.stdout.flush()
-   if verbose:
-      sys.stdout.write("\n")
-   return result
+    modules = glob.glob(os.path.join(dir, "*.py"))
+    modules = [os.path.basename(x).split('.')[0] for x in modules]
+    if verbose:
+        sys.stdout.write("Loading plugins: " + "-" * 40 + "\n")
+    column = 0
+    result = []
+
+    for m in modules:
+        if m == '__init__':
+            continue
+        try:
+            module = __import__(m, gl, lo, [])
+            failed = 0
+        except Exception as e:
+            failed = e
+        if failed:
+            display = '[%s %s]' % (m, str(failed))
+        else:
+            display = m
+            result.append(module)
+        if m != modules[-1]:
+            display += ", "
+        column += len(display)
+        if verbose:
+            if column > 70:
+                sys.stdout.write("\n")
+                column = len(display)
+            sys.stdout.write(display)
+            sys.stdout.flush()
+    if verbose:
+        sys.stdout.write("\n")
+    return result
