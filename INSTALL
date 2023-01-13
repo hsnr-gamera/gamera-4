@@ -2,6 +2,7 @@
 Building and installing Gamera
 ==============================
 
+
 Linux (and other \*nix)
 =======================
 
@@ -39,16 +40,36 @@ pass its locations to the build script, e.g.::
 Standard Build and Install
 --------------------------
 
-Gamera can be installed via pip. Open a
+Gamera can be installed via pip. The simplest way is to open a
 terminal and type::
 
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
-  pip install .
+  pip3 install .
 
-Alternatively, Gamera can also be installed directly::
+Alternatively, let pip handle the download with::
 
-    pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
+  pip3 install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
+
+When using ``pip install``, both compilation and install are done under the
+calling user account, which will install gamera under ``.local`` in that
+user's home directory. If you want to install gamera system wide, you
+can either call *pip* as root.
+
+An alternative is to first create a binary "wheel package" under your
+user account with::
+
+  python3 setup.py bdist_wheel
+
+This will create a package file ``gamera-version-architecture.whl`` in the
+``dist`` director, which can then be installed system wide as root with::
+
+  pip3 install ./dist/gamera-*-*.whl
+
+Additonally, a source code package can be created in the ``dist`` directory
+with::
+
+  python3 setup.py sdist
 
 By default, parallelization of the genetic algorithms is only compiled
 into Gamera under Linux and with gcc version > 4.2, because we could only
@@ -58,7 +79,7 @@ OpenMP support on your system, need to clone the git repo and edit the setup.py:
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
   sed -i 's/has_openmp = None/has_openmp = True/' setup.py
-  pip install .
+  pip3 install .
 
 If Gamera is compiled with OpenMP on your system, but OpenMP does not work
 on your system for some reason, you can switch it off with::
@@ -66,7 +87,7 @@ on your system for some reason, you can switch it off with::
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
   sed -i 's/has_openmp = None/has_openmp = False/' setup.py
-  pip install .
+  pip3 install .
 
 
 Running
@@ -81,43 +102,131 @@ Run the ``gamera_gui`` script, which is installed in the ``bin`` directory of Py
 Mac OS-X
 ========
 
-Earlier versions of Gamera ran on OS-X by using X11 as an emulation of
-a standard Unix environment.  The current SVN version of Gamera now
-uses Cocoa, and feels much more like a standard Macintosh
-application.  Please follow the instructions for *either* X11 or Cocoa
-install below.
+Installation on 10.11 (El Captain) and above
+--------------------------------------------
 
+Due to the builtin "system integrity protection" (SIP) on some versions
+of OS-X, it might be that wxPython and Gamera cannot be installed into the
+python branch shipped with OS-X. A workaround is to install wxPython and
+Gamera into a `virtual environment`__.
 
-Native (Cocoa) build
---------------------
+.. __: https://virtualenv.pypa.io/
+
 
 Prerequisites
 `````````````
 
-Gamera installs out of the box on Mac OS-X 10.11 (El Capitan) and later.
-The only prerequisite is to install XCode, which is shipped with the
-OS-X installation DVD, but is not installed by default.
+As Gamera must be installed from the C++ sources, you must have Xcode
+and the Xcode Command Line Tools installed. When Xcode is already installed,
+the command line tools can be installed with *xcode-select --install*.
+
+If you want to use the Python that comes with OS-X, you can install
+the prerequisites for virtual environments with::
+
+  sudo easy_install pip
+  sudo pip install virtualenv
+
+If this runs into problems with SIP or if you prefer to use the homebrew
+version of Python, you can install the prerequisites instead with::
+
+  brew install python3
+  pip install virtualenv
+
+Then you can set up a virtual environment and install wxPython therein::
+
+  virtualenv /usr/local/lib/py2gamera
+  source /usr/local/lib/py2gamera/bin/activate
+  pip install -U wxPython
 
 
-Standard Build and Install
-``````````````````````````
+Build and install
+`````````````````
 
-Gamera is built using the Python-standard Distutils system.
+You can install Gamera into the same virtual environment with::
 
-To install Gamera (you'll need to have admin privileges)::
-
-  pip install git+https://github.com/hsnr-gamera/gamera-4
-
-On OS-X 10.11, the script ``gamera_gui`` is installed to ``/usr/local/bin``,
-which is also in the default search PATH for programs.
+  source /usr/local/lib/py2gamera/bin/activate
+  cd root_to_gamera_sources
+  pip install .
 
 
 Running
 ```````
 
-Start the Terminal application and run the ``gamera_gui`` script.
+On OS-X, wxPython applications do not run in virtualenvs, because
+wxPython requires a "Framework build of python". Fortunately, there is
+a simple workaround: store the following shell script as *gamera_gui*
+in *$HOME/bin* and modify the PATH variable in $HOME/.profile such, that
+*$HOME/bin* is quite at the beginning of the list. Then you can run
+*gamera_gui* from the shell, and the script handles the setup of the
+virtualenv automatically. (Thanks to `George V. Reilly`__ for proposing
+this fix).
 
-.. note:: Running the script from the root of the source tree will not
-  work, since it will not be able to find the compiled version of
-  Gamera.
+.. __: http://www.georgevreilly.com/blog/2015/09/20/RunSnakeRun-WxPython-Brew-Virtualenv.html
 
+Wrapper shell-script for *gamera_gui* using the Python shipped with OS-X:
+
+.. code:: sh
+
+  #
+  # wrapper script for running gamera_gui
+  # from virtualenv with osx stock python
+  #
+
+  source $HOME/python/py2gamera/bin/activate
+
+  WXPYTHON_APP="gamera_gui"
+  PYVER="$(python --version 2>&1 | cut -d ' ' -f 2 | cut -d '.' -f 1,2)"
+
+  if [ -z "$VIRTUAL_ENV" ] ; then
+      echo "You must activate your virtualenv: set '$VIRTUAL_ENV'"
+      exit 1
+  fi
+
+  SYSTEM_FRAMEWORK_PYTHON_ROOT="/System$SYSTEM_FRAMEWORK_PYTHON_ROOT"
+
+  PYTHON_BINARY="bin/python$PYVER"
+  FRAMEWORK_PYTHON="/usr/bin/python$PYVER"
+
+  # Use the Framework Python to run the app
+  export PYTHONHOME=$VIRTUAL_ENV
+  exec "$FRAMEWORK_PYTHON" "$VIRTUAL_ENV/bin/$WXPYTHON_APP" $*
+
+
+Wrapper shell-script for *gamera_gui* using the homebrew Python:
+
+.. code:: sh
+
+  #
+  # wrapper script for running gamera_gui
+  # from virtualenv with homebrew python
+  #
+
+  source /usr/local/lib/py2gamera/bin/activate
+
+  WXPYTHON_APP="gamera_gui"
+  PYVER="$(python --version 2>&1 | cut -d ' ' -f 2 | cut -d '.' -f 1,2)"
+
+  if [ -z "$VIRTUAL_ENV" ] ; then
+      echo "You must activate your virtualenv: set '$VIRTUAL_ENV'"
+      exit 1
+  fi
+
+  SYSTEM_FRAMEWORK_PYTHON_ROOT="/System$SYSTEM_FRAMEWORK_PYTHON_ROOT"
+
+  PYSUBVER="$(python --version 2>&1 | cut -d ' ' -f2)"  # e.g., 2.7.10
+  BREW_PYTHON_ROOT="`ls -d $(brew --prefix)/Cellar/python@2/$PYSUBVER*`"
+  BREW_PYTHON_ROOT="$BREW_PYTHON_ROOT/Frameworks/Python.framework/Versions/$PYVER"
+
+  PYTHON_BINARY="bin/python$PYVER"
+  FRAMEWORK_PYTHON="$BREW_PYTHON_ROOT/$PYTHON_BINARY"
+
+  VENV_SITE_PACKAGES="$VIRTUAL_ENV/lib/python$PYVER/site-packages"
+
+  # Ensure wx.pth is set up in the virtualenv
+  # (does not seem to be necessary, so we comment it out)
+  #test -e "$VENV_SITE_PACKAGES/wx.pth" || \
+  #  cp "/Library/Python/$PYVER/site-packages/wxredirect.pth" "$VENV_SITE_PACKAGES/wx.pth"
+
+  # Use the Framework Python to run the app
+  export PYTHONHOME=$VIRTUAL_ENV
+  exec "$FRAMEWORK_PYTHON" "$VIRTUAL_ENV/bin/$WXPYTHON_APP" $*

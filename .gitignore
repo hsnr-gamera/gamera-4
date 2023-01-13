@@ -1,6 +1,7 @@
 build/
 dist/
 venv/
+doc/html
 
 gamera/__compiletime_config__.py
 gamera/__version__.py

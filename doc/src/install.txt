@@ -40,16 +40,36 @@ pass its locations to the build script, e.g.::
 Standard Build and Install
 --------------------------
 
-Gamera can be installed via pip. Open a
+Gamera can be installed via pip. The simplest way is to open a
 terminal and type::
 
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
-  pip install .
+  pip3 install .
 
-Alternatively, Gamera can also be installed directly::
+Alternatively, let pip handle the download with::
 
-    pip install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
+  pip3 install git+https://github.com/hsnr-gamera/gamera-4#egg=gamera
+
+When using ``pip install``, both compilation and install are done under the
+calling user account, which will install gamera under ``.local`` in that
+user's home directory. If you want to install gamera system wide, you
+can either call *pip* as root.
+
+An alternative is to first create a binary "wheel package" under your
+user account with::
+
+  python3 setup.py bdist_wheel
+
+This will create a package file ``gamera-version-architecture.whl`` in the
+``dist`` director, which can then be installed system wide as root with::
+
+  pip3 install ./dist/gamera-*-*.whl
+
+Additonally, a source code package can be created in the ``dist`` directory
+with::
+
+  python3 setup.py sdist
 
 By default, parallelization of the genetic algorithms is only compiled
 into Gamera under Linux and with gcc version > 4.2, because we could only
@@ -59,7 +79,7 @@ OpenMP support on your system, need to clone the git repo and edit the setup.py:
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
   sed -i 's/has_openmp = None/has_openmp = True/' setup.py
-  pip install .
+  pip3 install .
 
 If Gamera is compiled with OpenMP on your system, but OpenMP does not work
 on your system for some reason, you can switch it off with::
@@ -67,7 +87,7 @@ on your system for some reason, you can switch it off with::
   git clone https://github.com/hsnr-gamera/gamera-4
   cd gamera-4
   sed -i 's/has_openmp = None/has_openmp = False/' setup.py
-  pip install .
+  pip3 install .
 
 
 Running
@@ -85,9 +105,10 @@ Mac OS-X
 Installation on 10.11 (El Captain) and above
 --------------------------------------------
 
-Due to the OS-X builtin "system integrity protection" (SIP), wxPython
-and Gamera  cannot be installed into the python branch shipped with OS-X.
-You must therefore install wxPython and Gamera into a `virtual environment`__.
+Due to the builtin "system integrity protection" (SIP) on some versions
+of OS-X, it might be that wxPython and Gamera cannot be installed into the
+python branch shipped with OS-X. A workaround is to install wxPython and
+Gamera into a `virtual environment`__.
 
 .. __: https://virtualenv.pypa.io/
 
