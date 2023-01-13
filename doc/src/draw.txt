@@ -330,6 +330,15 @@ terminal, for example.
 
   RIGHT JUSTIFIED (2):  The text is right-justified to the point *p*.
 
+----------
+
+**Example 1:** draw_text
+
+..  image:: images/draw_text_plugin_00.png
+   :height: 299
+   :width: 319
+
+
 
 ``fill``
 --------
