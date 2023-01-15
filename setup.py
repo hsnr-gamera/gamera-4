@@ -218,7 +218,7 @@ if __name__ == "__main__":
         include_package_data=True,
         packages=packages,
         classifiers=[
-            'Development Status :: 5 - Production/Stable'
+            'Development Status :: 5 - Production/Stable',
             'Intended Audience :: Developers',
             'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
             'Operating System :: OS Independent',
