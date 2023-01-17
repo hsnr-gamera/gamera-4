@@ -8,6 +8,7 @@ recursive-include src *.cpp *.c *.h makefile.* *.hpp *.txt ANNOUNCE CHANGES INST
 recursive-include src/eodev *
 recursive-include examples *.py README *.tiff *.xml
 recursive-include gamera/include/gamera *.hpp *.hxx *.h README
+recursive-include gamera/src *.hpp *.cpp
 recursive-include win32 *.py
 recursive-include win32/msisource *.mmh *.txt *.jpg *.c *.template *.bmp
 recursive-include gamera/mac *.py *.html DMG_DS_STORE

@@ -135,7 +135,7 @@ extensions.extend(plugin_extensions)
 
 ##########################################
 # Here's the basic setuptools stuff
-packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
+packages = ['gamera', 'gamera.gui', 'gamera.pixmaps', 'gamera.gui.gaoptimizer', 'gamera.plugins',
             'gamera.toolkits', 'gamera.backport']
 
 # https://stackoverflow.com/a/13176803
@@ -217,6 +217,12 @@ if __name__ == "__main__":
         },
         include_package_data=True,
         packages=packages,
+        package_data={
+            "gamera/src": ["*.hpp", "*.cpp"],
+            "gamera/include": ["*.h", "*.hpp", "*.hxx"],
+            "gamera/test": ["*.tff"],
+            "gamera/pixmaps": ["*.png"]
+        },
         classifiers=[
             'Development Status :: 5 - Production/Stable',
             'Intended Audience :: Developers',
