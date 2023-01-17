@@ -210,20 +210,20 @@ rotated projections at +/- 45 degrees.
 
 
 Fourier descriptor for arbitrary (not necessarily connected) shapes
-according to equations (18) and (19) in 
+according to equations (18) and (19) in
 
   C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:
   `Fourier Descriptors for Broken Shapes`__.
   EURASIP Journal on Advances in Signal Processing 2013:161, 2013
- 
-The coefficient c_0 is used for scale normalisation. The 
-absolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are 
+
+The coefficient c_0 is used for scale normalisation. The
+absolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are
 returned.
 
     +---------------------------+
-    | **Invariant to:**         |  
+    | **Invariant to:**         |
     +-------+----------+--------+
-    | scale | rotation | mirror | 
+    | scale | rotation | mirror |
     +-------+----------+--------+
     |   X   |     X    |        |
     +-------+----------+--------+
@@ -258,17 +258,17 @@ returned.
 
 Returns *moments* of the image.
 
-The first two elements of the returned ``FloatVector`` are the 
+The first two elements of the returned ``FloatVector`` are the
 center of gravity on *x* and *y* axis normalized by width and height,
-respectively. The following seven entries are the 
+respectively. The following seven entries are the
 *normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For their
 definition, see Gonzalez, Woods: "Digital Image Processing",
 Prentice Hall, second edition (2002).
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -303,9 +303,9 @@ invariant, it is helpful for distinguishing similar symbols of
 different size.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |       |          |   X    |
 +-------+----------+--------+
@@ -345,9 +345,9 @@ The elements of the returned ``FloatVector`` are:
 1. horizontal
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -389,9 +389,9 @@ The elements of the returned ``FloatVector`` are:
   horizonal ``nholes`` for each of the strips in order top to bottom.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -426,9 +426,9 @@ invariant, it is helpful for distinguishing similar symbols of
 different size.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |       |          |   X    |
 +-------+----------+--------+
@@ -473,9 +473,9 @@ a number of properties:
 5. Number of *y*-axis crossings with respect to the *y*-axis through the center of mass
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -510,9 +510,9 @@ the first feature is the first row containing a black pixel, and
 the second feature is the last row containing a black pixel.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -546,9 +546,9 @@ The percentage of black pixels within the rectangular bounding box
 of the image.  Result in range (0, 1].
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -582,9 +582,9 @@ Divides the image into a 4 x 4 grid of 16 regions and calculates
 the volume within each. This feature is also known as "zoning" method.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -618,9 +618,9 @@ Divides the image into an 8 x 8 grid of 64 regions and calculates
 the volume within each. This feature is also known as "zoning" method.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -670,9 +670,9 @@ The moments *A00* and *A11* are not computed because these are constant
 under the used normalization scheme.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |    X     |   X    |
 +-------+----------+--------+
@@ -722,5 +722,4 @@ The return values are the absolute values of
 *A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
 The moments *A00* and *A11* are not computed because these are constant
 under the used normalization scheme.
-
 
