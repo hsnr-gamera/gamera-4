@@ -196,6 +196,53 @@ rotated projections at +/- 45 degrees.
 
 
 
+``fourier_broken``
+------------------
+
+``FloatVector`` **fourier_broken** ()
+
+
+:Operates on: ``Image`` [OneBit]
+:Returns: ``FloatVector``
+:Category: Features
+:Defined in: fourier_features.py
+:Author: Christian Brandt and Christoph Dalitz
+
+
+Fourier descriptor for arbitrary (not necessarily connected) shapes
+according to equations (18) and (19) in
+
+  C. Dalitz, C. Brandt, S. Goebbels, D. Kolanus:
+  `Fourier Descriptors for Broken Shapes`__.
+  EURASIP Journal on Advances in Signal Processing 2013:161, 2013
+
+The coefficient c_0 is used for scale normalisation. The
+absolute values of the coefficients A(0), A(N-1) A(1), A(N-2), ... are
+returned.
+
+    +---------------------------+
+    | **Invariant to:**         |
+    +-------+----------+--------+
+    | scale | rotation | mirror |
+    +-------+----------+--------+
+    |   X   |     X    |        |
+    +-------+----------+--------+
+
+.. __: http://dx.doi.org/10.1186/1687-6180-2013-161
+
+
+----------
+
+**Example 1:** fourier_broken()
+
+..  image:: images/OneBit_generic.png
+   :height: 99
+   :width: 69
+
+*result* = array('d', [1.0, 0.02142828360121643, 0.014612796315609201, 0.1495321921926191, 0.1359123070524482, 0.09670401182040597, 0.03262759415868247, 0.023715779043266275, 0.01754772234258709, 0.0067814576101620895, 0.015363120266972848, 0.021162618823014172, 0.018017956206137543, 0.017560795193935257, 0.011530544698179445, 0.0053427432030605446, 0.00415364606145243, 0.013335064359944658, 0.013186805552803925, 0.011689748562071554, 0.011607336951062766, 0.00018423123997530705, 0.002473830584174222, 0.007069049350916601, 0.006343859341554472, 0.010895894711687391, 0.010494846336294338, 0.00293067888238877, 0.001925719165360069, 0.002426025360094545, 0.000986303753557155, 0.0021979546018848083, 0.005170996123540047, 0.003123113017560981, 0.00270800160829463, 0.0015581678913639168, 0.0016191030003190835, 0.0025990332426772266, 0.0037265469302364806, 0.0016236926711151408, 0.0015624885792808387, 0.002201760273364928, 0.0011244781683759759, 0.00179323257419093, 0.0008852954917615224, 0.0013942456903604087, 0.0011666318489265358, 0.002078467872437278])
+
+
+
 ``moments``
 -----------
 
@@ -211,17 +258,17 @@ rotated projections at +/- 45 degrees.
 
 Returns *moments* of the image.
 
-The first two elements of the returned ``FloatVector`` are the 
+The first two elements of the returned ``FloatVector`` are the
 center of gravity on *x* and *y* axis normalized by width and height,
-respectively. The following seven entries are the 
+respectively. The following seven entries are the
 *normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For their
 definition, see Gonzalez, Woods: "Digital Image Processing",
 Prentice Hall, second edition (2002).
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -256,9 +303,9 @@ invariant, it is helpful for distinguishing similar symbols of
 different size.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |       |          |   X    |
 +-------+----------+--------+
@@ -298,9 +345,9 @@ The elements of the returned ``FloatVector`` are:
 1. horizontal
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -342,9 +389,9 @@ The elements of the returned ``FloatVector`` are:
   horizonal ``nholes`` for each of the strips in order top to bottom.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -379,9 +426,9 @@ invariant, it is helpful for distinguishing similar symbols of
 different size.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |       |          |   X    |
 +-------+----------+--------+
@@ -426,9 +473,9 @@ a number of properties:
 5. Number of *y*-axis crossings with respect to the *y*-axis through the center of mass
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -463,9 +510,9 @@ the first feature is the first row containing a black pixel, and
 the second feature is the last row containing a black pixel.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -499,9 +546,9 @@ The percentage of black pixels within the rectangular bounding box
 of the image.  Result in range (0, 1].
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |   X    |
 +-------+----------+--------+
@@ -535,9 +582,9 @@ Divides the image into a 4 x 4 grid of 16 regions and calculates
 the volume within each. This feature is also known as "zoning" method.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -571,9 +618,9 @@ Divides the image into an 8 x 8 grid of 64 regions and calculates
 the volume within each. This feature is also known as "zoning" method.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |          |        |
 +-------+----------+--------+
@@ -623,9 +670,9 @@ The moments *A00* and *A11* are not computed because these are constant
 under the used normalization scheme.
 
 +---------------------------+
-| **Invariant to:**         |  
+| **Invariant to:**         |
 +-------+----------+--------+
-| scale | rotation | mirror | 
+| scale | rotation | mirror |
 +-------+----------+--------+
 |   X   |    X     |   X    |
 +-------+----------+--------+
@@ -638,7 +685,7 @@ under the used normalization scheme.
    :height: 99
    :width: 69
 
-*result* = array('d', [0.41985994859323733, 0.14446675451280785, 0.19930745874798886, 0.12285513319379245, 0.24576011020129576, 0.09126205693022849, 0.08813297730267446, 0.11505822141131866, 0.12461255166774005, 0.10456963336198771, 0.07185503783903133, 0.10729227059728876, 0.06994988520126252, 0.07362673513981027])
+*result* = array('d', [0.41985994859323733, 0.14446675451280785, 0.19930745874798883, 0.12285513319379245, 0.24576011020129576, 0.0912620569302285, 0.08813297730267444, 0.11505822141131868, 0.12461255166774002, 0.10456963336198771, 0.0718550378390313, 0.10729227059728874, 0.06994988520126254, 0.07362673513981027])
 
 
 
@@ -675,5 +722,4 @@ The return values are the absolute values of
 *A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
 The moments *A00* and *A11* are not computed because these are constant
 under the used normalization scheme.
-
 

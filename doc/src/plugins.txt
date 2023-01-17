@@ -259,6 +259,18 @@ By categories
 
 - ExternalLibraries_
 
+  - Numpy_
+
+    - from_numpy_
+
+    - to_numpy_
+
+  - PIL_
+
+    - from_pil_
+
+    - to_pil_
+
   - from_raw_string_
 
   - to_raw_string_
@@ -282,6 +294,8 @@ By categories
   - compactness_
 
   - diagonal_projection_
+
+  - fourier_broken_
 
   - moments_
 
@@ -595,7 +609,7 @@ edit_distance_, erode_, erode_dilate_, erode_with_structure_, extract_imaginary_
 
 **F**
 
-false_color_, fill_, fill_white_, filter_narrow_runs_, filter_short_runs_, filter_tall_runs_, filter_wide_runs_, flood_fill_, from_cv_, from_raw_string_, from_rle_
+false_color_, fill_, fill_white_, filter_narrow_runs_, filter_short_runs_, filter_tall_runs_, filter_wide_runs_, flood_fill_, fourier_broken_, from_cv_, from_numpy_, from_pil_, from_raw_string_, from_rle_
 
 **G**
 
@@ -643,7 +657,7 @@ saturation_, sauvola_threshold_, save_image_, save_PNG_, save_tiff_, scale_, seg
 
 **T**
 
-textline_reading_order_, thin_hs_, thin_hs_large_image_, thin_lc_, thin_zs_, threshold_, tiff_info_, to_buffer_, to_complex_, to_cv_, to_float_, to_grey16_, to_greyscale_, to_nested_list_, to_onebit_, to_raw_string_, to_rgb_, to_rle_, to_xml_, to_xml_filename_, top_bottom_, trim_image_, tsai_moment_preserving_find_threshold_, tsai_moment_preserving_threshold_
+textline_reading_order_, thin_hs_, thin_hs_large_image_, thin_lc_, thin_zs_, threshold_, tiff_info_, to_buffer_, to_complex_, to_cv_, to_float_, to_grey16_, to_greyscale_, to_nested_list_, to_numpy_, to_onebit_, to_pil_, to_raw_string_, to_rgb_, to_rle_, to_xml_, to_xml_filename_, top_bottom_, trim_image_, tsai_moment_preserving_find_threshold_, tsai_moment_preserving_threshold_
 
 **U**
 
@@ -796,6 +810,12 @@ zernike_moments_, zernike_moments_plugin_
 .. _labeled_region_edges: edge.html#labeled-region-edges
 .. _outline: edge.html#outline
 .. _ExternalLibraries: externallibraries.html#externallibraries
+.. _Numpy: externallibraries.html#numpy
+.. _from_numpy: externallibraries.html#from-numpy
+.. _to_numpy: externallibraries.html#to-numpy
+.. _PIL: externallibraries.html#pil
+.. _from_pil: externallibraries.html#from-pil
+.. _to_pil: externallibraries.html#to-pil
 .. _from_raw_string: externallibraries.html#from-raw-string
 .. _to_raw_string: externallibraries.html#to-raw-string
 .. _cv: externallibraries.html#cv
@@ -808,6 +828,7 @@ zernike_moments_, zernike_moments_plugin_
 .. _black_area: features.html#black-area
 .. _compactness: features.html#compactness
 .. _diagonal_projection: features.html#diagonal-projection
+.. _fourier_broken: features.html#fourier-broken
 .. _moments: features.html#moments
 .. _ncols_feature: features.html#ncols-feature
 .. _nholes: features.html#nholes
