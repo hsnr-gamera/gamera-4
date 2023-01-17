@@ -193,7 +193,6 @@ build_ext.build_extensions = _build_extensions
 CCompiler.compile = _compile
 
 if __name__ == "__main__":
-
     setup(
         name="gamera",
         version=gamera_version,
