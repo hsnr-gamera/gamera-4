@@ -23,7 +23,7 @@ import glob
 import os
 import platform
 
-from setuptools import setup, Extension
+from setuptools import setup, Extension, find_namespace_packages
 from distutils.ccompiler import CCompiler
 from distutils.command.build_ext import build_ext
 from pathlib import Path
@@ -215,12 +215,12 @@ if __name__ == "__main__":
             'Source': 'https://github.com/hsnr-gamera/gamera-4'
         },
         include_package_data=True,
-        packages=packages,
+        packages=find_namespace_packages(),
         package_data={
-            "gamera/src": ["*.hpp", "*.cpp"],
-            "gamera/include": ["*.h", "*.hpp", "*.hxx"],
-            "gamera/test": ["*.tff"],
-            "gamera/pixmaps": ["*.png"]
+            "gamera.src": ["*.hpp", "*.cpp"],
+            "gamera.include": ["*.h", "*.hpp", "*.hxx"],
+            "gamera.test": ["*.tff"],
+            "gamera.pixmaps": ["*.png"]
         },
         classifiers=[
             'Development Status :: 5 - Production/Stable',
