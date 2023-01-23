@@ -133,11 +133,6 @@ extensions = [Extension("gamera.gameracore",
                         **gamera_setup.extras)]
 extensions.extend(plugin_extensions)
 
-##########################################
-# Here's the basic setuptools stuff
-packages = ['gamera', 'gamera.gui', 'gamera.pixmaps', 'gamera.gui.gaoptimizer', 'gamera.plugins',
-            'gamera.toolkits', 'gamera.backport']
-
 # https://stackoverflow.com/a/13176803
 # multithreading building, can also be used with setuptools
 try:
