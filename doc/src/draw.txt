@@ -507,4 +507,3 @@ This is a special case of the flood_fill algorithm that is designed
 to remove dark borders produced by photocopiers or flatbed scanners
 around the border of the image.
 
-

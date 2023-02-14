@@ -1371,7 +1371,6 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 		return nullptr;
 	}
 	
-	Py_ssize_t len;
 	int *selections;
 	
 	if (PyObject_CheckBuffer(array) != 1) {
@@ -1385,7 +1384,7 @@ static PyObject* knn_set_selections(PyObject* self, PyObject* args) {
 	}
 	selections = (int*)buffer.buf;
 	
-	if ( (size_t) len != o->num_features * sizeof(int)) {
+	if (buffer.len != o->num_features * sizeof(int)) {
 		PyErr_SetString(PyExc_RuntimeError, "knn: selection vector is not the correct size.");
 		return nullptr;
 	}
@@ -1410,7 +1409,6 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 	if (PyArg_ParseTuple(args,  "O", &array) <= 0) {
 		return nullptr;
 	}
-	Py_ssize_t len;
 	double* weights;
 	if (PyObject_CheckBuffer(array) != 1) {
 		PyErr_SetString(PyExc_BufferError, "knn: Error getting weight array buffer.");
@@ -1422,7 +1420,7 @@ static PyObject* knn_set_weights(PyObject* self, PyObject* args) {
 		return nullptr;
 	}
 	weights = (double*)buffer.buf;
-	if (size_t(len) != o->num_features * sizeof(double)) {
+	if (buffer.len != o->num_features * sizeof(double)) {
 		PyErr_SetString(PyExc_ValueError, "knn: weight vector is not the correct size.");
 		return nullptr;
 	}

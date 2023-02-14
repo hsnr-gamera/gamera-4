@@ -23,7 +23,7 @@ import glob
 import os
 import platform
 
-from setuptools import setup, Extension
+from setuptools import setup, Extension, find_namespace_packages
 from distutils.ccompiler import CCompiler
 from distutils.command.build_ext import build_ext
 from pathlib import Path
@@ -133,11 +133,6 @@ extensions = [Extension("gamera.gameracore",
                         **gamera_setup.extras)]
 extensions.extend(plugin_extensions)
 
-##########################################
-# Here's the basic setuptools stuff
-packages = ['gamera', 'gamera.gui', 'gamera.gui.gaoptimizer', 'gamera.plugins',
-            'gamera.toolkits', 'gamera.backport']
-
 # https://stackoverflow.com/a/13176803
 # multithreading building, can also be used with setuptools
 try:
@@ -193,25 +188,44 @@ build_ext.build_extensions = _build_extensions
 CCompiler.compile = _compile
 
 if __name__ == "__main__":
-
-    setup(name="gamera",
-          version=gamera_version,
-          ext_modules=extensions,
-          python_requires='>=3.5',
-          license='GNU GENERAL PUBLIC LICENSE Version 2',
-          description='Gamera is a framework for building document analysis applications. It is not a packaged '
-                      'document recognition system, but a toolkit for building document image recognition systems.',
-          long_description=long_description,
-          long_description_content_type='text/markdown',
-          url="https://gamera.sourceforge.net/",
-          author="Michael Droettboom and Christoph Dalitz",
-          author_email="gamera-devel@yahoogroups.com",
-          entry_points={
-              'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
-          },
-          project_urls={
-              'Documentation': 'https://gamera.informatik.hsnr.de/docs/gamera-docs/',
-              'Source': 'https://github.com/hsnr-gamera/gamera-4'
-          },
-          include_package_data=True,
-          packages=packages)
+    setup(
+        name="gamera",
+        version=gamera_version,
+        ext_modules=extensions,
+        python_requires='>=3.5',
+        license='GNU GENERAL PUBLIC LICENSE Version 2',
+        description=(
+            'Gamera is a framework for building document analysis applications. It is not a packaged '
+            'document recognition system, but a toolkit for building document image recognition systems.'
+        ),
+        long_description=long_description,
+        long_description_content_type='text/markdown',
+        url="https://gamera.sourceforge.net/",
+        author="Michael Droettboom and Christoph Dalitz",
+        entry_points={
+            'gui_scripts': ["gamera_gui=gamera.gamera_gui:gamera_gui"]
+        },
+        project_urls={
+            'Documentation': 'https://gamera.informatik.hsnr.de/docs/gamera-docs/',
+            'Source': 'https://github.com/hsnr-gamera/gamera-4'
+        },
+        include_package_data=True,
+        packages=find_namespace_packages(),
+        package_data={
+            "gamera.src": ["*.hpp", "*.cpp"],
+            "gamera.include": ["*.h", "*.hpp", "*.hxx"],
+            "gamera.test": ["*.tff"],
+            "gamera.pixmaps": ["*.png"]
+        },
+        classifiers=[
+            'Development Status :: 5 - Production/Stable',
+            'Intended Audience :: Developers',
+            'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+            'Operating System :: OS Independent',
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3 :: Only',
+            'Topic :: Text Processing',
+            'Topic :: Multimedia :: Graphics',
+        ],
+    )

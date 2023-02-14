@@ -39,12 +39,9 @@ jobs:
           libpng-dev
           dpkg-dev
           build-essential
-    - name: build Gamera
+    - name: build and install Gamera
       run: |
-        python -m pip install .
-    - name: install Gamera
-      run: |
-        python -m pip install .
+        python -m pip install --verbose .
     # The directory seems to be required, otherwise we get some errors:
     #    gamera.gamera_xml.XMLError: Cannot create a file at '/home/runner/work/gamera-4/gamera-4/tmp'
     - name: prepare tests
