@@ -335,3 +335,4 @@ Changes to subimages will affect all other subimages viewing the same data.
 Returns minimal view so that outside of the view only Pixels with
 *PixelValue* exists. When no *PixelValue* is given, white is used.
 
+
