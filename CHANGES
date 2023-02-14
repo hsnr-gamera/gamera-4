@@ -1,6 +1,8 @@
 Changes made between Gamera File Releases
 =========================================
 
+Version 4.1.0, Feb 14, 2023
+---------------------------
 
  - Update install instructions to use pip
 
@@ -10,7 +12,7 @@ Changes made between Gamera File Releases
 
 
 Version 4.0.1, Jan 09, 2023
-----------------------------
+---------------------------
 
  - fixed comparison operator for CCs (broke grouping algorithm)
 
@@ -24,13 +26,13 @@ Version 4.0.1, Jan 09, 2023
  
 
 Version 4.0.0, Feb 18, 2022
-----------------------------
+---------------------------
 
  - ported to python 3.x
 
 
 Version 3.4.4, Jan 17, 2020
-----------------------------
+---------------------------
 
  - support for wxPython 4.x, while still compatible with wxPython < 4.0
 
@@ -42,7 +44,7 @@ Version 3.4.4, Jan 17, 2020
 
 
 Version 3.4.3, Mar 08, 2017
-----------------------------
+---------------------------
 
  - support for gcc7 (thanks to VincentS)
 
@@ -80,7 +82,7 @@ Version 3.4.3, Mar 08, 2017
 
 
 Version 3.4.2, Apr 23, 2015
-----------------------------
+---------------------------
 
  - updated zlib to version 1.2.8 (only used under Windows)
 
@@ -94,7 +96,7 @@ Version 3.4.2, Apr 23, 2015
 
 
 Version 3.4.1, May 28, 2014
-----------------------------
+---------------------------
 
  - ported to Windows again with MS VC and included compile instructions
 
@@ -136,7 +138,7 @@ Version 3.4.1, May 28, 2014
 
 
 Version 3.4.0, Nov 20, 2012
-----------------------------
+---------------------------
 
  - GA optimization module rewritten from scratch
      o evolutionary optimization now for selection and weighting implemented
@@ -168,7 +170,7 @@ Version 3.4.0, Nov 20, 2012
 
 
 Version 3.3.3, May 15, 2012
-----------------------------
+---------------------------
 
  - new plugins min_max_location() and max_empty_rect()
 
@@ -199,7 +201,7 @@ Version 3.3.3, May 15, 2012
 
 
 Version 3.3.2, Sep 19, 2011
-----------------------------
+---------------------------
 
  - FSF address in all files corrected
 
@@ -209,7 +211,7 @@ Version 3.3.2, Sep 19, 2011
 
 
 Version 3.3.1, Aug 25, 2011
-----------------------------
+---------------------------
 
  - plugins for convex hull computation added in category Geometry
 
@@ -229,7 +231,7 @@ Version 3.3.1, Aug 25, 2011
 
 
 Version 3.3.0, Mai 02, 2011
-----------------------------
+---------------------------
 
  - graph API completely rewritten from scratch (thanks to Christian Brandt)
    Changes from a user's perspective:
@@ -251,7 +253,7 @@ Version 3.3.0, Mai 02, 2011
 
 
 Version 3.2.7, Mar 11, 2011
-----------------------------
+---------------------------
 
  - _group._part glyphs no longer saved in classifier training data:
    when saved as "Page glyphs", they are still saved, but no longer
@@ -279,7 +281,7 @@ Version 3.2.7, Mar 11, 2011
 
 
 Version 3.2.6, Jun 08, 2010
-----------------------------
+---------------------------
 
  - plugin args Class, ImageList, and Pixel now support
    default value NoneDefault
@@ -295,7 +297,7 @@ Version 3.2.6, Jun 08, 2010
 
 
 Version 3.2.5, Apr 14, 2010
-----------------------------
+---------------------------
 
  - CIE L*a*b* values can be queried from RGBPixels
 
@@ -331,7 +333,7 @@ Version 3.2.5, Apr 14, 2010
 
 
 Version 3.2.4, Feb 12, 2010
-----------------------------
+---------------------------
 
  - new deformation plugins degrade_kanungo and white_speckles
 
@@ -361,7 +363,7 @@ Version 3.2.4, Feb 12, 2010
 
 
 Version 3.2.3, Oct 08, 2009
-----------------------------
+---------------------------
 
  - documentation licensed under CC-BY-SA
    see the bottom of doc/src/index.txt for details
@@ -374,7 +376,7 @@ Version 3.2.3, Oct 08, 2009
 
 
 Version 3.2.2, Oct 01, 2009
-----------------------------
+---------------------------
 
  - plugin loading message no longer printed in non-GUI scripts;
    in case these messages are needed, they can optionally be 
@@ -388,7 +390,7 @@ Version 3.2.2, Oct 01, 2009
 
 
 Version 3.2.1, Sep 17, 2009
-----------------------------
+---------------------------
 
  - sourceforge logo can optionally be suppressed in gendoc by
    passing sourceforge_logo=False to gendoc.gendoc
@@ -412,7 +414,7 @@ Version 3.2.1, Sep 17, 2009
 
 
 Version 3.2.0, Jun 17, 2009
-----------------------------
+---------------------------
 
  - plugins to_numpy and from_numpy added for support of numpy;
    the deprecated numeric and numarry modules have been replaced with numpy
@@ -434,7 +436,7 @@ Version 3.2.0, Jun 17, 2009
 
 
 Version 3.1.2, Apr 14, 2009
-----------------------------
+---------------------------
 
  - fixed an infinite loop in classifier dialog on Windows
 

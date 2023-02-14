@@ -62,11 +62,11 @@ user account with::
   python3 setup.py bdist_wheel
 
 This will create a package file ``gamera-version-architecture.whl`` in the
-``dist`` director, which can then be installed system wide as root with::
+``dist`` directory, which can then be installed system wide as root with::
 
   pip3 install ./dist/gamera-*-*.whl
 
-Additonally, a source code package can be created in the ``dist`` directory
+Additionally, a source code package can be created in the ``dist`` directory
 with::
 
   python3 setup.py sdist
