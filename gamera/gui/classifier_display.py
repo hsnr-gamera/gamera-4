@@ -1465,7 +1465,7 @@ class ClassifierFrame(ImageFrameBase):
       dirname = gui_util.directory_dialog(self._frame)
       if dirname:
          glyphs = [g for g in list]
-         glyphs.sort(lambda g1,g2: cmp(g1.get_main_id().lower(),g2.get_main_id().lower()))
+         glyphs.sort(key = lambda g: g.get_main_id().lower())
          lastid = ""
          nr = 0
          for glyph in glyphs:
