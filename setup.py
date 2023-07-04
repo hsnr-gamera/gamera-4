@@ -193,7 +193,7 @@ if __name__ == "__main__":
         version=gamera_version,
         ext_modules=extensions,
         python_requires='>=3.5',
-        license='GNU GENERAL PUBLIC LICENSE Version 2',
+        license='GNU GENERAL PUBLIC LICENSE Version 2 (or later)',
         description=(
             'Gamera is a framework for building document analysis applications. It is not a packaged '
             'document recognition system, but a toolkit for building document image recognition systems.'
@@ -220,7 +220,7 @@ if __name__ == "__main__":
         classifiers=[
             'Development Status :: 5 - Production/Stable',
             'Intended Audience :: Developers',
-            'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+            'License :: OSI Approved :: GNU General Public License (GPL)',
             'Operating System :: OS Independent',
             'Programming Language :: Python',
             'Programming Language :: Python :: 3',

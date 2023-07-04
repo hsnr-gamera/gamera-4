@@ -27,7 +27,8 @@ http://gamera.informatik.hsnr.de/docs/gamera-docs/
 
 See the file ACKNOWLEDGEMENTS for additional contributors.
 
-This software is distributed under the GNU General Public License.
+This software is distributed under the GNU General Public License
+version 2, or (at your option) any later version.
 See the file LICENSE for more information.
 
 As the GNU GPL is only applicable to software, the accompanying
