@@ -22,12 +22,14 @@ import multiprocessing
 import glob
 import os
 import platform
+import sys
+from concurrent.futures import ThreadPoolExecutor as Pool
+from pathlib import Path
 
 from setuptools import setup, Extension, find_namespace_packages
 from distutils.ccompiler import CCompiler
 from distutils.command.build_ext import build_ext
-from pathlib import Path
-import sys
+
 from gamera import gamera_setup
 
 if sys.hexversion < 0x03050000:
@@ -132,22 +134,6 @@ extensions = [Extension("gamera.gameracore",
                         include_dirs=["gamera/include/gamera", "src", "gamera/include/gamera/geostructs"],
                         **gamera_setup.extras)]
 extensions.extend(plugin_extensions)
-
-# https://stackoverflow.com/a/13176803
-# multithreading building, can also be used with setuptools
-try:
-    from concurrent.futures import ThreadPoolExecutor as Pool
-except ImportError:
-    from multiprocessing.pool import ThreadPool as LegacyPool
-
-    # To ensure the with statement works. Required for some older 2.7.x releases
-    class Pool(LegacyPool):
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            self.close()
-            self.join()
 
 
 def _build_extensions(self):

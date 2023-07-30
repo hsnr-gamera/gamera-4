@@ -6,7 +6,7 @@ Version 4.1.0, Feb 14, 2023
 
  - Update install instructions to use pip
 
- - ported from deprected distutils to setuptools
+ - ported from deprecated distutils to setuptools
 
  - replaced old buffer protocol
 

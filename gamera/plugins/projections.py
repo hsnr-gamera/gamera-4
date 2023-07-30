@@ -144,7 +144,7 @@ class projection_skewed_rows(PluginFunction):
 
 
 class rotation_angle_projections(PluginFunction):
-    """
+    r"""
     Estimates the rotation angle of a document with the aid of skewed
     projections, as described in section 3.1 of C. Dalitz, G.K. Michalakis,
     C. Pranzas: 'Optical Recognition of Psaltic Byzantine Chant Notation.'

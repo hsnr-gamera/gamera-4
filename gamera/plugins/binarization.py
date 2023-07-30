@@ -344,7 +344,7 @@ class white_rohrer_threshold(PluginFunction):
 
 
 class shading_subtraction(PluginFunction):
-    """
+    r"""
     Thresholds an image after subtracting a -possibly shaded- background.
 
     First the background image is extracted with a maximum filter with a
