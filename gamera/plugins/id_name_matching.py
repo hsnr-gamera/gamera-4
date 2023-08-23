@@ -36,7 +36,7 @@ def build_id_regex(s):
                 part0 = part0.replace('?', '[^.]')
                 l.append(part0)
             regex_parts.append('(?:%s)' % '|'.join(['(?:%s)' % x for x in l]))
-        regex = '\.'.join(regex_parts)
+        regex = r'\.'.join(regex_parts)
         return regex
 
     def _build_id_regex_parens(s):

@@ -68,7 +68,7 @@ ImageInfo* tiff_info(const char* filename) {
    */
   try {
     unsigned short tmp;
-    uint32 size;
+    uint32_t size;
     TIFFGetFieldDefaulted(tif, TIFFTAG_IMAGEWIDTH, &size);
     info->ncols((size_t)size);
     TIFFGetFieldDefaulted(tif, TIFFTAG_IMAGELENGTH, &size);
@@ -256,7 +256,7 @@ namespace {
         throw std::runtime_error("Error allocating scanline");
       TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISWHITE);
       std::bitset<32> bits;
-      uint32* data = (uint32 *)buf;
+      uint32_t* data = (uint32_t *)buf;
       bool little_endian = byte_order_little_endian();
       typename T::const_vec_iterator it = matrix.vec_begin();
       for (size_t i = 0; i < matrix.nrows(); i++) {

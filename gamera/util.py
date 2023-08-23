@@ -126,7 +126,7 @@ def string2identifier(str):
    """Defines how illegal variable names are converted to legal ones."""
    # TODO: Not very robust.
    if len(str):
-      name = re.sub('\-|/|\.|\ ', '_', str, 0)
+      name = re.sub(r'\-|/|\.|\ ', '_', str, 0)
       if name[0] in string.digits:
          name = "_" + name
       return name
@@ -339,7 +339,7 @@ def ProgressFactory(message, length=1, numsteps=0):
 # A regular expression used to determine the amount of space to
 # remove.  It looks for the first sequence of spaces immediately
 # following the first newline, or at the beginning of the string.
-_find_dedent_regex = re.compile("(?:(?:\n\r?)|^)( *)\S")
+_find_dedent_regex = re.compile(r"(?:(?:\n\r?)|^)( *)\S")
 # A cache to hold the regexs that actually remove the indent.
 _dedent_regex = {}
 def dedent(s):

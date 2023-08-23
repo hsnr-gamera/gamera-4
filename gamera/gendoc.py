@@ -33,7 +33,6 @@ import os.path
 import shutil
 import sys
 import traceback
-from pkg_resources import parse_version
 from stat import ST_MTIME
 from time import strftime, localtime
 
@@ -47,10 +46,6 @@ except Exception:
 try:
     from docutils.core import publish_file
     import docutils.parsers.rst
-
-    if parse_version(docutils.__version__) < parse_version('0.4'):
-        print("docutils version (" + docutils.__version__ + ") too old")
-        raise ImportError()
 except ImportError as e:
     print("'docutils' 0.4 or later must be installed to generate the documentation.")
     print("It can be downloaded at http://docutils.sf.net")
@@ -63,60 +58,36 @@ try:
     import pygments
     import pygments.lexers
     import pygments.formatters
-
-    source_highlighter = 'pygments'
-    if parse_version(pygments.__version__) < parse_version('0.6'):
-        print("pygments version (" + pygments.__version__ + ") too old")
-        raise ImportError()
 except ImportError as e:
-    try:
-        import SilverCity
-
-        source_highlighter = 'silvercity'
-    except ImportError as e:
-        print("Either 'pygments' 0.6 or later or 'SilverCity' 0.9 or later")
-        print("must be installed to colorize the sourcecode snippets in the")
-        print("documentation.")
-        sys.exit(1)
+    print("'pygments' 0.6 or later must be installed to colorize the sourcecode")
+    print("snippets in the documentation.")
+    print("It can be downloaded at https://pygments.org/")
+    sys.exit(1)
 
 # Source code highlighting support
-if source_highlighter == 'pygments':
-    html_formatter = pygments.formatters.get_formatter_by_name("html")
+html_formatter = pygments.formatters.get_formatter_by_name("html")
 
 
-    def code_block(name, arguments, options, content, lineno,
-                   content_offset, block_text, state, state_machine):
-        language = arguments[0].lower()
-        try:
-            lexer = pygments.lexers.get_lexer_by_name(language)
-        except ValueError:
-            # no lexer found - use the text one instead of an exception
-            error = state_machine.reporter.error(
-                "No pygments lexer found for language '%s'." % language,
-                docutils.nodes.literal_block(block_text, block_text), line=lineno)
-            return [error]
-        parsed = pygments.highlight(
-            '\n'.join(content),
-            lexer,
-            html_formatter)
-        return [docutils.nodes.raw('', parsed, format='html')]
-elif source_highlighter == 'silvercity':
-    def code_block(name, arguments, options, content, lineno,
-                   content_offset, block_text, state, state_machine):
-        language = arguments[0]
-        try:
-            module = getattr(SilverCity, language)
-            generator = getattr(module, language + "HTMLGenerator")
-        except AttributeError:
-            error = state_machine.reporter.error(
-                "No SilverCity lexer found for language '%s'." % language,
-                docutils.nodes.literal_block(block_text, block_text), line=lineno)
-            return [error]
-        io = ioutil.StringIO()
-        generator().generate_html(io, '\n'.join(content))
-        html = '<div class="code-block">\n%s\n</div>\n' % io.getvalue()
-        raw = docutils.nodes.raw('', html, format='html')
-        return [raw]
+def code_block(
+        name, arguments, options, content, lineno,
+        content_offset, block_text, state, state_machine
+):
+    language = arguments[0].lower()
+    try:
+        lexer = pygments.lexers.get_lexer_by_name(language)
+    except ValueError:
+        # no lexer found - use the text one instead of an exception
+        error = state_machine.reporter.error(
+            "No pygments lexer found for language '%s'." % language,
+            docutils.nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    parsed = pygments.highlight(
+        '\n'.join(content),
+        lexer,
+        html_formatter)
+    return [docutils.nodes.raw('', parsed, format='html')]
+
+
 code_block.arguments = (1, 0, 0)
 code_block.options = {'language': docutils.parsers.rst.directives.unchanged}
 code_block.content = 1
