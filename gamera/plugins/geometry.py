@@ -223,7 +223,7 @@ class graph_color_ccs(PluginFunction):
     Reference:
 
       C. Dalitz, T. Bolten, O. Christion:
-      `\"Color Visualization of 2D Segmentations.\"`__
+      `"Color Visualization of 2D Segmentations."`__
       International Conference on Information Visualization Theory
       and Applications (IVAPP), pp. 567-572 (2013)
 
@@ -357,7 +357,7 @@ When the image does not contain a white pixel at all, an exception of type
 ``RuntimeError`` is thrown. The coordinates of the returned rectangle are
 relative to the upper left corner of the image.
 
-Reference: D. Vandevoorde: `\"The Maximal Rectangle Problem.\"`__ Dr. Dobb's,
+Reference: D. Vandevoorde: `"The Maximal Rectangle Problem."`__ Dr. Dobb's,
 April 1998.
 
 .. __: http://www.drdobbs.com/database/184410529

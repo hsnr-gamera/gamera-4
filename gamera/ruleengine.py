@@ -25,7 +25,7 @@ from inspect import isfunction
 from gamera import group, util
 from .fudge import Fudge
 
-"""This module provides tools for applying graph-rewriting rules to a
+r"""This module provides tools for applying graph-rewriting rules to a
 set of glyphs.
 
 It would seem nice to invent a completely new language for this task

@@ -291,8 +291,8 @@ class diff_images(PluginFunction):
     Returns a color image representing the difference of two images
     following the conventions of a number of Unix diff visualization
     tools, such as CVS web.  Pixels in both images are black.  Pixels
-    in 'self' but not in the given image (\"deleted\" pixels) are red.
-    Pixels in the given image but not in self (\"inserted\" pixels)
+    in 'self' but not in the given image ("deleted" pixels) are red.
+    Pixels in the given image but not in self ("inserted" pixels)
     are green.
     """
     category = "Combine"

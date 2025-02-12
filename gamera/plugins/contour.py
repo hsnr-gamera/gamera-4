@@ -78,8 +78,8 @@ class contour_samplepoints(PluginFunction):
     equidistant on the contour.
 
   *contour*:
-    when 0 (\"outer_projection\"), the points returned by *contour_left* etc.
-    are used; when 1 (\"full_contour\") the points returned by *outline(1)*
+    when 0 ("outer_projection"), the points returned by *contour_left* etc.
+    are used; when 1 ("full_contour") the points returned by *outline(1)*
     are used.
   
   In addition to the points determined by the percentage argument the result
@@ -108,7 +108,7 @@ class contour_samplepoints(PluginFunction):
   __call__ = staticmethod(__call__)
 
 class contour_pavlidis(PluginFunction):
-    """
+    r"""
     Returns a point list of the outer contour trace found with Pavlidis'
     algorithm (T. Pavlidis: *Algorithms for Grapics and Image Processing.*
     pp. 129-165, Springer, 1982).

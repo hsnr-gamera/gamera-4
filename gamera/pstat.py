@@ -392,7 +392,7 @@ Returns: the rows of listoflists where columnlist[i]=valuelist[i] for ANY i
 
 
 def linedelimited (inlist,delimiter):
-    """
+    r"""
 Returns a string composed of elements in inlist, with each element
 separated by 'delimiter.'  Used by function writedelimited.  Use '\t'
 for tab-delimiting.
@@ -488,7 +488,7 @@ def makestr (x):
 
 
 def printcc (lst,extra=2):
-    """
+    r"""
 Prints a list of lists in columns, customized by the max size of items
 within the columns (max size of items in col, plus 'extra' number of spaces).
 Use 'dashes' or '\\n' in the list-of-lists to print dashes or blank lines,

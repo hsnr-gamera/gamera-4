@@ -57,7 +57,7 @@ class moments(Feature):
     center of gravity on *x* and *y* axis normalized by width and height,
     respectively. The following seven entries are the 
     *normalized central moments* (*u20,u02,u11,u30,u12,u21,u03*). For their
-    definition, see Gonzalez, Woods: \"Digital Image Processing\",
+    definition, see Gonzalez, Woods: "Digital Image Processing",
     Prentice Hall, second edition (2002).
 
     +---------------------------+
@@ -230,7 +230,7 @@ class compactness(Feature):
 class volume16regions(Feature):
     """
     Divides the image into a 4 x 4 grid of 16 regions and calculates
-    the volume within each. This feature is also known as \"zoning\" method.
+    the volume within each. This feature is also known as "zoning" method.
 
     +---------------------------+
     | **Invariant to:**         |  
@@ -246,7 +246,7 @@ class volume16regions(Feature):
 class volume64regions(Feature):
     """
     Divides the image into an 8 x 8 grid of 64 regions and calculates
-    the volume within each. This feature is also known as \"zoning\" method.
+    the volume within each. This feature is also known as "zoning" method.
 
     +---------------------------+
     | **Invariant to:**         |  
@@ -272,8 +272,8 @@ class zernike_moments(Feature):
     The present implementation normalizes the Zernike moments by
     division with the zeroeth geometric moment *m00*, which results
     in an approximate scale invariance according to
-    S. Belkasim, E. Hassan, T. Obeidi: \"Explicit invariance of Cartesian
-    Zernike moments.\" Pattern Recognition Letters 28, pp. 1969-1980 (2007)
+    S. Belkasim, E. Hassan, T. Obeidi: "Explicit invariance of Cartesian
+    Zernike moments." Pattern Recognition Letters 28, pp. 1969-1980 (2007)
 
     The return values are the absolute values of
     *A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
@@ -307,8 +307,8 @@ class zernike_moments_plugin(PluginFunction):
     The present implementation normalizes the Zernike moments by
     division with the zeroeth geometric moment *m00*, which results
     in an approximate scale invariance according to
-    S. Belkasim, E. Hassan, T. Obeidi: \"Explicit invariance of Cartesian
-    Zernike moments.\" Pattern Recognition Letters 28, pp. 1969-1980 (2007)
+    S. Belkasim, E. Hassan, T. Obeidi: "Explicit invariance of Cartesian
+    Zernike moments." Pattern Recognition Letters 28, pp. 1969-1980 (2007)
 
     The return values are the absolute values of
     *A20, A22, A31, A33, A40, A42, A44, A51, A53, A54, A60, A62, A64, A66*.
