@@ -434,7 +434,7 @@ class sub_cc_analysis(PluginFunction):
 
 
 class textline_reading_order(PluginFunction):
-    r"""
+    """
     Sorts a list of Images (CCs) representing textlines by reading order and
     returns the sorted list. Incidentally, this will not only work on
     textlines, but also on paragraphs, but *not* on actual Connected 
@@ -444,12 +444,12 @@ class textline_reading_order(PluginFunction):
     the following criteria for the pairwise order of two lines:
 
     - line *a* comes before line *b* when *a* is totally to the left
-      of *b* (order \"column before row\")
+      of *b* (order "column before row")
 
     - line *a* comes before *b* when both overlap horizontally and
       *a* is above *b* (order within a column)
 
-    In the reference `\"High Performance Document Analysis\"`__
+    In the reference `"High Performance Document Analysis"`__
     by T.M. Breuel (Symposium on Document Image Understanding,
     USA, pp. 209-218, 2003),
     an additional constraint is made for the first criterion by demanding

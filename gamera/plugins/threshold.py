@@ -237,9 +237,9 @@ class djvu_threshold(PluginFunction):
     doc_examples = [(RGB, 0.5, 512, 64, 2)]
 
 class soft_threshold(PluginFunction):
-    r"""
-    Does a greyscale transformation that \"smears out\" the threshold *t* by a
-    choosable amount *sigma*. This has the effect of a \"soft\" thresholding.
+    """
+    Does a greyscale transformation that "smears out" the threshold *t* by a
+    choosable amount *sigma*. This has the effect of a "soft" thresholding.
 
     Each grey value *x* is transformed to *F(x,t,sigma)*, where *F*
     is the CDF probability distribution with mean *t* and variance
@@ -257,7 +257,7 @@ class soft_threshold(PluginFunction):
 
 .. __: #otsu-find-threshold
 
-    Reference: C. Dalitz: `\"Soft Thresholding for Visual Image Enhancement.\"`__
+    Reference: C. Dalitz: `"Soft Thresholding for Visual Image Enhancement."`__
     Technischer Bericht Nr. 2014-01, Hochschule Niederrhein,
     Fachbereich Elektrotechnik und Informatik, 2014
 
@@ -275,13 +275,13 @@ class soft_threshold(PluginFunction):
     doc_examples = [(GREYSCALE, 128, 25)]
 
 class soft_threshold_find_sigma(PluginFunction):
-    r"""
+    """
     For the CDF probability distribution given by *dist*
     (0 = logistic, 1 = normal (gaussian), 2 = uniform), sigma is
     determined such that *F(m,t,sigma)* = 0.99, where *m* is the mean grey
     value of all pixels with a grey value greater than *t*.
 
-    Reference: C. Dalitz: `\"Soft Thresholding for Visual Image Enhancement.\"`__
+    Reference: C. Dalitz: `"Soft Thresholding for Visual Image Enhancement."`__
     Technischer Bericht Nr. 2014-01, Hochschule Niederrhein,
     Fachbereich Elektrotechnik und Informatik, 2014
 

@@ -70,7 +70,7 @@ class contour_right(Contour):
   pass
 
 class contour_samplepoints(PluginFunction):
-  r"""
+  """
   Returns a point vector containing contour points of the given image.
   
   *percentage*:
@@ -78,8 +78,8 @@ class contour_samplepoints(PluginFunction):
     equidistant on the contour.
 
   *contour*:
-    when 0 (\"outer_projection\"), the points returned by *contour_left* etc.
-    are used; when 1 (\"full_contour\") the points returned by *outline(1)*
+    when 0 ("outer_projection"), the points returned by *contour_left* etc.
+    are used; when 1 ("full_contour") the points returned by *outline(1)*
     are used.
   
   In addition to the points determined by the percentage argument the result
