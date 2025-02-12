@@ -229,7 +229,7 @@ Returns: a list of strings, one per line in each text file specified by
 
 
 def getcsv (namepatterns, delimiter='\t', verbose=1):
-    """
+    r"""
 Loads a list of lists from text files (specified by a UNIX-style
 wildcard filename pattern) and converts all numeric values to floats.
 Uses the glob module for filename pattern conversion.  Loaded filename

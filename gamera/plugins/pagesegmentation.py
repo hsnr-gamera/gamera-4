@@ -434,7 +434,7 @@ class sub_cc_analysis(PluginFunction):
 
 
 class textline_reading_order(PluginFunction):
-    """
+    r"""
     Sorts a list of Images (CCs) representing textlines by reading order and
     returns the sorted list. Incidentally, this will not only work on
     textlines, but also on paragraphs, but *not* on actual Connected 

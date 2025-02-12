@@ -50,7 +50,7 @@ class black_area(Feature):
 
 
 class moments(Feature):
-    """
+    r"""
     Returns *moments* of the image.
 
     The first two elements of the returned ``FloatVector`` are the 
@@ -228,7 +228,7 @@ class compactness(Feature):
 
 
 class volume16regions(Feature):
-    """
+    r"""
     Divides the image into a 4 x 4 grid of 16 regions and calculates
     the volume within each. This feature is also known as \"zoning\" method.
 
@@ -244,7 +244,7 @@ class volume16regions(Feature):
 
 
 class volume64regions(Feature):
-    """
+    r"""
     Divides the image into an 8 x 8 grid of 64 regions and calculates
     the volume within each. This feature is also known as \"zoning\" method.
 
@@ -260,7 +260,7 @@ class volume64regions(Feature):
 
 
 class zernike_moments(Feature):
-    """
+    r"""
     Computes the absolute values of the Normalized Zernike Moments up to
     order six.
 
@@ -293,7 +293,7 @@ class zernike_moments(Feature):
 
 
 class zernike_moments_plugin(PluginFunction):
-    """
+    r"""
     Computes the absolute values of the Normalized Zernike Moments up to
     the given order. This is separate from the feature *zernike_moments*,
     because features only support onebit images, so we need a different

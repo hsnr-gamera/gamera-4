@@ -70,7 +70,7 @@ class contour_right(Contour):
   pass
 
 class contour_samplepoints(PluginFunction):
-  """
+  r"""
   Returns a point vector containing contour points of the given image.
   
   *percentage*:
@@ -108,7 +108,7 @@ class contour_samplepoints(PluginFunction):
   __call__ = staticmethod(__call__)
 
 class contour_pavlidis(PluginFunction):
-    """
+    r"""
     Returns a point list of the outer contour trace found with Pavlidis'
     algorithm (T. Pavlidis: *Algorithms for Grapics and Image Processing.*
     pp. 129-165, Springer, 1982).

@@ -147,7 +147,7 @@ class labeled_region_edges(PluginFunction):
   __call__ = staticmethod(__call__)
 
 class outline(PluginFunction):
-    """
+    r"""
     Traces the outline of the image.  When *which* is 0 (\"outer\"),
     the result is obtained by dilating the image and then XOR'ing the
     result with the original; when *which* is 1 (\"inner\"), the result

@@ -237,7 +237,7 @@ class djvu_threshold(PluginFunction):
     doc_examples = [(RGB, 0.5, 512, 64, 2)]
 
 class soft_threshold(PluginFunction):
-    """
+    r"""
     Does a greyscale transformation that \"smears out\" the threshold *t* by a
     choosable amount *sigma*. This has the effect of a \"soft\" thresholding.
 
@@ -275,7 +275,7 @@ class soft_threshold(PluginFunction):
     doc_examples = [(GREYSCALE, 128, 25)]
 
 class soft_threshold_find_sigma(PluginFunction):
-    """
+    r"""
     For the CDF probability distribution given by *dist*
     (0 = logistic, 1 = normal (gaussian), 2 = uniform), sigma is
     determined such that *F(m,t,sigma)* = 0.99, where *m* is the mean grey

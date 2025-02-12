@@ -214,7 +214,7 @@ class delaunay_from_points(PluginFunction):
 
 
 class graph_color_ccs(PluginFunction):
-    """
+    r"""
     Returns an RGB Image where each segment is colored with one of the colors
     from *colors* in such a way that neighboring segments have different
     colors. Optionally, each segment can also be colored uniquely with
@@ -349,7 +349,7 @@ by convex_hull_as_points_.
 
 
 class max_empty_rect(PluginFunction):
-   """Returns the maximum area empty rect that fits into the image without
+   r"""Returns the maximum area empty rect that fits into the image without
 containing any of the black image pixels. This problem is in the literature
 generally known as the *Largest Empty Rectangle Problem*.
 

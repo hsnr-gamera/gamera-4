@@ -232,8 +232,8 @@ else:
 
    def docstring_to_html(docstring):
       try:
-         corrected = docstring.replace("*args", "\*args")
-         corrected = corrected.replace("**kwargs", "\*\*kwargs")
+         corrected = docstring.replace("*args", r"\*args")
+         corrected = corrected.replace("**kwargs", r"\*\*kwargs")
          html = docutils.core.publish_string(corrected, writer_name="html")
       except Exception as e:
          html = '''<pre>%s</pre><br/<br/><font size=1><pre>%s</pre></font>''' % (docstring, str(e))

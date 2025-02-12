@@ -112,7 +112,7 @@ class median_py(PluginFunction):
     author = "Christoph Dalitz"
 
 class kernel_density(PluginFunction):
-    """Computes the kernel density for *values* at the specified
+    r"""Computes the kernel density for *values* at the specified
 *x*-positions. Reference: S.J. Sheather: \"Density Estimation.\"
 Statistical Science 19 pp. 588-597 (2004).
 
