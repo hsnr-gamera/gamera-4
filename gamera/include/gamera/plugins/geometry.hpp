@@ -28,6 +28,7 @@
 #include <set>
 #include <stack>
 #include <algorithm>
+#include <random>
 #include "gamera.hpp"
 #include "vigra/distancetransform.hxx"
 #include "vigra/seededregiongrowing.hxx"
@@ -319,7 +320,9 @@ namespace Gamera {
       ++pv_it;
       ++lv_it;
     }
-    random_shuffle(vertices.begin(), vertices.end());
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(vertices.begin(), vertices.end(), g);
     dt.addVertices(&vertices);
     dt.neighboringLabels(result);
     for(it = vertices.begin() ; it != vertices.end() ; ++it) {
