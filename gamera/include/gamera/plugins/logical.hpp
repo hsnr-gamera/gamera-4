@@ -95,7 +95,7 @@ or_image(T& a, const U& b, bool in_place=true) {
 
 // We make our own, since logical_xor is not in STL
 template <class _Tp>
-struct logical_xor : public std::binary_function<_Tp,_Tp,bool>
+struct logical_xor 
 {
   bool operator()(const _Tp& __x, const _Tp& __y) const { return __x ^ __y; }
 };
