@@ -8,7 +8,8 @@ Linux (and other \*nix)
 
 Prerequisites
 -------------
-### 1. Install Required System-Level Packages:
+Install Required System-Level Packages
+``````````````````````````````````````
 - Python 3.5 and later are supported, though Python 3.7 is
   recommended.
 
@@ -26,7 +27,7 @@ Prerequisites
 
 - libpng 1.2.x or later
 
-  For example:
+  For example::
       
           sudo apt-get install -y 
           python3 python3-dev python3-pip 
@@ -45,21 +46,25 @@ pass its locations to the build script, e.g.::
   LDFLAGS=-L/usr/local/lib
   export CFLAGS LDFLAGS
 
-### 2. Create a Virtual Environment
-Create the venv
+Create a Virtual Environment
+````````````````````````````
+Create the venv::
 
     python3 -m venv gamera_venv
 
-Activate the venv
+Activate the venv::
 
     source gamera_venv/bin/activate
 
-You should see something like: (gamera_venv) user@host:~$
+You should see something like: ``(gamera_venv) user@host:~$``
 
-### 3. Install Python Dependencies inside the venv
+Install Python Dependencies inside the venv
+```````````````````````````````````````````
 - wxPython 4.0.x or later
 
 - setuptools (required to build and install Gamera)
+
+- packaging (required to run the Gamera GUI)
 
 Standard Build and Install
 --------------------------
@@ -119,11 +124,13 @@ Running
 
 Run the ``gamera_gui`` script, which is installed in the ``bin`` directory of Python
 
-.. note:: Running the script from the root of the source tree will not
+.. note:: 
+
+  Running the script from the root of the source tree will not  
   work, since it will not be able to find the compiled version of Gamera.
 
-### Virtual Environment
-
+Virtual Environment
+```````````````````
 The ``gamera_gui`` script is installed in the ``bin`` directory of your virtual environment
 
 Mac OS-X
