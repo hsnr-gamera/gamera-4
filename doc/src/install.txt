@@ -53,7 +53,8 @@ pass its locations to the build script, e.g.::
 
 Install in a Virtual Environment
 ````````````````````````````````
-If you do not have root access, or if you prefer not to install Gamera system-wide, you can install Gamera and its Python dependencies in a virtual environment.
+If you do not have root access, or if you prefer not to install Gamera system-wide,
+you can install Gamera and its Python dependencies in a virtual environment.
 
 Create the venv::
 
@@ -63,7 +64,8 @@ Activate the venv::
 
     source path/to/your/gamera_venv/bin/activate
 
-After activation, you should see something like ``(gamera_venv)`` at the beginning of your terminal prompt.
+After activation, you should see something like ``(gamera_venv)`` 
+at the beginning of your terminal prompt.
 
 Install Python Dependencies inside the venv
 
@@ -75,7 +77,8 @@ Install Python Dependencies inside the venv
 
 .. note::
 
-   Once your virtual environment is activated and your Python dependencies are installed, you can install Gamera as described in the ``Standard Build and Install`` section below
+   Once your virtual environment is activated and your Python dependencies are installed,
+you can install Gamera as described in the ``Standard Build and Install`` section below
 
 Standard Build and Install
 --------------------------
