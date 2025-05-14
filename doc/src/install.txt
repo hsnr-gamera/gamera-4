@@ -77,8 +77,8 @@ Install Python Dependencies inside the venv
 
 .. note::
 
-   Once your virtual environment is activated and your Python dependencies are installed,
-you can install Gamera as described in the ``Standard Build and Install`` section below
+  Once your virtual environment is activated and your Python dependencies are installed,
+  you can install Gamera as described in the ``Standard Build and Install`` section below.
 
 Standard Build and Install
 --------------------------
@@ -144,7 +144,9 @@ Run the ``gamera_gui`` script, which is installed in the ``bin`` directory of Py
 
 Virtual Environment
 ```````````````````
-The ``gamera_gui`` script is installed in the ``bin`` directory of your virtual environment
+The ``gamera_gui`` script is installed in the ``bin`` directory of your virtual environment.
+Make sure to activate the virtual environment before starting the Gamera GUI,
+so that all dependencies and paths are correctly set
 
 Mac OS-X
 ========
