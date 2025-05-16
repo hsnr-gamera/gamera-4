@@ -29,11 +29,11 @@ Prerequisites
   For example::
       
           sudo apt-get install -y \
-          python3 python3-dev python3-pip \
-          libgtk-3-dev \
-          libtiff-dev \
-          libpng-dev \
-          g++
+              python3 python3-dev python3-pip \
+              libgtk-3-dev \
+              libtiff-dev \
+              libpng-dev \
+              g++
 
 Install Python Dependencies System-Wide
 
@@ -64,7 +64,7 @@ Activate the venv::
 
     source path/to/your/gamera_venv/bin/activate
 
-After activation, you should see something like ``(gamera_venv)`` 
+After activation, you should see the environment name
 at the beginning of your terminal prompt.
 
 Install Python Dependencies inside the venv
@@ -144,9 +144,10 @@ Run the ``gamera_gui`` script, which is installed in the ``bin`` directory of Py
 
 Virtual Environment
 ```````````````````
+
 The ``gamera_gui`` script is installed in the ``bin`` directory of your virtual environment.
 Make sure to activate the virtual environment before starting the Gamera GUI,
-so that all dependencies and paths are correctly set
+so that all dependencies and search paths are correctly set.
 
 Mac OS-X
 ========
